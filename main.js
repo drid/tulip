@@ -207,3 +207,23 @@ function printPdf(event, arg) {
 ipcMain.on('get-documents-path', (event) => {
   event.sender.send('documents-path', app.getPath('documents'));
 });
+
+ipcMain.on('show-open-dialog', (event, arg) => {
+  filePaths = dialog.showOpenDialogSync(arg)
+  if (filePaths === undefined)  return
+  event.reply('read-file', filePaths[0]);
+})
+
+ipcMain.on('show-save-dialog', (event, arg) => {
+  fileName = dialog.showSaveDialogSync(arg)
+  event.reply('save-file', fileName);
+})
+
+ipcMain.on('autotrace-dialog', (event) => {
+  var autotrace = dialog.showMessageBoxSync({type: "question",
+    buttons: ["Cancel","Ok"],
+    defaultId: 1,
+    message: "About to auto-trace roads to your route, Are you sure?"});
+  event.reply('autotrace-response', autotrace);
+})
+
