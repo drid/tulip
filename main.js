@@ -1,7 +1,7 @@
 const ipcMain = require('electron').ipcMain;
 const fs = require('fs');
 const {electron, Menu,app,BrowserWindow,dialog} = require('electron');
-
+const path = require('path');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -108,6 +108,7 @@ function createWindow () {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1500, height: 1000, 'min-height': 700,
+                                  icon: path.join(app.getAppPath(), '/assets/icons/tulip.png'),
                                   webPreferences: {
                                     nodeIntegration: true,
                                     contextIsolation: false,
@@ -218,6 +219,7 @@ ipcMain.on('get-documents-path', (event, arg) => {
   event.sender.send('documents-path', app.getPath('documents'));
 });
 
+// handle open dialog
 ipcMain.on('show-open-dialog', (event, arg) => {
   filePaths = dialog.showOpenDialogSync(arg)
   if (filePaths === undefined)  return
