@@ -1,6 +1,3 @@
-const { ipcRenderer } = require('electron');
-const { debuglog } = require('util');
-
 /*
   ---------------------------------------------------------------------------
   Define the application object as a singleton
