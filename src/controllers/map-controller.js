@@ -1,5 +1,3 @@
-// const { ipcRenderer } = require('electron');
-
 /*
   A module for providing the application with the means to control the map via the UI
 */
@@ -13,7 +11,6 @@ class MapController {
     this.displayEdge = true; //displayEdge is a instance variable which tracks whether a handle should be shown when the user hovers the mouse over the route. (think of a better name and nuke this comment)
     this.markerDeleteMode = false;
     this.deleteQueue = [];
-    this.dialog = require('electron');
 
     this.initMap();
     this.initRoutePolyline();
