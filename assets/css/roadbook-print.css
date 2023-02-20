@@ -204,6 +204,79 @@ body {
   line-height: 1;
 }
 
+.total-distance {
+	font-size: 0; /* eliminate the space between regular and hundredths digits */
+	text-align: right;
+	border: 0px solid #f00;
+	position: absolute;
+	top:25;
+	right:5;
+}
+
+
+
+.regularDigit {
+	font-size:45px;
+	font-family:Lato-Regular;
+}
+.hundredthDigit {
+	font-size:45px;
+	font-family:Lato-Regular;
+}
+.hundredthDigit.outline {
+	font-size:45px;
+	font-family:Lato-Regular-outline;
+}
+.hundredthDigit.none {
+	font-size:0px;
+}
+
+.relative-distance {
+	font-family:Lato-Regular;
+	color: #000;
+	font-size: 18px;
+	text-align: right;
+	padding-right: 10px;
+	position: absolute;
+	height: 27px;
+	width:80px;
+	bottom: 0px;
+	right: 0px;
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+}
+.waypoint-index {
+	height: 16px;
+	width: 24px;
+	bottom:0px;
+	left:0px;
+	position:absolute;
+	padding-top:3px;
+	font-size: 11px;
+	text-align:center;
+}
+.heading {
+	font-family:Lato-Regular;
+	font-size: 18pt;
+	position: absolute;
+	height: 35px;
+	/* width: 100px; */
+	bottom: 0px;
+	left: 0px;
+  background-color: yellow;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  padding-right: 6px;
+	padding-left: 6px;
+}
+.heading label {
+	display: none;
+	font-size: 26pt;
+}
+
+
+
 /*
   Sticky nav
 */
