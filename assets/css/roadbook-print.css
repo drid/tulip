@@ -150,6 +150,15 @@ body {
   width: 150px;
 }
 
+.waypoint-tulip {
+	width:180px;
+	height: 100%;
+	border: 0px solid #0f0;
+	position: absolute;
+	top: 0px;
+	left: 152px;
+}
+
 .waypoint-distance.A5 {
   /*width: 230px;*/
   width: 193px;

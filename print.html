@@ -51,7 +51,7 @@
     <!--  waypoint template-->
     <script type="text/html" id="waypoint-template">
       <div class='waypoint row'>
-        <div class='waypoint-distance'>
+        <div class='waypoint-distance' data-bind="css: { 'waypoint-distance-close': kmPrevClose}">
           <div class='total-distance'>
             <div data-bind="text: kmFromStart.toFixed(2)">
             </div>
