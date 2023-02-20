@@ -5,6 +5,7 @@ var Roadbook = Class({
       declare some state instance variables
     */
     this.currentlyEditingWaypoint = null;
+    this.currentlySelectedWaypoint = null;
 
     this.editingNameDesc = false;
     this.newWaypoints = false;
@@ -217,6 +218,14 @@ var Roadbook = Class({
         $('#notification-options').removeClass('hidden');
       }
       return true;
+    }
+  },
+
+  focusWaypoint: function(waypoint) {
+    app.mapController.setMapCenter({lat: waypoint.lat(), lng: waypoint.lng()});
+    this.currentlySelectedWaypoint = waypoint
+    if(app.mapController.getMapZoom() < 18){
+      app.mapController.setMapZoom(18);
     }
   },
 

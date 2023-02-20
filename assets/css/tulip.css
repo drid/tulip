@@ -475,6 +475,10 @@ nav.top-bar {
   margin-top: 10px !important;
 }
 
+.waypoint-selected {
+  border-color: darkorange;
+}
+
 .waypoint-distance {
   width:120px;
 }

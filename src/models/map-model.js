@@ -327,8 +327,10 @@ class MapModel {
     app.roadbook.deleteInstruction(index);
   }
 
-  getRoadBookInstructionBeingEditedRoutePointIndex(){
-    return app.roadbook.currentlyEditingInstruction.routePointIndex;
+  getRoadBookWaypointBeingEditedRoutePointIndex(){
+    if (app.roadbook.currentlyEditingWaypoint == null)
+      return app.roadbook.currentlySelectedWaypoint.routePointIndex;
+    return app.roadbook.currentlyEditingWaypoint.routePointIndex;
   }
 
   /*

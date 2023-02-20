@@ -163,6 +163,12 @@ var Waypoint = Class({
   initWaypointListeners: function(element){
     var _this = this;
     $(element).click(function(e){
+      _this.roadbook.focusWaypoint(_this)
+      $("div.waypoint").removeClass("waypoint-selected")
+      _this.element.addClass("waypoint-selected")
+      app.mapController.orientMap()
+    })
+    $(element).dblclick(function(e){
       if(_this.roadbook.requestWaypointEdit(_this)){
         _this.tulip.beginEdit();
       }
