@@ -345,6 +345,7 @@ class MapModel {
   */
   requestGoogleDirections(latLng,map,callback){
     var _this = this;
+    console.log("requesting directions", latLng, map);
     $.get(this.buildDirectionsRequestURL(this.getLastItemInArray(this.route.getArray()),latLng,api_keys.google_directions),function(data){
       if(data.status == "OK"){
         callback.call(_this,data.routes[0].legs[0].steps,map);
