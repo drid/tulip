@@ -21,11 +21,7 @@
   ---------------------------------------------------------------------------
 */
 
-//const {remote} = require('electron');
-
 class App {
-  // singleton: true,
-
   constructor() {
     /*
       declare some state instance variables
@@ -33,8 +29,7 @@ class App {
     this.glyphPlacementPosition = { top: 30, left: 30 };
     this.canEditMap = true;
     this.pointDeleteMode = false;
-    //Dialogs for file IO
-    // this.dialog = globalNode.remote.dialog;
+    
     /*
       instantiate the roadbook
       TODO rename variable
@@ -56,7 +51,7 @@ class App {
     /*
       IPC to Main process
     */
-    this.ipc = globalNode.ipcRenderer; //TODO try require('ipcRenderer')
+    this.ipc = globalNode.ipcRenderer;
     /*
       initialize UI listeners
     */
@@ -128,7 +123,7 @@ class App {
       var filename = this.roadbook.filePath.replace('tlp', 'gpx');
       globalNode.fs.writeFile(filename, gpx, function (err) { });
       $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
-      alert('You gpx has been exported to the same directory you saved your roadbook');
+      alert('Your gpx has been exported to the same directory you saved your roadbook');
     } else {
       alert('F@#k1ng Kamaz! You must save your roadbook before you can export GPX tracks');
     }
@@ -137,10 +132,15 @@ class App {
   exportOpenRallyGPX() {
     if (this.canExport()) {
       var gpx = this.io.exportOpenRallyGPX();
-      var filename = ('openrally-' + this.roadbook.filePath).replace('tlp', 'gpx');
-      this.fs.writeFile(filename, gpx, function (err) { });
+      
+      var filename = this.roadbook.filePath.replace('.tlp', '-openrally.gpx');
+
+      globalNode.fs.writeFile(filename, gpx, function (err) { });
+      
+      console.log("exported openrally gpx to", filename);
+      
       $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
-      alert('You gpx has been exported to the same directory you saved your roadbook');
+      alert('Your gpx has been exported to the same directory you saved your roadbook');
     } else {
       alert('F@#k1ng Kamaz! You must save your roadbook before you can export GPX tracks');
     }
@@ -174,21 +174,6 @@ class App {
         }
       });
     });
-    // globalNode.dialog().showOpenDialog({
-    //   filters: [
-    //     { name: 'import gpx', extensions: ['gpx'] }
-    //   ]
-    // }, function (fileNames) {
-    //   console.log(fileNames);
-    //   var fs = globalNode.fs;
-    //   if (fileNames === undefined) return;
-    //   _this.startLoading();
-    //   $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
-    //   var fileName = fileNames[0];
-    //   _this.fs.readFile(fileName, 'utf-8', function (err, data) {
-    //     _this.io.importGPX(data);
-    //   });
-    // });
   }
 
   printRoadbook() {
@@ -233,8 +218,7 @@ class App {
     }).then(dialogInfo => {
       var fileName = dialogInfo.filePath;
 
-      console.log(fileName);
-      if (fileName === undefined)
+      if (dialogInfo.canceled)
         return;
 
       // assign the file path to the json for first time players
@@ -250,22 +234,6 @@ class App {
 
       return true;
     });
-
-    // globalNode.remote.dialog.showSaveDialog({
-    //   title: title,
-    //   defaultPath: path,
-    //   filters: [{ name: 'tulip', extensions: ['tlp'] }]
-    // }, function (fileName) {
-    //   if (fileName === undefined) return;
-    //   // assign the file path to the json for first time players
-    //   // TODO figure out what to do if the user changes the name of the file
-    //   var tulipFile = _this.roadbook.statefulJSON();
-    //   tulipFile.filePath = fileName;
-    //   _this.roadbook.filePath = fileName;
-    //   tulipFile = JSON.stringify(tulipFile, null, 2);
-    //   _this.fs.writeFile(fileName, tulipFile, function (err) { });
-    //   return true
-    // });
   }
 
   startLoading() {

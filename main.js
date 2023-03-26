@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { electron, Menu, app, BrowserWindow, dialog, ipcMain, ipcRenderer, webContents } = require('electron');
+const { Menu, app, BrowserWindow, dialog, ipcMain } = require('electron');
 const path = require('path');
 require('@electron/remote/main').initialize();
 
@@ -103,7 +103,7 @@ function createWindow() {
         {
           label: 'Toggle Developer Tools',
           accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-          click(item, focusedWindow) {
+          click(focusedWindow) {
             if (focusedWindow) focusedWindow.webContents.toggleDevTools()
           }
         },
@@ -120,13 +120,7 @@ function createWindow() {
     width: 1500,
     height: 1000,
     'min-height': 700,
-    // nodeIntegration: true,
-    // nodeIntegration: true,
-    // nodeIntegrationInWorker: true,
-    // contextIsolation: false,
-    // enableRemoteModule: true,
     webPreferences: {
-      //webSecurity: false,
       preload: path.join(__dirname, "preload.js"),
       sandbox: false
     }
@@ -135,8 +129,12 @@ function createWindow() {
   require('@electron/remote/main').enable(mainWindow.webContents);
 
   // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/index.html')
-  // mainWindow.webContents.openDevTools()
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
+
+  if (!app.isPackaged) {
+    mainWindow.webContents.openDevTools();
+  }
+
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -160,7 +158,6 @@ ipcMain.on('ignite-print', (event, arg) => {
     'min-height': 700,
     'resizable': true,
     webPreferences: {
-      //webSecurity: false,
       preload: path.join(__dirname, "preload.js"),
       sandbox: false
     }
@@ -168,7 +165,7 @@ ipcMain.on('ignite-print', (event, arg) => {
 
   require('@electron/remote/main').enable(printWindow.webContents);
 
-  
+
   printWindow.loadURL('file://' + __dirname + '/print.html');
   data = arg;
   printWindow.on('closed', () => {
@@ -178,7 +175,7 @@ ipcMain.on('ignite-print', (event, arg) => {
 });
 
 //listens for the browser window to say it's ready to print
-ipcMain.on('print-launched', (event, arg) => {
+ipcMain.on('print-launched', (event) => {
   event.sender.send('print-data', data);
 });
 
@@ -194,34 +191,19 @@ function printPdf(event, arg) {
   var filename = arg.filepath.replace('.tlp', size + '.pdf')
 
   printWindow.webContents.printToPDF(arg.opts)
-  .then((data) => {
-    console.log("Printed webcontents", data);
-    // if (error) 
-    //   throw error;
-    
-    fs.writeFile(filename, data, (error) => {
-      if (error)
-        throw error;
+    .then((data) => {
+      fs.writeFile(filename, data, (error) => {
+        if (error)
+          throw error;
 
-      printWindow.close();
+        printWindow.close();
 
-      dialog.showMessageBox(mainWindow, { message: "Your PDF has been exported to the same directory you saved your roadbook. Gas a la burra!", buttons: ['ok'] })
+        dialog.showMessageBox(mainWindow, { message: "Your PDF has been exported to the same directory you saved your roadbook. Gas a la burra!", buttons: ['ok'] })
+      });
     });
-  });
-
-  // printWindow.webContents.printToPDF(arg.opts, (error, data) => {
-  //   if (error) throw error;
-  //   fs.writeFile(filename, data, (error) => {
-  //     if (error)
-  //       throw error;
-  //     printWindow.close();
-
-  //     dialog.showMessageBox(mainWindow, { message: "Your PDF has been exported to the same directory you saved your roadbook. Gas a la burra!", buttons: ['ok'] })
-  //   });
-  // });
 };
 
 //listens for the browser window to ask for the documents folder
-ipcMain.on('get-documents-path', (event, arg) => {
+ipcMain.on('get-documents-path', (event) => {
   event.sender.send('documents-path', app.getPath('documents'));
 });

@@ -11,7 +11,6 @@ class MapController {
     this.displayEdge = true; //displayEdge is a instance variable which tracks whether a handle should be shown when the user hovers the mouse over the route. (think of a better name and nuke this comment)
     this.markerDeleteMode = false;
     this.deleteQueue = [];
-    // this.dialog = globalNode.remote.dialog;
 
     this.initMap();
     this.initRoutePolyline();
@@ -25,15 +24,11 @@ class MapController {
   }
 
   initMap() {
-    const uluru = { lat: -25.344, lng: 131.031 };
-
     this.map = new google.maps.Map(document.getElementById('map'), {
-      //center: {lat: 36.068209, lng: -105.629669},
+      center: { lat: 36.068209, lng: -105.629669 },
       zoom: 4,
-      center: uluru
-      //  zoom: 4,
-      //  disableDefaultUI: true,
-      //  mapTypeId: google.maps.MapTypeId.HYBRID,
+      disableDefaultUI: true,
+      mapTypeId: google.maps.MapTypeId.HYBRID,
     });
 
     console.log(map);
@@ -210,7 +205,7 @@ class MapController {
             if (_this.mapUnlocked && !this.markerDeleteMode && (autotrace == 1)) {
               _this.model.requestGoogleDirections(evt.latLng, _this.map, _this.model.appendGoogleDirectionsToMap);
             }
-          });        
+          });
       }
     });
   }

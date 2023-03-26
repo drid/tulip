@@ -7,7 +7,8 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "make-pack": "electron-forge make && electron-forge package"
   },
   "repository": {
     "type": "git",
