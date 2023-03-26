@@ -1,3 +1,7 @@
+# THIS IS A HACKED TOGETHER UPGRADE OF TULIP TO ELECTRON 23 BECAUSE A FRIEND ASKED FOR IT
+Don't bother logging issues, they will not be fixed.
+Feel free to fork and improve on it further.
+
 <div align="center">
   <img src="https://github.com/SenorDrewMitchell/tulip/blob/master/assets/tulip-logo3.png" width="100" height="100" />
 </div>
@@ -8,17 +12,13 @@
 
 ## To download and use for local development
 1. Install [Node.js](https://nodejs.org/)
-2. Using npm install [electron-prebuilt](https://github.com/electron-userland/electron-prebuilt)
-3. Fork this repo
-4. Clone somewhere fancy on your local machine
-5. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
-6. Navigate to local working directory `$ cd tulip`
-7. Launch electron `electron .`
+2. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
+3. Navigate to local working directory `$ cd tulip`
+4. Launch electron `electron .`
 
 ## To download, package, and use for fun
 1. Install [Node.js](https://nodejs.org/)
-2. Using npm install [electron-prebuilt](https://github.com/electron-userland/electron-prebuilt)
-3. Download the latest stable release
-4. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
-5. Navigate to local working directory `$ cd tulip`
-6. Use the electron-packager module to package the app. Runnable examples can be found in the build_tulip.sh script
+2. Download the latest stable release
+3. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
+4. Navigate to local working directory `$ cd tulip`
+6. Use `npm run make`and `npm run package` to create a package
