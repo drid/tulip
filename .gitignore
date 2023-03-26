@@ -1,4 +1,8 @@
 tulip-darwin-x64
 tulip-win32-x64
 api_keys.js
-node_modules
+tulip-gh-pages/
+.DS_Store
+node_modules/
+
+out/

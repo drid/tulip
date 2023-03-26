@@ -33,16 +33,16 @@ class NoteControls {
     })
 
     $('#show-notification-options').click(function(){
-      var notification = app.roadbook.currentlyEditingWaypoint.notification;
+      var notification = app.roadbook.currentlyEditingInstruction.notification;
       $('#notification-bubble').val(notification.bubble);
       $('#notification-modifier').val(notification.modifier);
       $('#notification-modifier').attr('min', notification.modMin);
       $('#notification-modifier').attr('max', notification.modMax);
       $('#notification-modifier').attr('step', notification.modStep);
     });
-
-    $('#notification-bubble, #notification-modifier').change(function(){
-      var notification = app.roadbook.currentlyEditingWaypoint.notification;
+    //TODO decouple this
+    $('#notification-bubble, #notification-modifier').bind('keyup input',function(){
+      var notification = app.roadbook.currentlyEditingInstruction.notification;
       notification.bubble = $('#notification-bubble').val();
       notification.modifier = $('#notification-modifier').val();
       _this.checkForNotification(); //TODO This needs refactored
@@ -61,7 +61,6 @@ class NoteControls {
   resizeSelection(size){
     var sel = window.getSelection();
     var images = $('#note-editor img')
-    console.log($(images));
     for(var i=0;i<images.length;i++){
       if(sel.containsNode(images[i])){
         $(images[i]).removeClass();
@@ -74,10 +73,10 @@ class NoteControls {
     so that we can capture data for rally blitz or rally comp exports
   */
   checkForNotification(){
-    if(app.roadbook.currentlyEditingWaypoint){
+    if(app.roadbook.currentlyEditingInstruction){
       // reduce DOM image objects in the text editor to a collection of glyph names
       var glyphs = $('#note-editor').find("img").toArray().map(function(g){return $(g).attr('src').match(/\/([a-z0-9,-]*)\./)[1]})
-      app.roadbook.currentlyEditingWaypoint.manageNotifications(glyphs);
+      app.roadbook.currentlyEditingInstruction.manageNotifications(glyphs);
     }
   }
 }

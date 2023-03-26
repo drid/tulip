@@ -2,15 +2,15 @@
 var Io = Class({
 
   importGPX: function(gpx){
+    console.log("Parsing gpx", gpx);
     try {
       var gpxDoc = $.parseXML(gpx.trim());
       this.gpx = $(gpxDoc);
     } catch (e) {
       alert("Error parsing GPX :-(");
       app.stopLoading();
-      return
+      return;
     }
-
 
     this.importGPXTracks($.makeArray(this.gpx.find( "trkpt" )));
     this.importGPXWaypoints($.makeArray(this.gpx.find( "wpt" )));
@@ -23,12 +23,14 @@ var Io = Class({
     if(app.mapModel.markers[(app.mapModel.markers.length - 1)].waypoint == null){
       this.addWaypoint(app.mapModel.markers[(app.mapModel.markers.length - 1)]);
     }
-    app.mapModel.updateRoadbookAndWaypoints();
+    //console.log(app.mapModel);
+    //app.mapModel.updateRoadbookAndWaypoints();
+    app.mapModel.updateRoadbookAndInstructions();
   },
 
   addWaypoint: function(marker){
     if(marker){
-      app.mapModel.addWaypoint(marker);
+      app.mapModel.addInstruction(marker);
     }
   },
 
@@ -43,9 +45,9 @@ var Io = Class({
     var points = app.mapModel.markers;
     var wptCount = 1;
     for(var i=0;i<points.length;i++){
-      if(points[i].waypoint){
-        var name = this.buildNameString(wptCount,points[i].waypoint);
-        var desc = this.buildDescString(wptCount,points[i].waypoint);
+      if(points[i].instruction){
+        var name = this.buildNameString(wptCount,points[i].instruction);
+        var desc = this.buildDescString(wptCount,points[i].instruction);
         var waypoint = "<wpt lat='" + points[i].getPosition().lat() + "' lon='" + points[i].getPosition().lng() + "'><name>" + name + "</name><desc>" + desc + "</desc></wpt>";
         waypoints += waypoint;
         wptCount++;
@@ -70,8 +72,8 @@ var Io = Class({
     var points = app.mapModel.markers;
     var wptCount = 1;
     for(var i=0;i<points.length;i++){
-      if(points[i].waypoint !== undefined){
-        var waypoint = "<wpt lat='" + points[i].getPosition().lat() + "' lon='" + points[i].getPosition().lng() + "'><name>" + wptCount + "</name><desc></desc>" + this.buildOpenRallyExtensionsString(wptCount,points[i].waypoint) + "</wpt>";
+      if(points[i].instruction !== undefined){
+        var waypoint = "<wpt lat='" + points[i].getPosition().lat() + "' lon='" + points[i].getPosition().lng() + "'><name>" + wptCount + "</name><desc></desc>" + this.buildOpenRallyExtensionsString(wptCount,points[i].instruction) + "</wpt>";
         waypoints += waypoint;
         wptCount++;
       }
@@ -142,22 +144,29 @@ var Io = Class({
   },
 
   importGPXTracks: function(tracks){
+    console.log("importGPXTracks", tracks);
+    
     if(tracks.length > 0){
       var tracks = this.processGpxTracksForImport(tracks);
+      
       for(i=0;i<tracks.length;i++){
 
         var latLng = new google.maps.LatLng(tracks[i].lat, tracks[i].lng);
         // TODO abstract this to the app
         app.mapController.addRoutePoint(latLng);
       }
+
+      var latLng = new google.maps.LatLng(tracks[0].lat, tracks[0].lng);
+      app.mapController.setMapCenter(latLng);
+      app.mapController.setMapZoom(14);
     }
-    var latLng = new google.maps.LatLng(tracks[0].lat, tracks[0].lng);
-    app.mapController.setMapCenter(latLng);
-    app.mapController.setMapZoom(14);
   },
 
 
   importGPXWaypoints: function(waypoints){
+    console.log("importGPXWaypoints", waypoints);
+
+
     //logic to import into roadbook
     if(waypoints.length > 0){
       for(waypoint of waypoints){

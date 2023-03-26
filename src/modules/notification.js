@@ -110,6 +110,6 @@ class Notification{
 /*
   Node exports for test suite
 */
-module.exports.nameMatchesClass = Notification.nameMatchesClass;
-module.exports.mapFileNameToType = Notification.mapFileNameToType;
-module.exports.buildNotification = Notification.buildNotification;
+// module.exports.nameMatchesClass = Notification.nameMatchesClass;
+// module.exports.mapFileNameToType = Notification.mapFileNameToType;
+// module.exports.buildNotification = Notification.buildNotification;

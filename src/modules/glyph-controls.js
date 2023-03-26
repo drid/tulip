@@ -1,9 +1,9 @@
-// TODO refactor this to use MVC pattern and act as a controller for the currentlyEditingWaypoint for the roadbook
+// TODO refactor this to use MVC pattern and act as a controller for the currentlyEditingInstruction for the roadbook
 class GlyphControls{
 
   constructor(){
-    this.fs = require('fs');
-    this.process = require('electron').remote.process;
+    // this.fs = fs;
+    // this.process = globalNode.remote.process;
     this.files = [];
     this.getGylphNames();
     this.initListeners();
@@ -13,10 +13,10 @@ class GlyphControls{
 
   getGylphNames(){
     try {
-      this.files = this.fs.readdirSync(this.process.resourcesPath + '/app/assets/svg/glyphs/').filter(function(val){ return val.endsWith('.svg')});
+      this.files = globalNode.fs.readdirSync(this.process.resourcesPath + '/app/assets/svg/glyphs/').filter(function(val){ return val.endsWith('.svg')});
     } catch (e) {
       console.log("using unpackaged filesys");
-      this.files = this.fs.readdirSync('assets/svg/glyphs').filter(function(val){ return val.endsWith('.svg')});
+      this.files = globalNode.fs.readdirSync('assets/svg/glyphs').filter(function(val){ return val.endsWith('.svg')});
     }
   }
 
@@ -92,10 +92,10 @@ class GlyphControls{
       if($(this).hasClass('undo')){
         if(e.shiftKey){
           // NOTE this module should only know about the roadbook
-          app.roadbook.currentlyEditingWaypoint.tulip.beginRemoveGlyph();
+          app.roadbook.currentlyEditingInstruction.tulip.beginRemoveGlyph();
         }else{
           // NOTE this module should only know about the roadbook
-          app.roadbook.currentlyEditingWaypoint.tulip.removeLastGlyph();
+          app.roadbook.currentlyEditingInstruction.tulip.removeLastGlyph();
         }
         return false
       }
@@ -119,7 +119,7 @@ class GlyphControls{
       app.roadbook.appendGlyphToNoteTextEditor($('<img>').attr('src', src).addClass('normal'));
     } else {
       // NOTE this module should only know about the roadbook
-      app.roadbook.currentlyEditingWaypoint.tulip.addGlyph(app.glyphPlacementPosition,src);
+      app.roadbook.currentlyEditingInstruction.tulip.addGlyph(app.glyphPlacementPosition,src);
     }
   }
 
