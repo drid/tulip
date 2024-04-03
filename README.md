@@ -28,4 +28,4 @@ Features:
 2. Download the latest stable release
 3. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
 4. Navigate to local working directory `$ cd tulip`
-6. Use `npm run make`and `npm run package` to create a package
+5. Use `npm run make-pack` to create a package
