@@ -22,13 +22,16 @@ var Instruction = Class({
     // can all this knockout stuff be at the controller level then model data is updated when controller starts up or shuts down
     this.kmFromStart    = ko.observable(wptJson.kmFromStart);
     this.kmFromPrev     = ko.observable(wptJson.kmFromPrev);
+    // this.kmPrevClose    = ko.observable(wptJson.kmPrevClose);
     this.exactHeading   = ko.observable(wptJson.heading);
     this.lat            = ko.observable(wptJson.lat);
     this.lng            = ko.observable(wptJson.long);
 
     this.distFromPrev   = ko.computed(this.computedDistanceFromPrev, this);
+    this.closeProximity  = ko.computed(this.waypointCloseProximity, this);
     this.totalDistance  = ko.computed(this.computedTotalDistance, this);
     this.heading        = ko.computed(this.computedHeading, this);
+    this.coordinates    = ko.computed(this.computedCoordinates, this);
 
     this.showHeading    = ko.observable((wptJson.showHeading == undefined ? true : wptJson.showHeading));
     this.entryTrackType = wptJson.entryTrackType == undefined ? 'track' : wptJson.entryTrackType;
@@ -150,6 +153,10 @@ var Instruction = Class({
     }
   },
 
+  waypointCloseProximity: function() {
+    return (this.kmFromPrev() < 0.3 && this.kmFromPrev() > 0)
+  },
+
   computedTotalDistance: function(){
     return this.kmFromStart().toFixed(2);
   },
@@ -158,6 +165,18 @@ var Instruction = Class({
     var heading = Math.round(this.exactHeading());
     //round the exaxt heading and zero pad it
     return Array(Math.max(3 - String(heading).length + 1, 0)).join(0) + heading + '\xB0';
+  },
+
+  computedCoordinates: function () {
+    var lat = this.lat();
+    var lon = this.lng();
+    return String(this.deg2ddmm(lat)) + (lat >= 0 ? 'N' : 'S') + '<br>' + String(this.deg2ddmm(lon)) + (lon >= 0 ? 'E' : 'W')
+  },
+
+  deg2ddmm: function (coordinate) {
+    var d = Math.floor(coordinate)
+    var m = (coordinate - d) * 60
+    return d + '&deg' + m.toFixed(3) + "'"
   },
 
   initInstructionListeners: function(element){

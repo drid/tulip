@@ -382,17 +382,17 @@
   <!--  instruction template-->
   <script type="text/html" id="waypoint-template">
     <div class='waypoint row'>
-      <div data-bind="css: { 'waypoint-distance-close': distanceClose}" class="waypoint-distance">
+      <div data-bind="css: { 'waypoint-distance-close': closeProximity() }" class="waypoint-distance">
         <div class='total-distance'>
           <div data-bind="text: totalDistance">
           </div>
         </div>
-        <div class="instruction-number">
-          <div data-bind="text: instructionNumber()">
-          </div>
-        </div>
         <div class="relative-distance">
           <div data-bind="text: distFromPrev">
+          </div>
+        </div>
+        <div class="instruction-number">
+          <div data-bind="text: instructionNumber()">
           </div>
         </div>
       </div>
@@ -404,6 +404,8 @@
         <p data-bind="html: noteHTML"></p>
         <div class='heading' data-bind="visible: showHeading">
           <label>CAP </label><span data-bind="text: heading"></span>
+        </div>
+        <div class="coordinates" data-bind="html: coordinates">
         </div>
       </div>
     </div>

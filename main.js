@@ -41,10 +41,10 @@ function createWindow() {
     {
       label: "Tulip",
       submenu: [
-        { label: "Quit", accelerator: "CmdOrCtrl+Q", click: function () { app.quit(); } },
+        { label: "Open", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('open-roadbook'); } },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: function () { mainWindow.webContents.send('save-roadbook'); } },
         { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: function () { mainWindow.webContents.send('save-roadbook-as'); } },
-        { label: "Open", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('open-roadbook'); } },
+        { label: "Quit", accelerator: "CmdOrCtrl+Q", click: function () { app.quit(); } },
       ]
     },
     {

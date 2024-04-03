@@ -309,7 +309,11 @@ textarea.waypoint-palette {
 .heading {
   font-family: Tahoma, Geneva, sans-serif;
   color: #000;
-  font-size: 1.95em;
+  font-size: 1.85em;
+  left: 0px;
+  float: left;
+  margin-top: 5px;
+  margin-left: -4px;
 }
 
 .heading span {
@@ -319,6 +323,7 @@ textarea.waypoint-palette {
   border-style: solid;
   padding-left: 2px;
   padding-right: 2px;
+  padding-top: 5px;
 }
 
 .heading label {
@@ -326,15 +331,29 @@ textarea.waypoint-palette {
 }
 
 .instruction-number{
-  height: 28px;
-  color: #d2d2d2;
+  height: 21px;
+  color: #FFFFFF;
+  background-color: black;
   font-weight: bold;
+  font-size: 10pt;
   border-top: 1px solid #000;
-  text-align: left;
-  margin-top: 45px;
-  padding-left: 3px;
-  width: 50%;
-  float: left;
+  text-align: center;
+  margin-top: 48px;
+  /* padding-left: 3px; */
+  width: 26%;
+  float: right;
+}
+
+.coordinates {
+  text-align: right;
+  border: 1px solid #000;
+  float: right;
+  font-size: 0.7em;
+  padding: 3px;
+  padding-left: 11px;
+  padding-right: 11px;
+  margin-top: 1px;
+  margin-right: -5px;
 }
 
 .map-container
@@ -379,15 +398,16 @@ textarea.waypoint-palette {
 }
 
 .relative-distance {
-  height: 28px;
+  height: 25px;
   color: #000;
   font-weight: bold;
   border-top: 1px solid #000;
-  text-align: right;
+  border-right: 1px solid #000;
+  text-align: center;
   margin-top: 45px;
   padding-right: 3px;
-  width: 50%;
-  float: right;
+  width: 45%;
+  float: left;
 }
 
 .roadbook-container {
