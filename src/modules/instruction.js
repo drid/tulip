@@ -162,10 +162,15 @@ var Instruction = Class({
 
   initInstructionListeners: function(element){
     var _this = this;
-    $(element).click(function(e){
+    $(element).dblclick(function(e){
       if(_this.roadbook.requestInstructionEdit(_this)){
         _this.tulip.beginEdit();
       }
+    });
+    $(element).click(function(e){
+      $("div.waypoint").removeClass("waypoint-selected")
+      element.addClass("waypoint-selected");
+      app.mapController.centerOnInstruction(_this);
     });
   },
 

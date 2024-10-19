@@ -221,9 +221,9 @@ class MapController {
       if (this.instruction && !this.markerDeleteMode) {
         // TODO make into instruction controller function and abstract it from here
         $('#roadbook').scrollTop(0);
-        $('#roadbook').scrollTop(($(this.waypoint.element).offset().top-100));
+        $('#roadbook').scrollTop(($(this.instruction.element).offset().top-100));
         $("div.waypoint").removeClass("waypoint-selected")
-        this.waypoint.element.addClass("waypoint-selected")
+        this.instruction.element.addClass("waypoint-selected")
       }
     });
 
