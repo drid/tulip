@@ -23,10 +23,11 @@ class Track{
     }
   }
 
-  buildTrackPaths(angle,origin,type){
+  buildTrackPaths(angle,origin,type,route=false){
     type = (type !== undefined ? type : 'track')
     var paths = [];
     var typeOptions = this.types[type];
+    if (route) typeOptions[0].stroke="#22F";
     for(var i=0;i<typeOptions.length;i++){
       paths.push(new fabric.Path(this.buildTrackPathString(angle,origin),typeOptions[i]));
     }
@@ -219,14 +220,14 @@ class EntryTrack extends Track {
 
   buildTrackObjects(type,canvas) {
     type = (type !== undefined ? type : 'track');
-    var paths = super.buildTrackPaths(0,[90,171], type)
+    var paths = super.buildTrackPaths(0,[90,171], type, true)
     var point = new fabric.Circle({
       left: paths[0].path[0][1],
       top: paths[0].path[0][2],
       strokeWidth: 1,
       radius: 7,
-      fill: '#000',
-      stroke: '#666',
+      fill: '#22F',
+      stroke: '#22F',
     });
     this.origin = point;
     this.paths = paths;
@@ -252,15 +253,15 @@ class ExitTrack extends Track {
   }
 
   buildTrackObjects(angle, type, canvas){
-    var paths = super.buildTrackPaths(angle,[90,90], type)
+    var paths = super.buildTrackPaths(angle,[90,90], type, true)
     var point = new fabric.Triangle({
       left: paths[0].path[3][5],
       top: paths[0].path[3][6],
       strokeWidth: 1,
       height: 15,
       width: 15,
-      fill: '#000',
-      stroke: '#666',
+      fill: '#22F',
+      stroke: '#22F',
       angle: angle,
     });
     this.end = point;
