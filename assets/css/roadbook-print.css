@@ -190,7 +190,7 @@ body {
 }
 
 .waypoint {
-  width: 528px !important; /* works for letter */
+  width: 528px;
   border: 2px solid #000;
   /*height:190px;*/
   margin-left: 0 !important;

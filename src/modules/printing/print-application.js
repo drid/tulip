@@ -29,7 +29,7 @@ class PrintApp {
     });
 
     this.pageSizes = ko.observableArray([{text: "Letter", value: "Letter"}, {text: 'A5', value: 'A5'}, {text: 'Roll', value: 'Roll'}]);
-    this.pageSize = ko.observable('A5');
+    this.pageSize = ko.observable('Roll');
     this.ipc.send('print-launched', true);
   }
 
@@ -48,8 +48,17 @@ class PrintApp {
     $('nav').hide();
     this.rerenderForPageSize()
     var size = this.pageSize();
+    const dpi = 300;
     if(size == "Roll"){
-      size = {height: $(document).height()*265, width: $(document).width()*265};
+      const roadBookWidthMm = 150;
+      const pageWidth = roadBookWidthMm / 25.4;
+      const docAspect = $(document).height() / $(document).width()
+
+      size = {
+        width: pageWidth,
+        height: pageWidth * docAspect
+      }
+      // size = {height: $(document).height()*265, width: $(document).width()};
     }
     if((size == "Letter")){
       $('body').css('margin-left', '-60px');
@@ -57,7 +66,8 @@ class PrintApp {
     if((size == "Roll")){
       $('body').css('margin-left', '-30px');
     }
-    var data = {'filepath': this.filePath, 'opts': {'pageSize': size, 'marginsType' : '1'}};
+    console.log("PDF paper size", size)
+    var data = {'filepath': this.filePath, 'opts': {'pageSize': size, 'marginsType' : '1', 'dpi': dpi}};
 
     // this.ipc.send('print-pdf', data);
     // globalNode.ipcRenderer.send('print-pdf', data);
@@ -67,7 +77,9 @@ class PrintApp {
   rerenderForPageSize(){
     var pageSize = this.pageSize();
     $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').removeClass('A5');
+    $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').removeClass('Roll');
     $('.break').remove();
+
     if((pageSize == "Letter" || pageSize == "A5")){
       this.addPageBreaks();
       //adjust height for A5
