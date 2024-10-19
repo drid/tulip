@@ -26,19 +26,21 @@
       <hr>
       <div id="roadbook-header">
         <div class="row">
-          <div id="roadbook-total-distance" class="large-4 column">
-            Total Kilometers:
-            <p data-bind="text: printApp.totalDistance"></p>
-          </div>
-          <div id="roadbook-name" class="large-8 column">
-            <p href="#" data-bind="text: printApp.name" data-default="true"></p>
+          <div id="roadbook-name" class="large-11 column">
+            <p href="#" data-bind="text: printApp.name" data-default="true">Name</p>
           </div>
         </div>
         <div class="row">
-          <hr>
-          <div id="roadbook-desc" class="large-12 column">
-            <p href="#" data-bind="html: printApp.desc" data-default="true"></p>
-            <hr>
+          <div id="roadbook-desc" class="large-8 column">
+            <p href="#" data-bind="html: printApp.desc" data-default="true">Description</p>
+          </div>
+          <div id="roadbook-total-distance" class="large-4 column">
+            Kilometers
+            <p data-bind="text: printApp.totalDistance">9999</p>
+          </div>
+          <div id="roadbook-total-waypoints" class="large-4 column">
+            Waypoints
+            <p data-bind="text: ko.unwrap(printApp.instructions).length">999</p>
           </div>
         </div>
       </div>
@@ -51,17 +53,18 @@
     <!--  waypoint template-->
     <script type="text/html" id="waypoint-template">
       <div class='waypoint row'>
-        <div class='waypoint-distance' data-bind="css: { 'waypoint-distance-close': kmPrevClose}">
+        <!-- <div class='waypoint-distance'> -->
+        <div class='waypoint-distance' data-bind="css: { 'waypoint-distance-close': kmFromPrev.toFixed(2) < 0.3 && kmFromPrev.toFixed(2) > 0  }">
           <div class='total-distance'>
             <div data-bind="text: kmFromStart.toFixed(2)">
             </div>
           </div>
-          <div class="instruction-number">
-            <div data-bind="text: instructionNumber">
-            </div>
-          </div>
           <div class="relative-distance">
             <div data-bind="text: kmFromPrev.toFixed(2)">
+            </div>
+          </div>
+          <div class="instruction-number">
+            <div data-bind="text: instructionNumber">
             </div>
           </div>
         </div>
@@ -70,8 +73,10 @@
         </div>
         <div class='waypoint-note'>
           <p data-bind="html: notes.text"></p>
-          <div class='heading' data-bind="visible: showHeading">
-            <label>CAP </label><span data-bind="text: Array(Math.max(3 - String(Math.round(heading)).length + 1, 0)).join(0) + Math.round(heading) + '\xB0'"></span>
+          <div class="heading" data-bind="visible: showHeading">
+            <label>CAP </label><span data-bind="text: heading.toFixed(0)">&deg;</span>
+          </div>
+          <div class="coordinates" data-bind="html: lat.toFixed(5) + (lat >= 0 ? 'N' : 'S') + '<br>' + long.toFixed(5) + (long >= 0 ? 'E' : 'W')">
           </div>
         </div>
       </div>
@@ -91,4 +96,6 @@
     Load the printApplication
   -->
   <script src='src/modules/printing/print-application.js'></script>
+  <script src='src/modules/instruction.js'></script>  
+
 </html>

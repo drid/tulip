@@ -81,7 +81,8 @@ class PrintApp {
   addPageBreaks(){
     if( $('.break').length > 0) { return };
     $('#roadbook').find('#roadbook-header').after($('<div>').attr('class', 'break'));
-    var instructions = $('#roadbook').find('.waypoint');
+    var instructions = $('#roadbook').find('.waypoint')
+
     // Default to Letter Format
     for(var i=0;i<instructions.length;i++){
       if((((i+1)%5) == 0) && (i > 0)){

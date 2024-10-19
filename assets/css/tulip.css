@@ -317,7 +317,7 @@ textarea.waypoint-palette {
 }
 
 .heading span {
-  background-color: yellow;
+  background-color: #FF0;
   border-color: black;
   border-width: 1px;
   border-style: solid;
@@ -333,7 +333,7 @@ textarea.waypoint-palette {
 .instruction-number{
   height: 21px;
   color: #FFFFFF;
-  background-color: black;
+  background-color: #000;
   font-weight: bold;
   font-size: 10pt;
   border-top: 1px solid #000;
