@@ -3,8 +3,7 @@
 <div align="center">
   <img src="assets/tulip-logo3.png" width="100" height="100" align="right"/>
 </div>
-###  Tulip
--An editor for rally roadbooks built in the electron atom environment using web technologies
+An editor for rally roadbooks built in the electron atom environment using web technologies
 
 ****
 
@@ -21,7 +20,7 @@ Features:
 1. Install [Node.js](https://nodejs.org/)
 2. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
 3. Navigate to local working directory `$ cd tulip`
-4. Launch electron `electron .`
+4. Launch electron `npm start`
 
 ### To download, package, and use for fun
 1. Install [Node.js](https://nodejs.org/)
