@@ -13,14 +13,11 @@ html {
 body {
     background: #fff;
     font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-}
-#roadbook {
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
-  height: 100%;
-  -webkit-print-color-adjust: exact;
-  margin-bottom: 1.2rem;
-
+    -webkit-print-color-adjust: exact;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    margin-top: 0px;
 }
 
 #roadbook-header {
@@ -53,7 +50,7 @@ body {
 
 #roadbook-total-distance {
   height: 90px;
-  width: 125px !important;
+  /* width: 125px !important; */
   font-size: 20px;
   border: 1px solid #000; min-height: 80px;
   float: left;
@@ -71,7 +68,7 @@ body {
   padding-top: 10px;
   height: 90px;
   font-size: 20px;
-  width: 125px !important;
+  /* width: 125px !important; */
   border: 1px solid #000; 
   float: left;
   text-align: center;
@@ -234,12 +231,6 @@ body {
   width:190px;
 }
 
-/*.waypoint-distance,
-.waypoint-note,
-.waypoint-tulip {
-  height: 190px;
-  float: left
-}*/
 /*
   --- A5 sizing
 */
@@ -456,4 +447,39 @@ select:focus {
   padding-right: 11px;
   margin-top: -2px;
   margin-right: -8px;
+}
+
+#generator {
+  clear: both;
+}
+#generator h1 {
+  text-align: center;
+}
+
+#roadbook-footer {
+  clear: both;
+  padding-top: 30px;
+}
+
+#roadbook-footer #roadbook-total-distance {
+    font-size: 20px;
+    border: 1px solid #000;
+    text-align: center;
+    padding-top: 10px;
+}
+
+#roadbook-footer #roadbook-total-waypoints{
+  padding-top: 10px;
+  font-size: 20px;
+  border: 1px solid #000;
+  text-align: center;
+  margin-left: 5%;
+}
+
+#roadbook-footer #roadbook-fuel-range {
+  padding-top: 10px;
+  font-size: 20px;
+  border: 1px solid #000;
+  text-align: center;
+  float: right;
 }

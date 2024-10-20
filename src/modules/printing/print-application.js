@@ -21,6 +21,8 @@ class PrintApp {
     this.name = ko.observable('');
     this.desc = ko.observable('');
     this.totalDistance = ko.observable('');
+    this.waypointCount = ko.observable('');
+    this.fuelRange = ko.observable('');
     this.instructions = ko.observableArray([]);
 
     this.ipc = globalNode.ipcRenderer;
@@ -38,17 +40,15 @@ class PrintApp {
     this.desc(json.desc);
     this.totalDistance(json.totalDistance);
     this.instructions(json.instructions);
+    this.waypointCount(ko.unwrap(this.instructions).length)
     this.filePath = json.filePath;
-
-    // Default to Letter Format
-    this.addPageBreaks()
   }
 
   requestPdfPrint(){
     $('nav').hide();
     this.rerenderForPageSize()
     var size = this.pageSize();
-    const dpi = 300;
+    const dpi = 150;
     if(size == "Roll"){
       const roadBookWidthMm = 150;
       const pageWidth = roadBookWidthMm / 25.4;
@@ -58,26 +58,19 @@ class PrintApp {
         width: pageWidth,
         height: pageWidth * docAspect
       }
-      // size = {height: $(document).height()*265, width: $(document).width()};
     }
     if((size == "Letter")){
       $('body').css('margin-left', '-60px');
     }
-    if((size == "Roll")){
-      $('body').css('margin-left', '-30px');
-    }
     console.log("PDF paper size", size)
     var data = {'filepath': this.filePath, 'opts': {'pageSize': size, 'marginsType' : '1', 'dpi': dpi}};
 
-    // this.ipc.send('print-pdf', data);
-    // globalNode.ipcRenderer.send('print-pdf', data);
     globalNode.printToPdf(data);
   }
 
   rerenderForPageSize(){
     var pageSize = this.pageSize();
     $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').removeClass('A5');
-    $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').removeClass('Roll');
     $('.break').remove();
 
     if((pageSize == "Letter" || pageSize == "A5")){
