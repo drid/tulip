@@ -82,6 +82,40 @@ class App {
     return can;
   }
 
+  openLastRoadBook() {
+    const fileName = localStorage.getItem('lastRoadBook');
+    this.ipc.send('check-file-existence', fileName);
+
+    this.ipc.on('file-exists', (event, fileName) => {
+      localStorage.setItem('lastRoadBook', fileName);
+      this.loadRoadBook(fileName);
+    });
+  }
+
+  loadRoadBook(fileName) {
+    var _this = this;
+
+    _this.startLoading();
+    //TODO this needs to be passed to create when choice is added
+    //we need to figure out how to watch a file while it's being edited so if it's moved it gets saved to the right place ***fs.watch***
+    _this.fs.readFile(fileName, 'utf-8', function (err, data) {
+      try {
+      var json = JSON.parse(data);
+      // We need to ask whether they want to open a new roadbook or append an existing one to the currently
+      // being edited RB
+      _this.roadbook.appendRouteFromJSON(json, fileName); //TODO this needs to only pass json once choice is added   
+      localStorage.setItem('lastRoadBook', fileName);
+    } catch (error) {
+      console.error(error);
+    }
+    });
+    $('#toggle-roadbook').click();
+    $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
+    $('#print-roadbook').removeClass('disabled')
+    $('#export-gpx').removeClass('disabled')
+    $('#export-openrally-gpx').removeClass('disabled')
+  }
+
   openRoadBook() {
     var _this = this;
     globalNode.dialog().showOpenDialog({
@@ -89,31 +123,15 @@ class App {
         { name: 'tulip', extensions: ['tlp'] }
       ]
     }).then(openInfo => {
+      if (openInfo.canceled) return;
+
       var fs = globalNode.fs;
       var fileNames = openInfo.filePaths;
 
       if (fileNames === undefined)
         return;
 
-      _this.startLoading();
-      //TODO this needs to be passed to create when choice is added
-      //we need to figure out how to watch a file while it's being edited so if it's moved it gets saved to the right place ***fs.watch***
-      var fileName = fileNames[0];
-      _this.fs.readFile(fileName, 'utf-8', function (err, data) {
-        try {
-        var json = JSON.parse(data);
-        // We need to ask whether they want to open a new roadbook or append an existing one to the currently
-        // being edited RB
-        _this.roadbook.appendRouteFromJSON(json, fileName); //TODO this needs to only pass json once choice is added   
-      } catch (error) {
-        console.error(error);
-      }
-      });
-      $('#toggle-roadbook').click();
-      $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
-      $('#print-roadbook').removeClass('disabled')
-      $('#export-gpx').removeClass('disabled')
-      $('#export-openrally-gpx').removeClass('disabled')
+      _this.loadRoadBook(fileNames[0])
     });
   }
 
@@ -249,6 +267,7 @@ class App {
     this.mapModel = new MapModel();
     this.mapController = new MapController(this.mapModel);
     this.mapController.placeMapAttribution();
+    this.openLastRoadBook()
   }
 
   toggleRoadbook() {

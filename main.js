@@ -8,13 +8,14 @@ require('@electron/remote/main').initialize();
 var mainWindow = null;
 var printWindow = null;
 
+// const store = new Store();
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
   ipcMain.handle('print-pdf', (event, args) => {
     printPdf(event, args);
   });
-
   createWindow();
 });
 
@@ -131,10 +132,7 @@ function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index.html');
-
-  if (!app.isPackaged) {
-    mainWindow.webContents.openDevTools();
-  }
+  mainWindow.webContents.load
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -180,7 +178,13 @@ ipcMain.on('print-launched', (event) => {
   event.sender.send('print-data', data);
 });
 
-
+ipcMain.on('check-file-existence', (event, fileName) => {
+  if (fs.existsSync(fileName)) {
+    event.reply('file-exists', fileName);
+  } else {
+    event.reply('file-does-not-exist', fileName);
+  }
+});
 
 // NOTE this is about as robust as a wet paper bag and fails just as gracefully
 function printPdf(event, arg) {
@@ -208,3 +212,12 @@ function printPdf(event, arg) {
 ipcMain.on('get-documents-path', (event) => {
   event.sender.send('documents-path', app.getPath('documents'));
 });
+
+async function loadAndUseStore() {
+  const store = await import('electron-store');
+
+  // Use the store to save or load settings
+  store.set('lastRoadbook', 'roadbook1.json');
+  const lastRoadbook = store.get('lastRoadbook');
+  console.log(lastRoadbook);
+}

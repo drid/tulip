@@ -31,8 +31,6 @@ class MapController {
        mapTypeId: google.maps.MapTypeId.HYBRID,
        gestureHandling: 'greedy'
     });
-
-    console.log(map);
   }
 
   initRoutePolyline() {

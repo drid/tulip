@@ -759,8 +759,12 @@
     })
   });
   </script>
-  <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=app.initMap&v=weekly"
-  defer
-></script>
+  <script>
+    var myVariable = "https://maps.googleapis.com/maps/api/js?key="+api_keys.google_maps+"&callback=app.initMap&v=weekly&loading=async";
+  
+    var scriptElement = document.createElement("script");
+    scriptElement.src = myVariable;
+    document.body.appendChild(scriptElement);
+  </script>
+
 </html>
