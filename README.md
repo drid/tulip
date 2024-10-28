@@ -5,6 +5,8 @@
 </div>
 An editor for rally roadbooks built in the electron atom environment using web technologies
 
+It is a fork of https://github.com/storm-factory/tulip
+
 ****
 
 Features:
@@ -27,4 +29,4 @@ Features:
 2. Download the latest stable release
 3. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
 4. Navigate to local working directory `$ cd tulip`
-5. Use `npm run make-pack` to create a package
+5. Use `build_tulip.sh` to create a packages
