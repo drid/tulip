@@ -91,6 +91,7 @@ class RoadbookModel {
     this.totalDistance = ko.observable('0.00');
     this.instructions = ko.observableArray([]);
     this.instructionShowHeading = ko.observable(true);
+    this.instructionShowCoordinates = ko.observable(true);
   }
 
   changeEditingInstructionAdded(type) {
@@ -207,6 +208,7 @@ class RoadbookModel {
       this.finishInstructionEdit(); //clear any existing UI just to be sure
       this.currentlyEditingInstruction = instruction;
       this.instructionShowHeading(instruction.showHeading());
+      this.instructionShowCoordinates(instruction.showCoordinates());
       app.mapController.centerOnInstruction(instruction);
       this.controller.populateInstructionPalette(instruction)
       return true;

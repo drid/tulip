@@ -33,7 +33,8 @@ var Instruction = Class({
     this.heading        = ko.computed(this.computedHeading, this);
     this.coordinates    = ko.computed(this.computedCoordinates, this);
 
-    this.showHeading    = ko.observable((wptJson.showHeading == undefined ? true : wptJson.showHeading));
+    this.showHeading    = ko.observable((wptJson.showHeading == undefined ? false : wptJson.showHeading));
+    this.showCoordinates    = ko.observable((wptJson.showCoordinates == undefined ? false : wptJson.showCoordinates));
     this.entryTrackType = wptJson.entryTrackType == undefined ? 'track' : wptJson.entryTrackType;
     this.exitTrackType  = wptJson.exitTrackType == undefined ? 'track' : wptJson.exitTrackType;
 

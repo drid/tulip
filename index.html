@@ -203,6 +203,19 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="large-6 columns">
+                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to show or hide the coordinates for this instruction">
+                          Lat/Lon
+                        </span>
+                      </div>
+                      <div class="large-6 columns">
+                        <div class="switch round tiny">
+                          <input id="toggle-coordinates" type="checkbox" name="toggle-coordinates" data-bind="checked: instructionShowCoordinates">
+                          <label for="toggle-coordinates"></label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <hr>
                 </div>
@@ -406,7 +419,8 @@
         <div class='heading' data-bind="visible: showHeading">
           <label>CAP </label><span data-bind="text: heading"></span>
         </div>
-        <div class="coordinates" data-bind="html: coordinates">
+        <div class="coordinates" data-bind="visible: showCoordinates">
+          <span data-bind="html: coordinates"></span>
         </div>
       </div>
     </div>

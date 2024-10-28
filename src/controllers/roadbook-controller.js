@@ -75,6 +75,10 @@ class RoadbookController{
       $('#note-editor-container').toggleClass('hideCap',!_this.model.instructionShowHeading())
       _this.model.currentlyEditingInstruction.showHeading(_this.model.instructionShowHeading());
     });
+    $('#toggle-coordinates').change(function(){
+      $('#note-editor-container').toggleClass('hideCoordinates',!_this.model.instructionShowCoordinates())
+      _this.model.currentlyEditingInstruction.showCoordinates(_this.model.instructionShowCoordinates());
+    });
   }
 
   bindToTrackGrid(){
