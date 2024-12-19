@@ -1,0 +1,41 @@
+---
+appId: tulip.app
+win:
+  icon: tulip-logo.ico
+  target:
+  - target: msi
+    arch:
+    - x64
+    - ia32
+  - target: portable
+    arch:
+    - x64
+    - ia32
+mac:
+  category: Editors
+  icon: tulip-logo.ico
+  target:
+  - target: dmg
+    arch:
+    - universal
+linux:
+  category: Editors
+  icon: tulip-logo.icns
+  executableName: tulip-roadbook
+  target:
+  - target: snap
+  - target: AppImage
+    arch:
+    - x64
+    - armv7l
+    - arm64
+  - target: deb
+    arch:
+    - x64
+    - armv7l
+    - arm64
+  - target: rpm
+    arch:
+    - x64
+    - armv7l
+    - arm64
