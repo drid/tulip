@@ -41,9 +41,10 @@ app.on('activate', () => {
 function createWindow() {
   const template = [
     {
-      label: "Tulip",
+      label: "File",
       submenu: [
         { label: "Open", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('open-roadbook'); } },
+        { label: "Append", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('append-roadbook'); } },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: function () { mainWindow.webContents.send('save-roadbook'); } },
         { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: function () { mainWindow.webContents.send('save-roadbook-as'); } },
         { label: "Quit", accelerator: "CmdOrCtrl+Q", click: function () { app.quit(); } },

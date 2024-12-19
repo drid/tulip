@@ -92,7 +92,7 @@ class App {
     });
   }
 
-  loadRoadBook(fileName) {
+  loadRoadBook(fileName, append=false) {
     var _this = this;
 
     _this.startLoading();
@@ -103,7 +103,11 @@ class App {
       var json = JSON.parse(data);
       // We need to ask whether they want to open a new roadbook or append an existing one to the currently
       // being edited RB
+      if (!append) {
+        _this.newRoadbook()
+      }
       _this.roadbook.appendRouteFromJSON(json, fileName); //TODO this needs to only pass json once choice is added   
+      _this.roadbook.updateTotalDistance();
       localStorage.setItem('lastRoadBook', fileName);
     } catch (error) {
       console.error(error);
@@ -116,7 +120,7 @@ class App {
     $('#export-openrally-gpx').removeClass('disabled')
   }
 
-  openRoadBook() {
+  openRoadBook(append=false) {
     var _this = this;
     globalNode.dialog().showOpenDialog({
       filters: [
@@ -131,7 +135,7 @@ class App {
       if (fileNames === undefined)
         return;
 
-      _this.loadRoadBook(fileNames[0])
+      _this.loadRoadBook(fileNames[0], append)
     });
   }
 
@@ -278,6 +282,22 @@ class App {
     $('#toggle-roadbook i').toggleClass('fi-arrow-up');
   }
 
+  newRoadbook() {
+    app.roadbook.name('New Roadbook');
+    app.roadbook.desc('Roadbook description');
+    app.roadbook.totalDistance(0);
+
+    while (true) {
+      try
+        {
+          app.mapModel.deletePointFromRoute(0);
+          app.mapModel.deleteInstructionFromRoadbook(0);
+        }
+      catch(error) {
+        break;
+      }
+    }
+  }
   /*
     ---------------------------------------------------------------------------
     Roadbook Listeners
@@ -305,8 +325,7 @@ class App {
     });
 
     $('#new-roadbook').click(function () {
-      //TODO Something less hacky please
-      location.reload();
+      _this.newRoadbook();
     });
 
     $('#open-roadbook').click(function () {
@@ -376,6 +395,10 @@ class App {
 
     this.ipc.on('open-roadbook', function (event, arg) {
       _this.openRoadBook();
+    });
+
+    this.ipc.on('append-roadbook', function (event, arg) {
+      _this.openRoadBook(true);
     });
 
     this.ipc.on('reload-roadbook', function (event, arg) {
@@ -503,6 +526,10 @@ class App {
         $('.added-track-selector').removeClass('active');
         $($('.added-track-selector')[4]).addClass('active');
       }
+    });
+
+    this.ipc.on('new-roadbook', function (event, arg) {
+      _this.newRoadbook()
     });
 
     window.addEventListener("beforeunload", function (event) {
