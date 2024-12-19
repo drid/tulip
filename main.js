@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Menu, app, BrowserWindow, dialog, ipcMain } = require('electron');
+if (require('electron-squirrel-startup')) app.quit();
 const path = require('path');
 require('@electron/remote/main').initialize();
 
