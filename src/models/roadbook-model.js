@@ -268,6 +268,7 @@ class RoadbookModel {
         kmFromPrev: points[i].instruction ? points[i].instruction.kmFromPrev() : null,
         heading: points[i].instruction ? points[i].instruction.exactHeading() : null,
         showHeading: points[i].instruction ? points[i].instruction.showHeading() : null,
+        showCoordinates: points[i].instruction ? points[i].instruction.showCoordinates() : null,
         entryTrackType: points[i].instruction ? points[i].instruction.entryTrackType : null,
         exitTrackType: points[i].instruction ? points[i].instruction.exitTrackType : null,
         notification: points[i].instruction && points[i].instruction.notification ? points[i].instruction.notification : null,
@@ -304,7 +305,9 @@ class RoadbookModel {
           kmFromStart: points[i].instruction.kmFromStart(),
           kmFromPrev: points[i].instruction.kmFromPrev(),
           heading: points[i].instruction.exactHeading(),
+          coordinates: points[i].instruction.coordinates(),
           showHeading: points[i].instruction.showHeading(),
+          showCoordinates: points[i].instruction.showCoordinates(),
           notes: {
             text: points[i].instruction.noteHTML(),
           },

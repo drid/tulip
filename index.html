@@ -49,26 +49,33 @@
       </ul>
     </nav>
     <!-- END NAV -->
-    <!--  START ADVANCED MENU -->
+    <!--  START SETTINGS MENU -->
     <aside class="right-off-canvas-menu">
         <h2>
-          Menu:
+          Settings:
         </h2>
         <ul>
-          <li><a href="#" id="new-roadbook" class="main-menu button tiny radius info"><i class="fi-compass"></i> New Roadbook</a></li>
-          <li><a href="#" id="open-roadbook" class="main-menu button tiny radius info"><i class="fi-folder"></i> Open Roadbook</a></li>
+          <h4>Application Settings</h4>
+          <li>Google Maps API key<input type="text" id="gmap_key" class="settings-text"/></li>
+          <li>Google Directions API key<input type="text" id="google_directions_key" class="settings-text"/></li>
+          <li><input type="checkbox" id="open_last"/>Open last roadbook on start</li>
           <hr>
-          <li><a href="#" id="import-gpx" class="main-menu button tiny radius"><i class="fi-download"></i> Import GPX</a></li>
-          <!-- <li><a href="#" class="main-menu button tiny radius disabled"><i class="fi-download"></i> Import Waypoints</a></li> -->
-          <!-- <hr> -->
-          <li><a href="#" id="export-gpx" class="main-menu button tiny radius"><i class="fi-map"></i> Export GPX</a></li>
-          <li><a href="#" id="export-openrally-gpx" class="main-menu button tiny radius"><i class="fi-map"></i> Export OpenRally GPX</a></li>
-          <!-- <li><a href="#" class="main-menu button tiny radius disabled"><i class="fi-upload"></i> Export Waypoints</a></li> -->
-          <li><a href="#" id="print-roadbook" class="main-menu button tiny radius"><i class="fi-print"></i> Export PDF</a></li>
-          <hr>
+          <h4>Tulip settings</h4>
+          <li>Tulip close distance (m)<input type="text" id="tulip_near_distance" class="settings-text"/></li>
+          <li><input type="checkbox" id="show_cap_heading"/>Show CAP heading (new)</li>
+          <li><input type="checkbox" id="show_coordinates"/>Show coordinates (new)</li>
+          <li>Coordinates Format<select id="coordinates_format">
+            <option value="dd">DD.DDDDD</option>
+            <option value="ddmm">DD MM.MMM</option>
+            <option value="ddmmss">DD MM SS.SSS</option>
+          </select></li>
+          <h4>Debug settings</h4>
+          <li><input type="checkbox" id="open_dev_console"/>Open dev console on start</li>
+          
+          <li><input type="button" id="save-settings" value="Save settings"/></li>
         </ul>
     </aside>
-    <!--  END ADVANCED MENU -->
+    <!--  END SETTINGS MENU -->
     <!--  START CONTENT -->
     <div id="content">
       <div class="content-container">
@@ -714,7 +721,6 @@
     Load the application
   -->
   <script src='src/application.js'></script>
-  <script src='api_keys.js'></script>
   <!--
     Load Modules
   -->
@@ -745,40 +751,33 @@
     Instantiate the application
     ---------------------------------------------------------------------------
   */
-  app = new App();
+    app = new App();
 
-  $(document).ready(function(){
-    ko.applyBindings(app.roadbook);
-    $(document).foundation();
+    $(document).ready(function(){
+      ko.applyBindings(app.roadbook);
+      $(document).foundation();
 
-    // new function(){
-    //   var s = document.createElement( 'script' );
-    //   s.setAttribute( 'src', "https://maps.googleapis.com/maps/api/js?key=" + api_keys.google_maps + "&callback=app.initMap" );
-    //   document.body.appendChild( s );
-    // }
+      function setMapSize(){
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var hypotenuse = Math.sqrt(Math.pow(width,2)+Math.pow(height,2));
 
-    function setMapSize(){
-      var width = window.innerWidth;
-      var height = window.innerHeight;
-      var hypotenuse = Math.sqrt(Math.pow(width,2)+Math.pow(height,2));
-
-      $('#map').css('height', hypotenuse);
-      $('#map').css('width', hypotenuse);
-      $('#map').css('left', (width/2)-(hypotenuse/2));
-      $('#map').css('top', (height/2)-(hypotenuse/2));
-    }
-    setMapSize();
-    $(window).resize(function(){
+        $('#map').css('height', hypotenuse);
+        $('#map').css('width', hypotenuse);
+        $('#map').css('left', (width/2)-(hypotenuse/2));
+        $('#map').css('top', (height/2)-(hypotenuse/2));
+      }
       setMapSize();
-    })
-  });
-  </script>
-  <script>
-    var myVariable = "https://maps.googleapis.com/maps/api/js?key="+api_keys.google_maps+"&callback=app.initMap&v=weekly&loading=async";
-  
-    var scriptElement = document.createElement("script");
-    scriptElement.src = myVariable;
-    document.body.appendChild(scriptElement);
+      $(window).resize(function(){
+        setMapSize();
+      })
+    });
+    if (app.settings.gmapKey) {
+      var myVariable = "https://maps.googleapis.com/maps/api/js?key="+app.settings.gmapKey+"&libraries=geometry&callback=app.initMap&v=weekly&loading=async";
+      var scriptElement = document.createElement("script");
+      scriptElement.src = myVariable;
+      document.body.appendChild(scriptElement);
+    }
   </script>
 
 </html>

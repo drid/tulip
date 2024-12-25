@@ -9,8 +9,6 @@ require('@electron/remote/main').initialize();
 var mainWindow = null;
 var printWindow = null;
 
-// const store = new Store();
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
@@ -18,6 +16,7 @@ app.on('ready', function () {
     printPdf(event, args);
   });
   createWindow();
+  mainWindow.maximize();
 });
 
 // Quit when all windows are closed.
@@ -47,6 +46,14 @@ function createWindow() {
         { label: "Append", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('append-roadbook'); } },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: function () { mainWindow.webContents.send('save-roadbook'); } },
         { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: function () { mainWindow.webContents.send('save-roadbook-as'); } },
+        { label: "Import GPX", accelerator: "CmdOrCtrl+I", click: function () { mainWindow.webContents.send('import-gpx'); } },
+        {
+          label: "Export",
+          submenu: [
+            { label: "Export GPX", accelerator: "CmdOrCtrl+E", click: function () { mainWindow.webContents.send('export-gpx'); } },
+            { label: "Export OpenRally GPX", click: function () { mainWindow.webContents.send('export-openrally-gpx'); } },
+            { label: "Export PDF", accelerator: "CmdOrCtrl+P", click: function () { mainWindow.webContents.send('export-pdf'); } },
+          ]},
         { label: "Quit", accelerator: "CmdOrCtrl+Q", click: function () { app.quit(); } },
       ]
     },
@@ -82,15 +89,7 @@ function createWindow() {
         },
         { type: "separator" },
         { label: "Add Glyph", accelerator: "CmdOrCtrl+Option+G", click: function () { mainWindow.webContents.send('add-glyph'); } },
-      ]
-    },
-    {
-      label: "Io",
-      submenu: [
-        { label: "Import GPX", accelerator: "CmdOrCtrl+I", click: function () { mainWindow.webContents.send('import-gpx'); } },
-        { label: "Export GPX", accelerator: "CmdOrCtrl+E", click: function () { mainWindow.webContents.send('export-gpx'); } },
-        { label: "Export OpenRally GPX", click: function () { mainWindow.webContents.send('export-openrally-gpx'); } },
-        { label: "Export PDF", accelerator: "CmdOrCtrl+P", click: function () { mainWindow.webContents.send('export-pdf'); } },
+        { label: "Settings", click: function () { mainWindow.webContents.send('open-settings'); } },
       ]
     },
     {
@@ -108,7 +107,7 @@ function createWindow() {
           accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
           click: function () {
             const focusedWindow = BrowserWindow.getFocusedWindow();
-            focusedWindow.webContents.toggleDevTools()
+            focusedWindow.webContents.toggleDevTools();
           }
         },
       ]
@@ -215,11 +214,6 @@ ipcMain.on('get-documents-path', (event) => {
   event.sender.send('documents-path', app.getPath('documents'));
 });
 
-async function loadAndUseStore() {
-  const store = await import('electron-store');
-
-  // Use the store to save or load settings
-  store.set('lastRoadbook', 'roadbook1.json');
-  const lastRoadbook = store.get('lastRoadbook');
-  console.log(lastRoadbook);
-}
+ipcMain.on('toggle-dev-tools', (event) => {
+  mainWindow.toggleDevTools();
+})

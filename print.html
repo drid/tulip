@@ -41,7 +41,8 @@
           <div class="heading" data-bind="visible: showHeading">
             <label>CAP </label><span data-bind="text: heading.toFixed(0)">&deg;</span>
           </div>
-          <div class="coordinates" data-bind="html: lat.toFixed(5) + (lat >= 0 ? 'N' : 'S') + '<br>' + long.toFixed(5) + (long >= 0 ? 'E' : 'W')">
+            <div class="coordinates" data-bind="visible: showCoordinates">
+              <span data-bind="html: coordinates">&deg;</span>
           </div>
         </div>
       </div>

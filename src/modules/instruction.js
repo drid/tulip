@@ -33,8 +33,8 @@ var Instruction = Class({
     this.heading        = ko.computed(this.computedHeading, this);
     this.coordinates    = ko.computed(this.computedCoordinates, this);
 
-    this.showHeading    = ko.observable((wptJson.showHeading == undefined ? false : wptJson.showHeading));
-    this.showCoordinates    = ko.observable((wptJson.showCoordinates == undefined ? false : wptJson.showCoordinates));
+    this.showHeading    = ko.observable((wptJson.showHeading == undefined ? app.settings.showCapHeading : wptJson.showHeading));
+    this.showCoordinates    = ko.observable((wptJson.showCoordinates == undefined ? app.settings.showCoordinates : wptJson.showCoordinates));
     this.entryTrackType = wptJson.entryTrackType == undefined ? 'track' : wptJson.entryTrackType;
     this.exitTrackType  = wptJson.exitTrackType == undefined ? 'track' : wptJson.exitTrackType;
 
@@ -155,7 +155,7 @@ var Instruction = Class({
   },
 
   waypointCloseProximity: function() {
-    return (this.kmFromPrev() < 0.3 && this.kmFromPrev() > 0)
+    return (this.kmFromPrev() < (app.settings.tulipNearDistance/1000) && this.kmFromPrev() > 0)
   },
 
   computedTotalDistance: function(){
@@ -171,13 +171,23 @@ var Instruction = Class({
   computedCoordinates: function () {
     var lat = this.lat();
     var lon = this.lng();
-    return String(this.deg2ddmm(lat)) + (lat >= 0 ? 'N' : 'S') + '<br>' + String(this.deg2ddmm(lon)) + (lon >= 0 ? 'E' : 'W')
+    return String((lat >= 0 ? 'N' : 'S') + this.degFormat(lat)) + '<br>' + String((lon >= 0 ? 'E' : 'W') + this.degFormat(lon))
   },
 
-  deg2ddmm: function (coordinate) {
+  degFormat: function (coordinate) {
     var d = Math.floor(coordinate)
     var m = (coordinate - d) * 60
-    return d + '&deg' + m.toFixed(3) + "'"
+    var s = (m - Math.floor(m)) * 60
+    switch (app.settings.coordinatesFormat) {
+      case 'dd':
+        return coordinate.toFixed(6) + '&deg'
+      case 'ddmm':
+        return d + '&deg ' + m.toFixed(3) + "'"
+      case 'ddmmss':
+        return d + '&deg ' + Math.floor(m) + "' " + s.toFixed(3) + '"'
+      default:
+        return d + '&deg ' + m.toFixed(3) + "'"
+    }
   },
 
   initInstructionListeners: function(element){

@@ -45,7 +45,7 @@ class MapController {
   attemptGeolocation() {
     var _this = this;
     // TODO move to model
-    var url = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + api_keys.google_maps;
+    var url = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + app.settings.googleDirectionsKey;
     $.post(url, function (data) {
       _this.setMapCenter(data.location);
       _this.setMapZoom(14);

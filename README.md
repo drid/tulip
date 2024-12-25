@@ -20,13 +20,12 @@ Features:
 ## Install and run
 ### To download and use for local development
 1. Install [Node.js](https://nodejs.org/)
-2. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
-3. Navigate to local working directory `$ cd tulip`
-4. Launch electron `npm start`
+2. Navigate to local working directory `$ cd tulip`
+3. Launch electron `npm start`
+4. Open settings and add your mapping api keys
 
 ### To download, package, and use for fun
 1. Install [Node.js](https://nodejs.org/)
 2. Download the latest stable release
-3. Add your mapping api keys to `api_keys.js.example`, then rename to `api_keys.js`
 4. Navigate to local working directory `$ cd tulip`
 5. Use `build_tulip.sh` to create a packages

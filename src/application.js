@@ -60,6 +60,8 @@ class App {
     this.glyphControls = new GlyphControls();
 
     this.noteControls = new NoteControls();
+
+    this.settings = this.loadSettings();
   }
 
   /*
@@ -271,7 +273,9 @@ class App {
     this.mapModel = new MapModel();
     this.mapController = new MapController(this.mapModel);
     this.mapController.placeMapAttribution();
-    this.openLastRoadBook()
+    if (this.settings.loadLastRoadbook) {
+      this.openLastRoadBook();
+    }
   }
 
   toggleRoadbook() {
@@ -297,6 +301,49 @@ class App {
         break;
       }
     }
+  }
+
+  saveSettings() {
+    const settings = {};
+    settings.loadLastRoadbook = $('#open_last').prop('checked');
+    settings.gmapKey = $('#gmap_key').val();
+    settings.googleDirectionsKey = $('#google_directions_key').val();
+    settings.openDevConsole = $('#open_dev_console').prop('checked');
+    try {
+      settings.tulipNearDistance = parseInt($('#tulip_near_distance').val());
+    } catch(ex) {
+        console.log(ex);
+        settings.tulipNearDistance = 300;
+    }
+    settings.showCapHeading = $('#show_cap_heading').prop('checked');
+    settings.showCoordinates = $('#show_coordinates').prop('checked');
+    settings.coordinatesFormat = $('#coordinates_format').find(":selected").val();
+    localStorage.setItem('settings', JSON.stringify(settings));
+    app.settings = settings;
+    console.log(settings);
+    $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
+    this.refreshInstructionElements();
+  }
+
+  loadSettings() {
+    const settings = JSON.parse(localStorage.getItem('settings'));
+    $('#open_last').prop('checked', settings.loadLastRoadbook);
+    $('#gmap_key').val(settings.gmapKey);
+    $('#google_directions_key').val(settings.googleDirectionsKey);
+    $('#open_dev_console').prop('checked', settings.openDevConsole);
+    $('#tulip_near_distance').val(settings.tulipNearDistance);
+    $('#show_cap_heading').prop('checked', settings.showCapHeading);
+    $('#show_coordinates').prop('checked', settings.showCoordinates);
+    $('#coordinates_format').val(settings.coordinatesFormat);
+
+    if(settings.openDevConsole) {
+      this.ipc.send('toggle-dev-tools');
+    }
+    return settings;
+  }
+  
+  refreshInstructionElements() {
+
   }
   /*
     ---------------------------------------------------------------------------
@@ -347,6 +394,10 @@ class App {
         }
       }
       $(this).blur();
+    });
+
+    $('#save-settings').click(function () {
+      _this.saveSettings();
     });
 
     $('[name="toggle-insert-type"]').change(function () {
@@ -531,6 +582,10 @@ class App {
     this.ipc.on('new-roadbook', function (event, arg) {
       _this.newRoadbook()
     });
+
+    this.ipc.on('open-settings', function(event, arg){
+      $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-left');
+    })
 
     window.addEventListener("beforeunload", function (event) {
       if (_this.roadbook.filePath) {
