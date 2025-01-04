@@ -3,8 +3,8 @@
   <head>
     <link rel="stylesheet" type="text/css" href="assets/css/app.css">
     <link rel="stylesheet" type="text/css" href="assets/css/tulip.css">
-    <link rel="stylesheet" href="assets/libs/foundation-5.5.3/css/foundation.css" />
-    <link rel="stylesheet" href="assets/css/foundation-icons/foundation-icons.css" />
+    <link rel="stylesheet" href="node_modules/foundation-sites/css/foundation.min.css" />
+    <link rel="stylesheet" href="node_modules/foundation-icons/foundation-icons.css" />
     <title>tulip</title>
   </head>
   <body class="off-canvas-wrap" data-offcanvas>
@@ -705,18 +705,18 @@
     //Jquery sees it is running in CommonJS env, and wants to be used as such.
     window.$ = window.jQuery = require('./assets/libs/jquery-2.1.4.min.js');
   </script> -->
-  <script src="./assets/libs/jquery-2.1.4.min.js"></script>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <!--
     Load the rest of our libraries
   -->
   <script src="assets/libs/jsclass/dist/browser/js.class.min.js"></script>
-  <script src="assets/libs/knockout-3.4.0.js"></script>
+  <script src="node_modules/knockout/build/output/knockout-latest.js"></script>
   <script src='assets/libs/fabric.min.js'></script>
   <script src='assets/libs/simplify.js'></script>
-  <script src='assets/libs/quill/quill.min.js'></script>
-  <script src='assets/libs/foundation-5.5.3/js/foundation.min.js'></script>
-  <script src='assets/libs/foundation-5.5.3/js/foundation/foundation.tooltip.js'></script>
-  <script src='assets/libs/foundation-5.5.3/js/vendor/modernizr.js'></script>
+  <script src='node_modules/quill/dist/quill.js'></script>
+  <script src='node_modules/foundation-sites/js/foundation.min.js'></script>
+  <script src='node_modules/foundation-sites/js/foundation/foundation.tooltip.js'></script>
+  <script src='node_modules/foundation-sites/js/vendor/modernizr.js'></script>
   <!--
     Load the application
   -->
