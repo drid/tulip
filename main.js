@@ -42,6 +42,7 @@ function createWindow() {
     {
       label: "File",
       submenu: [
+        { label: "New", accelerator: "CmdOrCtrl+N", click: function (){ mainWindow.webContents.send('new-roadbook'); } },
         { label: "Open", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('open-roadbook'); } },
         { label: "Append", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('append-roadbook'); } },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: function () { mainWindow.webContents.send('save-roadbook'); } },

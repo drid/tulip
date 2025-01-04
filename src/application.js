@@ -103,8 +103,6 @@ class App {
     _this.fs.readFile(fileName, 'utf-8', function (err, data) {
       try {
       var json = JSON.parse(data);
-      // We need to ask whether they want to open a new roadbook or append an existing one to the currently
-      // being edited RB
       if (!append) {
         _this.newRoadbook()
       }
@@ -290,6 +288,7 @@ class App {
     app.roadbook.name('New Roadbook');
     app.roadbook.desc('Roadbook description');
     app.roadbook.totalDistance(0);
+    this.roadbook.filePath=null;
 
     while (true) {
       try
@@ -354,33 +353,9 @@ class App {
 
     var _this = this
 
-    $("#import-gpx").click(function () {
-      _this.importGPX();
-    });
-
     $('#toggle-roadbook').click(function () {
       _this.toggleRoadbook();
       $(this).blur();
-    });
-
-    $('#export-gpx').click(function () {
-      _this.exportGPX();
-    });
-
-    $('#export-openrally-gpx').click(function () {
-      _this.exportOpenRallyGPX();
-    });
-
-    $('#new-roadbook').click(function () {
-      _this.newRoadbook();
-    });
-
-    $('#open-roadbook').click(function () {
-      _this.openRoadBook();
-    });
-
-    $('#print-roadbook').click(function () {
-      _this.printRoadbook();
     });
 
     $('#save-roadbook').click(function (e) {
@@ -580,7 +555,10 @@ class App {
     });
 
     this.ipc.on('new-roadbook', function (event, arg) {
-      _this.newRoadbook()
+      var nr = window.confirm("Start a new roadbook? Unsaved changes will be lost");
+      if (nr) {
+        _this.newRoadbook();
+      }``
     });
 
     this.ipc.on('open-settings', function(event, arg){
