@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="waypoint-eclipsed.svg"
+   sodipodi:docname="control-checkpoint.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -85,23 +85,56 @@
      id="layer1"
      transform="translate(-15.103827,-22.093088)">
     <ellipse
-       style="fill:#22fcfd;fill-opacity:1;stroke:#000000;stroke-width:3.26728;stroke-dasharray:none"
+       style="fill:#ffffff;fill-opacity:1;stroke:#ba6bab;stroke-width:3.26728;stroke-dasharray:none"
        id="path17628"
        cx="38.254871"
        cy="45.244129"
        rx="21.517403"
        ry="21.517401" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.9306px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:no-common-ligatures;font-variant-position:super;font-variant-caps:small-caps;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10.6486;stroke-dasharray:none"
-       x="30.2885"
-       y="53.132446"
-       id="text18410"><tspan
-         sodipodi:role="line"
-         id="tspan18408"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.9306px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:no-common-ligatures;font-variant-caps:small-caps;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;stroke:none;stroke-width:10.6486"
-         x="30.2885"
-         y="53.132446">E</tspan></text>
+    <g
+       id="g55593"
+       transform="matrix(0.25202325,0,0,0.26458333,5.9812158,12.744012)">
+      <ellipse
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4136"
+         cx="170.86784"
+         cy="28.290485"
+         rx="18.631435"
+         ry="33.536587"
+         transform="rotate(28.637777)"
+         inkscape:transform-center-x="-9.1967913"
+         inkscape:transform-center-y="-17.150502" />
+      <ellipse
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.43533;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4138"
+         cx="177.66656"
+         cy="80.696991"
+         rx="34.530483"
+         ry="15.007543"
+         transform="matrix(0.90754165,0.41996208,-0.54167748,0.84058641,0,0)"
+         inkscape:transform-center-x="9.9745856"
+         inkscape:transform-center-y="14.46548" />
+      <ellipse
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.43533;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4138-1"
+         cx="178.20709"
+         cy="89.796829"
+         rx="34.530483"
+         ry="15.007543"
+         transform="matrix(0.90754165,0.41996208,-0.54167748,0.84058641,0,0)"
+         inkscape:transform-center-x="16.413214"
+         inkscape:transform-center-y="22.341681" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 81.172255,136.98102 5.244608,-9.44254"
+         id="path4157"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 149.4408,155.88941 -5.53682,9.71899"
+         id="path4159"
+         inkscape:connector-curvature="0" />
+    </g>
   </g>
   <metadata
      id="metadata48545">

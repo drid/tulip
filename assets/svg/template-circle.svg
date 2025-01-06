@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="speed-start.svg"
+   sodipodi:docname="template-circle.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="5.1929747"
-     inkscape:cx="74.52376"
-     inkscape:cy="97.150483"
+     inkscape:cx="79.530524"
+     inkscape:cy="96.765348"
      inkscape:window-width="2510"
      inkscape:window-height="1363"
      inkscape:window-x="0"
@@ -82,7 +82,7 @@
      id="layer1"
      transform="translate(-15.103827,-22.093088)">
     <ellipse
-       style="fill:#f89520;fill-opacity:1;stroke:#000000;stroke-width:3.26728;stroke-dasharray:none"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.26728;stroke-dasharray:none"
        id="path17628"
        cx="38.254871"
        cy="45.244129"
@@ -91,13 +91,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.9306px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:no-common-ligatures;font-variant-position:super;font-variant-caps:small-caps;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10.6486;stroke-dasharray:none"
-       x="22.534868"
+       x="28.704203"
        y="53.132446"
        id="text18410"><tspan
          sodipodi:role="line"
          id="tspan18408"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.9306px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:no-common-ligatures;font-variant-caps:small-caps;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;stroke:none;stroke-width:10.6486"
-         x="22.534868"
-         y="53.132446">DZ</tspan></text>
+         x="28.704203"
+         y="53.132446">M</tspan></text>
   </g>
 </svg>
