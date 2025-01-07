@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { Menu, app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { Menu, app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
 if (require('electron-squirrel-startup')) app.quit();
 const path = require('path');
 require('@electron/remote/main').initialize();
@@ -16,6 +16,10 @@ app.on('ready', function () {
     printPdf(event, args);
   });
   createWindow();
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url); // Open URL in user's browser.
+    return { action: "deny" }; // Prevent the app from opening the URL.
+  })
   mainWindow.maximize();
 });
 
@@ -111,6 +115,12 @@ function createWindow() {
             focusedWindow.webContents.toggleDevTools();
           }
         },
+      ]
+    },
+    {
+      label: "Help",
+      submenu: [
+        { label: "About", click: function () { mainWindow.webContents.send('show-about-info'); } },
       ]
     }
 

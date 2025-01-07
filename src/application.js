@@ -571,6 +571,10 @@ class App {
       $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-left');
     })
 
+    this.ipc.on('show-about-info', function (event, arg) {
+      $('#about').foundation('reveal', 'open');
+    });
+
     window.addEventListener("beforeunload", function (event) {
       if (_this.roadbook.filePath) {
         var rb = JSON.stringify(this.roadbook.statefulJSON(), null, 2);
