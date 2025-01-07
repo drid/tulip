@@ -325,18 +325,24 @@ class App {
   }
 
   loadSettings() {
-    const settings = JSON.parse(localStorage.getItem('settings'));
-    $('#open_last').prop('checked', settings.loadLastRoadbook);
-    $('#gmap_key').val(settings.gmapKey);
-    $('#google_directions_key').val(settings.googleDirectionsKey);
-    $('#open_dev_console').prop('checked', settings.openDevConsole);
-    $('#tulip_near_distance').val(settings.tulipNearDistance);
-    $('#show_cap_heading').prop('checked', settings.showCapHeading);
-    $('#show_coordinates').prop('checked', settings.showCoordinates);
-    $('#coordinates_format').val(settings.coordinatesFormat);
+    const settings = JSON.parse(localStorage.getItem('settings') ?? "{}");
+    $('#open_last').prop('checked', settings.loadLastRoadbook ?? false);
+    $('#gmap_key').val(settings.gmapKey ?? '');
+    $('#google_directions_key').val(settings.googleDirectionsKey ?? '');
+    $('#open_dev_console').prop('checked', settings.openDevConsole ?? false);
+    $('#tulip_near_distance').val(settings.tulipNearDistance ?? 300);
+    $('#show_cap_heading').prop('checked', settings.showCapHeading ?? false);
+    $('#show_coordinates').prop('checked', settings.showCoordinates ?? false);
+    $('#coordinates_format').val(settings.coordinatesFormat ?? 'ddmmss');
 
+    console.log(settings)
     if(settings.openDevConsole) {
       this.ipc.send('toggle-dev-tools');
+    }
+
+    if (settings.gmapKey == '' || settings.hasOwnProperty("gmapKey") == false) {
+      window.alert("You must set your google maps key in settings and restart the app.");
+      $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-left');
     }
     return settings;
   }
