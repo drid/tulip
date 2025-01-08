@@ -1,7 +1,7 @@
 {
   "name": "Tulip",
   "productName": "Tulip",
-  "version": "1.8.6",
+  "version": "1.8.7",
   "description": "Rally Roadbook Creator",
   "main": "main.js",
   "type": "commonjs",
@@ -48,6 +48,10 @@
     "knockout": "^3.4.0",
     "quill": "^0.20.1"
   },
+  "snap": {
+    "productName": "tulip-roadbook",
+    "grade": "devel"
+  },
   "build": {
     "appId": "tulip.app",
     "win": {
@@ -84,6 +88,7 @@
     "linux": {
       "category": "Editors",
       "icon": "tulip-logo.icns",
+      "executableName": "tulip-roadbook",
       "target": [
         {
           "target": "snap"
