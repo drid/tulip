@@ -1,4 +1,4 @@
-// TODO This is a controller from the waypoint palette view to the roadbook model's currentlyEditingWaypoint
+// TODO This is a controller from the waypoint palette view to the roadbook model's currentlyEditingInstruction
 class NoteControls {
   constructor() {
     var _this = this;

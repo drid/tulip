@@ -335,7 +335,6 @@ class App {
     $('#show_coordinates').prop('checked', settings.showCoordinates ?? false);
     $('#coordinates_format').val(settings.coordinatesFormat ?? 'ddmmss');
 
-    console.log(settings)
     if(settings.openDevConsole) {
       this.ipc.send('toggle-dev-tools');
     }
