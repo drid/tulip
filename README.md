@@ -12,7 +12,7 @@ It is a fork of https://github.com/storm-factory/tulip
 Features:
 * Import GPX file
 * Plan route on map
-* Export route GPX and OpeRally GPX
+* Export route GPX and OpenRally GPX
 * Print/Export roadbook PDF
 * Works on Linux/Mac/Windows
 
