@@ -155,9 +155,12 @@ class MapController {
     return this.model.insertLatLngIntoRoute(latLng, this.map);
   }
 
-  updateWaypointBubble(index, bubble) {
+  updateWaypointBubble(index, bubble, fill) {
     if (this.model.markers[index].bubble) {
-      this.model.markers[index].bubble.setRadius(Number(bubble));
+      this.deleteWaypointBubble(index);
+      this.addWaypointBubble(index, bubble, fill);
+      // this.model.markers[index].bubble.setRadius(Number(bubble));
+      // this.model.markers[index].bubble.setFill(fill);
     }
   }
 

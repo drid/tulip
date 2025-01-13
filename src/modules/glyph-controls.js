@@ -31,6 +31,7 @@ class GlyphControls{
   populateResults(results){
     var _this = this;
     $.each(results, function(i,result){
+    // Check for waypoint or control icons
       var img = $('<img>').addClass('glyph').attr('src', result.path)
       var link = $('<a>').addClass('th').attr('title', result.name).append(img);
       var showResult = $('<li>').append(link);
@@ -57,7 +58,6 @@ class GlyphControls{
     $('.glyph').click(function(e){
       _this.handleGlyphSelectUI(e);
       _this.addGlyphToInstruction(this);
-      app.noteControls.checkForNotification();
     });
   }
 
@@ -112,8 +112,14 @@ class GlyphControls{
     return false
   }
 
-  addGlyphToInstruction(element){
+  addGlyphToInstruction(element) {
     var src = $(element).attr('src');
+    var filename = src.substring(src.lastIndexOf('/')+1);
+    var glyph = filename.replace('.svg', '')
+    if (Notification.mapFileNameToType(glyph) != undefined) {
+      app.roadbook.currentlyEditingInstruction.manageWaypoint(glyph);
+      return;
+    }
     if(this.addToNote){
       // NOTE this module should only know about the roadbook
       app.roadbook.appendGlyphToNoteTextEditor($('<img>').attr('src', src).addClass('normal'));

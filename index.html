@@ -403,10 +403,12 @@
   <!--  instruction template-->
   <script type="text/html" id="waypoint-template">
     <div class='waypoint row'>
-      <div data-bind="css: { 'waypoint-distance-close': closeProximity() }" class="waypoint-distance">
+      <div data-bind="class: assignWaypointColoring()">
         <div class='total-distance'>
           <div data-bind="text: totalDistance">
           </div>
+        </div>
+        <div class="waypoint-icon" data-bind="html: waypointIcon(), css: { 'waypoint-icon-none': waypointIcon() == undefined }">
         </div>
         <div class="relative-distance">
           <div data-bind="text: distFromPrev">
