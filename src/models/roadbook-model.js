@@ -49,7 +49,7 @@ class RoadbookModel {
 
     if (points.length == 0)
       return;
-      
+
     var wpts = []
     // NOTE: For some strange reason, due to canvas rendering, a for loop causes points and instructions to be skipped, hence for...of in
     for (var point of points) {

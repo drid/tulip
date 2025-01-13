@@ -25,11 +25,11 @@ class MapController {
 
   initMap() {
     this.map = new google.maps.Map(document.getElementById('map'), {
-       center: {lat: 36.068209, lng: -105.629669},
-       zoom: 4,
-       disableDefaultUI: true,
-       mapTypeId: google.maps.MapTypeId.HYBRID,
-       gestureHandling: 'greedy'
+      center: { lat: 36.068209, lng: -105.629669 },
+      zoom: 4,
+      disableDefaultUI: true,
+      mapTypeId: google.maps.MapTypeId.HYBRID,
+      gestureHandling: 'greedy'
     });
   }
 
@@ -222,7 +222,7 @@ class MapController {
       if (this.instruction && !this.markerDeleteMode) {
         // TODO make into instruction controller function and abstract it from here
         $('#roadbook').scrollTop(0);
-        $('#roadbook').scrollTop(($(this.instruction.element).offset().top-100));
+        $('#roadbook').scrollTop(($(this.instruction.element).offset().top - 100));
         $("div.waypoint").removeClass("waypoint-selected")
         this.instruction.element.addClass("waypoint-selected")
       }

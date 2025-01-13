@@ -9,9 +9,9 @@
 */
 class MapModel {
 
-  constructor(){
+  constructor() {
     this.route;
-    this.markers=[];
+    this.markers = [];
     this.deleteQueue = [];
     this.controller;
   }
@@ -20,15 +20,15 @@ class MapModel {
     takes a response from google maps directions API and appends it to the route
     NOTE needs refactored to be more SOLID and testable
   */
-  appendGoogleDirectionsToMap(steps,map){
-    for(var i=0;i<steps.length;i++){
+  appendGoogleDirectionsToMap(steps, map) {
+    for (var i = 0; i < steps.length; i++) {
       var stepPoints = this.googleMapsDecodePath(steps[i].polyline.points);
       var points = this.simplifyDouglasPeucker(stepPoints);
 
-      for (var j=1;j<points.length;j++){
+      for (var j = 1; j < points.length; j++) {
         var latLng = this.googleMapsNewLatLng(points[j].lat, points[j].lng)
-        this.addRoutePoint(latLng,map);
-        if(j == points.length-1){
+        this.addRoutePoint(latLng, map);
+        if (j == points.length - 1) {
           this.addInstruction(this.getLastItemInArray(this.markers))
         }
       }
@@ -43,7 +43,7 @@ class MapModel {
 
     Also creates a marker and overlays it on the route at that point
   */
-  addRoutePoint(latLng,map){
+  addRoutePoint(latLng, map) {
     // TODO could we alter the latLng prototype here?
     this.addLatLngToRouteMvcArray(latLng);
     var marker = this.buildRouteMarker(latLng, map)
@@ -54,26 +54,26 @@ class MapModel {
   /*
     pushing a latLng into the the route array will automagically add it to the controllers polyline because it is a google MVC array
   */
-  addLatLngToRouteMvcArray(latLng){
+  addLatLngToRouteMvcArray(latLng) {
     this.route.push(latLng);
   }
 
-  addMarkerToMarkersArray(marker){
+  addMarkerToMarkersArray(marker) {
     this.markers.push(marker);
   }
 
-  addInstruction(marker){
+  addInstruction(marker) {
     this.setMarkerIconToInstructionIcon(marker);
-    marker.instruction = this.addInstructionToRoadbook(this.getInstructionGeodata(marker, this.route, this.markers),this.updateRoadbookAndInstructions);
+    marker.instruction = this.addInstructionToRoadbook(this.getInstructionGeodata(marker, this.route, this.markers), this.updateRoadbookAndInstructions);
   }
 
-  addWaypointBubble(index,radius,fill,map) {
+  addWaypointBubble(index, radius, fill, map) {
     this.markers[index].bubble = this.buildWaypointBubble(radius, this.markers[index].getPosition(), fill, map);
   }
 
   // TODO this whole process could be more elegant
-  processMarkerForDeletion(marker,callback1,callback2){
-    if(this.deleteQueue.length == 0){
+  processMarkerForDeletion(marker, callback1, callback2) {
+    if (this.deleteQueue.length == 0) {
       this.addMarkerIndexToDeleteQueue(marker.routePointIndex);
       this.setMarkerIconToDeleteQueueIcon(marker);
     } else {
@@ -84,21 +84,21 @@ class MapModel {
     }
   }
 
-  addMarkerIndexToDeleteQueue(index){
+  addMarkerIndexToDeleteQueue(index) {
     this.deleteQueue.push(index);
   }
 
-  setMarkerIconToDeleteQueueIcon(marker){
+  setMarkerIconToDeleteQueueIcon(marker) {
     marker.setIcon(this.buildDeleteQueueIcon());
   }
 
-  setMarkerIconToInstructionIcon(marker){
+  setMarkerIconToInstructionIcon(marker) {
     marker.setIcon(this.buildInstructionIcon());
   }
 
-  computeDistanceOnRouteBetweenPoints(beginIndex, endIndex, route){
+  computeDistanceOnRouteBetweenPoints(beginIndex, endIndex, route) {
     var points = [];
-    for(var i=beginIndex;i<endIndex+1;i++){
+    for (var i = beginIndex; i < endIndex + 1; i++) {
       points.push(route[i]);
     }
     return this.googleMapsComputeDistanceInKM(points);
@@ -108,14 +108,14 @@ class MapModel {
     Compute the cap heading of this instruction
     // TODO doing too many tings
   */
-  computeHeading(marker, route){
+  computeHeading(marker, route) {
     var pointIndex = marker.routePointIndex;
-    var nextPointIndex = pointIndex+1 < route.getLength() ? pointIndex + 1 : pointIndex;
+    var nextPointIndex = pointIndex + 1 < route.getLength() ? pointIndex + 1 : pointIndex;
 
     //the heading is from this point to the next one
     var heading = this.googleMapsComputeHeading(route.getAt(pointIndex), route.getAt(nextPointIndex));
     //google maps headings are between [-180,180] so convert them to a compass bearing
-    if(heading < 0){
+    if (heading < 0) {
       heading = 360 + heading;
     }
     return heading;
@@ -125,23 +125,23 @@ class MapModel {
     Compute the angle of the turn from the previous heading to this one
     // TODO doing too many tings
   */
-  computeRelativeAngle(marker,route,heading){
+  computeRelativeAngle(marker, route, heading) {
     var pointIndex = marker.routePointIndex;
-    var prevPointIndex = pointIndex-1 > 0 ? pointIndex - 1 : 0;
-    var relativeAngle = ((0 == pointIndex) || (route.getLength()-1 == pointIndex)) ? 0 : heading - this.googleMapsComputeHeading(route.getAt(prevPointIndex), route.getAt(pointIndex));
+    var prevPointIndex = pointIndex - 1 > 0 ? pointIndex - 1 : 0;
+    var relativeAngle = ((0 == pointIndex) || (route.getLength() - 1 == pointIndex)) ? 0 : heading - this.googleMapsComputeHeading(route.getAt(prevPointIndex), route.getAt(pointIndex));
     // we want to limit what we return to being 0 < angle < 180 for right turns and 0 > angle > -180 for left turns
-    if(relativeAngle > 180) {
+    if (relativeAngle > 180) {
       relativeAngle = -(360 - relativeAngle); //left turn
-    } else if ( relativeAngle < -180) {
+    } else if (relativeAngle < -180) {
       relativeAngle = (360 + relativeAngle); //right turn
     }
     return relativeAngle;
   }
 
-  computeMapOrientationAngle(){
+  computeMapOrientationAngle() {
     var i = this.getRoadBookInstructionBeingEditedRoutePointIndex();
-    if(i){
-      return this.googleMapsComputeHeading(this.route.getAt(i-1),this.route.getAt(i))
+    if (i) {
+      return this.googleMapsComputeHeading(this.route.getAt(i - 1), this.route.getAt(i))
     }
   }
 
@@ -150,22 +150,22 @@ class MapModel {
     determine which edge the latLng falls upon
     and insert a new point into route at the index of the edge point
   */
-  computeInsertionIndex(latLng,latLngArray,map){
+  computeInsertionIndex(latLng, latLngArray, map) {
     var tolerance = this.getEdgeTolerance(map); //this could be passed in
-    for(var i = 1; i < latLngArray.length; i++ ){
-      if(this.checkIsLocationBetweenPoints(latLngArray[i-1], latLngArray[i], latLng, tolerance)) {
+    for (var i = 1; i < latLngArray.length; i++) {
+      if (this.checkIsLocationBetweenPoints(latLngArray[i - 1], latLngArray[i], latLng, tolerance)) {
         return i;
       }
       //we haven't found it, increse the tolerance and start over
-      if(i == latLngArray.length - 1 ){
-        tolerance = tolerance*2;
+      if (i == latLngArray.length - 1) {
+        tolerance = tolerance * 2;
         i = 0;
       }
     }
   }
 
-  checkIsLocationBetweenPoints(startLatLng, endLatLng, checkLatLng, tolerance){
-    var polyline = this.googleMapsNewPolyline([startLatLng,endLatLng]);
+  checkIsLocationBetweenPoints(startLatLng, endLatLng, checkLatLng, tolerance) {
+    var polyline = this.googleMapsNewPolyline([startLatLng, endLatLng]);
     return this.googleMapsIsLocationOnEdge(checkLatLng, polyline, tolerance)
   }
 
@@ -173,25 +173,25 @@ class MapModel {
     Removes a route point from the route and decrement the pointIndex of each point on the route after the point being
     removed by one.
   */
-  deletePointFromRoute(index){
+  deletePointFromRoute(index) {
     this.route.removeAt(index)
-    this.markers.splice(index,1)[0].setMap(null);
+    this.markers.splice(index, 1)[0].setMap(null);
     this.decrementRouteVertexIndecies(index);
   }
 
-  deleteWaypointBubble(routePointIndex){
-    if(this.markers[routePointIndex].bubble){
+  deleteWaypointBubble(routePointIndex) {
+    if (this.markers[routePointIndex].bubble) {
       this.markers[routePointIndex].bubble.setMap(null);
     }
   }
   // TODO this whole process could be more elegant
-  deletePointsBetweenMarkersInQueueFromRoute(){
-    this.deleteQueue.sort(function(a,b){return a - b});
+  deletePointsBetweenMarkersInQueueFromRoute() {
+    this.deleteQueue.sort(function (a, b) { return a - b });
     var end = this.deleteQueue.pop();
     var start = this.deleteQueue.pop();
 
-    for(var i = end;i >= start;i--){
-      if(this.markers[i].instruction){
+    for (var i = end; i >= start; i--) {
+      if (this.markers[i].instruction) {
         this.revertInstructionToRoutePoint(this.markers[i]);
       }
       this.deletePointFromRoute(this.markers[i].routePointIndex);
@@ -202,7 +202,7 @@ class MapModel {
     decrements the route vertex index of each point along the route after the passed in index
   */
   decrementRouteVertexIndecies(startIndex) {
-    for(var i = startIndex; i < this.markers.length; i++){
+    for (var i = startIndex; i < this.markers.length; i++) {
       var marker = this.markers[i];
       marker.routePointIndex = marker.routePointIndex - 1;
     }
@@ -211,29 +211,29 @@ class MapModel {
   /*
     calculates a tolerance for determining if a location falls on an edge based on map zoom level
   */
-  getEdgeTolerance(map){
-    return Math.pow(map.getZoom(), -(map.getZoom()/5));
+  getEdgeTolerance(map) {
+    return Math.pow(map.getZoom(), -(map.getZoom() / 5));
   }
 
-  getInstructionGeodata(marker, route, markers){
+  getInstructionGeodata(marker, route, markers) {
     var prevInstructionIndex = this.getPrevInstructionRoutePointIndex(marker.routePointIndex, markers); //TODO pass in markers?
     var heading = this.computeHeading(marker, route);
-    var relativeAngle = this.computeRelativeAngle(marker,route,heading);
+    var relativeAngle = this.computeRelativeAngle(marker, route, heading);
     return {
       lat: marker.getPosition().lat(),
       long: marker.getPosition().lng(),
       routePointIndex: marker.routePointIndex,
-      kmFromStart: this.computeDistanceOnRouteBetweenPoints(0,marker.routePointIndex, route.getArray()), //TODO pass in route?
+      kmFromStart: this.computeDistanceOnRouteBetweenPoints(0, marker.routePointIndex, route.getArray()), //TODO pass in route?
       kmFromPrev: this.computeDistanceOnRouteBetweenPoints(prevInstructionIndex, marker.routePointIndex, route.getArray()), //TODO pass in route?
       heading: heading,
       relativeAngle: relativeAngle
     }
   }
 
-  getPrevInstructionRoutePointIndex(routePointIndex,markersArray){
+  getPrevInstructionRoutePointIndex(routePointIndex, markersArray) {
     var index = 0;
-    for(var i=routePointIndex-1;i>0;i--){
-      if(markersArray[i].instruction){
+    for (var i = routePointIndex - 1; i > 0; i--) {
+      if (markersArray[i].instruction) {
         index = i;
         break;
       }
@@ -246,32 +246,32 @@ class MapModel {
   */
   incrementRouteVertexIndecies(startIndex) {
     startIndex++;
-    for(var i = startIndex; i < this.markers.length; i++){
+    for (var i = startIndex; i < this.markers.length; i++) {
       var marker = this.markers[i];
       marker.routePointIndex = marker.routePointIndex + 1;
     }
   }
 
-  insertLatLngIntoRoute(latLng,map){
-    var index = this.computeInsertionIndex(latLng,this.route.getArray(),map);
-    var marker = this.insertLatLngAtIndex(latLng,index,map);
+  insertLatLngIntoRoute(latLng, map) {
+    var index = this.computeInsertionIndex(latLng, this.route.getArray(), map);
+    var marker = this.insertLatLngAtIndex(latLng, index, map);
     return marker;
   }
 
-  insertLatLngAtIndex(latLng, index, map){
-    this.route.insertAt(index,latLng)
+  insertLatLngAtIndex(latLng, index, map) {
+    this.route.insertAt(index, latLng)
     var marker = this.buildRouteMarker(latLng, map);
-    this.markers.splice(index,0,marker);
+    this.markers.splice(index, 0, marker);
     this.incrementRouteVertexIndecies(index);
     return marker;
   }
 
-  makeFirstMarkerInstruction(markers){
+  makeFirstMarkerInstruction(markers) {
     var marker = markers[0];
     this.addInstruction(marker);
   }
 
-  revertInstructionToRoutePoint(marker){
+  revertInstructionToRoutePoint(marker) {
     marker.setIcon(this.buildVertexIcon());
     this.deleteWaypointBubble(marker.routePointIndex);
     this.deleteInstructionFromRoadbook(marker.instruction.id);
@@ -281,30 +281,30 @@ class MapModel {
   }
 
   updateAllMarkersInstructionGeoData() {
-    for(var i = 0; i < this.markers.length; i++) {
+    for (var i = 0; i < this.markers.length; i++) {
       var marker = this.markers[i];
-      if(marker.instruction) {
+      if (marker.instruction) {
         this.updateMarkerInstructionGeoData(marker, this.getInstructionGeodata(marker, this.route, this.markers));
       }
     }
   }
 
-  updateMarkerPosition(marker, latLng){
-    this.googleMapsMarkerSetPosition(marker,latLng)
-    this.googleMapsMvcArraySetPositionAtIndex(this.route,marker.routePointIndex, latLng)
+  updateMarkerPosition(marker, latLng) {
+    this.googleMapsMarkerSetPosition(marker, latLng)
+    this.googleMapsMvcArraySetPositionAtIndex(this.route, marker.routePointIndex, latLng)
   }
 
   /*
     controller interface
   */
-  exitControllerDeleteMode(){
+  exitControllerDeleteMode() {
     this.controller.exitDeleteMode();
   }
 
   /*
     Roadbook/Instruction update catchall
   */
-  updateRoadbookAndInstructions(){
+  updateRoadbookAndInstructions() {
     this.updateAllMarkersInstructionGeoData();
     this.updateRoadbookTotalDistance();
   }
@@ -313,21 +313,21 @@ class MapModel {
     Roadbook functions
   */
 
-  updateRoadbookTotalDistance(){
+  updateRoadbookTotalDistance() {
     app.roadbook.updateTotalDistance(); //NOTE this shouldn't be in this model
   }
 
-  addInstructionToRoadbook(geoDataJSON, callback){
+  addInstructionToRoadbook(geoDataJSON, callback) {
     var roadbookInstruction = app.roadbook.addInstruction(geoDataJSON);
     callback.call(this)
     return roadbookInstruction;
   }
 
-  deleteInstructionFromRoadbook(index){
+  deleteInstructionFromRoadbook(index) {
     app.roadbook.deleteInstruction(index);
   }
 
-  getRoadBookInstructionBeingEditedRoutePointIndex(){
+  getRoadBookInstructionBeingEditedRoutePointIndex() {
     if (app.roadbook.currentlyEditingInstruction == null)
       return app.roadbook.currentlySelectedInstruction.routePointIndex;
     return app.roadbook.currentlyEditingInstruction.routePointIndex;
@@ -337,7 +337,7 @@ class MapModel {
     Instruction functions
   */
 
-  updateMarkerInstructionGeoData(marker, geoData){
+  updateMarkerInstructionGeoData(marker, geoData) {
     marker.instruction.updateInstruction(geoData, marker.routePointIndex);
   }
 
@@ -345,12 +345,12 @@ class MapModel {
     Make an API request to google and get the autorouted path between the last point in the route
     and the lat long of the click event passed from the controller
   */
-  requestGoogleDirections(latLng,map,callback){
+  requestGoogleDirections(latLng, map, callback) {
     var _this = this;
     console.log("requesting directions", latLng, map);
-    $.get(this.buildDirectionsRequestURL(this.getLastItemInArray(this.route.getArray()),latLng,app.settings.googleDirectionsKey),function(data){
-      if(data.status == "OK"){
-        callback.call(_this,data.routes[0].legs[0].steps,map);
+    $.get(this.buildDirectionsRequestURL(this.getLastItemInArray(this.route.getArray()), latLng, app.settings.googleDirectionsKey), function (data) {
+      if (data.status == "OK") {
+        callback.call(_this, data.routes[0].legs[0].steps, map);
       }
     });
   }
@@ -359,7 +359,7 @@ class MapModel {
     utility methods
   */
 
-  getLastItemInArray(array){
+  getLastItemInArray(array) {
     return array.slice(-1).pop();
   }
 
@@ -367,120 +367,120 @@ class MapModel {
     TODO move the below into a static google maps service/interface class or maybe leave it here...
   */
 
-  buildDirectionsRequestURL(origin,destination,direction_api_key){
+  buildDirectionsRequestURL(origin, destination, direction_api_key) {
     return "https://maps.googleapis.com/maps/api/directions/json?"
-              + "origin="+origin.lat()+","+ origin.lng()
-              + "&destination=" + destination.lat()+","+ destination.lng()
-              + "&key=" + direction_api_key
+      + "origin=" + origin.lat() + "," + origin.lng()
+      + "&destination=" + destination.lat() + "," + destination.lng()
+      + "&key=" + direction_api_key
   }
 
   /*
     an icon which marks a normal point (vertex) on the route Polyline
   */
-  buildVertexIcon(){
+  buildVertexIcon() {
     return {
-              path: 'M-1,-1 1,-1 1,1 -1,1z',
-              scale: 7,
-              strokeWeight: 2,
-              strokeColor: '#ffba29',
-              fillColor: '#787878',
-              fillOpacity: 1
-            };
+      path: 'M-1,-1 1,-1 1,1 -1,1z',
+      scale: 7,
+      strokeWeight: 2,
+      strokeColor: '#ffba29',
+      fillColor: '#787878',
+      fillOpacity: 1
+    };
   }
 
   /*
     an icon which marks a instruction (vertex) on the route Polyline
   */
-  buildInstructionIcon(){
+  buildInstructionIcon() {
     return {
-              path: 'M-1.25,-1.25 1.25,-1.25 1.25,1.25 -1.25,1.25z',
-              scale: 7,
-              strokeWeight: 2,
-              strokeColor: '#ff9000',
-              fillColor: '#ff4200',
-              fillOpacity: 1
-            };
+      path: 'M-1.25,-1.25 1.25,-1.25 1.25,1.25 -1.25,1.25z',
+      scale: 7,
+      strokeWeight: 2,
+      strokeColor: '#ff9000',
+      fillColor: '#ff4200',
+      fillOpacity: 1
+    };
   }
 
   /*
     an icon which marks a point to be removed on the route Polyline
   */
-  buildDeleteQueueIcon(){
+  buildDeleteQueueIcon() {
     return {
-              path: 'M-1.25,-1.25 1.25,-1.25 1.25,1.25 -1.25,1.25z',
-              scale: 7,
-              strokeWeight: 2,
-              strokeColor: '#ff4200',
-              fillColor: '#ff9000',
-              fillOpacity: 1
-            };
+      path: 'M-1.25,-1.25 1.25,-1.25 1.25,1.25 -1.25,1.25z',
+      scale: 7,
+      strokeWeight: 2,
+      strokeColor: '#ff4200',
+      fillColor: '#ff9000',
+      fillOpacity: 1
+    };
   }
 
-  buildRouteMarker(latLng, map){
+  buildRouteMarker(latLng, map) {
     var marker = new google.maps.Marker({
-                      icon: this.buildVertexIcon(),
-                      map: map,
-                      position: latLng,
-                      draggable: true,
-                      routePointIndex: this.route.length > 0 ? this.route.indexOf(latLng) : 0,
-                    });
+      icon: this.buildVertexIcon(),
+      map: map,
+      position: latLng,
+      draggable: true,
+      routePointIndex: this.route.length > 0 ? this.route.indexOf(latLng) : 0,
+    });
     this.controller.bindToMapMarker(marker);
     return marker;
   }
 
-  buildHandleMarker(latLng,map){
+  buildHandleMarker(latLng, map) {
     return new google.maps.Marker({
-                            icon: this.buildVertexIcon(),
-                            map: map,
-                            position: latLng,
-                            draggable: true,
-                            zIndex: -1,
-                          });
+      icon: this.buildVertexIcon(),
+      map: map,
+      position: latLng,
+      draggable: true,
+      zIndex: -1,
+    });
   }
 
-  buildWaypointBubble(radius,center,fill,map){
+  buildWaypointBubble(radius, center, fill, map) {
     return new google.maps.Circle({
-            strokeColor: fill,
-            strokeOpacity: 0.5,
-            strokeWeight: 2,
-            fillColor: fill,
-            fillOpacity: 0.2,
-            clickable: false,
-            map: map,
-            center: center,
-            radius: Number(radius)
-          });
+      strokeColor: fill,
+      strokeOpacity: 0.5,
+      strokeWeight: 2,
+      fillColor: fill,
+      fillOpacity: 0.2,
+      clickable: false,
+      map: map,
+      center: center,
+      radius: Number(radius)
+    });
   }
 
-  googleMapsDecodePath(points){
+  googleMapsDecodePath(points) {
     return google.maps.geometry.encoding.decodePath(points);
   }
 
-  googleMapsComputeHeading(a,b){
+  googleMapsComputeHeading(a, b) {
     return google.maps.geometry.spherical.computeHeading(a, b);
   }
 
-  googleMapsComputeDistanceInKM(pointsArray){
-    return google.maps.geometry.spherical.computeLength(pointsArray)/1000;
+  googleMapsComputeDistanceInKM(pointsArray) {
+    return google.maps.geometry.spherical.computeLength(pointsArray) / 1000;
   }
 
-  googleMapsIsLocationOnEdge(latLng, line, tolerance){
+  googleMapsIsLocationOnEdge(latLng, line, tolerance) {
     return google.maps.geometry.poly.isLocationOnEdge(latLng, line, tolerance);
   }
 
-  googleMapsMarkerSetPosition(marker,latLng){
+  googleMapsMarkerSetPosition(marker, latLng) {
     marker.setPosition(latLng);
   }
 
-  googleMapsMvcArraySetPositionAtIndex(mvcArray,index,latLng){
+  googleMapsMvcArraySetPositionAtIndex(mvcArray, index, latLng) {
     mvcArray.setAt(index, latLng);
   }
 
-  googleMapsNewPolyline(pointsArray){
-    return new google.maps.Polyline({path: pointsArray});
+  googleMapsNewPolyline(pointsArray) {
+    return new google.maps.Polyline({ path: pointsArray });
   }
 
-  googleMapsNewLatLng(lat,lng){
+  googleMapsNewLatLng(lat, lng) {
     return new google.maps.LatLng(lat, lng);
   }
 
@@ -488,11 +488,11 @@ class MapModel {
     Simplify
   */
 
-  simplifyDouglasPeucker(steps){
+  simplifyDouglasPeucker(steps) {
     // TODO modify IO module and Simplify lib to use GM latLng object and we can get rid of this loop
     var latLngs = []
-    for(var k=0;k<steps.length;k++){
-      var latLng = {lat: steps[k].lat(), lng: steps[k].lng()}
+    for (var k = 0; k < steps.length; k++) {
+      var latLng = { lat: steps[k].lat(), lng: steps[k].lng() }
       latLngs.push(latLng);
     }
     var simplify = new Simplify();

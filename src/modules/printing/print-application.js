@@ -16,7 +16,7 @@ class PrintApp {
   pageSizes;
   pageSize;
 
-  constructor(){
+  constructor() {
     var _this = this;
     this.name = ko.observable('');
     this.desc = ko.observable('');
@@ -26,16 +26,16 @@ class PrintApp {
     this.instructions = ko.observableArray([]);
 
     this.ipc = globalNode.ipcRenderer;
-    this.ipc.on('print-data', function(event, arg){
+    this.ipc.on('print-data', function (event, arg) {
       _this.parseJson(arg);
     });
 
-    this.pageSizes = ko.observableArray([{text: "Letter", value: "Letter"}, {text: 'A5', value: 'A5'}, {text: 'Roll', value: 'Roll'}]);
+    this.pageSizes = ko.observableArray([{ text: "Letter", value: "Letter" }, { text: 'A5', value: 'A5' }, { text: 'Roll', value: 'Roll' }]);
     this.pageSize = ko.observable('Roll');
     this.ipc.send('print-launched', true);
   }
 
-  parseJson(json){
+  parseJson(json) {
     this.name(json.name);
     this.desc(json.desc);
     this.totalDistance(json.totalDistance);
@@ -44,12 +44,12 @@ class PrintApp {
     this.filePath = json.filePath;
   }
 
-  requestPdfPrint(){
+  requestPdfPrint() {
     $('nav').hide();
     this.rerenderForPageSize()
     var size = this.pageSize();
     const dpi = 150;
-    if(size == "Roll"){
+    if (size == "Roll") {
       const roadBookWidthMm = 150;
       const pageWidth = roadBookWidthMm / 25.4;
       const docAspect = $(document).height() / $(document).width()
@@ -59,38 +59,38 @@ class PrintApp {
         height: pageWidth * docAspect
       }
     }
-    if((size == "Letter")){
+    if ((size == "Letter")) {
       $('body').css('margin-left', '-60px');
     }
     console.log("PDF paper size", size)
-    var data = {'filepath': this.filePath, 'opts': {'pageSize': size, 'marginsType' : '1', 'dpi': dpi}};
+    var data = { 'filepath': this.filePath, 'opts': { 'pageSize': size, 'marginsType': '1', 'dpi': dpi } };
 
     globalNode.printToPdf(data);
   }
 
-  rerenderForPageSize(){
+  rerenderForPageSize() {
     var pageSize = this.pageSize();
     $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').removeClass('A5');
     $('.break').remove();
 
-    if((pageSize == "Letter" || pageSize == "A5")){
+    if ((pageSize == "Letter" || pageSize == "A5")) {
       this.addPageBreaks();
       //adjust height for A5
 
-      if(pageSize == "A5"){
+      if (pageSize == "A5") {
         $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').addClass('A5');
       }
     }
   }
 
-  addPageBreaks(){
-    if( $('.break').length > 0) { return };
+  addPageBreaks() {
+    if ($('.break').length > 0) { return };
     $('#roadbook').find('#roadbook-header').after($('<div>').attr('class', 'break'));
     var instructions = $('#roadbook').find('.waypoint')
 
     // Default to Letter Format
-    for(var i=0;i<instructions.length;i++){
-      if((((i+1)%5) == 0) && (i > 0)){
+    for (var i = 0; i < instructions.length; i++) {
+      if ((((i + 1) % 5) == 0) && (i > 0)) {
         $(instructions[i]).after($('<div>').attr('class', 'break'));
       }
     }
@@ -103,22 +103,22 @@ class PrintApp {
   ---------------------------------------------------------------------------
 */
 var printApp;
-$(document).ready(function(){
+$(document).ready(function () {
   printApp = new PrintApp();
   ko.applyBindings(printApp);
 
-  $(window).scroll(function() {
-    if( $(this).scrollTop() > 0 ) {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 0) {
       $(".main-nav").addClass("main-nav-scrolled");
     } else {
       $(".main-nav").removeClass("main-nav-scrolled");
     }
   });
 
-  $('#print-size').change(function(){
+  $('#print-size').change(function () {
     printApp.rerenderForPageSize();
   });
-  $('.button').click(function(){
+  $('.button').click(function () {
     printApp.requestPdfPrint();
   });
 });

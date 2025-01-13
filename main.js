@@ -46,7 +46,7 @@ function createWindow() {
     {
       label: "File",
       submenu: [
-        { label: "New", accelerator: "CmdOrCtrl+N", click: function (){ mainWindow.webContents.send('new-roadbook'); } },
+        { label: "New", accelerator: "CmdOrCtrl+N", click: function () { mainWindow.webContents.send('new-roadbook'); } },
         { label: "Open", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('open-roadbook'); } },
         { label: "Append", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('append-roadbook'); } },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: function () { mainWindow.webContents.send('save-roadbook'); } },
@@ -58,7 +58,8 @@ function createWindow() {
             { label: "Export GPX", accelerator: "CmdOrCtrl+E", click: function () { mainWindow.webContents.send('export-gpx'); } },
             { label: "Export OpenRally GPX", click: function () { mainWindow.webContents.send('export-openrally-gpx'); } },
             { label: "Export PDF", accelerator: "CmdOrCtrl+P", click: function () { mainWindow.webContents.send('export-pdf'); } },
-          ]},
+          ]
+        },
         { label: "Quit", accelerator: "CmdOrCtrl+Q", click: function () { app.quit(); } },
       ]
     },

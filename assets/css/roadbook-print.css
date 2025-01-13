@@ -1,23 +1,24 @@
-@font-face{
-  font-family:bellybeans;
-  src:url(../fonts/bellybeans.ttf);
+@font-face {
+  font-family: bellybeans;
+  src: url(../fonts/bellybeans.ttf);
 }
 
 /*
   for native printing expirementation
 */
 html {
-  width:616px;
-  margin:auto;
+  width: 616px;
+  margin: auto;
 }
+
 body {
-    background: #fff;
-    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-    -webkit-print-color-adjust: exact;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    padding-top: 0px;
-    margin-top: 0px;
+  background: #fff;
+  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  -webkit-print-color-adjust: exact;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  margin-top: 0px;
 }
 
 #roadbook-header {
@@ -29,15 +30,16 @@ body {
   text-align: left;
   /* width: 100% !important; */
   /* font-family: bellybeans !important; */
-  border: 1px solid #000; 
-  min-height:70px;
+  border: 1px solid #000;
+  min-height: 70px;
   margin-bottom: 10px;
   width: 95%;
 }
+
 #roadbook-desc {
   font-size: 15px;
   text-align: left;
-  border: 1px solid #000; 
+  border: 1px solid #000;
   min-height: 212px;
   float: right;
 }
@@ -52,7 +54,8 @@ body {
   height: 90px;
   /* width: 125px !important; */
   font-size: 20px;
-  border: 1px solid #000; min-height: 80px;
+  border: 1px solid #000;
+  min-height: 80px;
   float: left;
   text-align: center;
   margin-bottom: 10px;
@@ -69,7 +72,7 @@ body {
   height: 90px;
   font-size: 20px;
   /* width: 125px !important; */
-  border: 1px solid #000; 
+  border: 1px solid #000;
   float: left;
   text-align: center;
 }
@@ -80,7 +83,7 @@ body {
 }
 
 .waypoint-note p div img.small,
-.waypoint-note p img.small{
+.waypoint-note p img.small {
   height: 35px;
 }
 
@@ -92,28 +95,31 @@ body {
 }
 
 .waypoint-note p div img.large,
-.waypoint-note p img.large{
+.waypoint-note p img.large {
   height: 75px;
 }
 
 .waypoint-note p div img.huge,
-.waypoint-note p img.huge{
+.waypoint-note p img.huge {
   height: 95px;
 }
 
-.break{
- margin-top: 1px;
- display: block;
- clear: both;
- page-break-after: always;
+.break {
+  margin-top: 1px;
+  display: block;
+  clear: both;
+  page-break-after: always;
 }
+
 .glyph-container {
   height: 53px;
 }
+
 .glyph-container img {
   height: 53px;
   width: 53px;
 }
+
 .heading {
   font-family: Tahoma, Geneva, sans-serif;
   background-color: #FF0;
@@ -140,7 +146,7 @@ body {
   display: none;
 }
 
-.instruction-number{
+.instruction-number {
   color: #FFFFFF;
   background-color: #000;
   font-weight: bold;
@@ -166,6 +172,7 @@ body {
   width: 40%;
   float: left;
 }
+
 .total-distance {
   height: 90px;
   font-family: Tahoma, Geneva, sans-serif;
@@ -182,8 +189,9 @@ body {
   margin-top: 20px
 }
 
-.waypoint.A5{
-  width: 580px !important; /* works for letter */
+.waypoint.A5 {
+  width: 580px !important;
+  /* works for letter */
 }
 
 .waypoint {
@@ -217,7 +225,7 @@ body {
 
 /* works for letter */
 .waypoint-tulip {
-  width:180px;
+  width: 180px;
   border-left: 1px solid #000;
   border-right: 1px solid #000;
 }
@@ -228,7 +236,7 @@ body {
 }
 
 .waypoint-tulip.A5 {
-  width:190px;
+  width: 190px;
 }
 
 /*
@@ -241,6 +249,7 @@ body {
   height: 175px;
   float: left
 }
+
 .waypoint-note p {
   height: 135px;
   font-size: medium;
@@ -257,17 +266,20 @@ body {
 .print-button {
   text-align: right;
 }
-.paper-dropdown{
+
+.paper-dropdown {
   text-align: left;
 }
+
 .logo {
   text-align: center;
   font-family: bellybeans !important;
   font-size: 2.5em;
-  text-shadow: -3px 3px 2px rgba(0,0,0, 1);
+  text-shadow: -3px 3px 2px rgba(0, 0, 0, 1);
   background-color: #787878;
   color: #ffba29;
 }
+
 .main-nav {
   background: #ffba29;
   height: 55px;
@@ -275,7 +287,7 @@ body {
   margin-bottom: 20px;
   padding-top: 5px;
   padding-left: 20px;
-  box-shadow: 0 2px 3px rgba(0,0,0,.4);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, .4);
   width: 650px;
   margin-left: -25px;
 }
@@ -286,6 +298,7 @@ body {
   width: 100%;
   top: 0;
 }
+
 /*
   neccessary foundation stuff
 */
@@ -294,86 +307,119 @@ img {
 }
 
 .left {
-  float: left !important; }
+  float: left !important;
+}
 
 .right {
-  float: right !important; }
+  float: right !important;
+}
 
-.clearfix:before, .clearfix:after {
-  content: " ";
-  display: table; }
+.clearfix:before,
 .clearfix:after {
-  clear: both; }
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
 .row {
   margin: 0 auto;
   max-width: 62.5rem;
-  width: 100%; }
-    .row:before, .row:after {
-      content: " ";
-      display: table; }
-    .row:after {
-      clear: both; }
-      .column,
-      .columns {
-        padding-left: 0.9375rem;
-        padding-right: 0.9375rem;
-        width: 100%;
-        float: left; }
+  width: 100%;
+}
 
-.column + .column:last-child,
-.columns + .column:last-child, .column +
-.columns:last-child,
-.columns +
-.columns:last-child {
-  float: right; }
-.column + .column.end,
-.columns + .column.end, .column +
-.columns.end,
-.columns +
-.columns.end {
-  float: left; }
+.row:before,
+.row:after {
+  content: " ";
+  display: table;
+}
+
+.row:after {
+  clear: both;
+}
+
+.column,
+.columns {
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  width: 100%;
+  float: left;
+}
+
+.column+.column:last-child,
+.columns+.column:last-child,
+.column+.columns:last-child,
+.columns+.columns:last-child {
+  float: right;
+}
+
+.column+.column.end,
+.columns+.column.end,
+.column+.columns.end,
+.columns+.columns.end {
+  float: left;
+}
+
 .column,
 .columns {
   position: relative;
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
-  float: left; }
+  float: left;
+}
+
 .large-1 {
-  width: 8.33333%; }
+  width: 8.33333%;
+}
 
 .large-2 {
-  width: 16.66667%; }
+  width: 16.66667%;
+}
 
 .large-3 {
-  width: 25%; }
+  width: 25%;
+}
 
 .large-4 {
-  width: 33.33333%; }
+  width: 33.33333%;
+}
 
 .large-5 {
-  width: 41.66667%; }
+  width: 41.66667%;
+}
 
 .large-6 {
-  width: 50%; }
+  width: 50%;
+}
 
 .large-7 {
-  width: 58.33333%; }
+  width: 58.33333%;
+}
 
 .large-8 {
-  width: 66.66667%; }
+  width: 66.66667%;
+}
 
 .large-9 {
-  width: 75%; }
+  width: 75%;
+}
 
 .large-10 {
-  width: 83.33333%; }
+  width: 83.33333%;
+}
 
 .large-11 {
-  width: 91.66667%; }
+  width: 91.66667%;
+}
 
 .large-12 {
-  width: 100%; }
-button, .button {
+  width: 100%;
+}
+
+button,
+.button {
   -webkit-appearance: none;
   border-radius: 0;
   border-style: solid;
@@ -395,21 +441,44 @@ button, .button {
   transition: background-color 300ms ease-out;
   width: 65px;
 }
-button:hover, button:focus, .button:hover, .button:focus {
-  background-color: #007095; }
-button:hover, button:focus, .button:hover, .button:focus {
-  color: #FFFFFF; }
-button.large, .button.large {
+
+button:hover,
+button:focus,
+.button:hover,
+.button:focus {
+  background-color: #007095;
+}
+
+button:hover,
+button:focus,
+.button:hover,
+.button:focus {
+  color: #FFFFFF;
+}
+
+button.large,
+.button.large {
   padding: 1.125rem 2.25rem 1.1875rem 2.25rem;
-  font-size: 1.25rem; }
-button.small, .button.small {
+  font-size: 1.25rem;
+}
+
+button.small,
+.button.small {
   padding: 0.875rem 1.75rem 0.9375rem 1.75rem;
-  font-size: 0.8125rem; }
-button.tiny, .button.tiny {
+  font-size: 0.8125rem;
+}
+
+button.tiny,
+.button.tiny {
   padding: 0.625rem 1.25rem 0.6875rem 1.25rem;
-  font-size: 0.6875rem; }
-button.radius, .button.radius {
-  border-radius: 3px; }
+  font-size: 0.6875rem;
+}
+
+button.radius,
+.button.radius {
+  border-radius: 3px;
+}
+
 select {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
@@ -430,13 +499,16 @@ select {
   height: 2.7rem;
   width: 100px;
 }
+
 select.radius {
   border-radius: 3px;
 }
+
 select:focus {
   background-color: #f3f3f3;
   border-color: #999999;
 }
+
 .coordinates {
   text-align: right;
   border: 1px solid #000;
@@ -452,6 +524,7 @@ select:focus {
 #generator {
   clear: both;
 }
+
 #generator h1 {
   text-align: center;
 }
@@ -462,13 +535,13 @@ select:focus {
 }
 
 #roadbook-footer #roadbook-total-distance {
-    font-size: 20px;
-    border: 1px solid #000;
-    text-align: center;
-    padding-top: 10px;
+  font-size: 20px;
+  border: 1px solid #000;
+  text-align: center;
+  padding-top: 10px;
 }
 
-#roadbook-footer #roadbook-total-waypoints{
+#roadbook-footer #roadbook-total-waypoints {
   padding-top: 10px;
   font-size: 20px;
   border: 1px solid #000;

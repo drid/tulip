@@ -338,7 +338,7 @@ textarea.waypoint-palette {
   outline-offset: -2px;
 }
 
-.instruction-number{
+.instruction-number {
   height: 21px;
   color: #FFFFFF;
   background-color: #000;
@@ -351,7 +351,7 @@ textarea.waypoint-palette {
   width: 26%;
   position: absolute;
   bottom: 0px;
-  right: 0px;  
+  right: 0px;
 }
 
 .coordinates {
@@ -366,8 +366,7 @@ textarea.waypoint-palette {
   margin-right: -5px;
 }
 
-.map-container
-{
+.map-container {
   padding: 0 !important;
   height: 100%;
   overflow: hidden;
@@ -419,7 +418,7 @@ textarea.waypoint-palette {
   width: 45%;
   position: absolute;
   bottom: 0px;
-  left: 0px; 
+  left: 0px;
 }
 
 .roadbook-container {
@@ -633,9 +632,10 @@ nav.top-bar {
 }
 
 .waypoint-distance-close {
-  width:120px;
+  width: 120px;
   background-color: #93ff93;
 }
+
 .waypoint-note {
   width: 195px;
   padding: 3px;
@@ -679,7 +679,7 @@ nav.top-bar {
   background-color: #ffffb9;
 }
 
-.waypoint-type-wpm, 
+.waypoint-type-wpm,
 .waypoint-type-wpv {
   background-color: #c1ffff;
 }

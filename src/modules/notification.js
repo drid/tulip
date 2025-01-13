@@ -9,10 +9,10 @@
   // NOTE this is a straight up model and the simplicity of such is beautiful
   // NOTE Buuuuut there are two static calls in the constructor, maybe look at the factory pattern
 */
-class Notification{
-  constructor(name){
+class Notification {
+  constructor(name) {
     var type = Notification.mapFileNameToType(name);
-    if(type){
+    if (type) {
       var notification = Notification.buildNotification(type);
       this.type = notification.type;
       this.openrallytype = notification.openrallytype;
@@ -25,7 +25,7 @@ class Notification{
     }
   }
 
-  static mapFileNameToType(filename, reverse=false){
+  static mapFileNameToType(filename, reverse = false) {
     var map = {
       "waypoint-masked": "wpm",
       "waypoint-visible": "wpv",
@@ -49,32 +49,32 @@ class Notification{
       "control-finish-transfer": "ft",
     }
     if (reverse)
-        return Object.keys(map).find(key => map[key] === filename);
+      return Object.keys(map).find(key => map[key] === filename);
     return map[filename];
   }
 
 
-  static buildNotification(type){
+  static buildNotification(type) {
     var types = {
       wpm: {
-          type: "wpm",
-		      openrallytype: "wpm",
-          fill: '#008CBA',
-          bubble: 90,
-          modifier: 800,
-          modMin: 100,
-          modMax: 1000,
-          modStep: 100,
+        type: "wpm",
+        openrallytype: "wpm",
+        fill: '#008CBA',
+        bubble: 90,
+        modifier: 800,
+        modMin: 100,
+        modMax: 1000,
+        modStep: 100,
       },
       wpv: {
-          type: "wpv",
-		      openrallytype: "wpv",
-          fill: '#008CBA',
-          bubble: 200,
-          modifier: 1000,
-          modMin: 5,
-          modMax: 800,
-          modStep: 100,
+        type: "wpv",
+        openrallytype: "wpv",
+        fill: '#008CBA',
+        bubble: 200,
+        modifier: 1000,
+        modMin: 5,
+        modMax: 800,
+        modStep: 100,
       },
       wpe: {
         type: "wpe",
@@ -85,7 +85,7 @@ class Notification{
         modMin: 5,
         modMax: 1000,
         modStep: 100,
-    },
+      },
       wpn: {
         type: "wpn",
         openrallytype: "wpn",
@@ -95,7 +95,7 @@ class Notification{
         modMin: 200,
         modMax: 1000,
         modStep: 100,
-    },
+      },
       wpc: {
         type: "wpc",
         openrallytype: "wpc",
@@ -121,7 +121,7 @@ class Notification{
         modMin: 100,
         modMax: 2000,
         modStep: 100,
-        },
+      },
       dss: {
         type: "dss",
         openrallytype: "dss",
@@ -212,7 +212,7 @@ class Notification{
     return types[type];
   }
 
-  static nameMatchesClass(name,type){
+  static nameMatchesClass(name, type) {
     return (Notification.mapFileNameToType(name) == type);
   }
 }

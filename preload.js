@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 const fs = require('fs');
-const {dialog} = require('@electron/remote');
+const { dialog } = require('@electron/remote');
 
 contextBridge.exposeInMainWorld("globalNode", {
     dialog: () => {

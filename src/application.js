@@ -29,7 +29,7 @@ class App {
     this.glyphPlacementPosition = { top: 30, left: 30 };
     this.canEditMap = true;
     this.pointDeleteMode = false;
-    
+
     /*
       instantiate the roadbook
       TODO rename variable
@@ -94,7 +94,7 @@ class App {
     });
   }
 
-  loadRoadBook(fileName, append=false) {
+  loadRoadBook(fileName, append = false) {
     var _this = this;
 
     _this.startLoading();
@@ -102,16 +102,16 @@ class App {
     //we need to figure out how to watch a file while it's being edited so if it's moved it gets saved to the right place ***fs.watch***
     _this.fs.readFile(fileName, 'utf-8', function (err, data) {
       try {
-      var json = JSON.parse(data);
-      if (!append) {
-        _this.newRoadbook()
+        var json = JSON.parse(data);
+        if (!append) {
+          _this.newRoadbook()
+        }
+        _this.roadbook.appendRouteFromJSON(json, fileName); //TODO this needs to only pass json once choice is added   
+        _this.roadbook.updateTotalDistance();
+        localStorage.setItem('lastRoadBook', fileName);
+      } catch (error) {
+        console.error(error);
       }
-      _this.roadbook.appendRouteFromJSON(json, fileName); //TODO this needs to only pass json once choice is added   
-      _this.roadbook.updateTotalDistance();
-      localStorage.setItem('lastRoadBook', fileName);
-    } catch (error) {
-      console.error(error);
-    }
     });
     $('#toggle-roadbook').click();
     $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
@@ -120,7 +120,7 @@ class App {
     $('#export-openrally-gpx').removeClass('disabled')
   }
 
-  openRoadBook(append=false) {
+  openRoadBook(append = false) {
     var _this = this;
     globalNode.dialog().showOpenDialog({
       filters: [
@@ -154,13 +154,13 @@ class App {
   exportOpenRallyGPX() {
     if (this.canExport()) {
       var gpx = this.io.exportOpenRallyGPX();
-      
+
       var filename = this.roadbook.filePath.replace('.tlp', '-openrally.gpx');
 
       globalNode.fs.writeFile(filename, gpx, function (err) { });
-      
+
       console.log("exported openrally gpx to", filename);
-      
+
       $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
       alert('Your gpx has been exported to the same directory you saved your roadbook');
     } else {
@@ -288,15 +288,14 @@ class App {
     app.roadbook.name('New Roadbook');
     app.roadbook.desc('Roadbook description');
     app.roadbook.totalDistance(0);
-    this.roadbook.filePath=null;
+    this.roadbook.filePath = null;
 
     while (true) {
-      try
-        {
-          app.mapModel.deletePointFromRoute(0);
-          app.mapModel.deleteInstructionFromRoadbook(0);
-        }
-      catch(error) {
+      try {
+        app.mapModel.deletePointFromRoute(0);
+        app.mapModel.deleteInstructionFromRoadbook(0);
+      }
+      catch (error) {
         break;
       }
     }
@@ -310,9 +309,9 @@ class App {
     settings.openDevConsole = $('#open_dev_console').prop('checked');
     try {
       settings.tulipNearDistance = parseInt($('#tulip_near_distance').val());
-    } catch(ex) {
-        console.log(ex);
-        settings.tulipNearDistance = 300;
+    } catch (ex) {
+      console.log(ex);
+      settings.tulipNearDistance = 300;
     }
     settings.showCapHeading = $('#show_cap_heading').prop('checked');
     settings.showCoordinates = $('#show_coordinates').prop('checked');
@@ -335,7 +334,7 @@ class App {
     $('#show_coordinates').prop('checked', settings.showCoordinates ?? false);
     $('#coordinates_format').val(settings.coordinatesFormat ?? 'ddmmss');
 
-    if(settings.openDevConsole) {
+    if (settings.openDevConsole) {
       this.ipc.send('toggle-dev-tools');
     }
 
@@ -345,7 +344,7 @@ class App {
     }
     return settings;
   }
-  
+
   refreshInstructionElements() {
 
   }
@@ -563,10 +562,10 @@ class App {
       var nr = window.confirm("Start a new roadbook? Unsaved changes will be lost");
       if (nr) {
         _this.newRoadbook();
-      }``
+      } ``
     });
 
-    this.ipc.on('open-settings', function(event, arg){
+    this.ipc.on('open-settings', function (event, arg) {
       $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-left');
     })
 
