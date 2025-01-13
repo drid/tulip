@@ -22,19 +22,27 @@ var Instruction = Class({
     // can all this knockout stuff be at the controller level then model data is updated when controller starts up or shuts down
     this.kmFromStart    = ko.observable(wptJson.kmFromStart);
     this.kmFromPrev     = ko.observable(wptJson.kmFromPrev);
-    // this.kmPrevClose    = ko.observable(wptJson.kmPrevClose);
     this.exactHeading   = ko.observable(wptJson.heading);
     this.lat            = ko.observable(wptJson.lat);
     this.lng            = ko.observable(wptJson.long);
+    this.notification   = wptJson.notification || false;
+    this._notification   = ko.observable(this.notification);
+    this._notification.subscribe((newValue) => {
+      if (newValue !== this.notification) {
+          this.notification = newValue; // Sync the local value
+      }
+    });
 
     this.distFromPrev   = ko.computed(this.computedDistanceFromPrev, this);
-    this.closeProximity  = ko.computed(this.waypointCloseProximity, this);
+    this.closeProximity = ko.computed(this.instructionCloseProximity, this);
+    this.waypointIcon   = ko.computed(this.assignWaypointIcon, this);
+    this.waypointColoring = ko.computed(this.assignWaypointColoring, this);
     this.totalDistance  = ko.computed(this.computedTotalDistance, this);
     this.heading        = ko.computed(this.computedHeading, this);
     this.coordinates    = ko.computed(this.computedCoordinates, this);
 
     this.showHeading    = ko.observable((wptJson.showHeading == undefined ? app.settings.showCapHeading : wptJson.showHeading));
-    this.showCoordinates    = ko.observable((wptJson.showCoordinates == undefined ? app.settings.showCoordinates : wptJson.showCoordinates));
+    this.showCoordinates = ko.observable((wptJson.showCoordinates == undefined ? app.settings.showCoordinates : wptJson.showCoordinates));
     this.entryTrackType = wptJson.entryTrackType == undefined ? 'track' : wptJson.entryTrackType;
     this.exitTrackType  = wptJson.exitTrackType == undefined ? 'track' : wptJson.exitTrackType;
 
@@ -45,11 +53,9 @@ var Instruction = Class({
     this.roadbook = roadbook;
     this.routePointIndex = wptJson.routePointIndex == undefined ? null : wptJson.routePointIndex;
     // TODO refactor to make this one line
-    this.notification = wptJson.notification;
-    if(this.notification){
-      app.mapController.addWaypointBubble(this.routePointIndex, this.notification.bubble, this.notification.fill)
+    if(this._notification()){
+      app.mapController.addWaypointBubble(this.routePointIndex, this._notification().bubble, this._notification().fill)
     }
-
 
     var _this = this;
     var angle = wptJson.relativeAngle;
@@ -65,44 +71,17 @@ var Instruction = Class({
   },
   //TODO This needs refactored
   manageNotifications(glyphs){
-    if(this.notification == null){
-      // create a new notification
-      for(i=0;i<glyphs.length;i++){
-        // grab the glyph name from the file name, agnostic to the path.
-        this.notification = new Notification(glyphs[i]);
-        if(this.notification.type == null){
-          this.notification = null
-        }else {
-          app.mapController.addWaypointBubble(this.routePointIndex, this.notification.bubble, this.notification.fill)
-          // show notification options
-          $('#notification-options').removeClass('hidden');
-          app.noteControls.updateNotificationControls(this.notification);
-        }
-
-      }
-    }else{
+    if(this._notification() != false){
       // see if we need to set a speed zone limit
-      if(this.notification.type == "dsz"){
+      if(this._notification().type == "dsz"){
         var speed = glyphs.join(' ').match(/speed-([0-9]{2,3})/)[1]
-        this.notification.modifier = speed;
-      }
-      // see if we need to remove the notification using the notification class
-      var _this = this;
-      var contains = glyphs.map(function(g){return Notification.nameMatchesClass(g,_this.notification.type)});
-      // if the glyphs array contains our notification keep it and update the bubble
-
-      if(contains.includes(true)){
-        app.mapController.updateWaypointBubble(this.routePointIndex,this.notification.bubble);
-      }else{ //otherwise nullify our current notification
-        this.notification = null;
-        $('#notification-options').addClass('hidden');
-        app.mapController.deleteWaypointBubble(this.routePointIndex);
+        this._notification().modifier = speed;
       }
     }
   },
 
   hasNotification(){
-    return this.notification != null;
+    return this._notification() != false;
   },
 
   changeAddedTrackType(type){
@@ -154,8 +133,76 @@ var Instruction = Class({
     }
   },
 
-  waypointCloseProximity: function() {
+  instructionCloseProximity: function() {
     return (this.kmFromPrev() < (app.settings.tulipNearDistance/1000) && this.kmFromPrev() > 0)
+  },
+
+  assignWaypointIcon: function() {
+    if (this.hasNotification()) {
+      // var map = {
+      //   "wpm": "waypoint-masked",
+      //   "wpv": "waypoint-visible",
+      //   "wpe": "waypoint-eclipsed",
+      //   "wpc": "waypoint-control",
+      //   "wpn": "waypoint-navigation",
+      //   "wps": "waypoint-security",
+      //   "wpp": "waypoint-precise",
+      //   "dss": "control-start-selective-section",
+      //   "fss": "control-arrival-selective-section",
+      //   "cp": "control-checkpoint",
+      //   "dsz": "speed-start",
+      //   "fsz": "speed-end",
+      //   "dn": "control-start-neutralization",
+      //   "dns": "control-start-neutralization-speed-limit",
+      //   "fn": "control-finish-neutralization",
+      //   "dt": "control-start-transfer",
+      //   "dts": "control-start-transfer-speed-limit",
+      //   "ft": "control-finish-transfer",
+      // }
+      // return "<img src='assets/svg/glyphs/" + map[this._notification().type] + ".svg'>";
+      filename = Notification.mapFileNameToType(this._notification().type, true);
+      return "<img src='assets/svg/glyphs/" + filename + ".svg'>";
+    }
+  },
+
+  assignWaypointColoring: function() {
+    if (this.closeProximity())
+      return ('waypoint-distance waypoint-distance-close');
+    if (this.hasNotification()) {
+      return "waypoint-distance waypoint-type-"+this._notification().type;
+    }
+    return "waypoint-distance"
+  },
+
+  removeWaypoint: function() {
+    this.notification(false);
+    $('#notification-options').addClass('hidden');
+    app.mapController.deleteWaypointBubble(this.routePointIndex);
+  },
+
+  //TODO Refactor this function
+  manageWaypoint(glyph) {
+    if(this._notification() == false){
+      // create a new notification
+        // grab the glyph name from the file name, agnostic to the path.
+        this._notification(new Notification(glyph));
+        if(this._notification().type == null){
+          this._notification(false);
+        }else {
+          app.mapController.addWaypointBubble(this.routePointIndex, this._notification().bubble, this._notification().fill)
+          // show notification options
+          $('#notification-options').removeClass('hidden');
+          app.noteControls.updateNotificationControls(this._notification());
+        }
+    }else{
+      this._notification(new Notification(glyph));
+      if(this._notification().type == null){
+        this.notification_(false);
+      } else {
+        app.mapController.updateWaypointBubble(this.routePointIndex,this._notification().bubble, this._notification().fill);
+        app.noteControls.updateNotificationControls(this._notification());
+      }
+    }
   },
 
   computedTotalDistance: function(){
