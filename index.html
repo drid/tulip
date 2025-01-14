@@ -425,10 +425,9 @@
       </div>
       <div class='waypoint-note'>
         <p data-bind="html: noteHTML"></p>
-        <div class='heading' data-bind="visible: showHeading">
-          <label>CAP </label><span data-bind="text: heading"></span>
+        <div class='heading' data-bind="css: { 'heading-coordinates-hidden': !showHeading()}, text: heading">
         </div>
-        <div class="coordinates" data-bind="visible: showCoordinates">
+        <div class="coordinates" data-bind="css: { 'heading-coordinates-hidden': !showCoordinates()}">
           <span data-bind="html: coordinates"></span>
         </div>
       </div>

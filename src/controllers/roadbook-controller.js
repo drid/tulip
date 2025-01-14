@@ -135,7 +135,7 @@ class RoadbookController {
     $(instruction.element).show();
     $('#roadbook').scrollTop(this.editingElement.position().top - 80)
     $('#waypoint-palette').slideDown('slow');
-    $(instruction.element).find('.waypoint-note').append($('#note-editor-container'));
+    $(instruction.element).find('.waypoint-note').find('p').after($('#note-editor-container'));
     $('#roadbook').css('padding-bottom', '0');
     $('#roadbook').find('.roadbook-info').hide();
     if (instruction.notification) {

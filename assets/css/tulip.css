@@ -114,17 +114,16 @@ textarea.waypoint-palette {
 }
 
 #note-editor-container {
-  position: relative;
-  top: -185px;
-}
-
-#note-editor-container.hideCap {
-  top: -137px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
 }
 
 #note-editor {
   width: 100%;
-  height: 135px;
+  height: 100%;
   box-shadow: 0px 2px 6px 1px rgba(255, 144, 0, 0.60);
   background: #fff;
   padding: 0;
@@ -310,25 +309,20 @@ textarea.waypoint-palette {
 .heading {
   font-family: Tahoma, Geneva, sans-serif;
   color: #000;
-  font-size: 1.85em;
-  left: 0px;
-  float: left;
-  margin-top: 2px;
-  margin-left: -4px;
-}
-
-.heading span {
+  font-size: 1.6em;
   background-color: #FF0;
   border-color: black;
-  border-width: 1px;
+  border-width: 2px 2px 0px 0px;
   border-style: solid;
-  padding-left: 2px;
-  padding-right: 2px;
-  padding-top: 5px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
 }
 
-.heading label {
-  display: none;
+.heading-coordinates-hidden {
+  color: lightgray;
+  background-color: transparent;
+  border-color: lightgray !important;
 }
 
 .instruction-danger-3 {
@@ -356,14 +350,17 @@ textarea.waypoint-palette {
 
 .coordinates {
   text-align: right;
-  border: 1px solid #000;
-  float: right;
+  border-width: 2px 0px 0px 2px;
+  border-style: solid;
+  border-color:  #000;
+  position: absolute;
+  right: -2px;
+  bottom: -2px;  
   font-size: 0.7em;
   padding: 3px;
   padding-left: 11px;
   padding-right: 11px;
   margin-top: 1px;
-  margin-right: -5px;
 }
 
 .map-container {
@@ -441,10 +438,6 @@ textarea.waypoint-palette {
 .roadbook-container.expanded {
   height: 95%;
   transition: all 1s;
-}
-
-.heading label {
-  height: 5px !important;
 }
 
 .selected {
@@ -621,7 +614,7 @@ nav.top-bar {
 
 .waypoint-selected {
   border-color: darkorange;
-  border-width: 3px;
+  border-width: 2px;
 }
 
 .waypoint-distance {
@@ -639,11 +632,12 @@ nav.top-bar {
 .waypoint-note {
   width: 195px;
   padding: 3px;
+  position: relative;
 }
 
 .waypoint-note p {
   width: 100%;
-  height: 135px;
+  height: 100%;
   margin: 0;
   overflow: hidden;
   word-wrap: break-word;
