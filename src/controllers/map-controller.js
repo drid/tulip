@@ -138,8 +138,8 @@ class MapController {
     }
   }
 
-  addWaypointBubble(index, bubble, fill) {
-    this.model.addWaypointBubble(index, bubble, fill, this.map);
+  addWaypointBubble(index, openRadius, validationRadius, fill) {
+    this.model.addWaypointBubble(index, openRadius, validationRadius, fill, this.map);
   }
 
   deleteWaypointBubble(index) {
@@ -155,12 +155,15 @@ class MapController {
     return this.model.insertLatLngIntoRoute(latLng, this.map);
   }
 
-  updateWaypointBubble(index, bubble, fill) {
-    if (this.model.markers[index].bubble) {
-      this.deleteWaypointBubble(index);
-      this.addWaypointBubble(index, bubble, fill);
-      // this.model.markers[index].bubble.setRadius(Number(bubble));
-      // this.model.markers[index].bubble.setFill(fill);
+  updateWaypointBubble(index, openBubble, validationBubble, fill) {
+    if (this.model.markers[index].openBubble) {
+      this.model.markers[index].openBubble.setRadius(Number(openBubble));
+      this.model.markers[index].openBubble.setOptions({ strokeColor: fill});
+    }
+    if (this.model.markers[index].validationBubble) {
+      this.model.markers[index].validationBubble.setRadius(Number(validationBubble));
+      this.model.markers[index].validationBubble.setOptions({ strokeColor: fill});
+      this.model.markers[index].validationBubble.setOptions({ fillColor: fill});
     }
   }
 
@@ -257,8 +260,11 @@ class MapController {
     */
     google.maps.event.addListener(marker, 'drag', function (evt) {
       _this.routePolyline.getPath().setAt(this.routePointIndex, evt.latLng);
-      if (this.bubble) {
-        this.bubble.setCenter(evt.latLng);
+      if (this.openBubble) {
+        this.openBubble.setCenter(evt.latLng);
+      }
+      if (this.validationBubble) {
+        this.validationBubble.setCenter(evt.latLng);
       }
     });
 

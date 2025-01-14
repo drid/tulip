@@ -67,8 +67,9 @@ class MapModel {
     marker.instruction = this.addInstructionToRoadbook(this.getInstructionGeodata(marker, this.route, this.markers), this.updateRoadbookAndInstructions);
   }
 
-  addWaypointBubble(index, radius, fill, map) {
-    this.markers[index].bubble = this.buildWaypointBubble(radius, this.markers[index].getPosition(), fill, map);
+  addWaypointBubble(index, openRadius, validationRadius, fill, map) {
+    this.markers[index].openBubble = this.buildWaypointBubble(openRadius, this.markers[index].getPosition(), "#000000", fill, map);
+    this.markers[index].validationBubble = this.buildWaypointBubble(validationRadius, this.markers[index].getPosition(), fill, fill, map);
   }
 
   // TODO this whole process could be more elegant
@@ -180,8 +181,11 @@ class MapModel {
   }
 
   deleteWaypointBubble(routePointIndex) {
-    if (this.markers[routePointIndex].bubble) {
-      this.markers[routePointIndex].bubble.setMap(null);
+    if (this.markers[routePointIndex].openBubble) {
+      this.markers[routePointIndex].openBubble.setMap(null);
+    }
+    if (this.markers[routePointIndex].validationBubble) {
+      this.markers[routePointIndex].validationBubble.setMap(null);
     }
   }
   // TODO this whole process could be more elegant
@@ -276,7 +280,8 @@ class MapModel {
     this.deleteWaypointBubble(marker.routePointIndex);
     this.deleteInstructionFromRoadbook(marker.instruction.id);
     marker.instruction = null;
-    marker.bubble = null;
+    marker.openBubble = null;
+    marker.validationBubble = null;
     this.updateRoadbookAndInstructions()
   }
 
@@ -438,9 +443,9 @@ class MapModel {
     });
   }
 
-  buildWaypointBubble(radius, center, fill, map) {
+  buildWaypointBubble(radius, center, fill, stroke, map) {
     return new google.maps.Circle({
-      strokeColor: fill,
+      strokeColor: stroke,
       strokeOpacity: 0.5,
       strokeWeight: 2,
       fillColor: fill,

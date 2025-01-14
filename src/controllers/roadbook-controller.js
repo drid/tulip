@@ -67,7 +67,7 @@ class RoadbookController {
   bindToPaletteControls() {
     var _this = this;
     $('#hide-palette').click(function () {
-      _this.model.finishInstructionEdit(_this.getNoteEditorHTML(), _this.getNotificationBubbleVal(), _this.getNotificationModifierVal());
+      _this.model.finishInstructionEdit(_this.getNoteEditorHTML(), _this.getNotificationOpenRadiusVal(), _this.getNotificationValidationRadiusVal(), _this.getNotificationTimeVal());
       _this.resetInstructionPalette();
     });
 
@@ -128,8 +128,9 @@ class RoadbookController {
     this.editingElement = instruction.element;
     $('#save-roadbook').removeClass('secondary');
     $('#note-editor').html(instruction.noteHTML());
-    $('#notification-bubble').val((instruction.notification ? instruction.notification.bubble : null));
-    $('#notification-modifier').val((instruction.notification ? instruction.notification.modifier : null));
+    $('#notification-open-radius').val((instruction.notification ? instruction.notification.openRadius : null));
+    $('#notification-validation-radius').val((instruction.notification ? instruction.notification.validationRadius : null));
+    $('#notification-time').val((instruction.notification ? instruction.notification.time : null));
     $('#note-editor-container').toggleClass('hideCap', !instruction.showHeading());
     $('#roadbook-waypoints').children().hide();
     $(instruction.element).show();
@@ -140,6 +141,16 @@ class RoadbookController {
     $('#roadbook').find('.roadbook-info').hide();
     if (instruction.notification) {
       $('#notification-options').removeClass('hidden');
+      if (instruction.notification.openRadius) {
+        $('#notification-open-radius-wrapper').removeClass('waypoint-parameter-none')
+      } else {
+        $('#notification-open-radius-wrapper').addClass('waypoint-parameter-none')
+      }
+      if (instruction.notification.time) {
+        $('#notification-time-wrapper').removeClass('waypoint-parameter-none')
+      } else {
+        $('#notification-time-wrapper').addClass('waypoint-parameter-none')
+      }
     }
   }
 
@@ -163,11 +174,15 @@ class RoadbookController {
     return $('#note-editor').html()
   }
 
-  getNotificationBubbleVal() {
-    return $('#notification-bubble').val();
+  getNotificationOpenRadiusVal() {
+    return $('#notification-open-radius').val();
   }
 
-  getNotificationModifierVal() {
-    return $('#notification-modifier').val();
+  getNotificationValidationRadiusVal() {
+    return $('#notification-validation-radius').val();
+  }
+
+  getNotificationTimeVal() {
+    return $('#notification-time').val();
   }
 }

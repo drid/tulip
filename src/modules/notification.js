@@ -16,12 +16,13 @@ class Notification {
       var notification = Notification.buildNotification(type);
       this.type = notification.type;
       this.openrallytype = notification.openrallytype;
-      this.bubble = notification.bubble;
-      this.modifier = notification.modifier;
+      this.openRadius = notification.openRadius;
+      this.validationRadius = notification.validationRadius;
       this.modMin = notification.modMin;
       this.modMax = notification.modMax;
       this.modStep = notification.modStep;
       this.fill = notification.fill;
+      this.time = notification.time;
     }
   }
 
@@ -60,8 +61,8 @@ class Notification {
         type: "wpm",
         openrallytype: "wpm",
         fill: '#008CBA',
-        bubble: 90,
-        modifier: 800,
+        openRadius: 800,
+        validationRadius: 90,
         modMin: 100,
         modMax: 1000,
         modStep: 100,
@@ -70,8 +71,7 @@ class Notification {
         type: "wpv",
         openrallytype: "wpv",
         fill: '#008CBA',
-        bubble: 200,
-        modifier: 1000,
+        validationRadius: 200,
         modMin: 5,
         modMax: 800,
         modStep: 100,
@@ -80,8 +80,8 @@ class Notification {
         type: "wpe",
         openrallytype: "wpe",
         fill: '#008CBA',
-        bubble: 90,
-        modifier: 1000,
+        openRadius: 1000,
+        validationRadius: 90,
         modMin: 5,
         modMax: 1000,
         modStep: 100,
@@ -90,8 +90,8 @@ class Notification {
         type: "wpn",
         openrallytype: "wpn",
         fill: '#ff20fb',
-        bubble: 200,
-        modifier: 800,
+        openRadius: 800,
+        validationRadius: 200,
         modMin: 200,
         modMax: 1000,
         modStep: 100,
@@ -100,14 +100,14 @@ class Notification {
         type: "wpc",
         openrallytype: "wpc",
         fill: '#ffffb9',
-        bubble: 300,
+        validationRadius: 300,
       },
       wpp: {
         type: "wpp",
         openrallytype: "wpp",
         fill: '#cccccc',
-        bubble: 20,
-        modifier: 100,
+        openRadius: 100,
+        validationRadius: 20,
         modMin: 5,
         modMax: 1000,
         modStep: 100,
@@ -116,8 +116,8 @@ class Notification {
         type: "wps",
         openrallytype: "wps",
         fill: '#ff4200',
-        bubble: 30,
-        modifier: 1000,
+        openRadius: 1000,
+        validationRadius: 30,
         modMin: 100,
         modMax: 2000,
         modStep: 100,
@@ -125,9 +125,9 @@ class Notification {
       dss: {
         type: "dss",
         openrallytype: "dss",
-        fill: '#ffba29',
-        bubble: 200,
-        modifier: 1000,
+        fill: '#ff4242',
+        openRadius: 1000,
+        validationRadius: 200,
         modMin: 5,
         modMax: 1000,
         modStep: 100,
@@ -135,9 +135,9 @@ class Notification {
       fss: {
         type: "fss",
         openrallytype: "ass",
-        fill: '#ffba29',
-        bubble: 90,
-        modifier: 800,
+        fill: '#ff6060',
+        openRadius: 800,
+        validationRadius: 90,
         modMin: 5,
         modMax: 1000,
         modStep: 100,
@@ -146,8 +146,8 @@ class Notification {
         type: "dsz",
         openrallytype: "dz",
         fill: '#ffba29',
-        bubble: 90,
-        modifier: 1000,
+        openRadius: 1000,
+        validationRadius: 90,
         modMin: 5,
         modMax: 1000,
         modStep: 5,
@@ -156,8 +156,8 @@ class Notification {
         type: "fsz",
         openrallytype: "fz",
         fill: '#ffba29',
-        bubble: 90,
-        modifier: 1000,
+        openRadius: 1000,
+        validationRadius: 90,
         modMin: 5,
         modMax: 1000,
         modStep: 5,
@@ -166,8 +166,8 @@ class Notification {
         type: "cp",
         openrallytype: "cp",
         fill: '#ba6bab',
-        bubble: 90,
-        modifier: 1000,
+        openRadius: 1000,
+        validationRadius: 90,
         modMin: 5,
         modMax: 1000,
         modStep: 5,
@@ -175,38 +175,48 @@ class Notification {
       dn: {
         type: "dn",
         openrallytype: "dn",
-        fill: '#ffba29',
-        bubble: 90,
+        fill: '#a8aaad',
+        openRadius: 1000,
+        validationRadius: 90,
+        time: 600
       },
       dns: {
         type: "dns",
         openrallytype: "dn",
         fill: '#ffba29',
-        bubble: 90,
+        openRadius: 1000,
+        validationRadius: 90,
+        time: 600
       },
       fn: {
         type: "fn",
         openrallytype: "fn",
-        fill: '#ffba29',
-        bubble: 90,
+        fill: '#a8aaad',
+        openRadius: 1000,
+        validationRadius: 90
       },
       dt: {
         type: "dt",
         openrallytype: "dt",
-        fill: '#ffba29',
-        bubble: 90,
+        fill: '#a8aaad',
+        openRadius: 1000,
+        validationRadius: 90,
+        time: 600
       },
       dts: {
         type: "dts",
         openrallytype: "dt",
         fill: '#ffba29',
-        bubble: 90,
+        openRadius: 1000,
+        validationRadius: 90,
+        time: 600
       },
       ft: {
         type: "ft",
         openrallytype: "ft",
-        fill: '#ffba29',
-        bubble: 90,
+        fill: '#a8aaad',
+        openRadius: 1000,
+        validationRadius: 90
       },
     }
     return types[type];

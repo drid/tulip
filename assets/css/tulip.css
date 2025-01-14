@@ -168,8 +168,8 @@ textarea.waypoint-palette {
   height: 95px;
 }
 
-#notification-bubble,
-#notification-modifier {
+#notification-open-radius,
+#notification-validation-radius {
   box-shadow: 2px 2px 5px -2px rgba(0, 0, 0, 0.60);
 }
 
@@ -665,6 +665,10 @@ nav.top-bar {
 }
 
 .waypoint-icon-none {
+  display: none;
+}
+
+.waypoint-parameter-none {
   display: none;
 }
 

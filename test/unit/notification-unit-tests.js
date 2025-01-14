@@ -33,8 +33,8 @@ test( 'Builds a WPM _notification type', function( assert ) {
   var _notification = notification.buildNotification('wpm');
 
   assert.equal(_notification.type, 'wpm', 'The type is correct');
-  assert.equal(_notification.bubble, 400, 'The bubble is the right size');
-  assert.equal(_notification.modifier, 400, 'The modifier is the right size');
+  assert.equal(_notification.openRadius, 400, 'The open radius is the right size');
+  assert.equal(_notification.validationRadius, 400, 'The validation radius is the right size');
   assert.end() ;
 } );
 
@@ -42,8 +42,8 @@ test( 'Builds a WPE _notification type', function( assert ) {
   var _notification = notification.buildNotification('wpe');
 
   assert.equal(_notification.type, 'wpe', 'The type is correct');
-  assert.equal(_notification.bubble, 50, 'The bubble is the right size');
-  assert.equal(_notification.modifier, undefined, 'There is no modifier');
+  assert.equal(_notification.openRadius, 50, 'The open radius is the right size');
+  assert.equal(_notification.validationRadius, undefined, 'There is no validation radius');
 
   assert.end() ;
 } );
@@ -52,8 +52,8 @@ test( 'Builds a WPS _notification type', function( assert ) {
   var _notification = notification.buildNotification('wps');
 
   assert.equal(_notification.type, 'wps', 'The type is correct');
-  assert.equal(_notification.bubble, 200, 'The bubble is the right size');
-  assert.equal(_notification.modifier, 200, 'The modifier is the right number');
+  assert.equal(_notification.openRadius, 200, 'The open radius is the right size');
+  assert.equal(_notification.validationRadius, 200, 'The validation radius is the right number');
 
   assert.end() ;
 } );
@@ -62,8 +62,8 @@ test( 'Builds a DSS _notification type', function( assert ) {
   var _notification = notification.buildNotification('dss');
 
   assert.equal(_notification.type, 'dss', 'The type is correct');
-  assert.equal(_notification.bubble, 50, 'The bubble is the right size');
-  assert.equal(_notification.modifier, undefined, 'There is no modifier');
+  assert.equal(_notification.openRadius, 50, 'The open radius is the right size');
+  assert.equal(_notification.validationRadius, undefined, 'There is no validation radius');
 
   assert.end() ;
 } );
@@ -72,8 +72,8 @@ test( 'Builds a FSS _notification type', function( assert ) {
   var _notification = notification.buildNotification('fss');
 
   assert.equal(_notification.type, 'fss', 'The type is correct');
-  assert.equal(_notification.bubble, 50, 'The bubble is the right size');
-  assert.equal(_notification.modifier, undefined, 'There is no modifier');
+  assert.equal(_notification.openRadius, 50, 'The open radius is the right size');
+  assert.equal(_notification.validationRadius, undefined, 'There is no validation radius');
 
   assert.end() ;
 } );
@@ -82,8 +82,8 @@ test( 'Builds a DSZ _notification type', function( assert ) {
   var _notification = notification.buildNotification('dsz');
 
   assert.equal(_notification.type, 'dsz', 'The type is correct');
-  assert.equal(_notification.bubble, 200, 'The bubble is the right size');
-  assert.equal(_notification.modifier, 5, 'The modifier is the right number');
+  assert.equal(_notification.openRadius, 200, 'The open radius is the right size');
+  assert.equal(_notification.validationRadius, 5, 'The validation radius is the right number');
 
   assert.end() ;
 } );
@@ -92,8 +92,8 @@ test( 'Builds a FSZ _notification type', function( assert ) {
   var _notification = notification.buildNotification('fsz');
 
   assert.equal(_notification.type, 'fsz', 'The type is correct');
-  assert.equal(_notification.bubble, 50, 'The bubble is the right size');
-  assert.equal(_notification.modifier, undefined, 'There is no modifier');
+  assert.equal(_notification.openRadius, 50, 'The open radius is the right size');
+  assert.equal(_notification.validationRadius, undefined, 'There is no validation radius');
 
   assert.end() ;
 } );

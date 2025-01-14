@@ -32,6 +32,7 @@ var Instruction = Class({
         this.notification = newValue; // Sync the local value
       }
     });
+    this.wpHasOpenRadius = ko.observable(this.notification || false);
 
     this.distFromPrev = ko.computed(this.computedDistanceFromPrev, this);
     this.closeProximity = ko.computed(this.instructionCloseProximity, this);
@@ -54,7 +55,7 @@ var Instruction = Class({
     this.routePointIndex = wptJson.routePointIndex == undefined ? null : wptJson.routePointIndex;
     // TODO refactor to make this one line
     if (this._notification()) {
-      app.mapController.addWaypointBubble(this.routePointIndex, this._notification().bubble, this._notification().fill)
+      app.mapController.addWaypointBubble(this.routePointIndex, this._notification().openRadius || 0, this._notification().validationRadius, this._notification().fill)
     }
 
     var _this = this;
@@ -75,7 +76,7 @@ var Instruction = Class({
       // see if we need to set a speed zone limit
       if (this._notification().type == "dsz") {
         var speed = glyphs.join(' ').match(/speed-([0-9]{2,3})/)[1]
-        this._notification().modifier = speed;
+        // this._notification().validationRadius = speed;
       }
     }
   },
@@ -139,27 +140,6 @@ var Instruction = Class({
 
   assignWaypointIcon: function () {
     if (this.hasNotification()) {
-      // var map = {
-      //   "wpm": "waypoint-masked",
-      //   "wpv": "waypoint-visible",
-      //   "wpe": "waypoint-eclipsed",
-      //   "wpc": "waypoint-control",
-      //   "wpn": "waypoint-navigation",
-      //   "wps": "waypoint-security",
-      //   "wpp": "waypoint-precise",
-      //   "dss": "control-start-selective-section",
-      //   "fss": "control-arrival-selective-section",
-      //   "cp": "control-checkpoint",
-      //   "dsz": "speed-start",
-      //   "fsz": "speed-end",
-      //   "dn": "control-start-neutralization",
-      //   "dns": "control-start-neutralization-speed-limit",
-      //   "fn": "control-finish-neutralization",
-      //   "dt": "control-start-transfer",
-      //   "dts": "control-start-transfer-speed-limit",
-      //   "ft": "control-finish-transfer",
-      // }
-      // return "<img src='assets/svg/glyphs/" + map[this._notification().type] + ".svg'>";
       filename = Notification.mapFileNameToType(this._notification().type, true);
       return "<img src='assets/svg/glyphs/" + filename + ".svg'>";
     }
@@ -189,7 +169,7 @@ var Instruction = Class({
       if (this._notification().type == null) {
         this._notification(false);
       } else {
-        app.mapController.addWaypointBubble(this.routePointIndex, this._notification().bubble, this._notification().fill)
+        app.mapController.addWaypointBubble(this.routePointIndex, this._notification().openRadius || 0, this._notification().validationRadius, this._notification().fill)
         // show notification options
         $('#notification-options').removeClass('hidden');
         app.noteControls.updateNotificationControls(this._notification());
@@ -199,7 +179,7 @@ var Instruction = Class({
       if (this._notification().type == null) {
         this.notification_(false);
       } else {
-        app.mapController.updateWaypointBubble(this.routePointIndex, this._notification().bubble, this._notification().fill);
+        app.mapController.updateWaypointBubble(this.routePointIndex, this._notification().openRadius || 0, this._notification().validationRadius, this._notification().fill);
         app.noteControls.updateNotificationControls(this._notification());
       }
     }

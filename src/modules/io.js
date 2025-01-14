@@ -95,11 +95,14 @@ var Io = Class({
       string = "<extensions>";
       string += "<openrally:" + waypoint.notification.openrallytype;
       if (waypoint.notification.openrallytype.startsWith('wp')) {
-        if (waypoint.notification.bubble) {
-          string += " open='" + waypoint.notification.bubble + "'";
+        if (waypoint.notification.openRadius) {
+          string += " open='" + waypoint.notification.openRadius + "'";
         }
-        if (waypoint.notification.modifier) {
-          string += " clear='" + waypoint.notification.modifier + "'";
+        if (waypoint.notification.validationRadius) {
+          string += " clear='" + waypoint.notification.validationRadius + "'";
+        }
+        if (waypoint.notification.time) {
+          string += " time='" + waypoint.notification.time + "'";
         }
       }
       if (waypoint.notification.openrallytype.startsWith('dz')) {
@@ -121,8 +124,8 @@ var Io = Class({
       var type = waypoint.notification.type
       type = (type == "wpm" ? type + count : type).toUpperCase();
       var dist = type == "wpm" ? ":" + waypoint.kmFromStart().toFixed(2) : "";
-      var modifier = waypoint.notification.modifier ? ":" + waypoint.notification.modifier : ""
-      string = type + modifier + dist;
+      var validationRadius = waypoint.notification.validationRadius ? ":" + waypoint.notification.validationRadius : ""
+      string = type + validationRadius + dist;
     } else {
       string = count;
     }
@@ -136,7 +139,7 @@ var Io = Class({
     if (waypoint.notification) {
       var type = waypoint.notification.type
       // TODO Speed Zone
-      string = (type == "wpm" ? "WP" + count : (type == "wps" ? "!!!" : (type == "dsz" ? "SZ" + waypoint.notification.modifier : "")));
+      string = (type == "wpm" ? "WP" + count : (type == "wps" ? "!!!" : (type == "dsz" ? "SZ" + waypoint.notification.validationRadius : "")));
     }
     return string;
   },
