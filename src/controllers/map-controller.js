@@ -246,7 +246,7 @@ class MapController {
           _this.model.revertInstructionToRoutePoint(this);
         } else {
           _this.model.addInstruction(this);
-          $('#roadbook').scrollTop(0);
+          // $('#roadbook').scrollTop(0);
           $('#roadbook').scrollTop(($(this.instruction.element).offset().top - 100));
         }
       }

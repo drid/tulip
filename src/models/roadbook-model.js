@@ -61,6 +61,7 @@ class RoadbookModel {
         marker.instruction = this.appendInstruction(point);
       }
     }
+    this.reindexInstructions();
     // NOTE this is less than ideal
     if (this.desc() !== null) {
       this.controller.descriptionTextEditor.setHTML(this.desc());
