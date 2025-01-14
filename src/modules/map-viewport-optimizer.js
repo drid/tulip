@@ -49,4 +49,6 @@ class MapOptimizer {
 /*
   Node exports for test suite
 */
-// module.exports.optimizer = MapOptimizer;
+if (typeof window == 'undefined') {
+  module.exports.optimizer = MapOptimizer;
+}

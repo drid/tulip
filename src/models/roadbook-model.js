@@ -326,4 +326,6 @@ class RoadbookModel {
 /*
   Node exports for test suite
 */
-// module.exports.roadbookModel = RoadbookModel;
+if (typeof window == 'undefined') {
+  module.exports.roadbookModel = RoadbookModel;
+}
