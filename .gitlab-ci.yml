@@ -1,4 +1,5 @@
 stages:
+  - test
   - build
   - package
   - release
@@ -9,6 +10,14 @@ variables:
   BUILDER_IMAGE_WIN: electronuserland/builder:wine-mono
   PKG_PATH: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/$APPNAME/$VERSION
   SNAP_NAME: tulip-roadbook
+
+unit-testing:
+  stage: test
+  image: ${BUILDER_IMAGE}
+  before_script:
+    - npm install electron-builder
+  script:
+    - npm test
 
 build-win:
   stage: build

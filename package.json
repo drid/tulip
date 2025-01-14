@@ -9,7 +9,8 @@
     "start": "electron-forge start",
     "build-linux": "electron-builder --linux --publish never",
     "build-win": "electron-builder --windows",
-    "build-mac": "electron-forge package --platform=\"darwin\""
+    "build-mac": "electron-forge package --platform=\"darwin\"",
+    "test": "tape test/unit/*-tests.js"
   },
   "repository": {
     "type": "git",
@@ -37,7 +38,7 @@
     "@electron-forge/maker-dmg": "^7.6.0",
     "electron": "^29.4.6",
     "electron-builder": "^25.1.8",
-    "tape": "^4.14.0"
+    "tape": "^4.17.0"
   },
   "dependencies": {
     "@electron/remote": "^2.0.9",

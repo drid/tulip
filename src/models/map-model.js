@@ -509,4 +509,7 @@ class MapModel {
 /*
   Node exports for test suite
 */
-// module.exports.mapModel = MapModel;
+if (typeof window == 'undefined') {
+  console.log('exporting module')
+  module.exports.mapModel = MapModel;
+}
