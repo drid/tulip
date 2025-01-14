@@ -127,11 +127,11 @@ test( 'Adds a instruction bubble to a marker', function(assert){
   mapModel.addWaypointBubble(2, 400, "blue", "map of narnia");
 
   var marker = mapModel.markers[2];
-  assert.ok(marker.bubble, "It creates a bubble and gives its reference to the marker");
-  assert.equal(marker.bubble.radius, 400, "It sets the marker bubble radius");
-  assert.deepEqual(marker.bubble.latLng, {lat: 123, lng: 456}, "It sets the marker bubble position");
-  assert.equal(marker.bubble.fill, "blue", "It sets the marker bubble fill color");
-  assert.equal(marker.bubble.map, "map of narnia", "It sets the marker bubble map");
+  assert.ok(marker.openRadius, "It creates a bubble and gives its reference to the marker");
+  assert.equal(marker.openRadius.radius, 400, "It sets the marker bubble radius");
+  assert.deepEqual(marker.openRadius.latLng, {lat: 123, lng: 456}, "It sets the marker bubble position");
+  assert.equal(marker.openRadius.fill, "blue", "It sets the marker bubble fill color");
+  assert.equal(marker.openRadius.map, "map of narnia", "It sets the marker bubble map");
 
   assert.end();
 });

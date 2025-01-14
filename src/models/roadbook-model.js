@@ -216,20 +216,21 @@ class RoadbookModel {
     }
   }
 
-  finishInstructionEdit(noteVal, notificationVal, modifierVal) {
+  finishInstructionEdit(noteVal, openRadius, validationRadius, time) {
     if (this.currentlyEditingInstruction !== null) {
-      this.updateInstructionAfterEdit(noteVal, notificationVal, modifierVal);
+      this.updateInstructionAfterEdit(noteVal, openRadius, validationRadius, time);
       this.currentlyEditingInstruction = null;
     }
     return true;
   }
 
-  updateInstructionAfterEdit(noteVal, notificationVal, modifierVal) {
+  updateInstructionAfterEdit(noteVal, openRadius, validationRadius, time) {
     this.currentlyEditingInstruction.changeAddedTrackType('track');
     this.currentlyEditingInstruction.noteHTML(noteVal);
     if (this.currentlyEditingInstruction.notification) {
-      this.currentlyEditingInstruction.notification.bubble = notificationVal;
-      this.currentlyEditingInstruction.notification.modifier = modifierVal;
+      this.currentlyEditingInstruction.notification.openRadius = openRadius;
+      this.currentlyEditingInstruction.notification.validationRadius = validationRadius;
+      this.currentlyEditingInstruction.notification.time = time;
     }
     this.currentlyEditingInstruction.tulip.finishEdit();
     this.currentlyEditingInstruction.tulip.finishRemove();

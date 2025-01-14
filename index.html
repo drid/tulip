@@ -358,30 +358,40 @@
                     </div>
                     <div class="row hidden" id="notification-options"  >
                       <div class="left large-12 columns">
-                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Change the waypoint bubble radius and modifier.">
+                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Change the waypoint open and validation radius.">
                           Waypoint options
                         </span>
                         <br>
                         <!-- <a href="#" id="show-notification-options" class="button tiny secondary radius" data-reveal-id="notification-modal"><i class="fi-target-two"></i></a> -->
                         <div>
-                          <div class="row collapse">
+                          <div class="row collapse" id="notification-open-radius-wrapper">
                             <div class="large-6 columns">
-                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Waypoint bubble radius for RallyComp or RallyBlitz. Please be sure the device your riders are using is compatible with adjustable waypoints.">
-                                bubble:
+                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Waypoint open radius.">
+                                Open(m):
                               </span>
                             </div>
                             <div class="large-6 columns">
-                              <input type="number" id="notification-bubble" min="50" max="800" step="50">
+                              <input type="number" id="notification-open-radius" min="50" max="800" step="50">
                             </div>
                           </div>
                           <div class="row collapse">
                             <div class="large-6 columns">
-                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Waypoint modifier for RallyComp or RallyBlitz waypoints, please refer to their documentation for the effects of using this modifier on a particular type of waypoint.">
-                                modifier:
+                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Waypoint validation radius.">
+                                Validation:
                               </span>
                             </div>
                             <div class="large-6 columns">
-                              <input type="number" id="notification-modifier">
+                              <input type="number" id="notification-validation-radius">
+                            </div>
+                          </div>
+                          <div class="row collapse" id="notification-time-wrapper">
+                            <div class="large-6 columns">
+                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Time limit.">
+                                Time(s):
+                              </span>
+                            </div>
+                            <div class="large-6 columns">
+                              <input type="number" id="notification-time">
                             </div>
                           </div>
                         </div>

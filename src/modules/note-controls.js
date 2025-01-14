@@ -30,27 +30,40 @@ class NoteControls {
 
     $('#show-notification-options').click(function () {
       var notification = app.roadbook.currentlyEditingInstruction.notification;
-      $('#notification-bubble').val(notification.bubble);
-      $('#notification-modifier').val(notification.modifier);
-      $('#notification-modifier').attr('min', notification.modMin);
-      $('#notification-modifier').attr('max', notification.modMax);
-      $('#notification-modifier').attr('step', notification.modStep);
+      $('#notification-open-radius').val(notification.openRadius);
+      $('#notification-validation-radius').val(notification.validationRadius);
+      $('#notification-time').val(notification.time);
+      $('#notification-validation-radius').attr('min', notification.modMin);
+      $('#notification-validation-radius').attr('max', notification.modMax);
+      $('#notification-validation-radius').attr('step', notification.modStep);
     });
     //TODO decouple this
-    $('#notification-bubble, #notification-modifier').bind('keyup input', function () {
+    $('#notification-open-radius, #notification-validation-radius').bind('keyup input', function () {
       var notification = app.roadbook.currentlyEditingInstruction.notification;
-      notification.bubble = $('#notification-bubble').val();
-      notification.modifier = $('#notification-modifier').val();
+      notification.openRadius = $('#notification-open-radius').val();
+      notification.validationRadius = $('#notification-validation-radius').val();
+      notification.time = $('#notification-time').val();
     });
 
   }
 
   updateNotificationControls(notification) {
-    $('#notification-bubble').val(notification.bubble);
-    $('#notification-modifier').val(notification.modifier);
-    $('#notification-modifier').attr('min', notification.modMin);
-    $('#notification-modifier').attr('max', notification.modMax);
-    $('#notification-modifier').attr('step', notification.modStep);
+    $('#notification-open-radius').val(notification.openRadius);
+    $('#notification-validation-radius').val(notification.validationRadius);
+    $('#notification-time').val(notification.time);
+    $('#notification-validation-radius').attr('min', notification.modMin);
+    $('#notification-validation-radius').attr('max', notification.modMax);
+    $('#notification-validation-radius').attr('step', notification.modStep);
+    if (notification.openRadius) {
+      $('#notification-open-radius-wrapper').removeClass('waypoint-parameter-none')
+    } else {
+      $('#notification-open-radius-wrapper').addClass('waypoint-parameter-none')
+    }
+    if (notification.time) {
+      $('#notification-time-wrapper').removeClass('waypoint-parameter-none')
+    } else {
+      $('#notification-time-wrapper').addClass('waypoint-parameter-none')
+    }
   }
 
   resizeSelection(size) {
