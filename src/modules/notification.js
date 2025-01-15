@@ -155,7 +155,7 @@ class Notification {
       fsz: {
         type: "fsz",
         openrallytype: "fz",
-        fill: '#ffba29',
+        fill: '#3db54a',
         openRadius: 1000,
         validationRadius: 90,
         modMin: 5,

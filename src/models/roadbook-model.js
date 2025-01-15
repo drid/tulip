@@ -193,9 +193,22 @@ class RoadbookModel {
   }
 
   reindexInstructions() {
+    var inSpeedZone=false;
     for (var i = 0; i < this.instructions().length; i++) {
       var instruction = this.instructions()[i];
       instruction.id = i + 1; //we don't need no zero index
+      // Update speed zones
+      if (instruction.notification) {
+        if (["dsz", "dns", "dts"].includes(instruction.notification.type)) {
+          inSpeedZone = true;
+        }
+      }
+      instruction.inSpeedZone(inSpeedZone);
+      if (instruction.notification) {
+        if (["fsz", "fn", "ft"].includes(instruction.notification.type) && inSpeedZone) {
+          inSpeedZone = false;
+        }
+      }
     }
   }
 

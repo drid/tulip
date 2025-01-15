@@ -412,7 +412,7 @@
   -->
   <!--  instruction template-->
   <script type="text/html" id="waypoint-template">
-    <div class='waypoint row'>
+    <div class='waypoint row' data-bind="css: assignInstructionColoring()">
       <div data-bind="class: assignWaypointColoring()">
         <div class='total-distance'>
           <div data-bind="text: totalDistance">

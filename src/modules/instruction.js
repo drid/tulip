@@ -32,8 +32,7 @@ var Instruction = Class({
         this.notification = newValue; // Sync the local value
       }
     });
-    this.wpHasOpenRadius = ko.observable(this.notification || false);
-
+    this.inSpeedZone = ko.observable(false);
     this.distFromPrev = ko.computed(this.computedDistanceFromPrev, this);
     this.closeProximity = ko.computed(this.instructionCloseProximity, this);
     this.waypointIcon = ko.computed(this.assignWaypointIcon, this);
@@ -154,6 +153,21 @@ var Instruction = Class({
     return "waypoint-distance"
   },
 
+  assignInstructionColoring: function () {
+    if (this.hasNotification()) {
+      if (["dsz", "dns", "dts"].includes(this.notification.type)) {
+        return "instruction-DZ";
+      }
+      if (["fsz", "fn", "ft"].includes(this.notification.type) && this.inSpeedZone()) {
+        return "instruction-FZ";
+      }
+    }
+    console.log(this.inSpeedZone())
+    if (this.inSpeedZone()) {
+      return "instruction-speed-zone";
+    }
+    return "";
+  },
   removeWaypoint: function () {
     console.log('Removing waypoint', this.notification)
     this.notification = false;

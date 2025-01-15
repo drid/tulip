@@ -324,13 +324,6 @@ textarea.waypoint-palette {
   border-color: lightgray !important;
 }
 
-.instruction-danger-3 {
-  outline-color: red;
-  outline-width: 6px;
-  outline-style: solid;
-  outline-offset: -2px;
-}
-
 .instruction-number {
   height: 21px;
   color: #FFFFFF;
@@ -354,7 +347,7 @@ textarea.waypoint-palette {
   border-color:  #000;
   position: absolute;
   right: -2px;
-  bottom: -2px;  
+  bottom: 0px;  
   font-size: 0.7em;
   padding: 3px;
   padding-left: 11px;
@@ -605,10 +598,15 @@ nav.top-bar {
 .waypoint {
   width: 500px !important;
   border: 2px solid #000;
-  height: 182px;
+  border-bottom-width: 0px;
+  height: 180px;
   margin-left: 0 !important;
   margin-right: 0 !important;
-  margin-top: 10px !important;
+  position:relative;
+}
+
+.waypoint:last-child {
+  border-top-width: 2px;
 }
 
 .waypoint-selected {
@@ -618,7 +616,7 @@ nav.top-bar {
 
 .waypoint-distance {
   width: 120px;
-  height: 179px;
+  height: 180px;
   float: left;
   position: relative;
 }
@@ -654,7 +652,7 @@ nav.top-bar {
 
 .waypoint-note,
 .waypoint-tulip {
-  height: 178px;
+  height: 180px;
   float: left
 }
 
@@ -694,5 +692,25 @@ nav.top-bar {
 }
 
 .delete-suggestion {
-  cursor: not-allowed; /* Suggest delete */
+  cursor: not-allowed;
+}
+
+.instruction-DZ {
+  box-shadow: 
+    inset 0 5px 0 0 #ffa500,  /* Top */
+    inset 5px 0 0 0 orange,  /* Left */
+    inset -5px 0 0 0 orange; /* Right */
+}
+
+.instruction-FZ {
+  box-shadow: 
+    inset 0 -5px 0 0 orange,  /* Top */
+    inset 5px 0 0 0 orange,  /* Left */
+    inset -5px 0 0 0 orange; /* Right */
+}
+
+.instruction-speed-zone {
+  box-shadow: 
+    inset 5px 0 0 0 orange,  /* Left */
+    inset -5px 0 0 0 orange; /* Right */
 }
