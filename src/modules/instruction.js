@@ -155,9 +155,12 @@ var Instruction = Class({
   },
 
   removeWaypoint: function () {
-    this.notification(false);
+    console.log('Removing waypoint', this.notification)
+    this.notification = false;
+    this._notification(false);
     $('#notification-options').addClass('hidden');
     app.mapController.deleteWaypointBubble(this.routePointIndex);
+    this.assignWaypointColoring();
   },
 
   //TODO Refactor this function

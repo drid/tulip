@@ -692,3 +692,7 @@ nav.top-bar {
 .right-off-canvas-menu input {
   width: auto !important;
 }
+
+.delete-suggestion {
+  cursor: not-allowed; /* Suggest delete */
+}

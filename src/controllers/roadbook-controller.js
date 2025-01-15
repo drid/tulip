@@ -137,6 +137,18 @@ class RoadbookController {
     $('#roadbook').scrollTop(this.editingElement.position().top - 80)
     $('#waypoint-palette').slideDown('slow');
     $(instruction.element).find('.waypoint-note').find('p').after($('#note-editor-container'));
+    // Manage wp delete
+    $(instruction.element).find('.waypoint-icon').on('dblclick', function (event) {
+      event.preventDefault();
+      instruction.removeWaypoint();
+    });
+    $(instruction.element).find('.waypoint-icon').addClass('delete-suggestion');
+    $(instruction.element).find('.waypoint-icon').on('mouseenter', function () {
+        $(this).attr('title', 'Double-click to delete the waypoint');
+    }).on('mouseleave', function () {
+        $(this).removeAttr('title');
+    });
+
     $('#roadbook').css('padding-bottom', '0');
     $('#roadbook').find('.roadbook-info').hide();
     if (instruction.notification) {
@@ -168,6 +180,8 @@ class RoadbookController {
     $('#notification-options').addClass('hidden');
     $('#roadbook').scrollTop(this.editingElement.position().top - 80);
     $('#note-editor').html('');
+    $('.waypoint.row').find('.waypoint-icon').off();
+    $('.waypoint.row').find('.waypoint-icon').removeClass('delete-suggestion');
   }
 
   getNoteEditorHTML() {
