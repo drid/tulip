@@ -33,6 +33,7 @@ var Instruction = Class({
       }
     });
     this.inSpeedZone = ko.observable(false);
+    this.checkpointNumber = ko.observable(false);
     this.speedLimit = ko.observable(false);
     this.dangerLevel = ko.observable(0);
     this.distFromPrev = ko.computed(this.computedDistanceFromPrev, this);
@@ -179,6 +180,12 @@ var Instruction = Class({
     }
     if (this.inSpeedZone()) return "instruction-speed-zone";
     return "";
+  },
+
+  assignTulipColoring: function () {
+    if (this.hasNotification() && (this.notification.type == "cp")) {
+      return "waypoint-tulip-checkpoint";
+    }
   },
 
   isWaypointDanger2: function () {

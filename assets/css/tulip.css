@@ -613,7 +613,8 @@ nav.top-bar {
 }
 
 .waypoint-selected {
-  border-color: darkorange;
+  border-color: #6a00ff;
+  border-style: dashed;
   border-width: 2px;
 }
 
@@ -655,12 +656,26 @@ nav.top-bar {
   border-right: 1px solid #000;
   padding-left: 0 !important;
   padding-right: 0 !important;
+  position: relative;
 }
 
 .waypoint-note,
 .waypoint-tulip {
   height: 180px;
   float: left;
+}
+
+.waypoint-tulip-checkpoint {
+  box-shadow: inset 0 0 0px 6px #ee82ee;
+}
+
+.tulip-checkpoint-number {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  font-size: 1.9em;
+  font-weight: bold;
+  color: violet;
 }
 
 .waypoint-icon {

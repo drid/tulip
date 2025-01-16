@@ -193,7 +193,8 @@ class RoadbookModel {
   }
 
   reindexInstructions() {
-    var inSpeedZone=false;
+    var inSpeedZone = false;
+    var checkpointNumber = 0;
     for (var i = 0; i < this.instructions().length; i++) {
       var instruction = this.instructions()[i];
       instruction.id = i + 1; //we don't need no zero index
@@ -208,6 +209,13 @@ class RoadbookModel {
         if (["fsz", "fn", "ft"].includes(instruction.notification.type) && inSpeedZone) {
           inSpeedZone = false;
         }
+      }
+      // Checkpoint numbering
+      if (instruction.notification.type == "cp") {
+        checkpointNumber++;
+        instruction.checkpointNumber('CP' + checkpointNumber);
+      } else {
+        instruction.checkpointNumber(false);
       }
     }
   }

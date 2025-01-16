@@ -429,9 +429,10 @@
           </div>
         </div>
       </div>
-      <div class='waypoint-tulip'>
+      <div class='waypoint-tulip' data-bind="css: assignTulipColoring()">
         <canvas data-bind="instructionCanvasRendered" width='180' height='180'>
         </canvas>
+        <div class="tulip-checkpoint-number" data-bind="text: checkpointNumber(), visible: checkpointNumber()"></div>
       </div>
       <div class='waypoint-note'>
         <p data-bind="html: noteHTML"></p>
