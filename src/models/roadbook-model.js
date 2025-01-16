@@ -234,6 +234,7 @@ class RoadbookModel {
       this.updateInstructionAfterEdit(noteVal, openRadius, validationRadius, time);
       this.currentlyEditingInstruction = null;
     }
+    this.reindexInstructions();
     return true;
   }
 

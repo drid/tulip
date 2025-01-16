@@ -176,6 +176,7 @@ class MapModel {
   */
   deletePointFromRoute(index) {
     this.route.removeAt(index)
+    this.deleteWaypointBubble(index);
     this.markers.splice(index, 1)[0].setMap(null);
     this.decrementRouteVertexIndecies(index);
   }
@@ -510,6 +511,5 @@ class MapModel {
   Node exports for test suite
 */
 if (typeof window == 'undefined') {
-  console.log('exporting module')
   module.exports.mapModel = MapModel;
 }

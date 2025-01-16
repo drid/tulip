@@ -33,10 +33,13 @@ var Instruction = Class({
       }
     });
     this.inSpeedZone = ko.observable(false);
+    this.speedLimit = ko.observable(false);
+    this.dangerLevel = ko.observable(0);
     this.distFromPrev = ko.computed(this.computedDistanceFromPrev, this);
     this.closeProximity = ko.computed(this.instructionCloseProximity, this);
     this.waypointIcon = ko.computed(this.assignWaypointIcon, this);
     this.waypointColoring = ko.computed(this.assignWaypointColoring, this);
+    this.waypointDanger2 = ko.computed(this.isWaypointDanger2, this)
     this.totalDistance = ko.computed(this.computedTotalDistance, this);
     this.heading = ko.computed(this.computedHeading, this);
     this.coordinates = ko.computed(this.computedCoordinates, this);
@@ -49,6 +52,15 @@ var Instruction = Class({
     // instruction don't get any note info when they are added via UI so intialize them to blank
     var text = wptJson.notes == undefined ? '' : wptJson.notes.text;
     this.noteHTML = ko.observable(text);
+    this.noteHTML.subscribe((noteHTML) => {
+      if (this.dangerLevel() == 3 && this.notification == false) {
+        console.log('Settings waypoint to WPS');
+        this._notification(new Notification('waypoint-security'));
+      }
+    })
+    const glyphs = [...text.matchAll(/<img[^>]*src="[^"]*\/([a-z0-9,-]*)\.[^"]*"/g)]
+      .map(match => match[1]); // Extract the captured group
+    this.parseGlyphInfo(glyphs);
 
     this.roadbook = roadbook;
     this.routePointIndex = wptJson.routePointIndex == undefined ? null : wptJson.routePointIndex;
@@ -70,14 +82,11 @@ var Instruction = Class({
     };
   },
   //TODO This needs refactored
-  manageNotifications(glyphs) {
-    if (this._notification() != false) {
-      // see if we need to set a speed zone limit
-      if (this._notification().type == "dsz") {
-        var speed = glyphs.join(' ').match(/speed-([0-9]{2,3})/)[1]
-        // this._notification().validationRadius = speed;
-      }
-    }
+  parseGlyphInfo(glyphs) {
+    match = glyphs.join(' ').match(/danger-(\d+)/);
+    this.dangerLevel(match ? match[1] : 0);
+    match = glyphs.join(' ').match(/speed-(\d+)/);
+    this.speedLimit(match ? match[1] : false);
   },
 
   hasNotification() {
@@ -145,31 +154,38 @@ var Instruction = Class({
   },
 
   assignWaypointColoring: function () {
+    var instructionClass = "";
+    instructionClass += ((this.dangerLevel() == 3) ? " waypoint-danger-3" : "");
+    instructionClass += ((this.inSpeedZone()) ? " waypoint-speed-zone" : "");
     if (this.closeProximity())
-      return ('waypoint-distance waypoint-distance-close');
+      return ('waypoint-distance-close') + instructionClass;
     if (this.hasNotification()) {
-      return "waypoint-distance waypoint-type-" + this._notification().type;
+      return "waypoint-type-" + this._notification().type + instructionClass;
     }
-    return "waypoint-distance"
+    return ""
   },
 
   assignInstructionColoring: function () {
+    // Danger 3 coloring
+    if (this.dangerLevel() == 3) return "instruction-danger-3";
+    // Speed zone coloring
     if (this.hasNotification()) {
       if (["dsz", "dns", "dts"].includes(this.notification.type)) {
-        return "instruction-DZ";
+        return "instruction-DZ ";
       }
       if (["fsz", "fn", "ft"].includes(this.notification.type) && this.inSpeedZone()) {
-        return "instruction-FZ";
+        return "instruction-FZ ";
       }
     }
-    console.log(this.inSpeedZone())
-    if (this.inSpeedZone()) {
-      return "instruction-speed-zone";
-    }
+    if (this.inSpeedZone()) return "instruction-speed-zone";
     return "";
   },
+
+  isWaypointDanger2: function () {
+    return this.dangerLevel() == 2;
+  },
+
   removeWaypoint: function () {
-    console.log('Removing waypoint', this.notification)
     this.notification = false;
     this._notification(false);
     $('#notification-options').addClass('hidden');

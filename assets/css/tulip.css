@@ -320,7 +320,7 @@ textarea.waypoint-palette {
 
 .heading-coordinates-hidden {
   color: lightgray;
-  background-color: transparent;
+  background-color: transparent !important;
   border-color: lightgray !important;
 }
 
@@ -353,6 +353,7 @@ textarea.waypoint-palette {
   padding-left: 11px;
   padding-right: 11px;
   margin-top: 1px;
+  background-color: white;
 }
 
 .map-container {
@@ -588,7 +589,9 @@ nav.top-bar {
 }
 
 .total-distance div {
-  margin-top: 20px
+  margin-top: 20px;
+  line-height: 1;
+  display: inline-block;
 }
 
 .hidden {
@@ -626,6 +629,10 @@ nav.top-bar {
   background-color: #93ff93;
 }
 
+.waypoint-danger-2 {
+  border-bottom: 5px solid red;
+}
+
 .waypoint-note {
   width: 195px;
   padding: 3px;
@@ -653,7 +660,7 @@ nav.top-bar {
 .waypoint-note,
 .waypoint-tulip {
   height: 180px;
-  float: left
+  float: left;
 }
 
 .waypoint-icon {
@@ -672,6 +679,17 @@ nav.top-bar {
 
 .waypoint-type-wpc {
   background-color: #ffffb9;
+}
+
+.waypoint-danger-3 {
+  box-shadow: inset 0 5px 0 0 red,  /* Top */
+      inset 5px 0 0 0 red,  /* Left */
+      inset 0 -7px 0 0 red; /* bottom */
+}
+
+.waypoint-speed-zone {
+  box-shadow: 
+  inset 5px 0 0 0 orange;  /* Left */
 }
 
 .waypoint-type-wpm,
@@ -713,4 +731,8 @@ nav.top-bar {
   box-shadow: 
     inset 5px 0 0 0 orange,  /* Left */
     inset -5px 0 0 0 orange; /* Right */
+}
+
+.instruction-danger-3 {
+  box-shadow: inset 0 0 0 5px red;
 }

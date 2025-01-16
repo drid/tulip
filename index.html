@@ -413,9 +413,9 @@
   <!--  instruction template-->
   <script type="text/html" id="waypoint-template">
     <div class='waypoint row' data-bind="css: assignInstructionColoring()">
-      <div data-bind="class: assignWaypointColoring()">
+      <div class="waypoint-distance" data-bind="css: assignWaypointColoring()">
         <div class='total-distance'>
-          <div data-bind="text: totalDistance">
+          <div data-bind="text: totalDistance, css: { 'waypoint-danger-2': waypointDanger2() }">
           </div>
         </div>
         <div class="waypoint-icon" data-bind="html: waypointIcon(), css: { 'waypoint-icon-none': waypointIcon() == undefined }">

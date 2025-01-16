@@ -318,7 +318,6 @@ class App {
     settings.coordinatesFormat = $('#coordinates_format').find(":selected").val();
     localStorage.setItem('settings', JSON.stringify(settings));
     app.settings = settings;
-    console.log(settings);
     $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
     this.refreshInstructionElements();
   }

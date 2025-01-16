@@ -58,6 +58,7 @@ class GlyphControls {
     $('.glyph').click(function (e) {
       _this.handleGlyphSelectUI(e);
       _this.addGlyphToInstruction(this);
+      app.noteControls.checkForNotification();
     });
   }
 
@@ -127,6 +128,7 @@ class GlyphControls {
       // NOTE this module should only know about the roadbook
       app.roadbook.currentlyEditingInstruction.tulip.addGlyph(app.glyphPlacementPosition, src);
     }
+
   }
 
 };
