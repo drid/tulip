@@ -415,7 +415,7 @@
     <div class='waypoint row' data-bind="css: assignInstructionColoring()">
       <div class="waypoint-distance" data-bind="css: assignWaypointColoring()">
         <div class='total-distance'>
-          <div data-bind="text: totalDistance, css: { 'waypoint-danger-2': waypointDanger2() }">
+          <div data-bind="text: filteredKmFromStart, css: { 'waypoint-danger-2': waypointDanger2() }">
           </div>
         </div>
         <div class="waypoint-icon" data-bind="html: waypointIcon(), css: { 'waypoint-icon-none': waypointIcon() == undefined }">
@@ -675,6 +675,7 @@
                 <li><a class="th" href="#"><img class="glyph" src="./assets/svg/glyphs/sensitive-zone.svg"></a><p>sensitive zone</p></li>
                 <li><a class="th" href="#"><img class="glyph" src="./assets/svg/glyphs/photo.svg"></a><p>photo</p></li>
                 <li><a class="th" href="#"><img class="glyph" src="./assets/svg/glyphs/camp.svg"></a><p>camp</p></li>
+                <li><a class="th" href="#"><img class="glyph" src="./assets/svg/glyphs/reset-distance.svg"></a><p>Reset distance to 0</p></li>
               </ul>
             </div>
             <div class="content" id="orga-waypoint">

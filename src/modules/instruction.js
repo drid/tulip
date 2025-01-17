@@ -35,7 +35,10 @@ var Instruction = Class({
     this.inSpeedZone = ko.observable(false);
     this.checkpointNumber = ko.observable(false);
     this.speedLimit = ko.observable(false);
+    this.hasResetGlyph = ko.observable(false);
+    this.resetDistance = ko.observable(0);
     this.dangerLevel = ko.observable(0);
+    this.filteredKmFromStart = ko.computed(this.computedKmFromStart, this);
     this.distFromPrev = ko.computed(this.computedDistanceFromPrev, this);
     this.closeProximity = ko.computed(this.instructionCloseProximity, this);
     this.waypointIcon = ko.computed(this.assignWaypointIcon, this);
@@ -51,7 +54,7 @@ var Instruction = Class({
     this.exitTrackType = wptJson.exitTrackType == undefined ? 'track' : wptJson.exitTrackType;
 
     // instruction don't get any note info when they are added via UI so intialize them to blank
-    var text = wptJson.notes == undefined ? '' : wptJson.notes.text;
+    var text = (wptJson.notes == undefined ? '' : wptJson.notes.text);
     this.noteHTML = ko.observable(text);
     this.noteHTML.subscribe((noteHTML) => {
       if (this.dangerLevel() == 3 && this.notification == false) {
@@ -81,6 +84,7 @@ var Instruction = Class({
         _this.element = $(element).parents('.waypoint');
       }
     };
+
   },
   //TODO This needs refactored
   parseGlyphInfo(glyphs) {
@@ -88,6 +92,8 @@ var Instruction = Class({
     this.dangerLevel(match ? match[1] : 0);
     match = glyphs.join(' ').match(/speed-(\d+)/);
     this.speedLimit(match ? match[1] : false);
+    match = glyphs.join(' ').match(/reset-distance/);
+    this.hasResetGlyph(match ? true : false);
   },
 
   hasNotification() {
@@ -227,6 +233,10 @@ var Instruction = Class({
 
   computedTotalDistance: function () {
     return this.kmFromStart().toFixed(2);
+  },
+
+  computedKmFromStart: function () {
+    return (this.kmFromStart() - this.resetDistance()).toFixed(2);
   },
 
   computedHeading: function () {

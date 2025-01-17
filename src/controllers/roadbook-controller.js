@@ -149,7 +149,7 @@ class RoadbookController {
         $(this).removeAttr('title');
     });
 
-    $('#roadbook').css('padding-bottom', '0');
+    // $('#roadbook').css('padding-bottom', '0');
     $('#roadbook').find('.roadbook-info').hide();
     if (instruction.notification) {
       $('#notification-options').removeClass('hidden');
@@ -175,7 +175,7 @@ class RoadbookController {
     $('#note-selection-size-range').change();
     $('.added-track-selector').removeClass('active');
     $($('.added-track-selector')[1]).addClass('active');
-    $('#roadbook').css('padding-bottom', '150%');
+    // $('#roadbook').css('padding-bottom', '150%');
     $('#roadbook').find('.roadbook-info').show();
     $('#notification-options').addClass('hidden');
     $('#roadbook').scrollTop(this.editingElement.position().top - 80);

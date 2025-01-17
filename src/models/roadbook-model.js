@@ -195,6 +195,7 @@ class RoadbookModel {
   reindexInstructions() {
     var inSpeedZone = false;
     var checkpointNumber = 0;
+    var lastReset = 0;
     for (var i = 0; i < this.instructions().length; i++) {
       var instruction = this.instructions()[i];
       instruction.id = i + 1; //we don't need no zero index
@@ -217,6 +218,11 @@ class RoadbookModel {
       } else {
         instruction.checkpointNumber(false);
       }
+      // Handle RESET
+      if (instruction.hasResetGlyph()) {
+        lastReset=instruction.kmFromStart();
+      }
+      instruction.resetDistance(lastReset);
     }
   }
 
