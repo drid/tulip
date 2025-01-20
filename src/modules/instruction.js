@@ -43,6 +43,7 @@ var Instruction = Class({
     this.closeProximity = ko.computed(this.instructionCloseProximity, this);
     this.waypointIcon = ko.computed(this.assignWaypointIcon, this);
     this.waypointColoring = ko.computed(this.assignWaypointColoring, this);
+    this.instructionColoring = ko.computed(this.assignInstructionColoring, this);
     this.waypointDanger2 = ko.computed(this.isWaypointDanger2, this)
     this.totalDistance = ko.computed(this.computedTotalDistance, this);
     this.heading = ko.computed(this.computedHeading, this);

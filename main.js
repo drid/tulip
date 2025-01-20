@@ -179,6 +179,7 @@ ipcMain.on('ignite-print', (event, arg) => {
 
 
   printWindow.loadURL('file://' + __dirname + '/print.html');
+
   data = arg;
   printWindow.on('closed', () => {
     printWindow = null

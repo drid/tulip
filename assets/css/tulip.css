@@ -306,16 +306,16 @@ textarea.waypoint-palette {
 }
 
 .heading {
-  font-family: Tahoma, Geneva, sans-serif;
-  color: #000;
-  font-size: 1.6em;
   background-color: #FF0;
   border-color: black;
-  border-width: 2px 2px 0px 0px;
   border-style: solid;
-  position: absolute;
-  left: 0px;
+  border-width: 2px 2px 0px 0px;
   bottom: 0px;
+  color: #000;
+  font-family: Tahoma, Geneva, sans-serif;
+  font-size: 1.6em;
+  left: 0px;
+  position: absolute;
 }
 
 .heading-coordinates-hidden {

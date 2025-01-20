@@ -19,12 +19,13 @@
     -->
     <!--  waypoint template-->
     <script type="text/html" id="waypoint-template">
-      <div class='waypoint row'>
-        <!-- <div class='waypoint-distance'> -->
-        <div class='waypoint-distance' data-bind="css: { 'waypoint-distance-close': kmFromPrev.toFixed(2) < 0.3 && kmFromPrev.toFixed(2) > 0  }">
+      <div class='waypoint row' data-bind="css: instructionColoring">
+        <div class='waypoint-distance' data-bind="css: waypointColoring">
           <div class='total-distance'>
-            <div data-bind="text: kmFromStart.toFixed(2)">
+            <div data-bind="text: kmFromStart, css: { 'waypoint-danger-2': dangerLevel == 2 }">
             </div>
+          </div>
+          <div class="waypoint-icon" data-bind="html: waypointIcon, css: { 'waypoint-icon-none': waypointIcon == undefined }">
           </div>
           <div class="relative-distance">
             <div data-bind="text: kmFromPrev.toFixed(2)">
@@ -35,13 +36,14 @@
             </div>
           </div>
         </div>
-        <div class='waypoint-tulip'>
+        <div class='waypoint-tulip'  data-bind="css: assignTulipColoring">
           <img data-bind="attr: { src: tulip}">
+          <div class="tulip-checkpoint-number" data-bind="text: checkpointNumber, visible: checkpointNumber"></div>
         </div>
         <div class='waypoint-note'>
           <p data-bind="html: notes.text"></p>
           <div class="heading" data-bind="visible: showHeading">
-            <label>CAP </label><span data-bind="text: heading.toFixed(0)">&deg;</span>
+            <span data-bind="text: heading.toFixed(0)">&deg;</span>
           </div>
             <div class="coordinates" data-bind="visible: showCoordinates">
               <span data-bind="html: coordinates">&deg;</span>
