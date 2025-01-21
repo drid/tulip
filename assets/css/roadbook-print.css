@@ -40,7 +40,7 @@ body {
   font-size: 15px;
   text-align: left;
   border: 1px solid #000;
-  min-height: 212px;
+  min-height: 223px;
   float: right;
 }
 
@@ -50,36 +50,16 @@ body {
   font-family: Tahoma, Geneva, sans-serif;
 }
 
-#roadbook-total-distance {
-  height: 90px;
-  /* width: 125px !important; */
-  font-size: 20px;
-  border: 1px solid #000;
-  min-height: 80px;
-  float: left;
-  text-align: center;
-  margin-bottom: 10px;
+.header-route-info {
   padding-top: 10px;
-}
-
-#roadbook-total-distance p {
-  font-family: "Lucida Console", Monaco, monospace;
-  color: #000;
-}
-
-#roadbook-total-waypoints {
-  padding-top: 10px;
-  height: 90px;
+  height: 60px;
   font-size: 20px;
-  /* width: 125px !important; */
   border: 1px solid #000;
   float: left;
   text-align: center;
-}
-
-#roadbook-total-waypoints p {
-  font-family: "Lucida Console", Monaco, monospace;
-  color: #000;
+  white-space: nowrap;
+  line-height: 1.3em;
+  margin-bottom: 5px;
 }
 
 .waypoint-note p div img.small,
@@ -427,10 +407,10 @@ img {
   float: left;
 }
 
-.column+.column:last-child,
-.columns+.column:last-child,
-.column+.columns:last-child,
-.columns+.columns:last-child {
+.main-nav.column+.column:last-child,
+.main-nav.columns+.column:last-child,
+.main-nav.column+.columns:last-child,
+.main-nav.columns+.columns:last-child {
   float: right;
 }
 

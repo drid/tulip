@@ -321,6 +321,7 @@ class MapModel {
 
   updateRoadbookTotalDistance() {
     app.roadbook.updateTotalDistance(); //NOTE this shouldn't be in this model
+    app.roadbook.reindexInstructions();
   }
 
   addInstructionToRoadbook(geoDataJSON, callback) {

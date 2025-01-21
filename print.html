@@ -81,13 +81,17 @@
           <div id="roadbook-desc" class="large-8 column">
             <p href="#" data-bind="html: printApp.desc" data-default="true">Description</p>
           </div>
-          <div id="roadbook-total-distance" class="large-2 column">
+          <div id="roadbook-total-distance" class="large-2 column header-route-info">
             Distance
-            <p data-bind="text: printApp.totalDistance() + ' km'">9999</p>
+            <div data-bind="text: printApp.totalDistance() + ' km'">9999</div>
           </div>
-          <div id="roadbook-total-waypoints" class="large-2 column">
+          <div id="roadbook-total-waypoints" class="large-2 column header-route-info">
             Waypoints
-            <p data-bind="text: printApp.waypointCount">999</p>
+            <div data-bind="text: printApp.waypointCount">999</div>
+          </div>
+          <div id="roadbook-fuel-range" class="large-2 column header-route-info">
+            Fuel Range
+            <div data-bind="text: printApp.fuelRange() + ' km'">999</div>
           </div>
         </div>
       </div>

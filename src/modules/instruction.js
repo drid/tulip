@@ -36,6 +36,7 @@ var Instruction = Class({
     this.checkpointNumber = ko.observable(false);
     this.speedLimit = ko.observable(false);
     this.hasResetGlyph = ko.observable(false);
+    this.hasFuelGlyph = ko.observable(false);
     this.resetDistance = ko.observable(0);
     this.dangerLevel = ko.observable(0);
     this.filteredKmFromStart = ko.computed(this.computedKmFromStart, this);
@@ -55,7 +56,7 @@ var Instruction = Class({
     this.exitTrackType = wptJson.exitTrackType == undefined ? 'track' : wptJson.exitTrackType;
 
     // instruction don't get any note info when they are added via UI so intialize them to blank
-    var text = (wptJson.notes == undefined ? '' : wptJson.notes.text);
+    var text = (wptJson.notes == undefined ? '' : wptJson.notes.text || "");
     this.noteHTML = ko.observable(text);
     this.noteHTML.subscribe((noteHTML) => {
       if (this.dangerLevel() == 3 && this.notification == false) {
@@ -95,6 +96,8 @@ var Instruction = Class({
     this.speedLimit(match ? match[1] : false);
     match = glyphs.join(' ').match(/reset-distance/);
     this.hasResetGlyph(match ? true : false);
+    match = glyphs.join(' ').match(/fuel-zone/);
+    this.hasFuelGlyph(match ? true : false);
   },
 
   hasNotification() {

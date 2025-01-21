@@ -14,6 +14,7 @@ class RoadbookModel {
     */
     // TODO how do we handle file name changes
     this.filePath = null;
+    this.fuelRange = 0;
 
   }
 
@@ -36,6 +37,8 @@ class RoadbookModel {
     this.reindexInstructions();
 
     this.controller.highlightSaveButton();
+
+    this.fuelRange = 0;
 
     return instruction;
   }
@@ -196,8 +199,11 @@ class RoadbookModel {
     var inSpeedZone = false;
     var checkpointNumber = 0;
     var lastReset = 0;
+    var refuelKm = 0;
+    this.fuelRange = 0;
     for (var i = 0; i < this.instructions().length; i++) {
       var instruction = this.instructions()[i];
+      var kmFromStart = instruction.kmFromStart();
       instruction.id = i + 1; //we don't need no zero index
       // Update speed zones
       if (instruction.notification) {
@@ -220,9 +226,19 @@ class RoadbookModel {
       }
       // Handle RESET
       if (instruction.hasResetGlyph()) {
-        lastReset=instruction.kmFromStart();
+        lastReset = kmFromStart;
       }
       instruction.resetDistance(lastReset);
+      // Handle Fuel zone
+      if (instruction.hasFuelGlyph()) {
+        if ((kmFromStart - refuelKm) > this.fuelRange) {
+          this.fuelRange = (kmFromStart - refuelKm);
+        }
+        refuelKm = kmFromStart;
+      }
+    }
+    if ((kmFromStart - refuelKm) > this.fuelRange) {
+      this.fuelRange = (kmFromStart - refuelKm);
     }
   }
 
@@ -319,6 +335,7 @@ class RoadbookModel {
       name: this.name(),
       desc: this.desc(),
       totalDistance: this.totalDistance(),
+      fuelRange: this.fuelRange.toFixed(1),
       filePath: this.filePath,
       instructions: [],
     }
@@ -347,7 +364,6 @@ class RoadbookModel {
           instructionColoring: points[i].instruction.instructionColoring(),
           assignTulipColoring: points[i].instruction.assignTulipColoring(),
           checkpointNumber: points[i].instruction.checkpointNumber(),
-          
           notes: {
             text: points[i].instruction.noteHTML(),
           },

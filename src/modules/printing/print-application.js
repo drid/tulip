@@ -39,6 +39,7 @@ class PrintApp {
     this.name(json.name);
     this.desc(json.desc);
     this.totalDistance(json.totalDistance);
+    this.fuelRange(json.fuelRange);
     this.instructions(json.instructions);
     this.waypointCount(ko.unwrap(this.instructions).length)
     this.filePath = json.filePath;
