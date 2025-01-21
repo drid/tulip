@@ -155,17 +155,26 @@ body {
 .total-distance {
   height: 90px;
   font-family: Tahoma, Geneva, sans-serif;
-  font-size: 3em;
+  font-size: 2.45em;
   color: #000;
   text-align: center;
 }
 
-.total-distance.A5 {
-  font-size: 3.45em;
+.total-distance div {
+  line-height: 1;
+  margin-top: 4px;
 }
 
-.total-distance div {
-  display: inline-block;
+.reset-zeroes {
+  font-family: Tahoma, Geneva, sans-serif;
+  font-size: 0.8em;
+  color: #000;
+  text-align: center;
+  text-decoration: overline 3px;
+}
+
+.total-distance.A5 {
+  font-size: 3.45em;
 }
 
 .waypoint.A5 {
@@ -197,7 +206,7 @@ body {
 }
 
 .waypoint-danger-2 {
-  border-bottom: 5px solid red;
+  text-decoration: underline 5px red;
 }
 
 /* works for letter */
@@ -244,6 +253,7 @@ body {
   overflow: hidden;
   word-wrap: break-word;
   line-height: 1;
+  margin: 3px;
 }
 
 .waypoint-tulip-checkpoint {

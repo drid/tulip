@@ -589,9 +589,16 @@ nav.top-bar {
 }
 
 .total-distance div {
-  margin-top: 20px;
   line-height: 1;
-  display: inline-block;
+  margin-top: 4px;
+}
+
+.reset-zeroes {
+  font-family: Tahoma, Geneva, sans-serif;
+  font-size: 0.8em;
+  color: #000;
+  text-align: center;
+  text-decoration: overline 3px;
 }
 
 .hidden {
@@ -631,7 +638,8 @@ nav.top-bar {
 }
 
 .waypoint-danger-2 {
-  border-bottom: 5px solid red;
+  text-decoration: underline 5px red;
+
 }
 
 .waypoint-note {
@@ -680,7 +688,7 @@ nav.top-bar {
 
 .waypoint-icon {
   width: 60px;
-  margin-right: 3px;
+  margin-right: 8px;
   float: right;
 }
 

@@ -22,8 +22,8 @@
       <div class='waypoint row' data-bind="css: instructionColoring">
         <div class='waypoint-distance' data-bind="css: waypointColoring">
           <div class='total-distance'>
-            <div data-bind="text: kmFromStart, css: { 'waypoint-danger-2': dangerLevel == 2 }">
-            </div>
+            <div data-bind="text: kmFromStart, css: { 'waypoint-danger-2': dangerLevel == 2 }"></div>
+            <div class="reset-zeroes" data-bind="visible: hasResetGlyph">0.00</div>
           </div>
           <div class="waypoint-icon" data-bind="html: waypointIcon, css: { 'waypoint-icon-none': waypointIcon == undefined }">
           </div>
