@@ -169,7 +169,11 @@ ipcMain.on('ignite-print', (event, arg) => {
     height: 700,
     'min-height': 700,
     'resizable': true,
+    parent: mainWindow, // Set the main window as the parent
+    modal: true, // Makes the print window modal
+    alwaysOnTop: true, // Ensures the print window stays on top
     webPreferences: {
+      nodeIntegration: true,
       preload: path.join(__dirname, "preload.js"),
       sandbox: false
     }
