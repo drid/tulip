@@ -178,6 +178,7 @@ ipcMain.on('ignite-print', (event, arg) => {
       sandbox: false
     }
   });
+  printWindow.setMenu(null);
 
   require('@electron/remote/main').enable(printWindow.webContents);
 
@@ -206,12 +207,8 @@ ipcMain.on('check-file-existence', (event, fileName) => {
 
 // NOTE this is about as robust as a wet paper bag and fails just as gracefully
 function printPdf(event, arg) {
-  console.log("print-pdf", arg.opts);
-  var size = arg.opts.pageSize;
-  if (arg.opts.pageSize != 'Letter' && arg.opts.pageSize != 'A5') {
-    size = 'Roll'
-  }
-  var filename = arg.filepath.replace('.tlp', size + '.pdf')
+  var size = (arg.opts.pageSize == 'A5' ? 'A5' : 'Roll');
+  var filename = arg.filepath.replace('.tlp', '-' + size + '.pdf')
 
   printWindow.webContents.printToPDF(arg.opts)
     .then((data) => {
@@ -221,7 +218,7 @@ function printPdf(event, arg) {
 
         printWindow.close();
 
-        dialog.showMessageBox(mainWindow, { message: "Your PDF has been exported to the same directory you saved your roadbook. Gas a la burra!", buttons: ['ok'] })
+        // dialog.showMessageBox(mainWindow, { message: "Your PDF has been exported to the same directory you saved your roadbook. Gas a la burra!", buttons: ['ok'] })
       });
     });
 };

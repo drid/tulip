@@ -30,7 +30,7 @@ class PrintApp {
       _this.parseJson(arg);
     });
 
-    this.pageSizes = ko.observableArray([{ text: "Letter", value: "Letter" }, { text: 'A5', value: 'A5' }, { text: 'Roll', value: 'Roll' }]);
+    this.pageSizes = ko.observableArray([{ text: 'A5', value: 'A5' }, { text: 'Roll', value: 'Roll' }]);
     this.pageSize = ko.observable('Roll');
     this.ipc.send('print-launched', true);
   }
@@ -60,10 +60,6 @@ class PrintApp {
         height: pageWidth * docAspect
       }
     }
-    if ((size == "Letter")) {
-      $('body').css('margin-left', '-60px');
-    }
-    console.log("PDF paper size", size)
     var data = { 'filepath': this.filePath, 'opts': { 'pageSize': size, 'marginsType': '1', 'dpi': dpi } };
 
     globalNode.printToPdf(data);
@@ -74,13 +70,9 @@ class PrintApp {
     $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').removeClass('A5');
     $('.break').remove();
 
-    if ((pageSize == "Letter" || pageSize == "A5")) {
+    if (pageSize == "A5") {
       this.addPageBreaks();
-      //adjust height for A5
-
-      if (pageSize == "A5") {
-        $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').addClass('A5');
-      }
+      $('.waypoint, .waypoint-note, .waypoint-distance, .waypoint-tulip').addClass('A5');
     }
   }
 
@@ -89,10 +81,11 @@ class PrintApp {
     $('#roadbook').find('#roadbook-header').after($('<div>').attr('class', 'break'));
     var instructions = $('#roadbook').find('.waypoint')
 
-    // Default to Letter Format
+    // Default to A5 Format
     for (var i = 0; i < instructions.length; i++) {
       if ((((i + 1) % 5) == 0) && (i > 0)) {
         $(instructions[i]).after($('<div>').attr('class', 'break'));
+        $(instructions[i]).css("border-bottom", "2px solid");
       }
     }
   }
@@ -120,6 +113,7 @@ $(document).ready(function () {
     printApp.rerenderForPageSize();
   });
   $('.button').click(function () {
+    document.getElementById('overlay').style.display = 'flex';
     printApp.requestPdfPrint();
   });
 });
