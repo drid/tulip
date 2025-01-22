@@ -1,11 +1,3 @@
-@font-face {
-  font-family: bellybeans;
-  src: url(../fonts/bellybeans.ttf);
-}
-
-/*
-  for native printing expirementation
-*/
 html {
   width: 616px;
   margin: auto;
@@ -44,8 +36,8 @@ body {
   float: right;
 }
 
-#roadbook-name,
-#roadbook-desc {
+#roadbook-desc,
+#roadbook-name {
   color: #000;
   font-family: Tahoma, Geneva, sans-serif;
 }
@@ -67,10 +59,10 @@ body {
   height: 35px;
 }
 
-.waypoint-note p div img,
-.waypoint-note p img,
 .waypoint-note div img.normal,
-.waypoint-note img.normal {
+.waypoint-note img.normal,
+.waypoint-note p div img,
+.waypoint-note p img {
   height: 55px;
 }
 
@@ -100,72 +92,8 @@ body {
   width: 53px;
 }
 
-.heading {
-  background-color: #FF0;
-  border-color: black;
-  border-style: solid;
-  border-width: 1px 1px 0px 0px;
-  color: #000;
-  font-family: Tahoma, Geneva, sans-serif;
-  font-size: 25px;
-  text-align: center;
-  position:absolute;
-  bottom: 0px;
-  left: 0px;
-}
-
-/* .heading span {
-
-} */
-
-.heading label {
-  display: none;
-}
-
-.instruction-number {
-  height: 21px;
-  color: #FFFFFF;
-  background-color: #000;
-  font-weight: bold;
-  font-size: 21px;
-  border-top: 1px solid #000;
-  text-align: center;
-  /* margin-top: 48px; */
-  /* padding-left: 3px; */
-  width: 26%;
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-}
-
-.relative-distance {
-  height: 28px;
-  color: #000;
-  font-weight: bold;
-  font-size: 25px;
-  border-top: 1px solid #000;
-  border-right: 1px solid #000;
-  text-align: center;
-  width: 40%;
-  position: absolute;
-  left: 0px;
-  bottom: 0px;
-}
-
-.total-distance {
-  height: 90px;
-  font-family: Tahoma, Geneva, sans-serif;
-  font-size: 3em;
-  color: #000;
-  text-align: center;
-}
-
 .total-distance.A5 {
   font-size: 3.45em;
-}
-
-.total-distance div {
-  display: inline-block;
 }
 
 .waypoint.A5 {
@@ -173,155 +101,6 @@ body {
   /* works for letter */
 }
 
-.waypoint {
-  width: 528px;
-  border: 2px solid #000;
-  /*height:190px;*/
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-/* works for letter */
-.waypoint-distance {
-  width: 150px;
-  position: relative;
-}
-
-.waypoint-distance.A5 {
-  /*width: 230px;*/
-  width: 193px;
-}
-
-.waypoint-distance-close {
-  background-color: #93ff93;
-}
-
-.waypoint-danger-2 {
-  border-bottom: 5px solid red;
-}
-
-/* works for letter */
-.waypoint-note {
-  width: 185px;
-  padding-left: 4px;
-  padding-right: 4px;
-  position: relative;
-}
-
-/* works for letter */
-.waypoint-tulip {
-  width: 180px;
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
-  position: relative;
-}
-
-.waypoint-tulip img {
-  height: 99%;
-  margin-left: 1%;
-}
-
-.waypoint-tulip.A5 {
-  width: 190px;
-}
-
-/*
-  --- A5 sizing
-*/
-.waypoint,
-.waypoint-distance,
-.waypoint-tulip,
-.waypoint-note {
-  height: 175px;
-  float: left
-}
-
-.waypoint-note p {
-  height: 135px;
-  font-size: medium;
-  width: 100%;
-  margin: 0;
-  overflow: hidden;
-  word-wrap: break-word;
-  line-height: 1;
-}
-
-.waypoint-tulip-checkpoint {
-  box-shadow: inset 0 0 0px 6px #ee82ee;
-}
-
-.tulip-checkpoint-number {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  font-size: 1.9em;
-  font-weight: bold;
-  color: violet;
-}
-
-.waypoint-icon {
-  width: 60px;
-  margin-right: 18px;
-  float: right;
-}
-
-.waypoint-icon img {
-  width: inherit;
-}
-
-.waypoint-icon-none {
-  display: none;
-}
-
-.waypoint-parameter-none {
-  display: none;
-}
-
-.waypoint-type-wpc {
-  background-color: #ffffb9;
-}
-
-.waypoint-danger-3 {
-  box-shadow: inset 0 5px 0 0 red,  /* Top */
-      inset 5px 0 0 0 red,  /* Left */
-      inset 0 -7px 0 0 red; /* bottom */
-}
-
-.instruction-DZ {
-  box-shadow: 
-    inset 0 5px 0 0 #ffa500,  /* Top */
-    inset 5px 0 0 0 orange,  /* Left */
-    inset -5px 0 0 0 orange; /* Right */
-}
-
-.instruction-FZ {
-  box-shadow: 
-    inset 0 -5px 0 0 orange,  /* Top */
-    inset 5px 0 0 0 orange,  /* Left */
-    inset -5px 0 0 0 orange; /* Right */
-}
-
-.waypoint-speed-zone {
-  box-shadow: 
-  inset 5px 0 0 0 orange;  /* Left */
-}
-
-.waypoint-type-wpm,
-.waypoint-type-wpv {
-  background-color: #c1ffff;
-}
-
-.waypoint-type-wps {
-  background-color: #fecdce;
-}
-
-.waypoint-type-wpn {
-  background-color: #ff20fb;
-}
-
-/*
-  Sticky nav
-*/
 .print-button {
   text-align: right;
 }
@@ -358,9 +137,6 @@ body {
   top: 0;
 }
 
-/*
-  neccessary foundation stuff
-*/
 img {
   vertical-align: middle;
 }
@@ -373,8 +149,8 @@ img {
   float: right !important;
 }
 
-.clearfix:before,
-.clearfix:after {
+.clearfix:after,
+.clearfix:before {
   content: " ";
   display: table;
 }
@@ -389,8 +165,8 @@ img {
   width: 100%;
 }
 
-.row:before,
-.row:after {
+.row:after,
+.row:before {
   content: " ";
   display: table;
 }
@@ -408,15 +184,15 @@ img {
 }
 
 .main-nav.column+.column:last-child,
-.main-nav.columns+.column:last-child,
 .main-nav.column+.columns:last-child,
+.main-nav.columns+.column:last-child,
 .main-nav.columns+.columns:last-child {
   float: right;
 }
 
 .column+.column.end,
-.columns+.column.end,
 .column+.columns.end,
+.columns+.column.end,
 .columns+.columns.end {
   float: left;
 }
@@ -477,8 +253,8 @@ img {
   width: 100%;
 }
 
-button,
-.button {
+.button,
+button {
   -webkit-appearance: none;
   border-radius: 0;
   border-style: solid;
@@ -501,40 +277,40 @@ button,
   width: 65px;
 }
 
-button:hover,
-button:focus,
+.button:focus,
 .button:hover,
-.button:focus {
+button:focus,
+button:hover {
   background-color: #007095;
 }
 
-button:hover,
-button:focus,
+.button:focus,
 .button:hover,
-.button:focus {
+button:focus,
+button:hover {
   color: #FFFFFF;
 }
 
-button.large,
-.button.large {
+.button.large,
+button.large {
   padding: 1.125rem 2.25rem 1.1875rem 2.25rem;
   font-size: 1.25rem;
 }
 
-button.small,
-.button.small {
+.button.small,
+button.small {
   padding: 0.875rem 1.75rem 0.9375rem 1.75rem;
   font-size: 0.8125rem;
 }
 
-button.tiny,
-.button.tiny {
+.button.tiny,
+button.tiny {
   padding: 0.625rem 1.25rem 0.6875rem 1.25rem;
   font-size: 0.6875rem;
 }
 
-button.radius,
-.button.radius {
+.button.radius,
+button.radius {
   border-radius: 3px;
 }
 
@@ -566,18 +342,6 @@ select.radius {
 select:focus {
   background-color: #f3f3f3;
   border-color: #999999;
-}
-
-.coordinates {
-  text-align: right;
-  border: 1px solid #000;
-  font-size: 15px;
-  padding: 3px;
-  padding-left: 11px;
-  padding-right: 11px;
-  position: absolute;
-  right: 0px;
-  bottom: 0px; 
 }
 
 #generator {
@@ -616,26 +380,6 @@ select:focus {
   float: right;
 }
 
-.instruction-DZ {
-  box-shadow: 
-    inset 0 5px 0 0 #ffa500,  /* Top */
-    inset 5px 0 0 0 orange,  /* Left */
-    inset -5px 0 0 0 orange; /* Right */
-}
-
-.instruction-FZ {
-  box-shadow: 
-    inset 0 -5px 0 0 orange,  /* Top */
-    inset 5px 0 0 0 orange,  /* Left */
-    inset -5px 0 0 0 orange; /* Right */
-}
-
-.instruction-speed-zone {
-  box-shadow: 
-    inset 5px 0 0 0 orange,  /* Left */
-    inset -5px 0 0 0 orange; /* Right */
-}
-
-.instruction-danger-3 {
-  box-shadow: inset 0 0 0 5px red;
+.waypoint {
+  width: 100%;
 }

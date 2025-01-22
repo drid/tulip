@@ -10,6 +10,10 @@ class Track {
     canvas = HTML_CANVAS to render track on
   */
   constructor() {
+    const canvas_width = 180;
+    const canvas_height = 180;
+    this.canvas_center = [canvas_width / 2, canvas_height / 2];
+    this.entry_track_origin = [canvas_width / 2, canvas_height-10]
     this.types = {};
     this.initTypes();
   }
@@ -40,9 +44,14 @@ class Track {
     and produce a smooth Cubic Bezier
   */
   buildTrackPathString(angle, origin) {
-    var set1 = this.buildTrackPathsSet([9, 18, 27], angle, origin)
-    var set2 = this.buildTrackPathsSet([36, 45, 54], angle, origin)
-    var set3 = this.buildTrackPathsSet([63, 72, 81], angle, origin)
+    var segmentLen = this.canvas_center[1] / 10;
+    var segment1 = [segmentLen, segmentLen * 2, segmentLen * 3];
+    var segment2 = [segmentLen * 4, segmentLen * 5, segmentLen * 6];
+    var segment3 = [segmentLen * 7, segmentLen * 8, segmentLen * 9];
+
+    var set1 = this.buildTrackPathsSet(segment1, angle, origin)
+    var set2 = this.buildTrackPathsSet(segment2, angle, origin)
+    var set3 = this.buildTrackPathsSet(segment3, angle, origin)
     return 'M ' + origin[0] + ' ' + origin[1] + ' C ' + set1[0][0] + ', ' + set1[0][1] + ', ' + set1[1][0] + ', ' + set1[1][1] + ', ' + set1[2][0] + ', ' + set1[2][1]
       + ' C ' + set2[0][0] + ', ' + set2[0][1] + ', ' + set2[1][0] + ', ' + set2[1][1] + ', ' + set2[2][0] + ', ' + set2[2][1]
       + ' C ' + set3[0][0] + ', ' + set3[0][1] + ', ' + set3[1][0] + ', ' + set3[1][1] + ', ' + set3[2][0] + ', ' + set3[2][1];
@@ -220,7 +229,7 @@ class EntryTrack extends Track {
 
   buildTrackObjects(type, canvas) {
     type = (type !== undefined ? type : 'track');
-    var paths = super.buildTrackPaths(0, [90, 171], type, true)
+    var paths = super.buildTrackPaths(0, this.entry_track_origin, type, true)
     var point = new fabric.Circle({
       left: paths[0].path[0][1],
       top: paths[0].path[0][2],
@@ -253,7 +262,7 @@ class ExitTrack extends Track {
   }
 
   buildTrackObjects(angle, type, canvas) {
-    var paths = super.buildTrackPaths(angle, [90, 90], type, true)
+    var paths = super.buildTrackPaths(angle, this.canvas_center, type, true)
     var point = new fabric.Triangle({
       left: paths[0].path[3][5],
       top: paths[0].path[3][6],
@@ -292,7 +301,7 @@ class AddedTrack extends Track {
       Track.disableDefaults(objects.track[0])
       this.paths = objects.track
     } else {
-      this.paths = this.buildTrackPaths(angle, [90, 90], type)
+      this.paths = this.buildTrackPaths(angle, this.canvas_center, type)
       for (var i = 0; i < this.paths.length; i++) {
         canvas.add(this.paths[i]);
       }

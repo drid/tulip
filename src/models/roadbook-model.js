@@ -225,10 +225,10 @@ class RoadbookModel {
         instruction.checkpointNumber(false);
       }
       // Handle RESET
+      instruction.resetDistance(lastReset);
       if (instruction.hasResetGlyph()) {
         lastReset = kmFromStart;
       }
-      instruction.resetDistance(lastReset);
       // Handle Fuel zone
       if (instruction.hasFuelGlyph()) {
         if ((kmFromStart - refuelKm) > this.fuelRange) {
@@ -351,14 +351,14 @@ class RoadbookModel {
           instruction: points[i].instruction ? true : false,
           kmFromStart: points[i].instruction.filteredKmFromStart(),
           kmFromPrev: points[i].instruction.kmFromPrev(),
-          heading: points[i].instruction.exactHeading(),
+          heading: points[i].instruction.heading(),
           coordinates: points[i].instruction.coordinates(),
           showHeading: points[i].instruction.showHeading(),
           showCoordinates: points[i].instruction.showCoordinates(),
           closeProximity: points[i].instruction.closeProximity(),
           inSpeedZone: points[i].instruction.inSpeedZone(),
           dangerLevel: points[i].instruction.dangerLevel(),
-          // notification: points[i].instruction.notification,
+          hasResetGlyph: points[i].instruction.hasResetGlyph(),
           waypointIcon: points[i].instruction.waypointIcon(),
           waypointColoring: points[i].instruction.waypointColoring(),
           instructionColoring: points[i].instruction.instructionColoring(),

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="assets/css/app.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/tulip.css">
     <link rel="stylesheet" href="node_modules/foundation-sites/css/foundation.min.css" />
     <link rel="stylesheet" href="node_modules/foundation-icons/foundation-icons.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/common.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/tulip.css">
     <title>tulip</title>
   </head>
   <body class="off-canvas-wrap" data-offcanvas>
@@ -415,8 +415,8 @@
     <div class='waypoint row' data-bind="css: assignInstructionColoring()">
       <div class="waypoint-distance" data-bind="css: assignWaypointColoring()">
         <div class='total-distance'>
-          <div data-bind="text: filteredKmFromStart, css: { 'waypoint-danger-2': waypointDanger2() }">
-          </div>
+          <div data-bind="text: filteredKmFromStart, css: { 'waypoint-danger-2': waypointDanger2() }"></div>
+          <div class="reset-zeroes" data-bind="visible: hasResetGlyph()">0.00</div>
         </div>
         <div class="waypoint-icon" data-bind="html: waypointIcon(), css: { 'waypoint-icon-none': waypointIcon() == undefined }">
         </div>

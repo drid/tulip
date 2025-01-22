@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/common.css">
     <link rel="stylesheet" type="text/css" href="assets/css/roadbook-print.css">
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
 
@@ -22,8 +23,8 @@
       <div class='waypoint row' data-bind="css: instructionColoring">
         <div class='waypoint-distance' data-bind="css: waypointColoring">
           <div class='total-distance'>
-            <div data-bind="text: kmFromStart, css: { 'waypoint-danger-2': dangerLevel == 2 }">
-            </div>
+            <div data-bind="text: kmFromStart, css: { 'waypoint-danger-2': dangerLevel == 2 }"></div>
+            <div class="reset-zeroes" data-bind="visible: hasResetGlyph">0.00</div>
           </div>
           <div class="waypoint-icon" data-bind="html: waypointIcon, css: { 'waypoint-icon-none': waypointIcon == undefined }">
           </div>
@@ -43,7 +44,7 @@
         <div class='waypoint-note'>
           <p data-bind="html: notes.text"></p>
           <div class="heading" data-bind="visible: showHeading">
-            <span data-bind="text: heading.toFixed(0)">&deg;</span>
+            <span data-bind="text: heading">&deg;</span>
           </div>
             <div class="coordinates" data-bind="visible: showCoordinates">
               <span data-bind="html: coordinates">&deg;</span>
