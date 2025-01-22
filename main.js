@@ -48,7 +48,7 @@ function createWindow() {
       submenu: [
         { label: "New", accelerator: "CmdOrCtrl+N", click: function () { mainWindow.webContents.send('new-roadbook'); } },
         { label: "Open", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('open-roadbook'); } },
-        { label: "Append", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('append-roadbook'); } },
+        { label: "Append", click: function () { mainWindow.webContents.send('append-roadbook'); } },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: function () { mainWindow.webContents.send('save-roadbook'); } },
         { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: function () { mainWindow.webContents.send('save-roadbook-as'); } },
         { label: "Import GPX", accelerator: "CmdOrCtrl+I", click: function () { mainWindow.webContents.send('import-gpx'); } },
@@ -163,7 +163,8 @@ function createWindow() {
   TODO: the below should go in their own folders and be required
 */
 var data;
-ipcMain.on('ignite-print', (event, arg) => {
+var settings;
+ipcMain.on('ignite-print', (event, arg, appSettings) => {
   printWindow = new BrowserWindow({
     width: 650,
     height: 700,
@@ -178,6 +179,7 @@ ipcMain.on('ignite-print', (event, arg) => {
       sandbox: false
     }
   });
+
   printWindow.setMenu(null);
 
   require('@electron/remote/main').enable(printWindow.webContents);
@@ -186,6 +188,7 @@ ipcMain.on('ignite-print', (event, arg) => {
   printWindow.loadURL('file://' + __dirname + '/print.html');
 
   data = arg;
+  settings = appSettings;
   printWindow.on('closed', () => {
     printWindow = null
   })
@@ -194,7 +197,7 @@ ipcMain.on('ignite-print', (event, arg) => {
 
 //listens for the browser window to say it's ready to print
 ipcMain.on('print-launched', (event) => {
-  event.sender.send('print-data', data);
+  event.sender.send('print-data', data, settings);
 });
 
 ipcMain.on('check-file-existence', (event, fileName) => {

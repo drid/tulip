@@ -9,6 +9,59 @@
   src: url(../fonts/bellybeans.ttf);
 }
 
+/* Roadbook header styles */
+#roadbook-name {
+  border: 2px solid #000;
+  margin-bottom: 5px;
+}
+
+#roadbook-details {
+  display: flex;
+  clear: both;
+}
+
+.header-route-info {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#roadbook-total-distance,
+#roadbook-total-waypoints,
+#roadbook-fuel-range {
+  max-height: 90px;
+  text-align: center;
+  border: 2px solid #000;
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+#roadbook-desc {
+  float: right;
+  border: 2px solid black;
+  margin-bottom: 5px;
+  height: auto;
+  margin-left: 5px;
+}
+
+#roadbook-desc p {
+  text-align: left;
+  font-family: Tahoma, Geneva, sans-serif;
+  color: #000;
+  margin-left: 5px;
+  width: 85%;
+  margin-bottom: 0;
+}
+
+#roadbook-total-distance p {
+  font-family: "Lucida Console", Monaco, monospace;
+  color: #000;
+  text-align: center;
+  font-size: 1em;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+/* Instruction styles */
+
 .total-distance div {
   line-height: 1;
   margin-top: 4px;

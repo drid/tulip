@@ -14,7 +14,6 @@ class RoadbookModel {
     */
     // TODO how do we handle file name changes
     this.filePath = null;
-    this.fuelRange = 0;
 
   }
 
@@ -37,8 +36,6 @@ class RoadbookModel {
     this.reindexInstructions();
 
     this.controller.highlightSaveButton();
-
-    this.fuelRange = 0;
 
     return instruction;
   }
@@ -93,6 +90,8 @@ class RoadbookModel {
     this.name = ko.observable('Name your roadbook');
     this.desc = ko.observable('Describe your roadbook');
     this.totalDistance = ko.observable('0.00');
+    this.fuelRange = ko.observable('0.0');
+
     this.instructions = ko.observableArray([]);
     this.instructionShowHeading = ko.observable(true);
     this.instructionShowCoordinates = ko.observable(true);
@@ -200,7 +199,7 @@ class RoadbookModel {
     var checkpointNumber = 0;
     var lastReset = 0;
     var refuelKm = 0;
-    this.fuelRange = 0;
+    var fuelRange=0;
     for (var i = 0; i < this.instructions().length; i++) {
       var instruction = this.instructions()[i];
       var kmFromStart = instruction.kmFromStart();
@@ -231,15 +230,16 @@ class RoadbookModel {
       }
       // Handle Fuel zone
       if (instruction.hasFuelGlyph()) {
-        if ((kmFromStart - refuelKm) > this.fuelRange) {
-          this.fuelRange = (kmFromStart - refuelKm);
+        if ((kmFromStart - refuelKm) > fuelRange) {
+          fuelRange = (kmFromStart - refuelKm);
         }
         refuelKm = kmFromStart;
       }
     }
-    if ((kmFromStart - refuelKm) > this.fuelRange) {
-      this.fuelRange = (kmFromStart - refuelKm);
+    if ((kmFromStart - refuelKm) > fuelRange) {
+      fuelRange = (kmFromStart - refuelKm);
     }
+    this.fuelRange(fuelRange.toFixed(1));
   }
 
   /*
@@ -335,7 +335,7 @@ class RoadbookModel {
       name: this.name(),
       desc: this.desc(),
       totalDistance: this.totalDistance(),
-      fuelRange: this.fuelRange.toFixed(1),
+      fuelRange: this.fuelRange(),
       filePath: this.filePath,
       instructions: [],
     }
@@ -371,7 +371,6 @@ class RoadbookModel {
         }
         roadbookJSON.instructions.push(instructionJSON);
       }
-
     }
     return roadbookJSON;
   }

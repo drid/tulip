@@ -201,7 +201,7 @@ class App {
   printRoadbook() {
     if (this.canExport()) {
       $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
-      this.ipc.send('ignite-print', app.roadbook.statelessJSON());
+      this.ipc.send('ignite-print', app.roadbook.statelessJSON(), this.settings);
     } else {
       alert('You must save your roadbook before you can export it as a PDF');
     }

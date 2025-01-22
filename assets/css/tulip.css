@@ -190,18 +190,9 @@ textarea.waypoint-palette {
   padding: 0 .65rem 0 .65rem;
 }
 
-#roadbook-name {
-  border-left: 1px solid #000;
-  min-height: 90px;
-}
-
 #roadbook-desc a.hide-editor,
 #roadbook-name a.hide-editor {
   display: none;
-}
-
-#roadbook-total-distance {
-  max-height: 90px;
 }
 
 #roadbook-desc .roadbook-header-input-container,
@@ -212,29 +203,18 @@ textarea.waypoint-palette {
 }
 
 #roadbook-name p {
-  font-size: 30px;
-  text-align: right;
+  margin-bottom: 0px;
+  font-size: 1.6em;
   color: #000;
+  float: left;
 }
 
-#roadbook-desc p {
-  text-align: left;
-  font-family: Tahoma, Geneva, sans-serif;
-  color: #000;
-  margin-left: 5px;
-  width: 85%;
-  margin-bottom: 0;
-}
-
-#roadbook-name p {
+#roadbook-name a.rb-name,
+#roadbook-name a.hide-editor,
+a.rb-desc {
   float: right;
-}
-
-#roadbook-total-distance p {
-  font-family: "Lucida Console", Monaco, monospace;
-  color: #000;
-  text-align: center;
-  font-size: 35px;
+  margin-bottom: 0px;
+  margin-top: 6px;
 }
 
 #roadbook-waypoints {
