@@ -98,42 +98,49 @@
           </div>
           <div id="roadbook">
             <div class="row roadbook-info">
-              <hr>
-              <div id="roadbook-total-distance" class="large-4 columns">
-                Total Kilometers:
-                <p data-bind="text: app.roadbook.totalDistance"></p>
-              </div>
-              <div id="roadbook-name" class="large-8 columns">
+              <div id="roadbook-name" class="large-12 columns">
                 <a class="button tiny round alert hide-editor" title="Hide editor.">&#215;</a>
-                <p href="#" data-bind="text: app.roadbook.name"></p>
                 <a href=# class="button tiny radius secondary show-editor rb-name"><i class="fi-pencil"></i></a>
+                <p href="#" data-bind="text: app.roadbook.name"></p>
                 <div class="roadbook-header-input-container">
-                  <input type="text" placeholder="Roadbook Name" data-bind="textInput: app.roadbook.name"/>
+                  <input type="text" placeholder="Roadbook Name" data-bind="textInput: app.roadbook.name" />
                 </div>
               </div>
-            </div>
-            <div class="row roadbook-info">
-              <hr>
-              <div id="roadbook-desc" class="large-12 columns">
-                <a class="button tiny round alert hide-editor rb-desc" title="Hide editor.">&#215;</a>
-                <a href=# class="button tiny radius secondary show-editor rb-desc"><i class="fi-pencil"></i></a>
-                <p data-bind="html: app.roadbook.desc"></p>
-                <div class="roadbook-header-input-container">
-                  <div id="description-toolbar">
-                    <select class="ql-size" style="width:25%">
-                      <option value="10px">Small</option>
-                      <option value="13px" selected>Normal</option>
-                      <option value="18px">Large</option>
-                      <option value="32px">Huge</option>
-                    </select>
-                    <!-- Add a bold button -->
-                    <button class="ql-bold tiny secondary"><i class="fi-bold"></i></button>
-                    <button class="ql-italic tiny secondary "><i class="fi-italic"></i></button>
-                    <button class="ql-underline tiny secondary"><i class="fi-underline"></i></button>
+              <div id="roadbook-details">
+                <div class="large-3 column header-route-info">
+                  <div id="roadbook-total-distance" class="">
+                    Total distance
+                    <p data-bind="text: app.roadbook.totalDistance() + 'km'"></p>
                   </div>
-                  <div id="description-editor"></div>
+                  <div id="roadbook-total-waypoints" class="">
+                    Waypoints
+                    <div data-bind="text: app.roadbook.instructions().length"></div>
+                  </div>
+                  <div id="roadbook-fuel-range" class="">
+                    Fuel Range
+                    <div data-bind="text: app.roadbook.fuelRange() + ' km'"></div>
+                  </div>
                 </div>
-                <hr>
+                <div id="roadbook-desc" class="large-9 column">
+                  <a class="button tiny round alert hide-editor rb-desc" title="Hide editor.">&#215;</a>
+                  <a href=# class="button tiny radius secondary show-editor rb-desc"><i class="fi-pencil"></i></a>
+                  <p data-bind="html: app.roadbook.desc"></p>
+                  <div class="roadbook-header-input-container">
+                    <div id="description-toolbar">
+                      <select class="ql-size" style="width:25%">
+                        <option value="10px">Small</option>
+                        <option value="13px" selected>Normal</option>
+                        <option value="18px">Large</option>
+                        <option value="32px">Huge</option>
+                      </select>
+                      <!-- Add a bold button -->
+                      <button class="ql-bold tiny secondary"><i class="fi-bold"></i></button>
+                      <button class="ql-italic tiny secondary "><i class="fi-italic"></i></button>
+                      <button class="ql-underline tiny secondary"><i class="fi-underline"></i></button>
+                    </div>
+                    <div id="description-editor"></div>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- render instruction templates here -->

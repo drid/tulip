@@ -18,15 +18,21 @@ class PrintApp {
 
   constructor() {
     var _this = this;
+    this.settings = null;
     this.name = ko.observable('');
     this.desc = ko.observable('');
     this.totalDistance = ko.observable('');
     this.waypointCount = ko.observable('');
     this.fuelRange = ko.observable('');
     this.instructions = ko.observableArray([]);
+    this.start_lat = ko.observable(0);
+    this.start_lon = ko.observable(0);
+    this.end_lat = ko.observable(0);
+    this.end_lon = ko.observable(0);
 
     this.ipc = globalNode.ipcRenderer;
-    this.ipc.on('print-data', function (event, arg) {
+    this.ipc.on('print-data', function (event, arg, settings) {
+      _this.settings = settings;
       _this.parseJson(arg);
     });
 
@@ -43,6 +49,10 @@ class PrintApp {
     this.instructions(json.instructions);
     this.waypointCount(ko.unwrap(this.instructions).length)
     this.filePath = json.filePath;
+    this.start_lat(this.degFormat(json.instructions[0].lat, 'lat'));
+    this.start_lon(this.degFormat(json.instructions[0].long, 'lon'));
+    this.end_lat(this.degFormat(json.instructions[json.instructions.length - 1].lat, 'lat'));
+    this.end_lon(this.degFormat(json.instructions[json.instructions.length - 1].long, 'lon'));
   }
 
   requestPdfPrint() {
@@ -87,6 +97,31 @@ class PrintApp {
         $(instructions[i]).after($('<div>').attr('class', 'break'));
         $(instructions[i]).css("border-bottom", "2px solid");
       }
+    }
+  }
+
+  degFormat(coordinate, type) {
+    console.log(this.settings);
+    if (type == 'lon') {
+      suffix = (coordinate >= 0 ? 'E' : 'W');
+    } else {
+      suffix = (coordinate >= 0 ? 'N' : 'S');
+
+    }
+    coordinate = Math.abs(coordinate);
+    var d = Math.floor(coordinate);
+    var m = (coordinate - d) * 60;
+    var s = (m - Math.floor(m)) * 60;
+    var suffix;
+    switch (this.settings.coordinatesFormat) {
+      case 'dd':
+        return coordinate.toFixed(6) + '&deg;' + suffix;
+      case 'ddmm':
+        return d + '&deg; ' + m.toFixed(3) + "'" + suffix;
+      case 'ddmmss':
+        return d + '&deg; ' + Math.floor(m) + "' " + s.toFixed(3) + '"' + suffix;
+      default:
+        return coordinate.toFixed(6) + '&deg;' + suffix;
     }
   }
 };
