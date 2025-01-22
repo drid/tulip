@@ -26,8 +26,8 @@ img.glyph {
 }
 
 canvas {
-  width: 180px;
-  height: 180px;
+  width: var(--instruction-height);
+  height: var(--instruction-height);
 }
 
 div.switch label {
@@ -214,12 +214,10 @@ textarea.waypoint-palette {
 #roadbook-name p {
   font-size: 30px;
   text-align: right;
-  /* font-family: bellybeans !important; */
   color: #000;
 }
 
 #roadbook-desc p {
-  /*font-size: 15px;*/
   text-align: left;
   font-family: Tahoma, Geneva, sans-serif;
   color: #000;
@@ -240,7 +238,6 @@ textarea.waypoint-palette {
 }
 
 #roadbook-waypoints {
-  /*padding-top: 25px;*/
   padding-bottom: 20px;
 }
 
@@ -294,55 +291,10 @@ textarea.waypoint-palette {
   overflow: scroll;
 }
 
-.heading {
-  background-color: #FF0;
-  border-color: black;
-  border-style: solid;
-  border-width: 2px 2px 0px 0px;
-  bottom: 0px;
-  color: #000;
-  font-family: Tahoma, Geneva, sans-serif;
-  font-size: 1.6em;
-  left: 0px;
-  position: absolute;
-}
-
 .heading-coordinates-hidden {
   color: lightgray;
   background-color: transparent !important;
   border-color: lightgray !important;
-}
-
-.instruction-number {
-  height: 21px;
-  color: #FFFFFF;
-  background-color: #000;
-  font-weight: bold;
-  font-size: 10pt;
-  border-top: 1px solid #000;
-  text-align: center;
-  /* margin-top: 48px; */
-  /* padding-left: 3px; */
-  width: 26%;
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-}
-
-.coordinates {
-  text-align: right;
-  border-width: 2px 0px 0px 2px;
-  border-style: solid;
-  border-color: #000;
-  position: absolute;
-  right: -2px;
-  bottom: 0px;
-  font-size: 0.7em;
-  padding: 3px;
-  padding-left: 11px;
-  padding-right: 11px;
-  margin-top: 1px;
-  background-color: white;
 }
 
 .map-container {
@@ -383,21 +335,6 @@ textarea.waypoint-palette {
   background-color: rgba(255, 144, 0, 1);
   cursor: pointer;
   box-shadow: 5px 5px 22px -2px rgba(0, 0, 0, 0.60);
-}
-
-.relative-distance {
-  height: 25px;
-  color: #000;
-  font-weight: bold;
-  border-top: 1px solid #000;
-  border-right: 1px solid #000;
-  text-align: center;
-  /* margin-top: 45px; */
-  padding-right: 3px;
-  width: 45%;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
 }
 
 .roadbook-container {
@@ -569,85 +506,14 @@ nav.top-bar {
   width: 100%;
 }
 
-.total-distance {
-  height: 75px;
-  font-family: Tahoma, Geneva, sans-serif;
-  font-size: 2.45em;
-  color: #000;
-  text-align: center;
-}
-
 .hidden {
   visibility: hidden;
-}
-
-.waypoint {
-  width: 500px !important;
-  border: 2px solid #000;
-  border-bottom-width: 0px;
-  height: 180px;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  position: relative;
-}
-
-.waypoint:last-child {
-  border-bottom-width: 2px;
 }
 
 .waypoint-selected {
   border-color: #6a00ff;
   border-style: dashed;
   border-width: 2px;
-}
-
-.waypoint-distance {
-  width: 120px;
-  height: 180px;
-  float: left;
-  position: relative;
-}
-
-.waypoint-distance-close {
-  width: 120px;
-  background-color: #93ff93;
-}
-
-.waypoint-note {
-  width: 195px;
-  padding: 3px;
-  position: relative;
-}
-
-.waypoint-note p {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-  word-wrap: break-word;
-  line-height: 1;
-  font-size: medium;
-}
-
-.waypoint-tulip {
-  width: 180px;
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  position: relative;
-}
-
-.waypoint-note,
-.waypoint-tulip {
-  height: 180px;
-  float: left;
-}
-
-.waypoint-icon {
-  width: 60px;
-  margin-right: 8px;
-  float: right;
 }
 
 .right-off-canvas-menu input {

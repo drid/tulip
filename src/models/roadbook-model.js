@@ -351,7 +351,7 @@ class RoadbookModel {
           instruction: points[i].instruction ? true : false,
           kmFromStart: points[i].instruction.filteredKmFromStart(),
           kmFromPrev: points[i].instruction.kmFromPrev(),
-          heading: points[i].instruction.exactHeading(),
+          heading: points[i].instruction.heading(),
           coordinates: points[i].instruction.coordinates(),
           showHeading: points[i].instruction.showHeading(),
           showCoordinates: points[i].instruction.showCoordinates(),
