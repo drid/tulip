@@ -101,7 +101,6 @@ class PrintApp {
   }
 
   degFormat(coordinate, type) {
-    console.log(this.settings);
     if (type == 'lon') {
       suffix = (coordinate >= 0 ? 'E' : 'W');
     } else {

@@ -1,3 +1,11 @@
+
+const Sentry = require('@sentry/electron/main');
+
+Sentry.init({
+  dsn: "https://d5e95e1373931cff30184a1e7d504619@o4508879179284480.ingest.de.sentry.io/4508880154918992",
+  debug: true
+});
+
 const fs = require('fs');
 const { Menu, app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
 if (require('electron-squirrel-startup')) app.quit();
@@ -137,7 +145,9 @@ function createWindow() {
     'min-height': 700,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      sandbox: false
+      sandbox: false,
+      contextIsolation: true,
+      enableRemoteModule: false
     }
   });
 

@@ -131,3 +131,6 @@ tulip-darwin-x64/
 tulip-linux-x64/
 tulip-win32-x64/
 out/
+
+# Sentry Config File
+.sentryclirc

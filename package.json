@@ -1,16 +1,17 @@
 {
   "name": "Tulip",
   "productName": "Tulip",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "Rally Roadbook Creator",
   "main": "main.js",
   "type": "commonjs",
   "scripts": {
     "start": "electron-forge start",
-    "build-linux": "electron-builder --linux --publish never",
+    "build-linux": "electron-builder --linux --publish never && npm run sentry:sourcemaps",
     "build-win": "electron-builder --windows",
     "build-mac": "electron-forge package --platform=\"darwin\"",
-    "test": "tape test/unit/*-tests.js"
+    "test": "tape test/unit/*-tests.js",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org drid --project tulip ./dist && sentry-cli sourcemaps upload --org drid --project tulip ./dist"
   },
   "repository": {
     "type": "git",
@@ -38,10 +39,13 @@
     "@electron-forge/maker-dmg": "^7.6.0",
     "electron": "^29.4.6",
     "electron-builder": "^25.1.8",
+    "source-map-support": "^0.5.21",
     "tape": "^4.17.0"
   },
   "dependencies": {
     "@electron/remote": "^2.0.9",
+    "@sentry/cli": "^2.42.2",
+    "@sentry/electron": "^6.1.0",
     "electron-squirrel-startup": "^1.0.0",
     "foundation-icons": "^2.0.0",
     "foundation-sites": "^5.5.3",

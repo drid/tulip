@@ -7,7 +7,7 @@ stages:
 
 variables:
   BUILDER_IMAGE: electronuserland/builder:latest
-  BUILDER_IMAGE_WIN: electronuserland/builder:wine-mono
+  BUILDER_IMAGE_WIN: electronuserland/builder:20-wine-mono-07.24
   PKG_PATH: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/$APPNAME/$VERSION
   SNAP_NAME: tulip-roadbook
 
@@ -26,16 +26,10 @@ build-win:
     - if: $CI_COMMIT_TAG
   before_script:
     - apt-get install --no-install-recommends -y gcc-multilib g++-multilib
-    - npm install
+    - npm install electron-builder
   script:
-    - export VERSION=$(node -e "console.log(require('./package.json').version)")
-    - echo "VERSION=$VERSION" >> variables.env
-    - export APPNAME=$(node -e "console.log(require('./package.json').productName)")
-    - echo "APPNAME=$APPNAME" >> variables.env
     - npm run build-win
   artifacts:
-    reports:
-      dotenv: variables.env
     name: $CI_COMMIT_REF_SLUG
     paths:
       - $CI_PROJECT_DIR/dist/*.*
@@ -51,14 +45,9 @@ build-linux:
     - apt-get install -y fakeroot
     - npm install electron-builder
   script:
-    - export VERSION=$(node -e "console.log(require('./package.json').version)")
-    - echo "VERSION=$VERSION" >> variables.env
-    - export APPNAME=$(node -e "console.log(require('./package.json').productName)")
-    - echo "APPNAME=$APPNAME" >> variables.env
+    - export SENTRY_AUTH_TOKEN
     - npm run build-linux
   artifacts:
-    reports:
-      dotenv: variables.env
     name: $CI_COMMIT_REF_SLUG
     paths:
       - $CI_PROJECT_DIR/dist/*.*
@@ -102,7 +91,16 @@ upload_package:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.x86_64.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.x86_64.rpm"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.aarch64.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.aarch64.rpm"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.armv7l.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.armv7l.rpm"'
-
+  after_script:
+    - apk add bash curl python3
+    - curl -sL https://sentry.io/get-cli/ | bash
+    - export SENTRY_ORG=drid
+    - export SENTRY_PROJECT=tulip
+    - export SENTRY_AUTH_TOKEN
+    - VERSION=`sentry-cli releases propose-version`
+    - sentry-cli releases new "$VERSION"
+    - sentry-cli releases set-commits "$VERSION" --auto
+    - sentry-cli releases finalize "$VERSION"
 release_job:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest

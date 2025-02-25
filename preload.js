@@ -1,6 +1,13 @@
 const { contextBridge, ipcRenderer } = require("electron");
 const fs = require('fs');
 const { dialog } = require('@electron/remote');
+const Sentry = require("@sentry/electron/renderer");
+
+Sentry.init({
+    dsn: "https://d5e95e1373931cff30184a1e7d504619@o4508879179284480.ingest.de.sentry.io/4508880154918992",
+    integrations: [],
+    tracesSampleRate: 1.0,
+});
 
 contextBridge.exposeInMainWorld("globalNode", {
     dialog: () => {
@@ -22,4 +29,8 @@ contextBridge.exposeInMainWorld("globalNode", {
         send: ipcRenderer.send.bind(ipcRenderer),
         removeListener: ipcRenderer.removeListener.bind(ipcRenderer),
     }
+});
+
+contextBridge.exposeInMainWorld("Sentry", {
+    captureException: (error) => Sentry.captureException(error),
 });
