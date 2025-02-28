@@ -241,6 +241,10 @@ ipcMain.on('get-documents-path', (event) => {
   event.sender.send('documents-path', app.getPath('documents'));
 });
 
+ipcMain.on("get-app-path", (event) => {
+  event.returnValue = app.getAppPath();
+});
+
 ipcMain.on('toggle-dev-tools', (event) => {
   mainWindow.toggleDevTools();
 })

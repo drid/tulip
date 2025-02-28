@@ -1,10 +1,9 @@
 // TODO refactor this to use MVC pattern and act as a controller for the currentlyEditingInstruction for the roadbook
 class GlyphControls {
 
-  constructor() {
-    // this.fs = fs;
-    // this.process = globalNode.remote.process;
+  constructor(app_path) {
     this.files = [];
+    this.glyph_path = app_path + '/assets/svg/glyphs/';
     this.getGylphNames();
     this.initListeners();
     this.bindToGlyphImages();
@@ -13,7 +12,7 @@ class GlyphControls {
 
   getGylphNames() {
     try {
-      this.files = globalNode.fs.readdirSync(this.process.resourcesPath + '/app/assets/svg/glyphs/').filter(function (val) { return val.endsWith('.svg') });
+      this.files = globalNode.fs.readdirSync(this.glyph_path).filter(function (val) { return val.endsWith('.svg') });
     } catch (e) {
       console.log("using unpackaged filesys");
       this.files = globalNode.fs.readdirSync('assets/svg/glyphs').filter(function (val) { return val.endsWith('.svg') });

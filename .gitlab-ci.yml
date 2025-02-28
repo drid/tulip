@@ -45,9 +45,15 @@ build-linux:
     - apt-get install -y fakeroot
     - npm install electron-builder
   script:
+    - export VERSION=$(node -e "console.log(require('./package.json').version)")
+    - echo "VERSION=$VERSION" >> variables.env
+    - export APPNAME=$(node -e "console.log(require('./package.json').productName)")
+    - echo "APPNAME=$APPNAME" >> variables.env
     - export SENTRY_AUTH_TOKEN
     - npm run build-linux
   artifacts:
+    reports:
+      dotenv: variables.env
     name: $CI_COMMIT_REF_SLUG
     paths:
       - $CI_PROJECT_DIR/dist/*.*
@@ -91,16 +97,7 @@ upload_package:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.x86_64.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.x86_64.rpm"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.aarch64.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.aarch64.rpm"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.armv7l.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.armv7l.rpm"'
-  after_script:
-    - apk add bash curl python3
-    - curl -sL https://sentry.io/get-cli/ | bash
-    - export SENTRY_ORG=drid
-    - export SENTRY_PROJECT=tulip
-    - export SENTRY_AUTH_TOKEN
-    - VERSION=`sentry-cli releases propose-version`
-    - sentry-cli releases new "$VERSION"
-    - sentry-cli releases set-commits "$VERSION" --auto
-    - sentry-cli releases finalize "$VERSION"
+
 release_job:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
@@ -108,6 +105,14 @@ release_job:
     - if: $CI_COMMIT_TAG
   script:
     - echo "running release_job"
+    - apk add bash curl python3
+    - curl -sL https://sentry.io/get-cli/ | bash
+    - export SENTRY_ORG=drid
+    - export SENTRY_PROJECT=tulip
+    - export SENTRY_AUTH_TOKEN
+    - sentry-cli releases new "$VERSION"
+    - sentry-cli releases set-commits "$VERSION" --auto --ignore-missing
+    - sentry-cli releases finalize "$VERSION"
   release:
     name: "Release $TAG"
     tag_name: "$CI_COMMIT_TAG"
@@ -146,8 +151,8 @@ deploy-snapcraft:
   dependencies:
     - build-linux
   script:
-    - mkdir .snapcraft
-    - echo $SNAPCRAFT_LOGIN_FILE | base64 --decode --ignore-garbage > .snapcraft/snapcraft.cfg
+    - echo $SNAPCRAFT_STORE_CREDENTIALS | base64 --decode > ssc
+    - snapcraft login --with ssc
     - snapcraft whoami
     - snapcraft push *.snap --release stable
   environment:

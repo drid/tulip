@@ -54,10 +54,10 @@ class App {
     this.ipc = globalNode.ipcRenderer;
     /*
       initialize UI listeners
-    */
-    this.initListeners();
+      */
+    this.glyphControls = new GlyphControls(globalNode.getAppPath());
 
-    this.glyphControls = new GlyphControls();
+    this.initListeners();
 
     this.noteControls = new NoteControls();
 
@@ -338,7 +338,7 @@ class App {
     }
 
     if (settings.gmapKey == '' || settings.hasOwnProperty("gmapKey") == false) {
-      window.alert("You must set your google maps key in settings and restart the app.");
+      window.alert('You must set your google maps key in settings and restart the app.');
       $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-left');
     }
     return settings;
