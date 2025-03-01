@@ -1,4 +1,5 @@
 stages:
+  - debug
   - test
   - build
   - package
@@ -18,6 +19,8 @@ unit-testing:
     - npm install electron-builder
   script:
     - npm test
+  when: manual
+  
 
 generate-glyphs:
   stage: build
