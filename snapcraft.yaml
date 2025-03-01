@@ -1,0 +1,63 @@
+name: tulip-roadbook
+base: core22
+version: "1.9.5-2"
+summary: Tulip Roadbook Editor
+description: |
+  An editor for rally roadbooks built in the Electron environment using web technologies.
+
+  - Import GPX file
+  - Plan route on map
+  - Export route GPX and OpeRally GPX
+  - Print/Export roadbook PDF
+  - Works on Linux/Mac/Windows
+  - Original project by Drew Mitchell, Luke Bennett, and Dave Peckham: https://github.com/storm-factory/tulip
+  - Fork maintained by Ilias Daradimos: https://gitlab.com/drid/tulip
+
+grade: devel
+confinement: devmode # Changed to devmode temporarily to ease debugging
+architectures:
+  - amd64
+
+apps:
+  tulip-roadbook:
+    command: tulip-roadbook/tulip-roadbook --no-sandbox # Added --no-sandbox for Electron compatibility
+    extensions: [gnome]
+    environment:
+      TMPDIR: $XDG_RUNTIME_DIR
+      # Uncomment DISABLE_WAYLAND: 1 if Wayland issues arise
+      # DISABLE_WAYLAND: 1
+    plugs:
+      - browser-support
+      - network
+      - network-bind
+      - desktop # Added for better desktop integration
+      - desktop-legacy # Added for compatibility with older desktop environments
+      - opengl # Added for map rendering if needed
+      - home # Added for file access (e.g., GPX import/export)
+
+parts:
+  tulip:
+    plugin: nil
+    source: https://gitlab.com/drid/tulip.git
+    source-type: git # Explicitly specify git source type
+    source-branch: master # Specify branch if needed (adjust if using a different branch)
+    override-build: |
+      set -eux # Enable verbose output and exit on error
+      npm install --no-save # Avoid modifying package.json
+      npm install electron@11.5.0 @electron/packager --no-save # Pin Electron to a known version
+      npx electron-packager . tulip-roadbook --overwrite --platform=linux --arch=x64 --output=release-build --prune=true
+      cp -rv ./tulip-roadbook-linux-x64/* $SNAPCRAFT_PART_INSTALL/tulip-roadbook/
+    build-snaps:
+      - node/14/stable # Changed to Node 14 for better Electron 11 compatibility
+    build-packages:
+      - unzip
+      - build-essential # Added for npm native module compilation
+    stage-packages:
+      - libnss3
+      - libnspr4
+      - libxss1
+      - libasound2
+      - libxtst6
+      - libappindicator3-1 # Updated to libappindicator3-1 (more common)
+      - libgtk-3-0
+      - fonts-liberation # Added for consistent font rendering
