@@ -29,3 +29,12 @@ Features:
 2. Download the latest stable release
 4. Navigate to local working directory `$ cd tulip`
 5. Use `build_tulip.sh` to create a packages
+
+## 🤝 Contributing
+
+We welcome contributions! Please submit all merge requests to our **GitLab repository** at:  
+[https://gitlab.com/drid/tulip](https://gitlab.com/drid/tulip)  
+
+The GitHub repository is a **read-only mirror** and does not accept contributions.
+
+For guidelines on contributing, see [CONTRIBUTE.md](CONTRIBUTE.md).
