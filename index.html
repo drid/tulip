@@ -835,12 +835,8 @@
         setMapSize();
       })
     });
-    if (app.settings.gmapKey) {
-      var myVariable = "https://maps.googleapis.com/maps/api/js?key="+app.settings.gmapKey+"&libraries=geometry&callback=app.initMap&v=weekly&loading=async";
-      var scriptElement = document.createElement("script");
-      scriptElement.src = myVariable;
-      document.body.appendChild(scriptElement);
-    }
+
+    app.initializeGoogleMaps();
   </script>
 
 </html>

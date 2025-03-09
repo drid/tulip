@@ -45,11 +45,17 @@ class MapController {
   attemptGeolocation() {
     var _this = this;
     // TODO move to model
-    var url = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + app.settings.googleDirectionsKey;
-    $.post(url, function (data) {
+    fetch("https://datasets.stadar.org/geolocation/api/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ considerIp: true })
+    })
+    .then(response => response.json())
+    .then(data => {
       _this.setMapCenter(data.location);
       _this.setMapZoom(14);
-    });
+    })
+    .catch(error => console.error("Geolocation API Error:", error));
   }
 
   setMapCenter(latLng) {
@@ -158,12 +164,12 @@ class MapController {
   updateWaypointBubble(index, openBubble, validationBubble, fill) {
     if (this.model.markers[index].openBubble) {
       this.model.markers[index].openBubble.setRadius(Number(openBubble));
-      this.model.markers[index].openBubble.setOptions({ strokeColor: fill});
+      this.model.markers[index].openBubble.setOptions({ strokeColor: fill });
     }
     if (this.model.markers[index].validationBubble) {
       this.model.markers[index].validationBubble.setRadius(Number(validationBubble));
-      this.model.markers[index].validationBubble.setOptions({ strokeColor: fill});
-      this.model.markers[index].validationBubble.setOptions({ fillColor: fill});
+      this.model.markers[index].validationBubble.setOptions({ strokeColor: fill });
+      this.model.markers[index].validationBubble.setOptions({ fillColor: fill });
     }
   }
 

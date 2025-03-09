@@ -336,13 +336,43 @@ class App {
     if (settings.openDevConsole) {
       this.ipc.send('toggle-dev-tools');
     }
-
-    if (settings.gmapKey == '' || settings.hasOwnProperty("gmapKey") == false) {
-      window.alert('You must set your google maps key in settings and restart the app.');
-      $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-left');
-    }
     return settings;
   }
+
+  initializeGoogleMaps() {
+    const proxyUrl = "https://datasets.stadar.org/maps/api/js?libraries=geometry&callback=app.initMap&loading=async";
+    if (this.settings.gmapKey) {
+      const mapsUrl = `https://maps.googleapis.com/maps/api/js?key=${this.settings.gmapKey}&libraries=geometry&callback=app.initMap&loading=async`;
+      console.log("Using Google Maps key from settings.");
+      this.loadGoogleMaps(mapsUrl);
+    } else {
+      console.log("No Google Maps key found. Checking proxy...");
+      this.checkProxyAvailability(proxyUrl).then((proxyAvailable) => {
+        if (proxyAvailable) {
+          console.log("Proxy is available. Using it.");
+          this.loadGoogleMaps(proxyUrl);
+        } else {
+          console.log("No API key and proxy is unavailable.");
+          window.alert("You must set your Google Maps key in settings and restart the app.");
+          $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-left');
+        }
+      });
+    }
+  }
+
+  loadGoogleMaps(mapsUrl) {
+    const script = document.createElement("script");
+    script.src = mapsUrl;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+
+  async checkProxyAvailability(proxyUrl) {
+    return fetch(proxyUrl, { method: "GET" }) // Quick check if proxy responds
+        .then((response) => response.ok)
+        .catch(() => false);
+}
 
   refreshInstructionElements() {
 
