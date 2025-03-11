@@ -49,6 +49,7 @@ var Instruction = Class({
     this.totalDistance = ko.computed(this.computedTotalDistance, this);
     this.heading = ko.computed(this.computedHeading, this);
     this.coordinates = ko.computed(this.computedCoordinates, this);
+    this.waypointNumber = ko.observable(false);
 
     this.showHeading = ko.observable((wptJson.showHeading == undefined ? app.settings.showCapHeading : wptJson.showHeading));
     this.showCoordinates = ko.observable((wptJson.showCoordinates == undefined ? app.settings.showCoordinates : wptJson.showCoordinates));

@@ -49,6 +49,8 @@
             <div class="coordinates" data-bind="visible: showCoordinates">
               <span data-bind="html: coordinates">&deg;</span>
           </div>
+          <div class="waypoint-number" data-bind="css: { 'waypoint-number-coord':showCoordinates }, visible: waypointNumber, text:waypointNumber">
+          </div>
         </div>
       </div>
     </script>

@@ -197,6 +197,7 @@ class RoadbookModel {
   reindexInstructions() {
     var inSpeedZone = false;
     var checkpointNumber = 0;
+    var waypointNumber = 0;
     var lastReset = 0;
     var refuelKm = 0;
     var fuelRange=0;
@@ -222,6 +223,13 @@ class RoadbookModel {
         instruction.checkpointNumber('CP' + checkpointNumber);
       } else {
         instruction.checkpointNumber(false);
+      }
+      // Waypoint numbering
+      if (instruction.notification.type) {
+        waypointNumber++;
+        instruction.waypointNumber(waypointNumber);
+      } else {
+        instruction.waypointNumber(false);
       }
       // Handle RESET
       instruction.resetDistance(lastReset);
@@ -364,6 +372,7 @@ class RoadbookModel {
           instructionColoring: points[i].instruction.instructionColoring(),
           assignTulipColoring: points[i].instruction.assignTulipColoring(),
           checkpointNumber: points[i].instruction.checkpointNumber(),
+          waypointNumber: points[i].instruction.waypointNumber(),
           notes: {
             text: points[i].instruction.noteHTML(),
           },

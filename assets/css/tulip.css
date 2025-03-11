@@ -277,6 +277,10 @@ a.rb-desc {
   border-color: lightgray !important;
 }
 
+.waypoint-number-hidden {
+  display: none;
+}
+
 .map-container {
   padding: 0 !important;
   height: 100%;

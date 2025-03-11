@@ -448,6 +448,8 @@
         <div class="coordinates" data-bind="css: { 'heading-coordinates-hidden': !showCoordinates()}">
           <span data-bind="html: coordinates"></span>
         </div>
+        <div class="waypoint-number" data-bind="css: { 'waypoint-number-hidden': !waypointNumber(), 'waypoint-number-coord':showCoordinates()}, text:waypointNumber()">
+        </div>
       </div>
     </div>
   </script>

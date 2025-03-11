@@ -300,3 +300,23 @@
   background-color: white;
   font-weight: bold;
 }
+
+.waypoint-number {
+  position: absolute;
+  right: 3px;
+  width: 37px;
+  border: 2px solid;
+  border-radius: 50%;
+  height: 37px;
+  bottom: 3px;
+  font-size: 1.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+
+.waypoint-number-coord {
+  bottom: 33px;
+}
