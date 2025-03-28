@@ -5,8 +5,82 @@
 }
 
 @font-face {
-  font-family: bellybeans;
-  src: url(../fonts/bellybeans.ttf);
+  font-family: "bellybeans";
+  src: url("../fonts/bellybeans.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url("../fonts/Lato-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Liberation Sans Variants */
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("../fonts/LiberationSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("../fonts/LiberationSans-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("../fonts/LiberationSans-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("../fonts/LiberationSans-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* Liberation Sans Narrow Variants */
+@font-face {
+  font-family: "Liberation Sans Narrow";
+  src: url("../fonts/LiberationSansNarrow-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Liberation Sans Narrow";
+  src: url("../fonts/LiberationSansNarrow-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Liberation Sans Narrow";
+  src: url("../fonts/LiberationSansNarrow-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Liberation Sans Narrow";
+  src: url("../fonts/LiberationSansNarrow-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+body {
+  font-family: "Lato" !important;
+}
+
+/* Optional: Fallback for SVGs with unspecified or proprietary fonts */
+svg text {
+  font-family: "Liberation Sans", "Liberation Sans Narrow", sans-serif !important;
 }
 
 /* Roadbook header styles */
@@ -234,7 +308,7 @@
   border-style: solid;
   border-width: 1px 1px 0px 0px;
   color: #000;
-  font-family: Tahoma, Geneva, sans-serif;
+  font-family: LiberationSans, Lato, Tahoma, Geneva, sans-serif;
   font-size: 1.2em;
   font-weight: bold;
   text-align: center;

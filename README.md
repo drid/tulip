@@ -38,3 +38,11 @@ We welcome contributions! Please submit all merge requests to our **GitLab repos
 The GitHub repository is a **read-only mirror** and does not accept contributions.
 
 For guidelines on contributing, see [CONTRIBUTE.md](CONTRIBUTE.md).
+
+## LICENSE
+
+Tulip is licensed under GPLv2 (see [LICENSE](LICENSE) for full text)
+
+The Liberation Sans font is included in this project.
+Copyright (c) 2007, Red Hat, Inc. All rights reserved.
+Licensed under the Liberation Font License (see [LIBERATION_LICENSE](LIBERATION_LICENSE) for full text).
