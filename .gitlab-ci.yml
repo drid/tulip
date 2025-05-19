@@ -43,7 +43,7 @@ build-linux:
   before_script:
     - apt-get update -y
     - apt-get install -y fakeroot
-    - npm install electron-builder
+    - npm install electron-builder fonts-liberation fonts-liberation2
   script:
     - export VERSION=$(node -e "console.log(require('./package.json').version)")
     - echo "VERSION=$VERSION" >> variables.env
