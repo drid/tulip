@@ -62,6 +62,8 @@ class App {
     this.noteControls = new NoteControls();
 
     this.settings = this.loadSettings();
+
+    this.version = globalNode.getVersion()
   }
 
   /*

@@ -143,6 +143,7 @@ function createWindow() {
     width: 1500,
     height: 1000,
     'min-height': 700,
+    'title': 'Tulip ' + app.getVersion(),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       sandbox: false,
@@ -174,6 +175,7 @@ function createWindow() {
 */
 var data;
 var settings;
+
 ipcMain.on('ignite-print', (event, arg, appSettings) => {
   printWindow = new BrowserWindow({
     width: 650,
@@ -243,6 +245,10 @@ ipcMain.on('get-documents-path', (event) => {
 
 ipcMain.on("get-app-path", (event) => {
   event.returnValue = app.getAppPath();
+});
+
+ipcMain.on("get-app-version", (event) => {
+  event.returnValue = app.getVersion();
 });
 
 ipcMain.on('toggle-dev-tools', (event) => {

@@ -309,6 +309,7 @@ class RoadbookModel {
       desc: this.desc(),
       totalDistance: this.totalDistance(),
       filePath: this.filePath,
+      appVersion: app.version,
       instructions: [],
     }
     var points = app.mapModel.markers

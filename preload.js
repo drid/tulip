@@ -29,7 +29,8 @@ contextBridge.exposeInMainWorld("globalNode", {
         send: ipcRenderer.send.bind(ipcRenderer),
         removeListener: ipcRenderer.removeListener.bind(ipcRenderer),
     },
-    getAppPath: () => ipcRenderer.sendSync("get-app-path")
+    getAppPath: () => ipcRenderer.sendSync("get-app-path"),
+    getVersion: () => ipcRenderer.sendSync('get-app-version')
 });
 
 contextBridge.exposeInMainWorld("Sentry", {
