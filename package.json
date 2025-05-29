@@ -61,7 +61,6 @@
   },
   "build": {
     "appId": "tulip.app",
-    "beforePack": "./utils/convert_svgs.js",
     "win": {
       "icon": "tulip-logo.ico",
       "target": [
