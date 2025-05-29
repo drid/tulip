@@ -2,11 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [1.9.4] - 2025-05-29
+
+### 🚀 Features
+
+- *(glyphs)* Add service zone, above bridge, under bridge, and concrete pass glyphs
+- *(packaging)* Stage and convert SVGs in custom build script
+- Add abbreviations
+- *(glyphs)* Add multiple new glyphs
+- *(speed-limit)* Add generator and update glyphs
 
 ### 🐛 Bug Fixes
 
 - *(ui)* Resolve issues with map orientation and tulip exit edit buttons
+- *(CI)* Convert svg files
+
+### 💼 Other
+
+- 1.9.4
 
 ### ⚙️ Miscellaneous Tasks
 
