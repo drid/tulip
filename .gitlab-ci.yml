@@ -24,6 +24,7 @@ build-win:
   image: ${BUILDER_IMAGE_WIN}
   rules:
     - if: $CI_COMMIT_TAG
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
   before_script:
     - apt-get update -y
     - apt-get install --no-install-recommends -y gcc-multilib g++-multilib fonts-liberation fonts-liberation2 inkscape
@@ -42,6 +43,7 @@ build-linux:
   image: ${BUILDER_IMAGE}
   rules:
     - if: $CI_COMMIT_TAG
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
   before_script:
     - apt-get update -y
     - apt-get install -y fakeroot fonts-liberation fonts-liberation2 inkscape
@@ -85,7 +87,7 @@ upload_package:
   stage: package
   image: curlimages/curl:latest
   rules:
-    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/$APPNAME $VERSION.exe" "$PKG_PATH/${APPNAME}_${VERSION}.exe"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/$APPNAME $VERSION.msi" "$PKG_PATH/${APPNAME}_${VERSION}.msi"'
@@ -105,7 +107,7 @@ release_job:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   rules:
-    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - echo "running release_job"
     - apk add bash curl python3
@@ -149,7 +151,7 @@ deploy-snapcraft:
   stage: deploy
   image: snapcore/snapcraft
   rules:
-    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   when: manual
   dependencies:
     - build-linux
