@@ -1,7 +1,12 @@
 var test = require( 'tape' );
+const fs = require( 'fs' );
+
 var model = require('../../src/models/roadbook-model.js').roadbookModel;
 
+
 test( 'Can add an instruction to the roadbook', function( assert ) {
+  global.globalNode = Object();
+  globalNode.fs = fs;
   var roadbookModel = new model();
   var instructionData = {"lat":37.28077782611077,"long":-107.88813478471678,"routePointIndex":0,"kmFromStart":0,"kmFromPrev":0,"heading":0,"relativeAngle":0};
   /*
