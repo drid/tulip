@@ -11,16 +11,19 @@
 */
 class Notification {
   constructor(name) {
-    var type = Notification.mapFileNameToType(name);
+    var type = false
+    if (typeof (name) === "object") {
+      type = name.type;
+    }
+    else
+      type = Notification.mapFileNameToType(name);
+
     if (type) {
       var notification = Notification.buildNotification(type);
       this.type = notification.type;
       this.openrallytype = notification.openrallytype;
       this.openRadius = notification.openRadius;
       this.validationRadius = notification.validationRadius;
-      this.modMin = notification.modMin;
-      this.modMax = notification.modMax;
-      this.modStep = notification.modStep;
       this.fill = notification.fill;
       this.time = notification.time;
     }
@@ -64,17 +67,17 @@ class Notification {
         openRadius: 800,
         validationRadius: 90,
         modMin: 100,
-        modMax: 1000,
-        modStep: 100,
+        modMax: 800,
+        modStep: 10,
       },
       wpv: {
         type: "wpv",
         openrallytype: "wpv",
         fill: '#008CBA',
         validationRadius: 200,
-        modMin: 5,
+        modMin: 10,
         modMax: 800,
-        modStep: 100,
+        modStep: 10,
       },
       wpe: {
         type: "wpe",
@@ -82,9 +85,9 @@ class Notification {
         fill: '#008CBA',
         openRadius: 1000,
         validationRadius: 90,
-        modMin: 5,
+        modMin: 10,
         modMax: 1000,
-        modStep: 100,
+        modStep: 10,
       },
       wpn: {
         type: "wpn",
@@ -92,15 +95,18 @@ class Notification {
         fill: '#ff20fb',
         openRadius: 800,
         validationRadius: 200,
-        modMin: 200,
-        modMax: 1000,
-        modStep: 100,
+        modMin: 10,
+        modMax: 800,
+        modStep: 10,
       },
       wpc: {
         type: "wpc",
         openrallytype: "wpc",
         fill: '#ffffb9',
         validationRadius: 300,
+        modMin: 10,
+        modMax: 600,
+        modStep: 10,
       },
       wpp: {
         type: "wpp",
@@ -108,9 +114,9 @@ class Notification {
         fill: '#cccccc',
         openRadius: 100,
         validationRadius: 20,
-        modMin: 5,
-        modMax: 1000,
-        modStep: 100,
+        modMin: 1,
+        modMax: 100,
+        modStep: 1,
       },
       wps: {
         type: "wps",
@@ -119,8 +125,8 @@ class Notification {
         openRadius: 1000,
         validationRadius: 30,
         modMin: 100,
-        modMax: 2000,
-        modStep: 100,
+        modMax: 1000,
+        modStep: 10,
       },
       dss: {
         type: "dss",
@@ -128,9 +134,9 @@ class Notification {
         fill: '#ff4242',
         openRadius: 1000,
         validationRadius: 200,
-        modMin: 5,
+        modMin: 10,
         modMax: 1000,
-        modStep: 100,
+        modStep: 10,
       },
       fss: {
         type: "fss",
@@ -138,9 +144,9 @@ class Notification {
         fill: '#ff6060',
         openRadius: 800,
         validationRadius: 90,
-        modMin: 5,
-        modMax: 1000,
-        modStep: 100,
+        modMin: 10,
+        modMax: 800,
+        modStep: 10,
       },
       dsz: {
         type: "dsz",
@@ -148,9 +154,9 @@ class Notification {
         fill: '#ffba29',
         openRadius: 1000,
         validationRadius: 90,
-        modMin: 5,
+        modMin: 10,
         modMax: 1000,
-        modStep: 5,
+        modStep: 10,
       },
       fsz: {
         type: "fsz",
@@ -158,9 +164,9 @@ class Notification {
         fill: '#3db54a',
         openRadius: 1000,
         validationRadius: 90,
-        modMin: 5,
+        modMin: 10,
         modMax: 1000,
-        modStep: 5,
+        modStep: 10,
       },
       cp: {
         type: "cp",
@@ -168,9 +174,9 @@ class Notification {
         fill: '#ba6bab',
         openRadius: 1000,
         validationRadius: 90,
-        modMin: 5,
+        modMin: 10,
         modMax: 1000,
-        modStep: 5,
+        modStep: 10
       },
       dn: {
         type: "dn",
@@ -178,6 +184,9 @@ class Notification {
         fill: '#a8aaad',
         openRadius: 1000,
         validationRadius: 90,
+        modMin: 10,
+        modMax: 1000,
+        modStep: 10,
         time: 600
       },
       dns: {
@@ -186,6 +195,9 @@ class Notification {
         fill: '#ffba29',
         openRadius: 1000,
         validationRadius: 90,
+        modMin: 10,
+        modMax: 1000,
+        modStep: 10,
         time: 600
       },
       fn: {
@@ -193,7 +205,10 @@ class Notification {
         openrallytype: "fn",
         fill: '#a8aaad',
         openRadius: 1000,
-        validationRadius: 90
+        validationRadius: 90,
+        modMin: 10,
+        modMax: 1000,
+        modStep: 10
       },
       dt: {
         type: "dt",
@@ -201,6 +216,9 @@ class Notification {
         fill: '#a8aaad',
         openRadius: 1000,
         validationRadius: 90,
+        modMin: 10,
+        modMax: 1000,
+        modStep: 10,
         time: 600
       },
       dts: {
@@ -209,6 +227,9 @@ class Notification {
         fill: '#ffba29',
         openRadius: 1000,
         validationRadius: 90,
+        modMin: 10,
+        modMax: 1000,
+        modStep:105,
         time: 600
       },
       ft: {
@@ -216,7 +237,10 @@ class Notification {
         openrallytype: "ft",
         fill: '#a8aaad',
         openRadius: 1000,
-        validationRadius: 90
+        validationRadius: 90,
+        modMin: 10,
+        modMax: 1000,
+        modStep: 10
       },
     }
     return types[type];
@@ -224,6 +248,11 @@ class Notification {
 
   static nameMatchesClass(name, type) {
     return (Notification.mapFileNameToType(name) == type);
+  }
+
+  static getUiElements(type) {
+    var n = Notification.buildNotification(type);
+    return { "modMin": n.modMin, "modMax": n.modMax, "modStep": n.modStep, "fill": n.fill }
   }
 }
 

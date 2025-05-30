@@ -53,9 +53,9 @@ class NoteControls {
     $('#notification-open-radius').val(notification.openRadius);
     $('#notification-validation-radius').val(notification.validationRadius);
     $('#notification-time').val(notification.time);
-    $('#notification-validation-radius').attr('min', notification.modMin);
-    $('#notification-validation-radius').attr('max', notification.modMax);
-    $('#notification-validation-radius').attr('step', notification.modStep);
+    $('#notification-validation-radius').attr('min', Notification.getUiElements(notification.type).modMin);
+    $('#notification-validation-radius').attr('max', Notification.getUiElements(notification.type).modMax);
+    $('#notification-validation-radius').attr('step', Notification.getUiElements(notification.type).modStep);
     if (notification.openRadius) {
       $('#notification-open-radius-wrapper').removeClass('waypoint-parameter-none')
     } else {

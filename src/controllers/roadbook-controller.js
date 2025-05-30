@@ -130,9 +130,9 @@ class RoadbookController {
     $('#note-editor').html(instruction.noteHTML());
     $('#notification-open-radius').val((instruction.notification ? instruction.notification.openRadius : null));
     $('#notification-validation-radius').val((instruction.notification ? instruction.notification.validationRadius : null));
-    $('#notification-validation-radius').attr('min', instruction.notification.modMin);
-    $('#notification-validation-radius').attr('max', instruction.notification.modMax);
-    $('#notification-validation-radius').attr('step', instruction.notification.modStep);
+    $('#notification-validation-radius').attr('min', instruction.notification ? Notification.getUiElements(instruction.notification.type).modMin : 5);
+    $('#notification-validation-radius').attr('max', instruction.notification ? Notification.getUiElements(instruction.notification.type).modMax: 2000);
+    $('#notification-validation-radius').attr('step', instruction.notification ? Notification.getUiElements(instruction.notification.type).modStep: 5);
     $('#notification-time').val((instruction.notification ? instruction.notification.time : null));
     $('#note-editor-container').toggleClass('hideCap', !instruction.showHeading());
     $('#roadbook-waypoints').children().hide();
