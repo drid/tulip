@@ -236,6 +236,10 @@ var Instruction = Class({
     }
   },
 
+  updateWaypointBubble() {
+      app.mapController.updateWaypointBubble(this.routePointIndex, this._notification().openRadius || 0, this._notification().validationRadius, this._notification().fill);
+  },
+
   computedTotalDistance: function () {
     return this.kmFromStart().toFixed(2);
   },

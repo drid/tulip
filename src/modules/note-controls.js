@@ -32,21 +32,18 @@ class NoteControls {
       $(this).blur();
     })
 
-    $('#show-notification-options').click(function () {
-      var notification = app.roadbook.currentlyEditingInstruction.notification;
-      $('#notification-open-radius').val(notification.openRadius);
-      $('#notification-validation-radius').val(notification.validationRadius);
-      $('#notification-time').val(notification.time);
-      $('#notification-validation-radius').attr('min', notification.modMin);
-      $('#notification-validation-radius').attr('max', notification.modMax);
-      $('#notification-validation-radius').attr('step', notification.modStep);
-    });
     //TODO decouple this
-    $('#notification-open-radius, #notification-validation-radius').bind('keyup input', function () {
+    $('#notification-open-radius, #notification-validation-radius').on('keyup input', function () {
       var notification = app.roadbook.currentlyEditingInstruction.notification;
-      notification.openRadius = $('#notification-open-radius').val();
-      notification.validationRadius = $('#notification-validation-radius').val();
+      notification.openRadius = parseInt($('#notification-open-radius').val());
+      notification.validationRadius = parseInt($('#notification-validation-radius').val());
+      if (notification.validationRadius > notification.openRadius) {
+        notification.openRadius = notification.validationRadius;
+        $('#notification-open-radius').val(notification.openRadius);
+      }
+      $('#notification-open-radius').attr('min', notification.validationRadius);
       notification.time = $('#notification-time').val();
+      app.roadbook.currentlyEditingInstruction.updateWaypointBubble();
       _this.checkForNotification(); //TODO This needs refactored
     });
 
