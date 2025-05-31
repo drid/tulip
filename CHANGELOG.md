@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.5-1] - 2025-05-31
+
+### 🐛 Bug Fixes
+
+- Replace missing glyphs with default image
+
+### 💼 Other
+
+- 1.9.5-1
+
+## [1.9.5-0] - 2025-05-30
+
+### 🚀 Features
+
+- *(version)* Add app version display and storage
+- *(glyphs)* Add multiple new glyphs
+- *(glyphs)* Add distance and dune level glyphs
+
+### 🐛 Bug Fixes
+
+- Fix: map bubble update
+closes #37
+
+
+
+### 💼 Other
+
+- Remove prepack script
+
+
+- Release only on master branch tag
+Build on MR to master
+
+
+- WP UI values stored in roadbook
+- 1.9.5-0
+
 ## [1.9.4] - 2025-05-29
 
 ### 🚀 Features

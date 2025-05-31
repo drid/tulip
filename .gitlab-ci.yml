@@ -87,7 +87,7 @@ upload_package:
   stage: package
   image: curlimages/curl:latest
   rules:
-    - if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: '$CI_COMMIT_TAG =~ /^v?[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$/ && $CI_COMMIT_TAG'
   script:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/$APPNAME $VERSION.exe" "$PKG_PATH/${APPNAME}_${VERSION}.exe"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/$APPNAME $VERSION.msi" "$PKG_PATH/${APPNAME}_${VERSION}.msi"'
@@ -107,7 +107,7 @@ release_job:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   rules:
-    - if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: '$CI_COMMIT_TAG =~ /^v?[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$/ && $CI_COMMIT_TAG'
   script:
     - echo "running release_job"
     - apk add bash curl python3
@@ -147,19 +147,3 @@ release_job:
           url: "$PKG_PATH/${APPNAME}-${VERSION}.x86_64.rpm"
           link_type: package
 
-deploy-snapcraft:
-  stage: deploy
-  image: snapcore/snapcraft
-  rules:
-    - if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  when: manual
-  dependencies:
-    - build-linux
-  script:
-    - echo $SNAPCRAFT_STORE_CREDENTIALS | base64 --decode > ssc
-    - snapcraft login --with ssc
-    - snapcraft whoami
-    - snapcraft push *.snap --release stable
-  environment:
-    name: production
-    url: https://snapcraft.io/$SNAP_NAME
