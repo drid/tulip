@@ -539,6 +539,13 @@ nav.top-bar {
   width: 40px;
   height: 40px;
 }
+#delete-tulip-item {
+  color: darkred;
+}
+
+.tulip-edit-controls {
+  margin-top: 12px;
+}
 
 #about-version {
   display: inline;

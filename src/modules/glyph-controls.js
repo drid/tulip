@@ -102,6 +102,12 @@ class GlyphControls {
       _this.showGlyphModal($(this).data('top'), $(this).data('left'));
       return false
     });
+
+    $(document).on('keydown', function(e) {
+      if ((e.key === 'Delete' || e.key === 'Backspace') && !$(e.target).is('input, textarea') && app.roadbook.currentlyEditingInstruction) {
+        app.roadbook.currentlyEditingInstruction.tulip.removeActiveGlyph()
+      }
+    });
   }
 
   showGlyphModal(top, left) {

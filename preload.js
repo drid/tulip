@@ -1,6 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
 const fs = require('fs');
 const { dialog } = require('@electron/remote');
+const { randomUUID } = require('crypto');
+
 const Sentry = require("@sentry/electron/renderer");
 
 Sentry.init({
@@ -30,7 +32,10 @@ contextBridge.exposeInMainWorld("globalNode", {
         removeListener: ipcRenderer.removeListener.bind(ipcRenderer),
     },
     getAppPath: () => ipcRenderer.sendSync("get-app-path"),
-    getVersion: () => ipcRenderer.sendSync('get-app-version')
+    getVersion: () => ipcRenderer.sendSync('get-app-version'),
+    randomUUID: () => {
+        return randomUUID();
+    }
 });
 
 contextBridge.exposeInMainWorld("Sentry", {

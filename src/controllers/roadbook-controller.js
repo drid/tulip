@@ -79,6 +79,9 @@ class RoadbookController {
       $('#note-editor-container').toggleClass('hideCoordinates', !_this.model.instructionShowCoordinates())
       _this.model.currentlyEditingInstruction.showCoordinates(_this.model.instructionShowCoordinates());
     });
+    $('#delete-tulip-item').on("click", function () {
+      _this.model.currentlyEditingInstruction.tulip.removeActiveGlyph()
+    })
   }
 
   bindToTrackGrid() {

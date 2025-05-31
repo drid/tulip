@@ -92,6 +92,7 @@ var Tulip = Class({
       image.top = position.top;
       image.left = position.left;
       image.scaleToHeight(75);
+      image.id = globalNode.randomUUID();
       _this.canvas.add(image);
       _this.glyphs.push(image);
     }
@@ -146,6 +147,7 @@ var Tulip = Class({
       }, function (o, object) {
         if (object.type == "image") {
           //if the object is an image add it to the glyphs array
+          object.id = globalNode.randomUUID();
           _this.glyphs.push(object);
         }
       });
@@ -193,10 +195,14 @@ var Tulip = Class({
     }
   },
 
-  beginRemoveGlyph: function () {
-    this.finishEdit();
-    for (i = 0; i < this.glyphs.length; i++) {
-      this.activeRemovers.push(new GlyphRemover(this, this.glyphs[i], i));
+  removeActiveGlyph: function () {
+    const activeObject = this.canvas.getActiveObject();
+    var glyphs = this.glyphs;
+    if (activeObject && activeObject.id) {
+      this.canvas.remove(activeObject);
+      this.canvas.discardActiveObject();
+      this.canvas.renderAll();
+      this.glyphs = glyphs.filter(g => g.id !== activeObject.id);
     }
   },
 
