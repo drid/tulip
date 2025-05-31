@@ -51,6 +51,7 @@ var Tulip = Class({
       this.initEntry(trackTypes.entryTrackType);
       this.initExit(angle, trackTypes.exitTrackType);
     }
+    this.canvas.on('mouse:down', (options) => this.addTrackHandles(options));
   },
 
   initEntry: function (trackType) {
@@ -164,6 +165,7 @@ var Tulip = Class({
     });
     entry.point.stroke = this.mainTrackColor;
     entry.point.fill = this.mainTrackColor;
+    entry.point.selectable = false;
     var paths = this.buildPaths(entry.paths);
     var point = new fabric.Circle(entry.point);
     this.canvas.add(point);
@@ -207,26 +209,27 @@ var Tulip = Class({
   beginEdit: function () {
     this.activeEditors.push(new EntryTrackEditor(this.canvas, this.entryTrack));
     this.activeEditors.push(new ExitTrackEditor(this.canvas, this.exitTrack));
-    for (i = 0; i < this.tracks.length; i++) {
-      this.activeEditors.push(new AddedTrackEditor(this.canvas, this.tracks[i]));
-    }
+    i = 0;
+    // for (i = 0; i < this.tracks.length; i++) {
+    // this.activeEditors.push(new AddedTrackEditor(this.canvas, this.tracks[i]));
+    // }
   },
 
   removeActiveGlyph: function () {
     const activeObject = this.canvas.getActiveObject();
+    var tracks = this.tracks;
     var glyphs = this.glyphs;
     if (activeObject && activeObject.id) {
       this.canvas.remove(activeObject);
       this.canvas.discardActiveObject();
+      tracks.find((element, idx, arr) => {
+        if (element.id == activeObject.id) {
+          this.removeTrack(element)
+        }
+      });
       this.canvas.renderAll();
       this.glyphs = glyphs.filter(g => g.id !== activeObject.id);
-    }
-  },
-
-  beginRemoveTrack: function () {
-    this.finishEdit();
-    for (i = 0; i < this.tracks.length; i++) {
-      this.activeRemovers.push(new TrackRemover(this, this.tracks[i], i));
+      this.tracks = tracks.filter(g => g.id !== activeObject.id);
     }
   },
 
@@ -278,19 +281,18 @@ var Tulip = Class({
     this.canvas.deactivateAll().renderAll();
   },
 
-  redrawExitAndEditor(angle, exitTrackType) {
-    this.activeEditors[1].destroy();
-    this.redrawExit(angle, exitTrackType)
-    this.activeEditors.splice(1, 0, (new TrackEditor(this.canvas, this.exitTrack, false, true, true)));
-  },
+  // redrawExitAndEditor(angle, exitTrackType) {
+  //   this.activeEditors[1].destroy();
+  //   this.redrawExit(angle, exitTrackType)
+  //   this.activeEditors.splice(1, 0, (new TrackEditor(this.canvas, this.exitTrack, false, true, true)));
+  // },
 
   removeLastGlyph: function () {
     var glyph = this.glyphs.pop()
     this.canvas.remove(glyph);
   },
 
-  removeLastTrack: function () {
-    var track = this.tracks.pop()
+  removeTrack: function (track) {
     if (track) {
       for (i = 0; i < track.paths.length; i++) {
         this.canvas.remove(track.paths[i]);
@@ -301,6 +303,10 @@ var Tulip = Class({
         }
       }
     }
+  },
+
+  removeLastTrack: function () {
+    this.removeTrack(this.tracks.pop());
   },
 
   /*
@@ -351,6 +357,24 @@ var Tulip = Class({
   truncateGlyphSource: function (src) {
     var index = src.lastIndexOf("assets/svg/glyphs");
     return "./" + src.slice(index);
-  }
+  },
 
+  addTrackHandles(options) {
+    const target = options.target;
+    if (target && target.id) {
+      track = this.tracks.find(({ id }) => id === target.id);
+
+      for (var i = 0; i < this.activeEditors.length; i++) {
+        if (this.activeEditors[i] instanceof EntryTrackEditor || this.activeEditors[i] instanceof ExitTrackEditor)
+          continue
+        this.activeEditors[i].destroy();
+        this.activeEditors.splice(i, 1);
+      }
+
+      for (var i = 0; i < this.tracks.length; i++) {
+        delete this.tracks[i].editor
+      }
+      this.activeEditors.push(new AddedTrackEditor(this.canvas, track));
+    }
+  }
 });

@@ -17,6 +17,7 @@ class Track {
     this.types = {};
     this.initTypes();
     this.mainTrackColor = '#22F';
+    this.id = globalNode.randomUUID();
   }
 
   addObjectsToCanvas(objectsArray, canvas) {
@@ -39,8 +40,13 @@ class Track {
         }
         return obj;
       });
+    } else {
+      typeOptions = typeOptions.map(obj => {
+        return { ...obj, id: this.id };
+      });
     }
     for (var i = 0; i < typeOptions.length; i++) {
+      Track.disableDefaults(typeOptions[i], true);
       paths.push(new fabric.Path(this.buildTrackPathString(angle, origin), typeOptions[i]));
     }
     return paths;
@@ -98,9 +104,9 @@ class Track {
     return [x + origin[0], y + origin[1]]
   }
 
-  static disableDefaults(object) {
-    object.hasBorders = false;
-    object.selectable = false;
+  static disableDefaults(object, secondaryTrack = false) {
+    object.hasBorders = secondaryTrack;
+    object.selectable = secondaryTrack;
     object.hasControls = false;
     object.lockMovementX = true;
     object.lockMovementY = true;
@@ -253,6 +259,7 @@ class EntryTrack extends Track {
       radius: 7,
       fill: this.mainTrackColor,
       stroke: this.mainTrackColor,
+      selectable: false
     });
     this.origin = point;
     this.paths = paths;
@@ -314,7 +321,10 @@ class AddedTrack extends Track {
   constructor(angle, type, canvas, objects) {
     super();
     if (objects) {
-      Track.disableDefaults(objects.track[0])
+      for (var i = 0; i < objects.track.length; i++) {
+        Track.disableDefaults(objects.track[i], true);
+        objects.track[i].id = this.id;
+      }
       this.paths = objects.track
     } else {
       this.paths = this.buildTrackPaths(angle, this.canvas_center, type)

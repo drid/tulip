@@ -90,20 +90,14 @@ class GlyphControls {
     $('.glyph-grid').click(function (e) {
       e.preventDefault();
       if ($(this).hasClass('undo')) {
-        if (e.shiftKey) {
-          // NOTE this module should only know about the roadbook
-          app.roadbook.currentlyEditingInstruction.tulip.beginRemoveGlyph();
-        } else {
-          // NOTE this module should only know about the roadbook
-          app.roadbook.currentlyEditingInstruction.tulip.removeLastGlyph();
-        }
+        app.roadbook.currentlyEditingInstruction.tulip.removeLastGlyph();
         return false
       }
       _this.showGlyphModal($(this).data('top'), $(this).data('left'));
       return false
     });
 
-    $(document).on('keydown', function(e) {
+    $(document).on('keydown', function (e) {
       if ((e.key === 'Delete' || e.key === 'Backspace') && !$(e.target).is('input, textarea') && app.roadbook.currentlyEditingInstruction) {
         app.roadbook.currentlyEditingInstruction.tulip.removeActiveGlyph()
       }
