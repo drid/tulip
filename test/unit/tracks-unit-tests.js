@@ -73,14 +73,33 @@ test('Builds a propperly stubbed hp type', function(assert){
   assert.end();
 });
 
+test('Builds a propperly stubbed smallTrack type', function(assert){
+  var track = new tracks.track();
+      smallTrack = track.types['smallTrack'];
+
+  var validSmallTrack = [{
+                      fill: '',
+                      stroke: '#000',
+                      strokeWidth: 4,
+                      strokeDashArray: [],
+                      hasControls: false,
+                      lockMovementX: true,
+                      lockMovementY: true,
+                      hasBorders: false,
+                      selectable:false,
+                    }];
+  assert.deepLooseEqual(validSmallTrack,smallTrack, "It creates a propperly formatted smallTrack type object");
+  assert.end();
+});
+
 test('Builds a propperly stubbed track type', function(assert){
   var track = new tracks.track();
-      track = track.types['track'];
+  var track = track.types['track'];
 
   var validTrack = [{
                       fill: '',
                       stroke: '#000',
-                      strokeWidth: 4,
+                      strokeWidth: 6,
                       strokeDashArray: [],
                       hasControls: false,
                       lockMovementX: true,
@@ -92,30 +111,11 @@ test('Builds a propperly stubbed track type', function(assert){
   assert.end();
 });
 
-test('Builds a propperly stubbed road type', function(assert){
+test('Builds a propperly stubbed tarmac road type', function(assert){
   var track = new tracks.track();
-  var road = track.types['road'];
+  var tarmacRoad = track.types['tarmacRoad'];
 
-  var validRoad = [{
-                      fill: '',
-                      stroke: '#000',
-                      strokeWidth: 6,
-                      strokeDashArray: [],
-                      hasControls: false,
-                      lockMovementX: true,
-                      lockMovementY: true,
-                      hasBorders: false,
-                      selectable:false,
-                    }];
-  assert.deepLooseEqual(validRoad,road, "It creates a propperly formatted road type object");
-  assert.end();
-});
-
-test('Builds a propperly stubbed main road type', function(assert){
-  var track = new tracks.track();
-  var mainRoad = track.types['mainRoad'];
-
-  var validMainRoad = [{
+  var validtarmacRoad = [{
                         fill: '',
                         stroke: '#000',
                         strokeWidth: 6,
@@ -137,7 +137,7 @@ test('Builds a propperly stubbed main road type', function(assert){
                         hasBorders: false,
                         selectable:false,
                       }];
-  assert.deepLooseEqual(validMainRoad,mainRoad, "It creates a propperly formatted mainRoad type object");
+  assert.deepLooseEqual(validtarmacRoad,tarmacRoad, "It creates a propperly formatted tarmacRoad type object");
   assert.end();
 });
 

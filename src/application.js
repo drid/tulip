@@ -654,7 +654,7 @@ class App {
 
     this.ipc.on('set-track-p', function (event, arg) {
       if (_this.roadbook.currentlyEditingInstruction) {
-        _this.roadbook.changeEditingInstructionAdded('track');
+        _this.roadbook.changeEditingInstructionAdded('smallTrack');
         $('.added-track-selector').removeClass('active');
         $($('.added-track-selector')[1]).addClass('active');
       }
@@ -662,7 +662,7 @@ class App {
 
     this.ipc.on('set-track-pp', function (event, arg) {
       if (_this.roadbook.currentlyEditingInstruction) {
-        _this.roadbook.changeEditingInstructionAdded('road');
+        _this.roadbook.changeEditingInstructionAdded('track');
         $('.added-track-selector').removeClass('active');
         $($('.added-track-selector')[2]).addClass('active');
       }
@@ -670,7 +670,7 @@ class App {
 
     this.ipc.on('set-track-ro', function (event, arg) {
       if (_this.roadbook.currentlyEditingInstruction) {
-        _this.roadbook.changeEditingInstructionAdded('mainRoad');
+        _this.roadbook.changeEditingInstructionAdded('tarmacRoad');
         $('.added-track-selector').removeClass('active');
         console.log($('.added-track-selector')[3]);
         $($('.added-track-selector')[3]).addClass('active');

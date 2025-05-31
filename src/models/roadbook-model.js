@@ -59,11 +59,24 @@ class RoadbookModel {
 
     if (points.length == 0)
       return;
+    const trackTypeMap = {
+      "offPiste": "offPiste",
+      "track": "smallTrack",
+      "road": "track",
+      "mainRoad": "tarmacRoad",
+      "dcw": "dcw"
+    }
+    var updateTracktypes = this.needsTrackTypeUpdate(points);
     // NOTE: For some strange reason, due to canvas rendering, a for loop causes points and instructions to be skipped, hence for...of in
     for (var point of points) {
       var latLng = new google.maps.LatLng(point.lat, point.long)
       var marker = app.mapModel.addRoutePoint(latLng, app.mapController.map)
       if (point.instruction || point.waypoint) {
+        if (updateTracktypes) {
+          point.entryTrackType = trackTypeMap[point.entryTrackType];
+          point.exitTrackType = trackTypeMap[point.exitTrackType];
+        }
+
         app.mapModel.setMarkerIconToInstructionIcon(marker);
         point.routePointIndex = marker.routePointIndex; //refactor to persist this
         marker.instruction = this.appendInstruction(point);
@@ -84,6 +97,15 @@ class RoadbookModel {
     });
     app.mapController.fitBounds(bounds);
     app.mapController.map.setZoom(app.mapController.map.getZoom()-1);
+  }
+
+  needsTrackTypeUpdate(instructions) {
+    return instructions.some(function (i, index) {
+      if (['road', 'mainRoad'].includes(i.entryTrackType) || ['road', 'mainRoad'].includes(i.exitTrackType)) {
+        console.log("Track types will be updated")
+        return true;
+      }
+    });
   }
 
   appendGlyphToNoteTextEditor(image) {
