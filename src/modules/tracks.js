@@ -13,9 +13,10 @@ class Track {
     const canvas_width = 180;
     const canvas_height = 180;
     this.canvas_center = [canvas_width / 2, canvas_height / 2];
-    this.entry_track_origin = [canvas_width / 2, canvas_height-10]
+    this.entry_track_origin = [canvas_width / 2, canvas_height - 10]
     this.types = {};
     this.initTypes();
+    this.mainTrackColor = '#22F';
   }
 
   addObjectsToCanvas(objectsArray, canvas) {
@@ -27,11 +28,18 @@ class Track {
     }
   }
 
-  buildTrackPaths(angle, origin, type, route = false) {
+  buildTrackPaths(angle, origin, type, mainTrack = false) {
     type = (type !== undefined ? type : 'track')
     var paths = [];
     var typeOptions = this.types[type];
-    if (route) typeOptions[0].stroke = "#22F";
+    if (mainTrack) {
+      typeOptions = typeOptions.map(obj => {
+        if (obj.stroke === '#000') {
+          return { ...obj, stroke: this.mainTrackColor };
+        }
+        return obj;
+      });
+    }
     for (var i = 0; i < typeOptions.length; i++) {
       paths.push(new fabric.Path(this.buildTrackPathString(angle, origin), typeOptions[i]));
     }
@@ -191,10 +199,18 @@ class Track {
     }];
   }
 
-  changeType(type, canvas) {
+  changeType(type, canvas, mainTrack = true) {
     var pathSVG = $(this.paths[0].toSVG()).attr('d')
     this.clearPathsFromCanvas(canvas);
     var typeOptions = this.types[type];
+    if (mainTrack) {
+      typeOptions = typeOptions.map(obj => {
+        if (obj.stroke === '#000') {
+          return { ...obj, stroke: this.mainTrackColor };
+        }
+        return obj;
+      });
+    }
     this.setPaths(pathSVG, typeOptions, canvas);
   }
 
@@ -235,8 +251,8 @@ class EntryTrack extends Track {
       top: paths[0].path[0][2],
       strokeWidth: 1,
       radius: 7,
-      fill: '#22F',
-      stroke: '#22F',
+      fill: this.mainTrackColor,
+      stroke: this.mainTrackColor,
     });
     this.origin = point;
     this.paths = paths;
@@ -269,8 +285,8 @@ class ExitTrack extends Track {
       strokeWidth: 1,
       height: 15,
       width: 15,
-      fill: '#22F',
-      stroke: '#22F',
+      fill: this.mainTrackColor,
+      stroke: this.mainTrackColor,
       angle: angle,
     });
     this.end = point;
