@@ -150,7 +150,7 @@ var Io = Class({
     if (tracks.length > 0) {
       var tracks = this.processGpxTracksForImport(tracks);
 
-      for (i = 0; i < tracks.length; i++) {
+      for (var i = 0; i < tracks.length; i++) {
 
         var latLng = new google.maps.LatLng(tracks[i].lat, tracks[i].lng);
         // TODO abstract this to the app

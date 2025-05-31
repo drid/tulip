@@ -1,8 +1,11 @@
 var test = require( 'tape' );
 var tracks = require('../../src/modules/tracks.js');
+const { randomUUID } = require('crypto');
 
 
 test( 'Builds a track path string when given an angle', function( assert ) {
+  global.globalNode = Object();
+  globalNode.randomUUID  = randomUUID;
   var track = new tracks.track();
   var string = "M 90 90 C 96, 84, 103, 77, 109, 71 C 115, 65, 122, 58, 128, 52 C 135, 45, 141, 39, 147, 33";
   assert.equal( track.buildTrackPathString(45,[90,90]), string, "Creates an accurate SVG string when given an angle" );
