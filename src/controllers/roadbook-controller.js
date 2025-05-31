@@ -88,11 +88,7 @@ class RoadbookController {
     var _this = this;
     $('.track-grid').click(function (e) {
       if ($(this).hasClass('undo')) {
-        if (e.shiftKey) {
-          _this.model.currentlyEditingInstruction.tulip.beginRemoveTrack();
-        } else {
-          _this.model.currentlyEditingInstruction.tulip.removeLastTrack();
-        }
+        _this.model.currentlyEditingInstruction.tulip.removeLastTrack();
         return
       }
       var angle = $(this).data('angle');
@@ -134,8 +130,8 @@ class RoadbookController {
     $('#notification-open-radius').val((instruction.notification ? instruction.notification.openRadius : null));
     $('#notification-validation-radius').val((instruction.notification ? instruction.notification.validationRadius : null));
     $('#notification-validation-radius').attr('min', instruction.notification ? Notification.getUiElements(instruction.notification.type).modMin : 5);
-    $('#notification-validation-radius').attr('max', instruction.notification ? Notification.getUiElements(instruction.notification.type).modMax: 2000);
-    $('#notification-validation-radius').attr('step', instruction.notification ? Notification.getUiElements(instruction.notification.type).modStep: 5);
+    $('#notification-validation-radius').attr('max', instruction.notification ? Notification.getUiElements(instruction.notification.type).modMax : 2000);
+    $('#notification-validation-radius').attr('step', instruction.notification ? Notification.getUiElements(instruction.notification.type).modStep : 5);
     $('#notification-time').val((instruction.notification ? instruction.notification.time : null));
     $('#note-editor-container').toggleClass('hideCap', !instruction.showHeading());
     $('#roadbook-waypoints').children().hide();
@@ -150,9 +146,9 @@ class RoadbookController {
     });
     $(instruction.element).find('.waypoint-icon').addClass('delete-suggestion');
     $(instruction.element).find('.waypoint-icon').on('mouseenter', function () {
-        $(this).attr('title', 'Double-click to delete the waypoint');
+      $(this).attr('title', 'Double-click to delete the waypoint');
     }).on('mouseleave', function () {
-        $(this).removeAttr('title');
+      $(this).removeAttr('title');
     });
 
     // $('#roadbook').css('padding-bottom', '0');
