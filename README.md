@@ -17,19 +17,60 @@ Features:
 * Works on Linux/Mac/Windows
 
 
-## Install and run
-### To download and use for local development
-1. Install [Node.js](https://nodejs.org/)
-2. Navigate to local working directory `$ cd tulip`
-3. Launch electron `npm start`
-4. Open settings and add your mapping api keys
+## Install
+### Using Release artifacts
+You may download Tulip from the available [releases on GitLAB](https://gitlab.com/drid/tulip/-/releases)
 
-### To download, package, and use for fun
-1. Install [Node.js](https://nodejs.org/)
-2. Download the latest stable release
-4. Navigate to local working directory `$ cd tulip`
-5. Use `build_tulip.sh` to create a packages
+There are binaries in the form of:
+* RPM
+* DEB
+* AppImage
+* Snap
+* Windows executables
 
+### Using snap store
+
+[![Get it from the Snap Store](https://snapcraft.io/en/light/install.svg)](https://snapcraft.io/tulip-roadbook)
+
+or from console:
+```bash
+sudo snap install --edge tulip-roadbook
+```
+
+### Build and install
+You will need [inkscape](https://inkscape.org/) installed on your system
+
+Clone or download the repository and go to source code folder
+```bash
+# Install node modules
+npm install
+# Generate SVGs
+npm run convert-svg
+```
+Available build commands are:
+```bash
+# All linux binaries
+npm run build-linux
+# Windows binaries
+npm run build-win
+# Mac
+npm run build-mac
+```
+also for specific Linux package type you can use electron builder directly
+```bash
+# AppImage
+npx electron-builder --linux appimage
+# Snap
+npx electron-builder --linux snap
+# DEB
+npx electron-builder --linux deb
+# RPM
+npx electron-builder --linux rpm
+```
+## 🐛 Reporting Issues
+
+If you find a bug, please report it in the GitLab Issues section:  
+[https://gitlab.com/drid/tulip/-/issues](https://gitlab.com/drid/tulip/-/issues)
 ## 🤝 Contributing
 
 We welcome contributions! Please submit all merge requests to our **GitLab repository** at:  
