@@ -25,7 +25,6 @@ var Tulip = Class({
     this.tracks = [];
     this.glyphs = [];
     this.activeEditors = [];
-    this.activeRemovers = [];
     this.addedTrackType = 'track';
     // TODO should this be checking JSON for this?
     this.exitTrackEdited = false;
@@ -63,7 +62,7 @@ var Tulip = Class({
   },
 
   initTracks: function (trackArray) {
-    for (i = 0; i < trackArray.length; i++) {
+    for (var i = 0; i < trackArray.length; i++) {
       this.tracks.push(new AddedTrack(null, null, null, { track: [trackArray[i]] }))
     }
   },
@@ -209,10 +208,6 @@ var Tulip = Class({
   beginEdit: function () {
     this.activeEditors.push(new EntryTrackEditor(this.canvas, this.entryTrack));
     this.activeEditors.push(new ExitTrackEditor(this.canvas, this.exitTrack));
-    i = 0;
-    // for (i = 0; i < this.tracks.length; i++) {
-    // this.activeEditors.push(new AddedTrackEditor(this.canvas, this.tracks[i]));
-    // }
   },
 
   removeActiveGlyph: function () {
@@ -274,18 +269,9 @@ var Tulip = Class({
   },
 
   finishRemove: function () {
-    for (var i = 0; i < this.activeRemovers.length; i++) {
-      this.activeRemovers[i].destroy();
-    }
     // remove controls from glyphs and update the canvas' visual state
     this.canvas.deactivateAll().renderAll();
   },
-
-  // redrawExitAndEditor(angle, exitTrackType) {
-  //   this.activeEditors[1].destroy();
-  //   this.redrawExit(angle, exitTrackType)
-  //   this.activeEditors.splice(1, 0, (new TrackEditor(this.canvas, this.exitTrack, false, true, true)));
-  // },
 
   removeLastGlyph: function () {
     var glyph = this.glyphs.pop()
@@ -294,10 +280,10 @@ var Tulip = Class({
 
   removeTrack: function (track) {
     if (track) {
-      for (i = 0; i < track.paths.length; i++) {
+      for (var i = 0; i < track.paths.length; i++) {
         this.canvas.remove(track.paths[i]);
       }
-      for (i = 0; i < this.activeEditors.length; i++) {
+      for (var i = 0; i < this.activeEditors.length; i++) {
         if (this.activeEditors[i].track == track) {
           this.activeEditors[i].destroy();
         }

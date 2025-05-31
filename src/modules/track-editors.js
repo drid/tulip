@@ -133,7 +133,7 @@ class TrackEditor {
     TODO explain this mess
   */
   setTrackCurve(controlPoints, left, top) {
-    for (i = 0; i < this.paths.length; i++) {
+    for (var i = 0; i < this.paths.length; i++) {
       this.paths[i].path[controlPoints[0][0]][controlPoints[0][1]] = left;
       this.paths[i].path[controlPoints[1][0]][controlPoints[1][1]] = top;
       this.interpolatePath(this.paths[i].path);
