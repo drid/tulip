@@ -6,7 +6,7 @@ class Track {
   /*
 
     angle = INT between 0 & 359
-    type = STRING <lowVisTrack,offPise,track,road,mainRoad,dcw>
+    type = STRING <lowVisTrack,offPiste,track,road,mainRoad,dcw>
     canvas = HTML_CANVAS to render track on
   */
   constructor() {
@@ -135,7 +135,7 @@ class Track {
       hasBorders: false,
       selectable: false,
     }];
-    this.types.track = [{
+    this.types.smallTrack = [{
       fill: '',
       stroke: '#000',
       strokeWidth: 4,
@@ -146,7 +146,7 @@ class Track {
       hasBorders: false,
       selectable: false,
     }];
-    this.types.road = [{
+    this.types.track = [{
       fill: '',
       stroke: '#000',
       strokeWidth: 6,
@@ -158,7 +158,7 @@ class Track {
       selectable: false,
     }];
 
-    this.types.mainRoad = [{
+    this.types.tarmacRoad = [{
       fill: '',
       stroke: '#000',
       strokeWidth: 6,
