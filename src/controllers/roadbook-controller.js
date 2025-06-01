@@ -166,6 +166,7 @@ class RoadbookController {
         $('#notification-time-wrapper').addClass('waypoint-parameter-none')
       }
     }
+    $('#added-'+instruction.entryTrackType).trigger('click');
   }
 
   resetInstructionPalette() {
