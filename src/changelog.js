@@ -28,6 +28,8 @@ function createChangelogWindow(parentWindow) {
     });
     
     enable(changelog.webContents);
+
+    changelog.setMenu(null);
     
     // Load the changelog's HTML file
     changelog.loadFile(path.join(__dirname, '../changelog.html'));

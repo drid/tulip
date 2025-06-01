@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.5-2] - 2025-06-01
+
+### 🚀 Features
+
+- Delete glyph using del/backspace key or Button
+- Add changelog popup
+- Feature: Populate app changelog
+refactor: Cleanup code
+
+
+- *(tulip)* Handle track removal via Key/Button
+
+### 🐛 Bug Fixes
+
+- *(tulip)* Main track color are bloack sometimes
+
+### 💼 Other
+
+- 1.9.5-2
+
+### 🚜 Refactor
+
+- Refactor: remove global variables and unused code
+fix: track tests
+
+
+
+### 📚 Documentation
+
+- Update README with installation instructions, revise contribute.md, remove build script
+
 ## [1.9.5-1] - 2025-05-31
 
 ### 🐛 Bug Fixes
@@ -10,7 +41,7 @@ All notable changes to this project will be documented in this file.
 
 ### 💼 Other
 
-- 1.9.5-1
+- CI not creating releases
 
 ## [1.9.5-0] - 2025-05-30
 
