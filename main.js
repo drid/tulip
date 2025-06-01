@@ -11,7 +11,7 @@ const { Menu, app, BrowserWindow, dialog, ipcMain, shell } = require('electron')
 if (require('electron-squirrel-startup')) app.quit();
 const path = require('path');
 require('@electron/remote/main').initialize();
-const { createChangelogWindow } = require('./changelog');
+const { createChangelogWindow } = require('./src/changelog');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

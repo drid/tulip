@@ -23,14 +23,14 @@ function createChangelogWindow(parentWindow) {
         contextIsolation: true, // Enable context isolation
         enableRemoteModule: true,
         nodeIntegration: false, // Disable Node.js integration
-        preload: path.resolve(__dirname, 'preload.js'), // Load preload script
+        preload: path.resolve(__dirname, '../preload.js'), // Load preload script
       }
     });
     
     enable(changelog.webContents);
     
     // Load the changelog's HTML file
-    changelog.loadFile(path.join(__dirname, 'changelog.html'));
+    changelog.loadFile(path.join(__dirname, '../changelog.html'));
 
     // Show the changelog when it's ready to prevent flickering
     changelog.once('ready-to-show', () => {
