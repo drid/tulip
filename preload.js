@@ -35,7 +35,10 @@ contextBridge.exposeInMainWorld("globalNode", {
     getVersion: () => ipcRenderer.sendSync('get-app-version'),
     randomUUID: () => {
         return randomUUID();
-    }
+    },
+    sendOpenChangelog: () => ipcRenderer.send('open-changelog'),
+    sendChangelogResult: (result) => ipcRenderer.send('changelog-result', result),
+    onChangelogResult: (callback) => ipcRenderer.on('changelog-result', callback)
 });
 
 contextBridge.exposeInMainWorld("Sentry", {

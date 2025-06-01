@@ -11,6 +11,7 @@ const { Menu, app, BrowserWindow, dialog, ipcMain, shell } = require('electron')
 if (require('electron-squirrel-startup')) app.quit();
 const path = require('path');
 require('@electron/remote/main').initialize();
+const { createChangelogWindow } = require('./changelog');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -129,6 +130,9 @@ function createWindow() {
     {
       label: "Help",
       submenu: [
+        { label: "Changelog", click: function () {
+            mainWindow.webContents.send('open-changelog'); } 
+        },
         { label: "About", click: function () { mainWindow.webContents.send('show-about-info'); } },
       ]
     }
@@ -148,7 +152,8 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
       sandbox: false,
       contextIsolation: true,
-      enableRemoteModule: false
+      enableRemoteModule: true,
+      nodeIntegration: false
     }
   });
 
@@ -254,3 +259,8 @@ ipcMain.on("get-app-version", (event) => {
 ipcMain.on('toggle-dev-tools', (event) => {
   mainWindow.toggleDevTools();
 })
+
+ipcMain.on('open-changelog', async () => {
+  const result = await createChangelogWindow(mainWindow);
+  mainWindow.webContents.send('changelog-result', result);
+});

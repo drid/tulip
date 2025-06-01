@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Changelog Window</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    .content-container {
+      flex: 1;
+      background-color: white;
+      margin: 20px;
+      padding: 15px;
+      overflow-y: auto; /* Enable vertical scrolling */
+      border-radius: 5px;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #f0f0f0;
+      border-top: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    label {
+      font-size: 16px;
+    }
+    input[type="checkbox"] {
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-container">
+    <h1>Changelog</h1>
+    <p>Version 1.0.0: Initial release with new features.</p>
+    <p>Added support for multiple platforms.</p>
+    <p>Improved performance and stability.</p>
+    <p>Fixed minor bugs in the UI.</p>
+    <p>Version 0.9.0: Beta release with core functionality.</p>
+    <p>Added new settings panel.</p>
+    <p>Enhanced accessibility features.</p>
+    <p>Version 0.8.0: Alpha release for testing.</p>
+    <!-- Add more changelog entries to test scrolling -->
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  </div>
+  <div class="footer">
+    <label>
+      <input type="checkbox" id="showOnStart" checked> Show on startup
+    </label>
+    <button onclick="submitResult()">OK</button>
+  </div>
+
+  <script>
+    // const { ipcRenderer } = require('electron');
+
+    function submitResult() {
+      const showOnStart = document.getElementById('showOnStart').checked;
+      window.globalNode.sendChangelogResult({ showOnStart });
+      window.close(); // Close the changelog window after sending the result
+    }
+  </script>
+</body>
+</html>
