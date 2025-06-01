@@ -48,6 +48,8 @@ class App {
       file io
     */
     this.fs = globalNode.fs;
+    
+    this.version = globalNode.getVersion()
     /*
       IPC to Main process
     */
@@ -63,7 +65,6 @@ class App {
 
     this.settings = this.loadSettings();
 
-    this.version = globalNode.getVersion()
   }
 
   /*
@@ -318,6 +319,8 @@ class App {
     settings.showCapHeading = $('#show_cap_heading').prop('checked');
     settings.showCoordinates = $('#show_coordinates').prop('checked');
     settings.coordinatesFormat = $('#coordinates_format').find(":selected").val();
+    settings.showChangelogOnStart = this.settings.showChangelogOnStart ?? {'version': this.version};
+
     localStorage.setItem('settings', JSON.stringify(settings));
     app.settings = settings;
     $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
@@ -337,6 +340,10 @@ class App {
 
     if (settings.openDevConsole) {
       this.ipc.send('toggle-dev-tools');
+    }
+    console.log(settings.showChangelogOnStart.version, this.version);
+    if(settings.showChangelogOnStart.showOnStart || (settings.showChangelogOnStart.version != this.version)) {
+      this.ipc.send('open-changelog');
     }
     return settings;
   }
@@ -372,9 +379,9 @@ class App {
 
   async checkProxyAvailability(proxyUrl) {
     return fetch(proxyUrl, { method: "GET" }) // Quick check if proxy responds
-        .then((response) => response.ok)
-        .catch(() => false);
-}
+      .then((response) => response.ok)
+      .catch(() => false);
+  }
 
   refreshInstructionElements() {
 
@@ -612,6 +619,20 @@ class App {
           _this.fs.writeFile(_this.roadbook.filePath, rb, function (err) { });
         }
       }
+    });
+
+    this.ipc.on('changelog-result', (event, result) => {
+      var setting = result || {
+        'showOnStart': this.settings.showChangelogOnStart.showOnStart ?? true
+      };
+      setting['version'] = this.version;
+      console.log(setting);
+      this.settings.showChangelogOnStart = setting;
+      this.saveSettings();
+    });
+    
+    this.ipc.on('open-changelog', (event, result) => {
+      this.ipc.send('open-changelog');
     });
   }
 };
