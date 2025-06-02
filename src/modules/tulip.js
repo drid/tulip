@@ -50,7 +50,10 @@ var Tulip = Class({
       this.initEntry(trackTypes.entryTrackType);
       this.initExit(angle, trackTypes.exitTrackType);
     }
-    this.canvas.on('mouse:down', (options) => this.addTrackHandles(options));
+    this.canvas.on('mouse:down', (options) => {
+      if (options.target && options.target.type && options.target.type == "path")
+        this.addTrackHandles(options)
+    });
   },
 
   initEntry: function (trackType) {
