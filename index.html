@@ -97,6 +97,9 @@
           </div>
           <div id="roadbook">
             <div class="row roadbook-info">
+              <div class="roadbook-logo" class="large-12 columns" data-bind="visible: app.roadbook.customLogo()">
+                <img id="roadbook-logo" src="" data-bind="attr: { src: app.roadbook.customLogo() }">
+              </div>
               <div id="roadbook-name" class="large-12 columns">
                 <a class="button tiny round alert hide-editor" title="Hide editor.">&#215;</a>
                 <a href=# class="button tiny radius secondary show-editor rb-name"><i class="fi-pencil"></i></a>

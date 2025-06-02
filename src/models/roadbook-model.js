@@ -44,6 +44,7 @@ class RoadbookModel {
     this.name(json.name);
     this.desc(json.desc);
     this.totalDistance(json.totalDistance);
+    this.customLogo(json.customLogo);
     this.filePath = fileName
     var points = json.instructions || json.waypoints;
 
@@ -102,6 +103,7 @@ class RoadbookModel {
     */
     this.name = ko.observable('Name your roadbook');
     this.desc = ko.observable('Describe your roadbook');
+    this.customLogo = ko.observable('');
     this.totalDistance = ko.observable('0.00');
     this.fuelRange = ko.observable('0.0');
 
@@ -323,6 +325,7 @@ class RoadbookModel {
       totalDistance: this.totalDistance(),
       filePath: this.filePath,
       appVersion: app.version,
+      customLogo: this.customLogo(),
       instructions: [],
     }
     var points = app.mapModel.markers
@@ -359,6 +362,7 @@ class RoadbookModel {
       totalDistance: this.totalDistance(),
       fuelRange: this.fuelRange(),
       filePath: this.filePath,
+      customLogo: this.customLogo(), 
       instructions: [],
     }
 

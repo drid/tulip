@@ -78,6 +78,9 @@
 
     <div id="roadbook">
       <div id="roadbook-header">
+        <div class="roadbook-logo" class="large-12 columns" data-bind="visible: printApp.customLogo">
+          <img id="roadbook-logo" src="" data-bind="attr: { src: printApp.customLogo }">
+        </div>
         <div id="roadbook-name">
           <p href="#" data-bind="text: printApp.name" data-default="true">Name</p>
         </div>

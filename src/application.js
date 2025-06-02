@@ -142,6 +142,35 @@ class App {
     });
   }
 
+  openRoadBookLogo() {
+    var _this = this;
+    globalNode.dialog().showOpenDialog({
+      filters: [
+        { name: 'Image files', extensions: ['png', 'jpg', 'jpeg'] }
+      ]
+    }).then(openInfo => {
+      if (openInfo.canceled) return;
+
+      var fs = globalNode.fs;
+      var fileNames = openInfo.filePaths;
+
+      if (fileNames === undefined)
+        return;
+
+      _this.loadRoadBookLogo(fileNames[0])
+    });
+  }
+
+  loadRoadBookLogo(fileName) {
+    var _this = this;
+
+    _this.fs.readFile(fileName, null, function (err, data) {
+      var imageType = fileName.split('.').pop();
+      var imgSrc = "data:image/" + imageType + ";base64," + globalNode.uint8ArrayToBase64(data);
+      _this.roadbook.customLogo(imgSrc);
+    });
+  }
+
   exportGPX() {
     if (this.canExport()) {
       var gpx = this.io.exportGPX();
@@ -319,7 +348,7 @@ class App {
     settings.showCapHeading = $('#show_cap_heading').prop('checked');
     settings.showCoordinates = $('#show_coordinates').prop('checked');
     settings.coordinatesFormat = $('#coordinates_format').find(":selected").val();
-    settings.showChangelogOnStart = this.settings.showChangelogOnStart ?? {'version': this.version};
+    settings.showChangelogOnStart = this.settings.showChangelogOnStart ?? { 'version': this.version };
 
     localStorage.setItem('settings', JSON.stringify(settings));
     app.settings = settings;
@@ -341,7 +370,7 @@ class App {
     if (settings.openDevConsole) {
       this.ipc.send('toggle-dev-tools');
     }
-    if(settings.showChangelogOnStart === undefined ||
+    if (settings.showChangelogOnStart === undefined ||
       (settings.showChangelogOnStart.showOnStart || (settings.showChangelogOnStart.version != this.version))) {
       this.ipc.send('open-changelog');
     }
@@ -633,6 +662,10 @@ class App {
     
     this.ipc.on('open-changelog', (event, result) => {
       this.ipc.send('open-changelog');
+    });
+
+    this.ipc.on('add-roadbook-logo', function (event, arg) {
+      _this.openRoadBookLogo();
     });
   }
 };

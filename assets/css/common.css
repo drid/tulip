@@ -394,3 +394,13 @@ svg text {
 .waypoint-number-coord {
   bottom: 33px;
 }
+
+.roadbook-logo {
+  margin-bottom: 20px;
+  max-width: 100%;
+  text-align: center;
+}
+
+.roadbook-logo img {
+  max-width: 100%;
+}

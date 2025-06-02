@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld("globalNode", {
     dialog: () => {
         return dialog;
     },
+    uint8ArrayToBase64: (uint8Array) => Buffer.from(uint8Array).toString('base64'),
     printToPdf: (data) => {
         return ipcRenderer.invoke('print-pdf', data);
     },

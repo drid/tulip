@@ -104,6 +104,7 @@ function createWindow() {
         },
         { type: "separator" },
         { label: "Add Glyph", accelerator: "CmdOrCtrl+Option+G", click: function () { mainWindow.webContents.send('add-glyph'); } },
+        { label: "Roadbook logo", accelerator: "", click: function () { mainWindow.webContents.send('add-roadbook-logo'); } },
         { label: "Settings", click: function () { mainWindow.webContents.send('open-settings'); } },
       ]
     },
@@ -197,7 +198,7 @@ ipcMain.on('ignite-print', (event, arg, appSettings) => {
     }
   });
 
-  printWindow.setMenu(null);
+  // printWindow.setMenu(null);
 
   require('@electron/remote/main').enable(printWindow.webContents);
 

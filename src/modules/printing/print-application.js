@@ -21,6 +21,7 @@ class PrintApp {
     this.settings = null;
     this.name = ko.observable('');
     this.desc = ko.observable('');
+    this.customLogo = ko.observable('');
     this.totalDistance = ko.observable('');
     this.waypointCount = ko.observable('');
     this.fuelRange = ko.observable('');
@@ -44,6 +45,7 @@ class PrintApp {
   parseJson(json) {
     this.name(json.name);
     this.desc(json.desc);
+    this.customLogo(json.customLogo);
     this.totalDistance(json.totalDistance);
     this.fuelRange(json.fuelRange);
     this.instructions(json.instructions);
