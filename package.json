@@ -54,7 +54,7 @@
     "foundation-sites": "^5.5.3",
     "jquery": "^2.1.4",
     "knockout": "^3.4.0",
-    "quill": "^0.20.1"
+    "quill": "^2.0.3"
   },
   "snap": {
     "productName": "tulip-roadbook",
