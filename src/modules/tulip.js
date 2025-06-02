@@ -150,6 +150,16 @@ var Tulip = Class({
           //if the object is an image add it to the glyphs array
           object.id = globalNode.randomUUID();
           _this.glyphs.push(object);
+
+          fabric.util.loadImage(object.src, function(img, isError) {
+            if (isError || !img) {
+              console.error(`Failed to load image: ${object.src}`);
+              // Fallback: Set a default image source
+              object.setSrc('./assets/svg/glyphs/missing-glyph.svg', function() {
+                _this.canvas.renderAll();
+              }, { crossOrigin: 'anonymous' });
+            }
+          }, null, 'anonymous');
         }
       });
     }

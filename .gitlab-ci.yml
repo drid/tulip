@@ -135,7 +135,7 @@ release_job:
           url: "$PKG_PATH/${APPNAME}_${VERSION}_32bit.msi"
           link_type: package
         - name: "snap"
-          url: "$PKG_PATH/${APPNAME}_${VERSION}.snap"
+          url: "$PKG_PATH/${APPNAME}_${VERSION}_amd64.snap"
           link_type: package
         - name: "AppImage"
           url: "$PKG_PATH/${APPNAME}-${VERSION}.AppImage"

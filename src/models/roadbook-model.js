@@ -14,7 +14,6 @@ class RoadbookModel {
     */
     // TODO how do we handle file name changes
     this.filePath = null;
-    this.fs = globalNode.fs;
   }
 
   /*
@@ -54,19 +53,6 @@ class RoadbookModel {
     var wpts = []
     // NOTE: For some strange reason, due to canvas rendering, a for loop causes points and instructions to be skipped, hence for...of in
     for (var point of points) {
-      if (point.tulipJson && point.tulipJson.glyphs) {
-        var i = 0;
-        for (var glyph of point.tulipJson.glyphs) {
-          i++;
-          try {
-            this.fs.accessSync(glyph.src, this.fs.constants.F_OK);
-            continue;
-          } catch {
-            console.log("Missing glyph: ", glyph.src)
-            glyph.src = "./assets/svg/glyphs/missing-glyph.svg"
-          }
-        }
-      }
       var latLng = new google.maps.LatLng(point.lat, point.long)
       var marker = app.mapModel.addRoutePoint(latLng, app.mapController.map)
       if (point.instruction || point.waypoint) {
