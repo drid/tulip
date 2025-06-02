@@ -36,6 +36,15 @@ body {
   text-align: center;
 }
 
+@media print {
+  #overlay {
+    display: none !important;
+  }
+  #overlay-text {
+    display: none !important;
+  }
+}
+
 #roadbook-header {
   margin-bottom: 20px;
 }

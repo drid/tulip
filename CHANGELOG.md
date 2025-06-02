@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.9.5-2] - 2025-06-01
+## [1.9.5-2] - 2025-06-02
 
 ### 🚀 Features
 
@@ -13,21 +13,21 @@ refactor: Cleanup code
 
 
 - *(tulip)* Handle track removal via Key/Button
+- Extra track defaults to entry track type
+- Add custom logo on roadbook header
 
 ### 🐛 Bug Fixes
 
-- *(tulip)* Main track color are bloack sometimes
+- *(tulip)* Main track color are black sometimes when opening old roadbooks
+- PDF export showing overlay of printing
 
 ### 💼 Other
 
-- 1.9.5-2
+- Update changelog
 
 ### 🚜 Refactor
 
-- Refactor: remove global variables and unused code
-fix: track tests
-
-
+- Remove global variables and unused code
 
 ### 📚 Documentation
 
