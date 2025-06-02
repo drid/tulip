@@ -325,12 +325,12 @@ class App {
   }
 
   newRoadbook() {
-    app.roadbook.name('New Roadbook');
-    app.roadbook.desc('Roadbook description');
-    app.roadbook.totalDistance(0);
-    app.roadbook.customLogo(null)
-    this.roadbook.filePath = null;
-
+    // app.roadbook.name('New Roadbook');
+    // app.roadbook.desc('Roadbook description');
+    // app.roadbook.totalDistance(0);
+    // app.roadbook.customLogo(null)
+    // this.roadbook.filePath = null;
+    this.roadbook.newRoadbook();
     while (true) {
       try {
         app.mapModel.deletePointFromRoute(0);

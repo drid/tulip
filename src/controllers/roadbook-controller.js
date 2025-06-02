@@ -26,16 +26,34 @@ class RoadbookController {
   */
   bindToInstructionDescriptionInput() {
     var _this = this;
-    this.descriptionTextEditor = new Quill('#description-editor');
-    this.descriptionTextEditor.addModule('toolbar', {
-      container: '#description-toolbar'     // Selector for toolbar container
+    _this.descriptionTextEditor = new Quill('#description-editor', {
+      modules: {
+        toolbar: {
+          container: '#description-toolbar'
+        }
+      },
+      theme: 'snow'
     });
+
+    var existingContent = _this.model.desc();
+    if (existingContent) {
+      var delta = _this.descriptionTextEditor.clipboard.convert({ html: existingContent });
+      _this.descriptionTextEditor.setContents(delta);
+
+    }
+
     this.descriptionTextEditor.on('text-change', function (delta, source) {
-      var newValue = _this.descriptionTextEditor.getHTML()
+      var newValue = _this.descriptionTextEditor.getSemanticHTML();
+
       _this.model.desc(newValue);
     });
   }
-
+  enterEditMode = function (htmlContent) {
+    if (this.descriptionTextEditor) {
+      var delta = this.descriptionTextEditor.clipboard.convert({ html: htmlContent });
+      this.descriptionTextEditor.setContents(delta);
+    }
+  };
   bindToNameDescEditButtons() {
     var _this = this;
     $('#roadbook-desc, #roadbook-name').find('a.show-editor').click(function () {
@@ -46,7 +64,7 @@ class RoadbookController {
         $(this).parent('div').find(':input').focus();
       }
       if ($(this).hasClass('rb-desc')) {
-        $('#roadbook-desc p').slideUp('fast');
+        $('#roadbook-desc > p').slideUp('fast');
         _this.descriptionTextEditor.focus();
       }
       $('#save-roadbook').removeClass('secondary');

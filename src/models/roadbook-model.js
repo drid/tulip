@@ -22,6 +22,16 @@ class RoadbookModel {
     ---------------------------------------------------------------------------
   */
 
+  newRoadbook() {
+    this.name('New Roadbook');
+    this.desc('Roadbook description');
+    this.totalDistance(0);
+    this.customLogo(null)
+    this.filePath = null;
+    const delta = this.controller.descriptionTextEditor.clipboard.convert({ html: this.desc() });
+    this.controller.descriptionTextEditor.setContents(delta);
+  }
+
   addInstruction(instructionData) {
 
     this.finishInstructionEdit(); //TODO make callback?
@@ -62,7 +72,8 @@ class RoadbookModel {
     this.reindexInstructions();
     // NOTE this is less than ideal
     if (this.desc() !== null) {
-      this.controller.descriptionTextEditor.setHTML(this.desc());
+      const delta = this.controller.descriptionTextEditor.clipboard.convert({ html: this.desc() });
+      this.controller.descriptionTextEditor.setContents(delta);
     }
     app.mapModel.updateAllMarkersInstructionGeoData();
     var latLng = new google.maps.LatLng(points[0].lat, points[0].long);
@@ -178,23 +189,6 @@ class RoadbookModel {
 
   instantiateInstruction(instructionData) {
     return new Instruction(this, instructionData);
-  }
-
-  /*
-    This function handles' listening to input on the roadbook description
-    and persisting it to the roadbook object
-    TODO controller function
-  */
-  descriptionInputListener() {
-    var _this = this;
-    this.descriptionTextEditor = new Quill('#description-editor');
-    this.descriptionTextEditor.addModule('toolbar', {
-      container: '#description-toolbar'     // Selector for toolbar container
-    });
-    this.descriptionTextEditor.on('text-change', function (delta, source) {
-      var newValue = _this.descriptionTextEditor.getHTML()
-      _this.desc(newValue);
-    });
   }
 
   reindexInstructions() {
