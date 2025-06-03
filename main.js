@@ -7,6 +7,7 @@ Sentry.init({
 });
 
 const fs = require('fs');
+const fsPromises = require('fs').promises; // For promise-based methods
 const { Menu, app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
 if (require('electron-squirrel-startup')) app.quit();
 const path = require('path');
@@ -22,7 +23,9 @@ var printWindow = null;
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
   ipcMain.handle('print-pdf', (event, args) => {
-    printPdf(event, args);
+    printPdf(event, args).catch((error) => {
+      console.error('Unhandled error:', error.message);
+    });
   });
   createWindow();
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -131,8 +134,10 @@ function createWindow() {
     {
       label: "Help",
       submenu: [
-        { label: "Changelog", click: function () {
-            mainWindow.webContents.send('open-changelog'); } 
+        {
+          label: "Changelog", click: function () {
+            mainWindow.webContents.send('open-changelog');
+          }
         },
         { label: "About", click: function () { mainWindow.webContents.send('show-about-info'); } },
       ]
@@ -198,7 +203,7 @@ ipcMain.on('ignite-print', (event, arg, appSettings) => {
     }
   });
 
-  // printWindow.setMenu(null);
+  printWindow.setMenu(null);
 
   require('@electron/remote/main').enable(printWindow.webContents);
 
@@ -232,15 +237,41 @@ function printPdf(event, arg) {
   var filename = arg.filepath.replace('.tlp', '-' + size + '.pdf')
 
   printWindow.webContents.printToPDF(arg.opts)
-    .then((data) => {
-      fs.writeFile(filename, data, (error) => {
-        if (error)
-          throw error;
-
+    .then(async (data) => {
+      try {
+        await fsPromises.writeFile(filename, data);
+      } catch (error) {
         printWindow.close();
-
-        // dialog.showMessageBox(mainWindow, { message: "Your PDF has been exported to the same directory you saved your roadbook. Gas a la burra!", buttons: ['ok'] })
-      });
+        console.error('Error writing to PDF file:', error.message);
+        // Handle specific errors if needed
+        if (error.code === 'ENOENT') {
+          console.error('The specified directory does not exist.');
+          await dialog.showMessageBox(mainWindow, {
+            type: 'error',
+            title: 'PDF export error',
+            message: 'The specified directory does not exist',
+            buttons: ['OK']
+          });
+        } else if (error.code === 'EACCES') {
+          console.error('Permission denied when writing to the file.');
+          await dialog.showMessageBox(mainWindow, {
+            type: 'error',
+            title: 'PDF export error',
+            message: 'Permission denied when writing to the file',
+            buttons: ['OK']
+          })
+        } else {
+          console.error('PDF export error.');
+          await dialog.showMessageBox(mainWindow, {
+            type: 'error',
+            title: 'PDF export error',
+            message: error.message,
+            buttons: ['OK']
+          });
+        }
+      }
+      printWindow.close();
+      dialog.showMessageBox(mainWindow, { title: 'Roadbook PDF Saved', type: 'info', message: "Your PDF has been exported to:\n" + filename, buttons: ['ok'] })
     });
 };
 
