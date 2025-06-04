@@ -19,18 +19,37 @@ unit-testing:
   script:
     - npm test
 
+generate-glyphs:
+  stage: build
+  image: ${BUILDER_IMAGE}
+  rules:
+  - if: $CI_COMMIT_TAG
+  - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+  before_script:
+    - apt-get update -y
+    - apt-get install -y inkscape fonts-liberation fonts-liberation2 fonts-arkpandora
+    - npm install xml2js
+  script:
+    - npm run convert-svg
+  artifacts:
+      name: $CI_COMMIT_REF_SLUG
+      paths:
+        - $CI_PROJECT_DIR/assets/svg/
+      when: on_success
+
 build-win:
   stage: build
   image: ${BUILDER_IMAGE_WIN}
+  needs: 
+    - generate-glyphs
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
   before_script:
     - apt-get update -y
-    - apt-get install --no-install-recommends -y gcc-multilib g++-multilib fonts-liberation fonts-liberation2 inkscape
+    - apt-get install --no-install-recommends -y gcc-multilib g++-multilib
     - npm install electron-builder
   script:
-    - npm run convert-svg
     - npm run build-win
   artifacts:
     name: $CI_COMMIT_REF_SLUG
@@ -41,12 +60,14 @@ build-win:
 build-linux:
   stage: build
   image: ${BUILDER_IMAGE}
+  needs: 
+    - generate-glyphs
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
   before_script:
     - apt-get update -y
-    - apt-get install -y fakeroot fonts-liberation fonts-liberation2 inkscape
+    - apt-get install -y fakeroot
     - npm install electron-builder
   script:
     - export VERSION=$(node -e "console.log(require('./package.json').version)")
@@ -54,7 +75,6 @@ build-linux:
     - export APPNAME=$(node -e "console.log(require('./package.json').productName)")
     - echo "APPNAME=$APPNAME" >> variables.env
     - export SENTRY_AUTH_TOKEN
-    - npm run convert-svg
     - npm run build-linux
   artifacts:
     reports:
