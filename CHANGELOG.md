@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.5-3] - 2025-06-04
+
+### 🚀 Features
+
+- *(glyphs)* Add MODIF and NEW NOTE
+
+### 🐛 Bug Fixes
+
+- Add track handles only to track items
+- Handle PDF output errors and show message
+- *(CI)* Glyphs not converted in win builds
+
+### 💼 Other
+
+- Update changelog for 1.9.5-3
+
 ## [1.9.5-2] - 2025-06-02
 
 ### 🚀 Features
@@ -20,6 +36,7 @@ refactor: Cleanup code
 
 - *(tulip)* Main track color are black sometimes when opening old roadbooks
 - PDF export showing overlay of printing
+- Missing glyph detection on snap, Snap release file name in CI
 
 ### 💼 Other
 
