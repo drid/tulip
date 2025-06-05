@@ -138,7 +138,14 @@ class App {
 
   openRoadBook(append = false) {
     var _this = this;
+    var defaultPath = "";
+    try {
+      defaultPath = localStorage.getItem('lastRoadBook').match(/^(.*[\\/])/)[1];
+    } catch {}
     globalNode.dialog().showOpenDialog({
+      'title': 'Open Roadbook',
+      'defaultPath': defaultPath,
+      properties: ['openFile'],
       filters: [
         { name: 'tulip', extensions: ['tlp'] }
       ]
