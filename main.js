@@ -295,6 +295,10 @@ ipcMain.on('toggle-dev-tools', (event) => {
   mainWindow.toggleDevTools();
 })
 
+ipcMain.on('open-dev-tools', (event) => {
+  mainWindow.openDevTools();
+})
+
 ipcMain.on('open-changelog', async () => {
   const result = await createChangelogWindow(mainWindow);
   mainWindow.webContents.send('changelog-result', result);

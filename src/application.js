@@ -116,7 +116,8 @@ class App {
         console.error(error);
       }
     });
-    $('#toggle-roadbook').click();
+    // $('#toggle-roadbook').click();
+    _this.showRoadbook();
     $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
     $('#print-roadbook').removeClass('disabled')
     $('#export-gpx').removeClass('disabled')
@@ -316,6 +317,14 @@ class App {
     $('#toggle-roadbook i').toggleClass('fi-arrow-up');
   }
 
+  showRoadbook() {
+    $('.roadbook-container').removeClass('collapsed');
+    $('.roadbook-container').addClass('expanded');
+
+    $('#toggle-roadbook i').removeClass('fi-arrow-down');
+    $('#toggle-roadbook i').addClass('fi-arrow-up');
+  }
+
   newRoadbook() {
     app.roadbook.name('New Roadbook');
     app.roadbook.desc('Roadbook description');
@@ -368,7 +377,7 @@ class App {
     $('#coordinates_format').val(settings.coordinatesFormat ?? 'ddmmss');
 
     if (settings.openDevConsole) {
-      this.ipc.send('toggle-dev-tools');
+      this.ipc.send('open-dev-tools');
     }
     if (settings.showChangelogOnStart === undefined ||
       (settings.showChangelogOnStart.showOnStart || (settings.showChangelogOnStart.version != this.version))) {
