@@ -113,7 +113,17 @@ class Track {
   }
 
   initTypes() {
-
+    this.types.lowVisTrack = [{
+      fill: '',
+      stroke: '#000',
+      strokeWidth: 4,
+      strokeDashArray: [8, 5, 20, 5],
+      hasControls: false,
+      lockMovementX: true,
+      lockMovementY: true,
+      hasBorders: false,
+      selectable: false,
+    }];
     this.types.offPiste = [{
       fill: '',
       stroke: '#000',

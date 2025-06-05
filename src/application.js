@@ -584,6 +584,14 @@ class App {
       }
     });
 
+    this.ipc.on('set-track-lvt', function (event, arg) {
+      if (_this.roadbook.currentlyEditingInstruction) {
+        _this.roadbook.changeEditingInstructionAdded('lowVisTrack');
+        $('.added-track-selector').removeClass('active');
+        $($('.added-track-selector')[0]).addClass('active');
+      }
+    });
+
     this.ipc.on('set-track-hp', function (event, arg) {
       if (_this.roadbook.currentlyEditingInstruction) {
         _this.roadbook.changeEditingInstructionAdded('offPiste');

@@ -96,6 +96,7 @@ function createWindow() {
             { label: "Add Track 270", accelerator: "CmdOrCtrl+7", click: function () { mainWindow.webContents.send('add-track-270'); } },
             { label: "Add Track 315", accelerator: "CmdOrCtrl+8", click: function () { mainWindow.webContents.send('add-track-315'); } },
             { type: "separator" },
+            { label: "Set Track HP", accelerator: "CmdOrCtrl+Option+1", click: function () { mainWindow.webContents.send('set-track-lvt'); } },
             { label: "Set Track HP", accelerator: "CmdOrCtrl+Option+1", click: function () { mainWindow.webContents.send('set-track-hp'); } },
             { label: "Set Track P", accelerator: "CmdOrCtrl+Option+2", click: function () { mainWindow.webContents.send('set-track-p'); } },
             { label: "Set Track PP", accelerator: "CmdOrCtrl+Option+3", click: function () { mainWindow.webContents.send('set-track-pp'); } },

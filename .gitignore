@@ -131,7 +131,7 @@ tulip-darwin-x64/
 tulip-linux-x64/
 tulip-win32-x64/
 out/
-assets/svg/
+assets/svg/glyphs
 
 # Sentry Config File
 .sentryclirc
