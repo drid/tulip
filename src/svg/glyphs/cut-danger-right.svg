@@ -42,8 +42,8 @@
    inkscape:deskcolor="#d1d1d1"
    showgrid="false"
    inkscape:zoom="4.108"
-   inkscape:cx="125.48685"
-   inkscape:cy="125.73028"
+   inkscape:cx="125.73028"
+   inkscape:cy="125.97371"
    inkscape:window-width="2510"
    inkscape:window-height="1363"
    inkscape:window-x="0"
@@ -52,6 +52,6 @@
    inkscape:current-layer="Layer_1" />
 
 <path
-   style="fill:#ffffff;stroke:#1a1a1a;stroke-width:16.798;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#TriangleStart)"
+   style="fill:none;stroke:#1a1a1a;stroke-width:16.798;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#TriangleStart)"
    d="M 32.347818,168.87232 61.721718,88.987234 190.54524,135.92119"
    id="path399" /></svg>

@@ -87,3 +87,20 @@ Tulip is licensed under GPLv2 (see [LICENSE](LICENSE) for full text)
 The Liberation Sans font is included in this project.
 Copyright (c) 2007, Red Hat, Inc. All rights reserved.
 Licensed under the Liberation Font License (see [LIBERATION_LICENSE](LIBERATION_LICENSE) for full text).
+
+## Attributions
+
+### Icons
+- [Recycle icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/recycle)
+- [Restriction icons created by Nuricon - Flaticon](https://www.flaticon.com/free-icons/restriction)
+- [Roadworks icons created by Muhammad Ali - Flaticon](https://www.flaticon.com/free-icons/roadworks)
+- [Fort icons created by DinosoftLabs - Flaticon](https://www.flaticon.com/free-icons/fort)
+- [Statue icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/statue)
+- [Cow icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/cow)
+- [Camel icons created by PLANBSTUDIO - Flaticon](https://www.flaticon.com/free-icons/camel)
+- [Deer icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/deer)
+- [Horse icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/horse)
+- [Wolf icons created by Park Jisun - Flaticon](https://www.flaticon.com/free-icons/wolf)
+- [Bear icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bear)
+- [Bush icons created by Iconjam - Flaticon](https://www.flaticon.com/free-icons/bush)
+- [Bush icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bush)
