@@ -82,7 +82,10 @@ class NoteControls {
   checkForNotification() {
     if (app.roadbook.currentlyEditingInstruction) {
       // reduce DOM image objects in the text editor to a collection of glyph names
-      var glyphs = $('#note-editor').find("img").toArray().map(function (g) { return $(g).attr('src').match(/\/([a-z0-9,-]*)\./)[1] })
+      var glyphs = $('#note-editor').find("img").toArray().map(function (g) {
+        var wp=$(g).attr('src').match(/\/([A-Za-z0-9.-_]*)\./)
+         return wp ? wp[1] : '';
+        })
       app.roadbook.currentlyEditingInstruction.parseGlyphInfo(glyphs);
     }
   }
