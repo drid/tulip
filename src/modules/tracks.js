@@ -6,7 +6,7 @@ class Track {
   /*
 
     angle = INT between 0 & 359
-    type = STRING <offPise,track,road,mainRoad,dcw>
+    type = STRING <lowVisTrack,offPise,track,road,mainRoad,dcw>
     canvas = HTML_CANVAS to render track on
   */
   constructor() {
@@ -32,7 +32,7 @@ class Track {
   buildTrackPaths(angle, origin, type, mainTrack = false) {
     type = (type !== undefined ? type : 'track')
     var paths = [];
-    var typeOptions = this.types[type];
+    var typeOptions = this.types[type] || this.types['track'];
     if (mainTrack) {
       typeOptions = typeOptions.map(obj => {
         if (obj.stroke === '#000') {
