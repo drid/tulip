@@ -35,6 +35,25 @@ test( 'Builds rotates a point about an origin', function( assert ) {
   assert.end();
 });
 
+test('Builds a propperly stubbed lvt type', function (assert) {
+  var track = new tracks.track();
+  var hp = track.types['lowVisTrack'];
+
+  var validHP = [{
+    fill: '',
+    stroke: '#000',
+    strokeWidth: 4,
+    strokeDashArray: [8, 5, 20, 5],
+    hasControls: false,
+    lockMovementX: true,
+    lockMovementY: true,
+    hasBorders: false,
+    selectable: false,
+  }];
+  assert.deepLooseEqual(validHP, hp, "It creates a propperly formatted hp type object");
+  assert.end();
+});
+
 test('Builds a propperly stubbed hp type', function(assert){
   var track = new tracks.track();
   var hp = track.types['offPiste'];
