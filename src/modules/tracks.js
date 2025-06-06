@@ -12,11 +12,12 @@ class Track {
   constructor() {
     const canvas_width = 180;
     const canvas_height = 180;
+    this.mainTrackColor = '#22F';
+    this.trackColor = '#000';
     this.canvas_center = [canvas_width / 2, canvas_height / 2];
     this.entry_track_origin = [canvas_width / 2, canvas_height - 10]
     this.types = {};
     this.initTypes();
-    this.mainTrackColor = '#22F';
     this.id = globalNode.randomUUID();
   }
 
@@ -35,7 +36,7 @@ class Track {
     var typeOptions = this.types[type] || this.types['track'];
     if (mainTrack) {
       typeOptions = typeOptions.map(obj => {
-        if (obj.stroke === '#000') {
+        if (obj.stroke === this.trackColor) {
           return { ...obj, stroke: this.mainTrackColor };
         }
         return obj;
@@ -113,11 +114,15 @@ class Track {
   }
 
   initTypes() {
+    const small = 4;
+    const track = 6;
+    const tarmac = 8;
+    
     this.types.lowVisTrack = [{
       fill: '',
-      stroke: '#000',
-      strokeWidth: 4,
-      strokeDashArray: [8, 5, 20, 5],
+      stroke: this.trackColor,
+      strokeWidth: small,
+      strokeDashArray: [small*1.469, small*1.063, small*3.2405, small*1.063],
       hasControls: false,
       lockMovementX: true,
       lockMovementY: true,
@@ -126,9 +131,9 @@ class Track {
     }];
     this.types.offPiste = [{
       fill: '',
-      stroke: '#000',
-      strokeWidth: 4,
-      strokeDashArray: [10, 5],
+      stroke: this.trackColor,
+      strokeWidth: small,
+      strokeDashArray: [small*1.3, small*1.3],
       hasControls: false,
       lockMovementX: true,
       lockMovementY: true,
@@ -137,8 +142,8 @@ class Track {
     }];
     this.types.smallTrack = [{
       fill: '',
-      stroke: '#000',
-      strokeWidth: 4,
+      stroke: this.trackColor,
+      strokeWidth: small,
       strokeDashArray: [],
       hasControls: false,
       lockMovementX: true,
@@ -148,8 +153,8 @@ class Track {
     }];
     this.types.track = [{
       fill: '',
-      stroke: '#000',
-      strokeWidth: 6,
+      stroke: this.trackColor,
+      strokeWidth: track,
       strokeDashArray: [],
       hasControls: false,
       lockMovementX: true,
@@ -160,8 +165,8 @@ class Track {
 
     this.types.tarmacRoad = [{
       fill: '',
-      stroke: '#000',
-      strokeWidth: 6,
+      stroke: this.trackColor,
+      strokeWidth: tarmac,
       strokeDashArray: [],
       hasControls: false,
       lockMovementX: true,
@@ -172,7 +177,7 @@ class Track {
     {
       fill: '',
       stroke: '#fff',
-      strokeWidth: 4,
+      strokeWidth: tarmac/2,
       strokeDashArray: [],
       hasControls: false,
       lockMovementX: true,
@@ -182,7 +187,7 @@ class Track {
     }];
     this.types.dcw = [{
       fill: '',
-      stroke: '#000',
+      stroke: this.trackColor,
       strokeWidth: 10,
       strokeDashArray: [],
       hasControls: false,
@@ -194,7 +199,7 @@ class Track {
     {
       fill: '',
       stroke: '#fff',
-      strokeWidth: 8,
+      strokeWidth: 6,
       strokeDashArray: [],
       hasControls: false,
       lockMovementX: true,
@@ -204,7 +209,7 @@ class Track {
     },
     {
       fill: '',
-      stroke: '#000',
+      stroke: this.trackColor,
       strokeWidth: 2,
       strokeDashArray: [],
       hasControls: false,
@@ -221,7 +226,7 @@ class Track {
     var typeOptions = this.types[type];
     if (mainTrack) {
       typeOptions = typeOptions.map(obj => {
-        if (obj.stroke === '#000') {
+        if (obj.stroke === this.trackColor) {
           return { ...obj, stroke: this.mainTrackColor };
         }
         return obj;
@@ -300,8 +305,8 @@ class ExitTrack extends Track {
       left: paths[0].path[3][5],
       top: paths[0].path[3][6],
       strokeWidth: 1,
-      height: 15,
-      width: 15,
+      height: 18,
+      width: 18,
       fill: this.mainTrackColor,
       stroke: this.mainTrackColor,
       angle: angle,

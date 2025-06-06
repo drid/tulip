@@ -99,7 +99,7 @@ test('Builds a propperly stubbed track type', function(assert){
   var validTrack = [{
                       fill: '',
                       stroke: '#000',
-                      strokeWidth: 6,
+                      strokeWidth: 7,
                       strokeDashArray: [],
                       hasControls: false,
                       lockMovementX: true,
@@ -118,7 +118,7 @@ test('Builds a propperly stubbed tarmac road type', function(assert){
   var validtarmacRoad = [{
                         fill: '',
                         stroke: '#000',
-                        strokeWidth: 6,
+                        strokeWidth: 8,
                         strokeDashArray: [],
                         hasControls: false,
                         lockMovementX: true,
@@ -129,7 +129,7 @@ test('Builds a propperly stubbed tarmac road type', function(assert){
                       {
                         fill: '',
                         stroke: '#fff',
-                        strokeWidth: 4,
+                        strokeWidth: 3,
                         strokeDashArray: [],
                         hasControls: false,
                         lockMovementX: true,
@@ -159,7 +159,7 @@ test('Builds a propperly stubbed dcw type', function(assert){
                   {
                     fill: '',
                     stroke: '#fff',
-                    strokeWidth: 8,
+                    strokeWidth: 6,
                     strokeDashArray: [],
                     hasControls: false,
                     lockMovementX: true,
@@ -170,7 +170,7 @@ test('Builds a propperly stubbed dcw type', function(assert){
                   {
                     fill: '',
                     stroke: '#000',
-                    strokeWidth: 2,
+                    strokeWidth: 1,
                     strokeDashArray: [],
                     hasControls: false,
                     lockMovementX: true,
