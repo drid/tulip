@@ -69,6 +69,11 @@ class RoadbookController {
     $('#hide-palette').click(function () {
       _this.model.finishInstructionEdit(_this.getNoteEditorHTML(), _this.getNotificationOpenRadiusVal(), _this.getNotificationValidationRadiusVal(), _this.getNotificationTimeVal());
       _this.resetInstructionPalette();
+      $('#save-roadbook').removeAttr('href', '#') // Removes the href attribute
+        .css({
+          'pointer-events': 'auto', // Prevents clicking
+          'color': '' // Visually indicates disabled state
+        });
     });
 
     $('#toggle-heading').change(function () {
@@ -166,7 +171,7 @@ class RoadbookController {
         $('#notification-time-wrapper').addClass('waypoint-parameter-none')
       }
     }
-    $('#added-'+instruction.entryTrackType).trigger('click');
+    $('#added-' + instruction.entryTrackType).trigger('click');
   }
 
   resetInstructionPalette() {

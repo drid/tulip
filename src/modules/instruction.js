@@ -237,7 +237,7 @@ var Instruction = Class({
   },
 
   updateWaypointBubble() {
-      app.mapController.updateWaypointBubble(this.routePointIndex, this._notification().openRadius || 0, this._notification().validationRadius, this._notification().fill);
+    app.mapController.updateWaypointBubble(this.routePointIndex, this._notification().openRadius || 0, this._notification().validationRadius, this._notification().fill);
   },
 
   computedTotalDistance: function () {
@@ -280,6 +280,11 @@ var Instruction = Class({
     var _this = this;
     $(element).dblclick(function (e) {
       if (_this.roadbook.requestInstructionEdit(_this)) {
+        $('#save-roadbook').removeAttr('href') // Removes the href attribute
+            .css({
+                'pointer-events': 'none', // Prevents clicking
+                'color': '#cccccc' // Visually indicates disabled state
+            });
         _this.tulip.beginEdit();
       }
     });
