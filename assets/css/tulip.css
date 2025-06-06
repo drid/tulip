@@ -502,6 +502,11 @@ nav.top-bar {
 
 .right-off-canvas-menu input {
   width: auto !important;
+  margin-bottom: auto;
+}
+
+.right-off-canvas-menu > ul > li {
+  margin-bottom: 1rem;
 }
 
 .delete-suggestion {

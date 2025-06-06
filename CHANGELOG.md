@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.5-4] - 2025-06-06
+
+### 🚀 Features
+
+- Feat(glyphs) Add glyphs for animals, sand, dunes and more
+
+
+- *(tulip)* Add track type Low/Less visible
+- *(tulip)* Rename track types
+
+### 🐛 Bug Fixes
+
+- *(note)* Glyph file in all caps is not detected and causes exception
+- Keep roadbook visible when opening file
+- Disable save roadbook button when editing instruction
+- Handle unknown track type and default to 'track'
+
+### 💼 Other
+
+- Add test for low vis track
+
+
+
 ## [1.9.5-3] - 2025-06-04
 
 ### 🚀 Features
@@ -85,7 +108,6 @@ Build on MR to master
 
 
 - WP UI values stored in roadbook
-- 1.9.5-0
 
 ## [1.9.4] - 2025-05-29
 
@@ -101,10 +123,6 @@ Build on MR to master
 
 - *(ui)* Resolve issues with map orientation and tulip exit edit buttons
 - *(CI)* Convert svg files
-
-### 💼 Other
-
-- 1.9.4
 
 ### ⚙️ Miscellaneous Tasks
 
