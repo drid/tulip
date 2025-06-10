@@ -40,6 +40,7 @@
     "@electron-forge/maker-dmg": "^7.6.0",
     "electron": "^29.4.6",
     "electron-builder": "^25.1.8",
+    "jsdom": "^26.1.0",
     "source-map-support": "^0.5.21",
     "tape": "^4.17.0",
     "xml2js": "^0.6.2"
