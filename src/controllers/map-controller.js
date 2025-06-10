@@ -3,7 +3,7 @@
 */
 class MapController {
 
-  constructor(model) {
+  constructor(model, viewHome = null, geolocate = true) {
     this.model = model;
     this.rotation = 0;
     this.unlockedBeforeInstructionEdit = true;
@@ -11,10 +11,14 @@ class MapController {
     this.displayEdge = true; //displayEdge is a instance variable which tracks whether a handle should be shown when the user hovers the mouse over the route. (think of a better name and nuke this comment)
     this.markerDeleteMode = false;
     this.deleteQueue = [];
-
+    this.viewHome = viewHome;
+    if (!viewHome) {
+      this.viewHome = {lat:0 ,lon:0, zoom:1}
+    }
     this.initMap();
     this.initRoutePolyline();
-    this.attemptGeolocation();
+    if (geolocate && viewHome == null)
+      this.attemptGeolocation();
 
     this.bindToModel();
     this.bindToUI();
@@ -25,8 +29,8 @@ class MapController {
 
   initMap() {
     this.map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 36.068209, lng: -105.629669 },
-      zoom: 4,
+      center: { lat: this.viewHome.lat, lng: this.viewHome.lon },
+      zoom: this.viewHome.zoom,
       disableDefaultUI: true,
       mapTypeId: google.maps.MapTypeId.HYBRID,
       gestureHandling: 'greedy'
@@ -60,6 +64,10 @@ class MapController {
 
   setMapCenter(latLng) {
     this.map.setCenter(latLng);
+  }
+
+  getMapCenter() {
+    return this.map.getCenter();
   }
 
   setMapZoom(zoom) {

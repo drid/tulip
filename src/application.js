@@ -302,7 +302,7 @@ class App {
 
   initMap() {
     this.mapModel = new MapModel();
-    this.mapController = new MapController(this.mapModel);
+    this.mapController = new MapController(this.mapModel, this.settings.homeView, !this.settings.loadLastRoadbook);
     this.mapController.placeMapAttribution();
     if (this.settings.loadLastRoadbook) {
       this.openLastRoadBook();
@@ -342,8 +342,16 @@ class App {
     }
   }
 
+  setHomeView() {
+    const center = this.mapController.getMapCenter()
+    this.settings.homeView = {
+      lat: center.lat(),
+      lon: center.lng(),
+      zoom: this.mapController.getMapZoom()
+    }
+  }
   saveSettings() {
-    const settings = {};
+    const settings = this.settings;
     settings.loadLastRoadbook = $('#open_last').prop('checked');
     settings.gmapKey = $('#gmap_key').val();
     settings.googleDirectionsKey = $('#google_directions_key').val();
@@ -382,6 +390,9 @@ class App {
     if (settings.showChangelogOnStart === undefined ||
       (settings.showChangelogOnStart.showOnStart || (settings.showChangelogOnStart.version != this.version))) {
       this.ipc.send('open-changelog');
+    }
+    if (!settings.homeView) {
+      settings.homeView = null;
     }
     return settings;
   }
@@ -449,6 +460,11 @@ class App {
         }
       }
       $(this).blur();
+    });
+
+    $('#set-current-view-as-home').click(function () {
+      _this.setHomeView();
+      _this.saveSettings();
     });
 
     $('#save-settings').click(function () {
