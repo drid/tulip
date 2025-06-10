@@ -2,7 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.9.5-4] - 2025-06-06
+## [1.9.5] - 2025-06-10
+
+### 🚀 Features
+
+- Add option to set map home location
+- Zoom to entire track when opening roadbook
+
+### ⚙️ Miscellaneous Tasks
+
+- Cleanup glyphs
+
+## [1.9.5-4] - 2025-06-07
 
 ### 🚀 Features
 
