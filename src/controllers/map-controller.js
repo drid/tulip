@@ -78,6 +78,10 @@ class MapController {
     return this.map.getZoom();
   }
 
+  fitBounds(bounds) {
+    this.map.fitBounds(bounds);
+  }
+
   zin() {
     this.map.setZoom(this.map.getZoom() + 1);
   }

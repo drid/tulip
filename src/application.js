@@ -688,7 +688,6 @@ class App {
         'showOnStart': this.settings.showChangelogOnStart.showOnStart ?? true
       };
       setting['version'] = this.version;
-      console.log(setting);
       this.settings.showChangelogOnStart = setting;
       this.saveSettings();
     });

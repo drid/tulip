@@ -49,8 +49,6 @@ class RoadbookModel {
 
     if (points.length == 0)
       return;
-
-    var wpts = []
     // NOTE: For some strange reason, due to canvas rendering, a for loop causes points and instructions to be skipped, hence for...of in
     for (var point of points) {
       var latLng = new google.maps.LatLng(point.lat, point.long)
@@ -69,8 +67,12 @@ class RoadbookModel {
     app.mapModel.updateAllMarkersInstructionGeoData();
     var latLng = new google.maps.LatLng(points[0].lat, points[0].long);
 
-    app.mapController.map.setCenter(latLng);
-    app.mapController.map.setZoom(14);
+    const bounds = new google.maps.LatLngBounds();
+    app.mapModel.markers.forEach(marker => {
+      bounds.extend(marker.getPosition());
+    });
+    app.mapController.fitBounds(bounds);
+    app.mapController.map.setZoom(app.mapController.map.getZoom()-1);
   }
 
   appendGlyphToNoteTextEditor(image) {
