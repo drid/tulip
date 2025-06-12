@@ -10,6 +10,7 @@ var Tulip = Class({
     this.canvas = new fabric.Canvas(el);
     this.canvas.selection = false;
     this.canvas.hoverCursor = 'pointer';
+    this.selectedTrackId = null;
 
     var _this = this;
     this.canvas.on('object:moving', function (e) {
@@ -51,8 +52,13 @@ var Tulip = Class({
       this.initExit(angle, trackTypes.exitTrackType);
     }
     this.canvas.on('mouse:down', (options) => {
-      if (options.target && options.target.type && options.target.type == "path")
-        this.addTrackHandles(options)
+      if (options.target && options.target.type && options.target.type == "path" && options.target.selectable) {
+        this.addTrackHandles(options);
+        this.selectedTrackId = options.target.id;
+      }
+      else {
+        this.selectedTrackId = null;
+      }
     });
   },
 
@@ -289,6 +295,14 @@ var Tulip = Class({
 
   changeAddedTrackType(type) {
     this.addedTrackType = type
+    if (this.selectedTrackId) {
+      var track = this.tracks.find(({ id }) => id === this.selectedTrackId);
+      this.finishEdit();
+      track.changeType(type, this.canvas, false);
+      track.type = type;
+      this.canvas.renderAll();
+      this.beginEdit()
+    }
   },
 
   changeEntryTrackType(type) {
@@ -327,6 +341,8 @@ var Tulip = Class({
     this.canvas.forEachObject(function (obj) {
       obj.selectable = false;
     });
+    this.canvas.deactivateAllWithDispatch();
+    this.selectedTrackId = null;
     this.canvas.deactivateAll().renderAll();
   },
 
