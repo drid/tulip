@@ -238,6 +238,8 @@ class Track {
   setPaths(svg, typeOptions, canvas) {
     for (var i = 0; i < typeOptions.length; i++) {
       var path = new fabric.Path(svg, typeOptions[i])
+      path.type = 'path';  // For some reason this is not set by fabric.Path in this context
+      path.id = this.id;
       canvas.add(path);
       this.paths.push(path);
     }

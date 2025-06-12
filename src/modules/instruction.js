@@ -377,4 +377,9 @@ var Instruction = Class({
   notePNG: function () {
     return this.note.toPNG();
   },
+
+  finishEdit() {
+    this.tulip.finishEdit();
+    this.note.finishEdit();
+  }
 });
