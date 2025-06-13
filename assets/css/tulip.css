@@ -505,7 +505,7 @@ nav.top-bar {
   margin-bottom: auto;
 }
 
-.right-off-canvas-menu > ul > li {
+.right-off-canvas-menu>ul>li {
   margin-bottom: 1rem;
 }
 
@@ -544,6 +544,7 @@ nav.top-bar {
   width: 40px;
   height: 40px;
 }
+
 #delete-tulip-item {
   color: darkred;
 }
@@ -554,4 +555,18 @@ nav.top-bar {
 
 #about-version {
   display: inline;
+}
+
+#roadbook-logo-remove {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 2em;
+  background-color: white;
+  border-style: solid;
+  border-radius: 50%;
+  width: 1.5em;
+  height: 1.5em;
+  color: crimson;
+  cursor: pointer;
 }

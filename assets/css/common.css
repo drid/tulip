@@ -399,8 +399,9 @@ svg text {
   margin-bottom: 20px;
   max-width: 100%;
   text-align: center;
+  position: relative;
 }
 
-.roadbook-logo img {
+#roadbook-logo {
   max-width: 100%;
 }

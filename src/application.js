@@ -116,7 +116,6 @@ class App {
         console.error(error);
       }
     });
-    // $('#toggle-roadbook').click();
     _this.showRoadbook();
     $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
     $('#print-roadbook').removeClass('disabled')
@@ -329,6 +328,7 @@ class App {
     app.roadbook.name('New Roadbook');
     app.roadbook.desc('Roadbook description');
     app.roadbook.totalDistance(0);
+    app.roadbook.customLogo(null)
     this.roadbook.filePath = null;
 
     while (true) {
@@ -444,7 +444,7 @@ class App {
 
     var _this = this
 
-    $('#toggle-roadbook').click(function () {
+    $('#toggle-roadbook').on("click", function () {
       _this.toggleRoadbook();
       $(this).blur();
     });
@@ -475,6 +475,10 @@ class App {
       $('.track-selection').toggleClass('hidden');
       $('.glyph-selection').toggleClass('hidden');
     });
+
+    $('#roadbook-logo-remove').on('click', function () {
+      _this.roadbook.customLogo(null);
+    }) 
 
     /*
       escape key exits delete modes
