@@ -63,7 +63,13 @@ var Io = Class({
   // TODO DRY this up
   exportOpenRallyGPX: function () {
     var gpxString = "<?xml version='1.0' encoding='UTF-8'?>";
-    gpxString += "<gpx xmlns='http://www.topografix.com/GPX/1/1' version='1.1' creator='Tulip' xmlns:openrally='http://www.openrally.org/xmlschemas/GpxExtensions/v0.1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd http://www.topografix.com/GPX/gpx_overlay/0/3 http://www.topografix.com/GPX/gpx_overlay/0/3/gpx_overlay.xsd http://www.topografix.com/GPX/gpx_modified/0/1 http://www.topografix.com/GPX/gpx_modified/0/1/gpx_modified.xsd http://www.topografix.com/GPX/Private/TopoGrafix/0/4 http://www.topografix.com/GPX/Private/TopoGrafix/0/4/topografix.xsd'>";
+    gpxString += "<gpx xmlns='http://www.topografix.com/GPX/1/1' version='1.1' creator='Tulip' xmlns:openrally='http://www.openrally.org/xmlschemas/GpxExtensions/v1.0.3' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd http://www.topografix.com/GPX/gpx_overlay/0/3 http://www.topografix.com/GPX/gpx_overlay/0/3/gpx_overlay.xsd http://www.topografix.com/GPX/gpx_modified/0/1 http://www.topografix.com/GPX/gpx_modified/0/1/gpx_modified.xsd http://www.topografix.com/GPX/Private/TopoGrafix/0/4 http://www.topografix.com/GPX/Private/TopoGrafix/0/4/topografix.xsd'>";
+    gpxString += "<metadata> \
+        <extensions> \
+          <openrally:units>metric</openrally:units> \
+          <openrally:distance>" + app.roadbook.totalDistance() + "</openrally:distance> \
+        </extensions>\
+      </metadata>"
     var waypoints = "";
     var trackPoints = "<trk><trkseg>";
     // TODO abstract this to the app
@@ -94,21 +100,28 @@ var Io = Class({
     if (waypoint.notification && waypoint.notification.openrallytype) {
       string = "<extensions>";
       string += "<openrally:" + waypoint.notification.openrallytype;
-      if (waypoint.notification.openrallytype.startsWith('wp')) {
+      if (waypoint.notification.openrallytype != 'neutralization') {
         if (waypoint.notification.openRadius) {
           string += " open='" + waypoint.notification.openRadius + "'";
         }
         if (waypoint.notification.validationRadius) {
           string += " clear='" + waypoint.notification.validationRadius + "'";
         }
-        if (waypoint.notification.time) {
+        if (waypoint.notification.time && waypoint.notification.openrallytype != 'dt') {
           string += " time='" + waypoint.notification.time + "'";
         }
       }
-      if (waypoint.notification.openrallytype.startsWith('dz')) {
-        string += "/><openrally:speed kph=''"; //TODO: speed kph from glyph?
+      if (waypoint.notification.openrallytype == 'neutralization') {
+        string += ">" + waypoint.notification.time + "</openrally:neutralization>";
+        // if (waypoint.notification.type == 'dns') {
+        //   string += "<openrally:speed>" + waypoint.speedLimit() + "</openrally:speed>";
+        // }
+      } else 
+        string += "/>";
+      if (waypoint.speedLimit()) {
+        string += "<openrally:speed>" + waypoint.speedLimit() + "</openrally:speed>";
       }
-      string += "/></extensions>";
+      string += "</extensions>";
     } else {
       string = "";
     }

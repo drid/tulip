@@ -170,7 +170,7 @@ class Notification {
       },
       cp: {
         type: "cp",
-        openrallytype: "cp",
+        openrallytype: "checkpoint",
         fill: '#ba6bab',
         openRadius: 1000,
         validationRadius: 90,
@@ -180,7 +180,7 @@ class Notification {
       },
       dn: {
         type: "dn",
-        openrallytype: "dn",
+        openrallytype: "neutralization",
         fill: '#a8aaad',
         openRadius: 1000,
         validationRadius: 90,
@@ -191,7 +191,7 @@ class Notification {
       },
       dns: {
         type: "dns",
-        openrallytype: "dn",
+        openrallytype: "neutralization",
         fill: '#ffba29',
         openRadius: 1000,
         validationRadius: 90,
