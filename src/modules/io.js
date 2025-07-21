@@ -77,7 +77,9 @@ var Io = Class({
     var wptCount = 1;
     for (var i = 0; i < points.length; i++) {
       if (points[i].instruction !== undefined) {
-        var waypoint = "<wpt lat='" + points[i].getPosition().lat() + "' lon='" + points[i].getPosition().lng() + "'><name>" + wptCount + "</name><desc></desc>" + this.buildOpenRallyExtensionsString(wptCount, points[i].instruction) + "</wpt>";
+        var waypoint = "<wpt lat='" + points[i].getPosition().lat() + "' lon='" + points[i].getPosition().lng() 
+        + "'><name>" + (points[i].instruction.waypointNumber() ? points[i].instruction.waypointNumber() : "") + "</name><desc></desc>"
+        + this.buildOpenRallyExtensionsString(wptCount, points[i].instruction) + "</wpt>";
         waypoints += waypoint;
         wptCount++;
       }
@@ -96,9 +98,24 @@ var Io = Class({
     OpenRally enhanced GPX format... route metadata without overriding GPX user-land variables.
   */
   buildOpenRallyExtensionsString: function (count, waypoint) {
+
     var string;
+    console.log(waypoint.resetDistance())
+    string = "<extensions>";
+    string += "<openrally:distance>" + (waypoint.kmFromStart() - waypoint.resetDistance())+ "</openrally:distance>"
     if (waypoint.notification && waypoint.notification.openrallytype) {
-      string = "<extensions>";
+      if (waypoint.showCoordinates())
+        string += "<openrally:show_coordinates/>"
+
+      if (waypoint.hasResetGlyph())
+        string += " <openrally:reset/>"
+
+      if (waypoint.dangerLevel() > 0)
+        string += "<openrally:danger>" + waypoint.dangerLevel() + "</openrally:danger>"
+
+      if (waypoint.showHeading())
+        string += "<openrally:cap>" + Math.round(waypoint.exactHeading()) + "</openrally:cap>"
+
       string += "<openrally:" + waypoint.notification.openrallytype;
       if (waypoint.notification.openrallytype != 'neutralization') {
         if (waypoint.notification.openRadius) {
@@ -121,10 +138,8 @@ var Io = Class({
       if (waypoint.speedLimit()) {
         string += "<openrally:speed>" + waypoint.speedLimit() + "</openrally:speed>";
       }
-      string += "</extensions>";
-    } else {
-      string = "";
     }
+    string += "</extensions>";
     return string;
   },
 
