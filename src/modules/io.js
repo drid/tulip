@@ -98,6 +98,10 @@ var Io = Class({
     root.appendChild(element);
 
     // Waypoints and tracks
+    const tracks = xmlDoc.createElement('trk');
+    tracks.appendChild(xmlDoc.createElement("name")).textContent = app.roadbook.name();
+    const trkseg = xmlDoc.createElement("trkseg");
+
     // TODO abstract this to the app
     var points = app.mapModel.markers;
     var wptCount = 1;
@@ -118,12 +122,19 @@ var Io = Class({
         root.appendChild(waypoint);
         wptCount++;
       }
+      // Tracks
+      var trkpt = xmlDoc.createElement("trkpt")
+      trkpt.setAttribute('lat', points[i].getPosition().lat());
+      trkpt.setAttribute('lon', points[i].getPosition().lng());
+      trkseg.appendChild(trkpt);
     }
+
+    tracks.appendChild(trkseg);
+    root.appendChild(tracks);
 
     // Create XML string
     const serializer = new XMLSerializer();
     const xmlString = serializer.serializeToString(xmlDoc);
-    return (xmlString);
     return this.prettyPrintXML(xmlString);
   },
 
@@ -273,10 +284,14 @@ var Io = Class({
   let formatted = '', indent = '';
   const tab = '  '; // 2 spaces for indentation
   xml.split(/>\s*</).forEach(node => {
+    if (node.startsWith("<?xml")) {
+      formatted += `${node}>\n`;
+      return;
+    }
     if (node.match(/^\/\w/)) indent = indent.slice(tab.length); // Decrease indent for closing tags
     formatted += `${indent}<${node}>\n`;
     if (node.match(/^<?\w[^>]*[^\/]$/)) indent += tab; // Increase indent for opening tags
   });
-  return formatted.slice(0, -1); // Remove trailing newline
+  return formatted.slice(0, -2); // Remove trailing newline
 }
 });
