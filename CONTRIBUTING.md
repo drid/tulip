@@ -11,25 +11,46 @@ The **GitHub repository** is a mirror and does not accept pull requests.
 
 ## 💡 How to Contribute
 
+### Getting Started
 1. **Fork the repository** (on GitLab).
-2. **Clone your fork**:
-   ```sh
-   git clone https://gitlab.com/YOUR_USERNAME/tulip.git
-   cd tulip
-   ```
-3. **Create a new branch** for your changes:
-   ```sh
-   git checkout -b my-feature
-   ```
-4. **Make your changes and commit**:
-   ```sh
-   git commit -am "Describe your change"
-   ```
-5. **Push your branch**:
-   ```sh
-   git push origin my-feature
-   ```
-6. **Open a merge request (MR)** on GitLab.
+1. **Check the Project Board**: Review the project board and existing issues to understand current tasks and priorities.
+2. **Search for Existing Issues**: Before creating a new issue, search the issue tracker to ensure it hasn't been reported or is being worked on.
+3. **Join the Discussion**: Engage in relevant issue threads to express interest or ask questions before starting work.
+
+### Creating Issues
+- **Be Descriptive**: Clearly describe the bug or feature, including steps to reproduce (for bugs) or desired functionality (for features).
+- **Use Labels**: Apply appropriate labels (e.g., `bug`, `enhancement`, `question`) to help categorize the issue.
+- **Check for Duplicates**: Use the search bar in the issue tracker to confirm no similar issues exist. Reference related issues if applicable.
+
+### Working on Issues
+1. **Claim an Issue**: Comment on the issue to indicate your intent to work on it, preventing others from duplicating your effort.
+2. **Assign Yourself**: If permitted, assign the issue to yourself to signal ownership.
+3. **Coordinate with Maintainers**: For complex issues, discuss your approach with maintainers in the issue thread to align expectations.
+
+### Submitting Merge Requests (MRs)
+1. **Link to Issue**: Create a merge request that references the specific issue (e.g., "Fixes #123") to maintain traceability.
+2. **Branch Naming**: Use descriptive branch names (e.g., `fix/issue-123-bug-description` or `feature/issue-124-new-functionality`) to clarify purpose.
+3. **Prevent Conflicts**: Pull the latest changes from the main branch before starting work to avoid merge conflicts.
+4. **Single Purpose MRs**: Ensure each MR addresses only one issue to keep changes focused and reviewable.
+5. **Check Existing MRs**: Before creating an MR, verify no one else is addressing the same issue by checking open MRs.
+
+### Avoiding Duplicate Work
+- **Monitor Open MRs**: Regularly check open merge requests to avoid working on tasks already in progress.
+- **Communicate Early**: If you plan to tackle an unassigned issue, comment to claim it or ask if anyone else is working on it.
+- **Use Draft MRs**: For work-in-progress, submit a draft MR to signal your ongoing efforts and prevent overlap.
+- **Sync with Team**: Participate in discussions (via issues or project channels) to stay informed about others’ contributions.
+
+### Code and Commit Standards
+- Follow the project’s coding style and standards (see [link to style guide, if applicable]).
+- Write clear, concise commit messages describing the change and referencing the issue (e.g., "Add feature X #123").
+- Include tests and documentation updates where relevant.
+
+### Review Process
+- Respond to feedback promptly to keep the review process smooth.
+- Ensure your MR passes any automated checks (e.g., CI/CD pipelines) before requesting review.
+
+### Questions?
+If you’re unsure about anything, reach out via the issue tracker or [other communication channel, if applicable]. We’re happy to help!
 
 ## Glyphs
 
