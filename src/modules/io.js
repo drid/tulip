@@ -147,18 +147,25 @@ var Io = Class({
     distance = xmlDoc.createElement('openrally:distance');
     distance.textContent = (waypoint.kmFromStart() - waypoint.resetDistance());
     extensions.appendChild(distance);
+
+    extensions.appendChild(xmlDoc.createElement('openrally:tulip'));
+    extensions.appendChild(xmlDoc.createElement('openrally:notes'));
+
+    if (waypoint.showCoordinates())
+      extensions.appendChild(xmlDoc.createElement('openrally:show_coordinates'))
+    if (waypoint.hasResetGlyph())
+      extensions.appendChild(xmlDoc.createElement('openrally:reset'))
+    if (waypoint.hasFuelGlyph())
+      extensions.appendChild(xmlDoc.createElement('openrally:fuel'))
+    if (waypoint.dangerLevel() > 0)
+      extensions.appendChild(xmlDoc.createElement('openrally:danger')).textContent = waypoint.dangerLevel();
+    if (waypoint.showHeading())
+      extensions.appendChild(xmlDoc.createElement('openrally:cap')).textContent = Math.round(waypoint.exactHeading());
+    if (waypoint.speedLimit()) 
+      extensions.appendChild(xmlDoc.createElement('openrally:speed')).textContent = waypoint.speedLimit();
+
+    // Notification
     if (waypoint.notification && waypoint.notification.openrallytype) {
-      if (waypoint.showCoordinates())
-        extensions.appendChild(xmlDoc.createElement('openrally:show_coordinates'))
-      if (waypoint.hasResetGlyph())
-        extensions.appendChild(xmlDoc.createElement('openrally:reset'))
-      if (waypoint.dangerLevel() > 0)
-        extensions.appendChild(xmlDoc.createElement('openrally:danger')).textContent = waypoint.dangerLevel();
-      if (waypoint.showHeading())
-        extensions.appendChild(xmlDoc.createElement('openrally:cap')).textContent = Math.round(waypoint.exactHeading());
-      if (waypoint.speedLimit()) 
-        extensions.appendChild(xmlDoc.createElement('openrally:speed')).textContent = waypoint.speedLimit();
-      // Notification
       notification  = xmlDoc.createElement("openrally:" + waypoint.notification.openrallytype);
       if (waypoint.notification.openRadius) {
         notification.setAttribute("open", waypoint.notification.openRadius);
