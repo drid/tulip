@@ -68,12 +68,12 @@ var Io = Class({
 
     // Get the root element
     const root = xmlDoc.getElementsByTagName('gpx')[0];
-    root.setAttribute('xmlns' ,'http://www.topografix.com/GPX/1/1');
-    root.setAttribute('creator' ,'Tulip');
-    root.setAttribute('version' ,'1.1');
-    root.setAttribute('xmlns:openrally' ,'http://www.openrally.org/xmlschemas/GpxExtensions/v1.0.3');
-    root.setAttribute('xmlns:xsi' ,'http://www.w3.org/2001/XMLSchema-instance');
-    root.setAttribute('xsi:schemaLocation' ,'http://www.topografix.com/GPX/1/1\
+    root.setAttribute('xmlns', 'http://www.topografix.com/GPX/1/1');
+    root.setAttribute('creator', 'Tulip');
+    root.setAttribute('version', '1.1');
+    root.setAttribute('xmlns:openrally', 'http://www.openrally.org/xmlschemas/GpxExtensions/v1.0.3');
+    root.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+    root.setAttribute('xsi:schemaLocation', 'http://www.topografix.com/GPX/1/1\
        http://www.topografix.com/GPX/1/1/gpx.xsd\
        http://www.topografix.com/GPX/gpx_style/0/2\
        http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd\
@@ -110,7 +110,7 @@ var Io = Class({
         var waypoint = xmlDoc.createElement('wpt');
         waypoint.setAttribute('lat', points[i].getPosition().lat());
         waypoint.setAttribute('lon', points[i].getPosition().lng());
-        if(points[i].instruction.waypointNumber()) {
+        if (points[i].instruction.waypointNumber()) {
           var name = xmlDoc.createElement('name');
           name.textContent = points[i].instruction.waypointNumber();
           waypoint.appendChild(name);
@@ -148,7 +148,7 @@ var Io = Class({
     distance.textContent = (waypoint.kmFromStart() - waypoint.resetDistance());
     extensions.appendChild(distance);
 
-    extensions.appendChild(xmlDoc.createElement('openrally:tulip'));
+    extensions.appendChild(xmlDoc.createElement('openrally:tulip')).textContent = "![CDATA[" + waypoint.tulip.toPNG() + "]]";
     extensions.appendChild(xmlDoc.createElement('openrally:notes'));
 
     if (waypoint.showCoordinates())
@@ -161,27 +161,63 @@ var Io = Class({
       extensions.appendChild(xmlDoc.createElement('openrally:danger')).textContent = waypoint.dangerLevel();
     if (waypoint.showHeading())
       extensions.appendChild(xmlDoc.createElement('openrally:cap')).textContent = Math.round(waypoint.exactHeading());
-    if (waypoint.speedLimit()) 
+    if (waypoint.speedLimit())
       extensions.appendChild(xmlDoc.createElement('openrally:speed')).textContent = waypoint.speedLimit();
 
     // Notification
     if (waypoint.notification && waypoint.notification.openrallytype) {
-      notification  = xmlDoc.createElement("openrally:" + waypoint.notification.openrallytype);
-      if (waypoint.notification.openRadius) {
-        notification.setAttribute("open", waypoint.notification.openRadius);
-      }
-      if (waypoint.notification.validationRadius) {
-        notification.setAttribute("clear", waypoint.notification.validationRadius);
-      }
-      if (waypoint.notification.time) {
-        notification.setAttribute("name", waypoint.waypointNumber());
-      }
+      notification = xmlDoc.createElement("openrally:" + waypoint.notification.openrallytype);
+      this.setWaypointXMLAttributes(notification, waypoint);
       extensions.appendChild(notification);
 
-      if (waypoint.notification.time)
-        extensions.appendChild(xmlDoc.createElement('openrally:neutralization')).textContent = waypoint.notification.time;
+      // Add extra neutralization element
+      if (waypoint.notification.openrallytype.startsWith('dn')) {
+        extra_z = xmlDoc.createElement('openrally:neutralization')
+        extra_z.textContent = waypoint.notification.time;
+        this.setWaypointXMLAttributes(extra_z, waypoint);
+        extra_z.removeAttribute('time');
+        extensions.appendChild(extra_z);
+      }
+
+      // Gracefully close zones
+      if (['ft', 'fn'].includes(waypoint.notification.openrallytype)) {
+        extra_z = xmlDoc.createElement('openrally:fz');
+        this.setWaypointXMLAttributes(extra_z, waypoint);
+        extensions.appendChild(extra_z);
+      }
+      // Add dt to dtz
+      if (waypoint.notification.openrallytype == 'dtz') {
+        extra_z = xmlDoc.createElement('openrally:dt');
+        this.setWaypointXMLAttributes(extra_z, waypoint);
+        extensions.appendChild(extra_z);
+      }
+
+      // Add speed limit modifier
+      if (['dnz', 'dtz'].includes(waypoint.notification.openrallytype)) {
+        extra_z = xmlDoc.createElement('openrally:dz');
+        this.setWaypointXMLAttributes(extra_z, waypoint);
+        extensions.appendChild(extra_z);
+      }
     }
     return extensions;
+  },
+
+  setWaypointXMLAttributes: function (notification, waypoint) {
+    if (waypoint.notification.openRadius) {
+      notification.setAttribute("open", waypoint.notification.openRadius);
+    }
+
+    if (waypoint.notification.validationRadius) {
+      notification.setAttribute("clear", waypoint.notification.validationRadius);
+    }
+
+    if (waypoint.notification.time) {
+      notification.setAttribute("time", waypoint.notification.time);
+    }
+
+    if (waypoint.notification.waypointNumber) {
+      notification.setAttribute("name", waypoint.waypointNumber());
+    }
   },
 
   /*
@@ -287,18 +323,18 @@ var Io = Class({
     return index;
   },
 
-  prettyPrintXML: function(xml) {
-  let formatted = '', indent = '';
-  const tab = '  '; // 2 spaces for indentation
-  xml.split(/>\s*</).forEach(node => {
-    if (node.startsWith("<?xml")) {
-      formatted += `${node}>\n`;
-      return;
-    }
-    if (node.match(/^\/\w/)) indent = indent.slice(tab.length); // Decrease indent for closing tags
-    formatted += `${indent}<${node}>\n`;
-    if (node.match(/^<?\w[^>]*[^\/]$/)) indent += tab; // Increase indent for opening tags
-  });
-  return formatted.slice(0, -2); // Remove trailing newline
-}
+  prettyPrintXML: function (xml) {
+    let formatted = '', indent = '';
+    const tab = '  '; // 2 spaces for indentation
+    xml.split(/>\s*</).forEach(node => {
+      if (node.startsWith("<?xml")) {
+        formatted += `${node}>\n`;
+        return;
+      }
+      if (node.match(/^\/\w/)) indent = indent.slice(tab.length); // Decrease indent for closing tags
+      formatted += `${indent}<${node}>\n`;
+      if (node.match(/^<?\w[^>]*[^\/]$/)) indent += tab; // Increase indent for opening tags
+    });
+    return formatted.slice(0, -2); // Remove trailing newline
+  }
 });
