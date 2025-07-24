@@ -167,3 +167,19 @@ release_job:
           url: "$PKG_PATH/${APPNAME}-${VERSION}.x86_64.rpm"
           link_type: package
 
+
+pages:
+  stage: deploy
+  image: python:3.9
+  script:
+    - pip install mkdocs-material
+    - mkdocs build --site-dir public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes:
+        - docs/**/*  # Trigger for changes in the docs/ folder
+        - mkdocs.yml # Trigger for changes in the MkDocs config
+  environment: production

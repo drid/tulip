@@ -16,6 +16,7 @@ Features:
 * Print/Export roadbook PDF
 * Works on Linux/Mac/Windows
 
+**[Instruction manual](http://drid.gitlab.io/tulip)**
 
 ## Install
 ### Using Release artifacts

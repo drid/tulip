@@ -1,0 +1,6 @@
+site_name: Tulip
+nav:
+  - Home: index.md
+  - Setup: setup.md
+  - Usage: usage.md
+  - Shortcuts: shortcuts.md
