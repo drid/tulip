@@ -1,6 +1,16 @@
 site_name: Tulip
+repo_url: https://gitlab.com/drid/tulip
 nav:
   - Home: index.md
   - Setup: setup.md
   - Usage: usage.md
   - Shortcuts: shortcuts.md
+theme:
+  name: material
+  palette:
+    primary: amber
+
+extra:
+  analytics:
+    provider: google
+    property: G-1VYMMX1XZ4
