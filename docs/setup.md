@@ -38,8 +38,8 @@ By using your own Google Maps API key, you contribute to the sustainability of T
 ### General Settings
 - **Open last roadbook on start**: Automatically opens the most recently edited roadbook when launching Tulip, streamlining your workflow for ongoing projects.
 - **Tulip close distance (m)**: Defines the distance threshold (in meters) for considering next instruction as "close." The default is 300 meters, adjustable to match your rally’s precision requirements.
-- **Show CAP heading**: Controls the visibility of the Course À Parcourir (CAP) heading for new instructions in the roadbook.
-- **Show coordinates**: Determines whether geographic coordinates are displayed for new instructions in the roadbook. 
+- **Show CAP heading**: Controls the default visibility of CAP heading for new instructions in the roadbook.
+- **Show coordinates**: Determines whether geographic coordinates are displayed by default for new instructions in the roadbook. 
 
 ### Coordinates Format
 - **Coordinates Format**: Allows you to choose from three coordinate display formats for new instructions when the "Show coordinates" option is enabled. The available formats are:
