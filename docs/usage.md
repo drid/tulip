@@ -1,12 +1,15 @@
 # Using Tulip
 
-## Route planning
+## Route planning and map controls
 - Click on the map to add route points.
-- Double click on route point to add an instruction.
-- Double click on roadbook instruction to edit.
+- Double click on a route point to add an instruction.
+- Double click on an instruction route point to remove the instruction.
+- Right click 2 times on a route point to delete it.
 
 ## Instruction editor
 The Tulip Instruction Editor is a key component of the Tulip rally roadbook editor, designed to help you create and customize instructions with precision. This interface allows you to add tracks, glyphs, and waypoint notes, while providing tools to modify and visualize your rally route. Below is an overview of the editor's features based on the provided image.
+
+Double click on roadbook instruction to begin editing.
 
 ![alt text](img/image.png)
 
@@ -14,13 +17,11 @@ The Tulip Instruction Editor is a key component of the Tulip rally roadbook edit
 
 - Delete selected glyph from tulip
 - Orient map with track
-- Confirm (check mark) changes to instruction.
+- Confirm (check mark) changes to instruction and exit edit mode.
 
-### Insert into Tulip
-- Tracks: Toggle to enable or disable the insertion of track elements.
-- Glyphs: Toggle to enable or disable the insertion of glyphs.
-- CAP: Toggle to show or hide CAP headings for new instructions.
-- Lat/Lon: Toggle to show or hide latitude/longitude coordinates for new instructions.
+### Insert Tulip items
+- Tracks: Toggle to enable the insertion of track elements.
+- Glyphs: Toggle to enable the insertion of glyphs.
 
 ### Modify Selection
 - A slider to adjust the properties of the selected note text, offering fine-tuned control over its appearance or position.
@@ -46,3 +47,5 @@ Show in sidebar
 - To add text to notes, simply type it directly into the text field.
 - To add a glyph, use the "Insert glyph" button to open the glyph selection popup, where you can choose from available glyphs. Holding the Shift key while clicking on a glyph allows for multiple insertions.
 - To delete items from notes place the cursor after the item and press the backspace button
+- CAP: Toggle to show or hide CAP headings in the notes.
+- Lat/Lon: Toggle to show or hide latitude/longitude coordinates in the notes.
