@@ -1,10 +1,14 @@
 
 const Sentry = require('@sentry/electron/main');
+const isDev = require('electron-is-dev');
+console.log(isDev ? 'Running in development' : 'Running in production');
 
-Sentry.init({
-  dsn: "https://d5e95e1373931cff30184a1e7d504619@o4508879179284480.ingest.de.sentry.io/4508880154918992",
-  debug: true
-});
+if (!isDev) {
+  Sentry.init({
+    dsn: "https://d5e95e1373931cff30184a1e7d504619@o4508879179284480.ingest.de.sentry.io/4508880154918992",
+    debug: true
+  });
+}
 
 const fs = require('fs');
 const fsPromises = require('fs').promises; // For promise-based methods
@@ -339,3 +343,5 @@ ipcMain.on('open-changelog', async () => {
 ipcMain.on('update-saved-state', (event, data) => {
   isSaved = data;
 })
+
+ipcMain.handle('get-is-dev', () => isDev);

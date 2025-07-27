@@ -5,11 +5,18 @@ const { randomUUID } = require('crypto');
 
 const Sentry = require("@sentry/electron/renderer");
 
-Sentry.init({
-    dsn: "https://d5e95e1373931cff30184a1e7d504619@o4508879179284480.ingest.de.sentry.io/4508880154918992",
-    integrations: [],
-    tracesSampleRate: 1.0,
-});
+async function getIsDev() {
+    const isDev = await ipcRenderer.invoke('get-is-dev');
+    console.log(isDev ? 'Renderer running in development' : 'Renderer running in production');
+}
+
+if (!getIsDev()) {
+    Sentry.init({
+        dsn: "https://d5e95e1373931cff30184a1e7d504619@o4508879179284480.ingest.de.sentry.io/4508880154918992",
+        integrations: [],
+        tracesSampleRate: 1.0,
+    });
+}
 
 contextBridge.exposeInMainWorld("globalNode", {
     dialog: () => {

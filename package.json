@@ -49,6 +49,7 @@
     "@electron/remote": "^2.0.9",
     "@sentry/cli": "^2.42.2",
     "@sentry/electron": "^6.1.0",
+    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "foundation-icons": "^2.0.0",
     "foundation-sites": "^5.5.3",
