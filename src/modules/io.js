@@ -143,8 +143,8 @@ var Io = Class({
     distance.textContent = (waypoint.kmFromStart() - waypoint.resetDistance());
     extensions.appendChild(distance);
 
-    extensions.appendChild(xmlDoc.createElement('openrally:tulip')).textContent = "![CDATA[" + waypoint.tulip.toPNG() + "]]";
-    extensions.appendChild(xmlDoc.createElement('openrally:notes'));
+    extensions.appendChild(xmlDoc.createElement('openrally:tulip')).textContent = "";
+    extensions.appendChild(xmlDoc.createElement('openrally:notes')).textContent = "";
 
     if (waypoint.showCoordinates())
       extensions.appendChild(xmlDoc.createElement('openrally:show_coordinates'))
@@ -162,35 +162,28 @@ var Io = Class({
     // Notification
     if (waypoint.notification && waypoint.notification.openrallytype) {
       notification = xmlDoc.createElement("openrally:" + waypoint.notification.openrallytype);
-      this.setWaypointXMLAttributes(notification, waypoint);
+      if (waypoint.notification.openrallytype != ('neutralization')) {
+        this.setWaypointXMLAttributes(notification, waypoint);
+      }
+      if (waypoint.notification.openrallytype == ('neutralization')) {
+        notification.removeAttribute('time');
+        notification.textContent = waypoint.notification.time;
+      }
       extensions.appendChild(notification);
 
-      // Add extra neutralization element
-      if (waypoint.notification.openrallytype.startsWith('dn')) {
-        extra_z = xmlDoc.createElement('openrally:neutralization')
-        extra_z.textContent = waypoint.notification.time;
-        this.setWaypointXMLAttributes(extra_z, waypoint);
-        extra_z.removeAttribute('time');
-        extensions.appendChild(extra_z);
-      }
-
       // Gracefully close zones
-      if (['ft', 'fn'].includes(waypoint.notification.openrallytype)) {
+      if (['ft', 'fn'].includes(waypoint.notification.openrallytype) && waypoint.inSpeedZone()) {
+        console.log(waypoint)
         extra_z = xmlDoc.createElement('openrally:fz');
-        this.setWaypointXMLAttributes(extra_z, waypoint);
-        extensions.appendChild(extra_z);
-      }
-      // Add dt to dtz
-      if (waypoint.notification.openrallytype == 'dtz') {
-        extra_z = xmlDoc.createElement('openrally:dt');
         this.setWaypointXMLAttributes(extra_z, waypoint);
         extensions.appendChild(extra_z);
       }
 
       // Add speed limit modifier
-      if (['dnz', 'dtz'].includes(waypoint.notification.openrallytype)) {
+      if (['dns', 'dts'].includes(waypoint.notification.type)) {
         extra_z = xmlDoc.createElement('openrally:dz');
         this.setWaypointXMLAttributes(extra_z, waypoint);
+        extra_z.removeAttribute('time');
         extensions.appendChild(extra_z);
       }
     }

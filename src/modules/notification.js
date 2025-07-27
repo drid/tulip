@@ -180,7 +180,7 @@ class Notification {
       },
       dn: {
         type: "dn",
-        openrallytype: "dn",
+        openrallytype: "neutralization",
         fill: '#a8aaad',
         openRadius: 1000,
         validationRadius: 90,
@@ -191,7 +191,7 @@ class Notification {
       },
       dns: {
         type: "dns",
-        openrallytype: "dnz",
+        openrallytype: "neutralization",
         fill: '#ffba29',
         openRadius: 1000,
         validationRadius: 90,
@@ -223,7 +223,7 @@ class Notification {
       },
       dts: {
         type: "dts",
-        openrallytype: "dtz",
+        openrallytype: "dt",
         fill: '#ffba29',
         openRadius: 1000,
         validationRadius: 90,
