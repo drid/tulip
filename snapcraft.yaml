@@ -1,6 +1,6 @@
 name: tulip-roadbook
 base: core22
-version: "1.9.5-2"
+version: "1.9.6-0"
 summary: Tulip Roadbook Editor
 description: |
   An editor for rally roadbooks built in the Electron environment using web technologies.
@@ -44,11 +44,10 @@ parts:
     override-build: |
       set -eux # Enable verbose output and exit on error
       npm install --no-save # Avoid modifying package.json
-      npm install electron@11.5.0 @electron/packager --no-save # Pin Electron to a known version
       npx electron-packager . tulip-roadbook --overwrite --platform=linux --arch=x64 --output=release-build --prune=true
       cp -rv ./tulip-roadbook-linux-x64/* $SNAPCRAFT_PART_INSTALL/tulip-roadbook/
     build-snaps:
-      - node/14/stable # Changed to Node 14 for better Electron 11 compatibility
+      - node/23/stable # Changed to Node 14 for better Electron 11 compatibility
     build-packages:
       - unzip
       - build-essential # Added for npm native module compilation
