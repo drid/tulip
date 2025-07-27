@@ -120,7 +120,8 @@ class App {
     $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
     $('#print-roadbook').removeClass('disabled')
     $('#export-gpx').removeClass('disabled')
-    $('#export-openrally-gpx').removeClass('disabled')
+    $('#export-openrally-gpx').removeClass('disabled');
+    this.updateWindowTitle(fileName);
   }
 
   openRoadBook(append = false) {
@@ -286,6 +287,9 @@ class App {
 
       console.log("Saved roadbook to ", fileName);
 
+      localStorage.setItem('lastRoadBook', fileName);
+      this.updateWindowTitle(fileName);
+
       return true;
     });
   }
@@ -434,6 +438,11 @@ class App {
 
   refreshInstructionElements() {
 
+  }
+
+  updateWindowTitle(filename) {
+    filename = " - " + filename;
+    document.title = "Tulip " + this.version + filename;
   }
   /*
     ---------------------------------------------------------------------------
