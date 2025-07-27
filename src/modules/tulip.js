@@ -353,6 +353,10 @@ var Tulip = Class({
     return this.canvas.toDataURL('image/png', 1);
   },
 
+  toSVG: function () {
+    return this.canvas.toSVG();
+  },
+
   truncateGlyphSource: function (src) {
     var index = src.lastIndexOf("assets/svg/glyphs");
     return "./" + src.slice(index);

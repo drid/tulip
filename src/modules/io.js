@@ -62,85 +62,150 @@ var Io = Class({
   },
   // TODO DRY this up
   exportOpenRallyGPX: function () {
-    var gpxString = "<?xml version='1.0' encoding='UTF-8'?>";
-    gpxString += "<gpx xmlns='http://www.topografix.com/GPX/1/1' version='1.1' creator='Tulip' xmlns:openrally='http://www.openrally.org/xmlschemas/GpxExtensions/v1.0.3' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd http://www.topografix.com/GPX/gpx_overlay/0/3 http://www.topografix.com/GPX/gpx_overlay/0/3/gpx_overlay.xsd http://www.topografix.com/GPX/gpx_modified/0/1 http://www.topografix.com/GPX/gpx_modified/0/1/gpx_modified.xsd http://www.topografix.com/GPX/Private/TopoGrafix/0/4 http://www.topografix.com/GPX/Private/TopoGrafix/0/4/topografix.xsd'>";
-    gpxString += "<metadata> \
-        <extensions> \
-          <openrally:units>metric</openrally:units> \
-          <openrally:distance>" + app.roadbook.totalDistance() + "</openrally:distance> \
-        </extensions>\
-      </metadata>"
-    var waypoints = "";
-    var trackPoints = "<trk><trkseg>";
+    // Create a new XML document
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString('<?xml version="1.0" encoding="UTF-8"?><gpx></gpx>', 'application/xml');
+
+    // Get the root element
+    const root = xmlDoc.getElementsByTagName('gpx')[0];
+    root.setAttribute('xmlns', 'http://www.topografix.com/GPX/1/1');
+    root.setAttribute('creator', 'Tulip ' + globalNode.getVersion() + " - https://gitlab.com/drid/tulip");
+    root.setAttribute('version', '1.1');
+    root.setAttribute('xmlns:openrally', 'http://www.openrally.org/xmlschemas/GpxExtensions/v1.0.3');
+    root.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+    root.setAttribute('xsi:schemaLocation', 'http://www.topografix.com/GPX/1/1\
+       http://www.topografix.com/GPX/1/1/gpx.xsd\
+       http://www.topografix.com/GPX/gpx_style/0/2\
+       http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd\
+       http://www.topografix.com/GPX/gpx_overlay/0/3\
+       http://www.topografix.com/GPX/gpx_overlay/0/3/gpx_overlay.xsd\
+       http://www.topografix.com/GPX/gpx_modified/0/1\
+       http://www.topografix.com/GPX/gpx_modified/0/1/gpx_modified.xsd\
+       http://www.topografix.com/GPX/Private/TopoGrafix/0/4\
+       http://www.topografix.com/GPX/Private/TopoGrafix/0/4/topografix.xsd');
+
+    // Metadata
+    var element = xmlDoc.createElement('metadata');
+    var extensions = xmlDoc.createElement('extensions');
+    var child = xmlDoc.createElement('openrally:units');
+    child.textContent = 'metric';
+    extensions.appendChild(child);
+
+    child = xmlDoc.createElement('openrally:distance');
+    child.textContent = app.roadbook.totalDistance();
+    extensions.appendChild(child);
+    element.appendChild(extensions);
+    root.appendChild(element);
+
+    // Waypoints and tracks
+    const tracks = xmlDoc.createElement('trk');
+    tracks.appendChild(xmlDoc.createElement("name")).textContent = app.roadbook.name();
+    const trkseg = xmlDoc.createElement("trkseg");
+
     // TODO abstract this to the app
     var points = app.mapModel.markers;
-    var wptCount = 1;
+    var instCount = 1;
     for (var i = 0; i < points.length; i++) {
       if (points[i].instruction !== undefined) {
-        var waypoint = "<wpt lat='" + points[i].getPosition().lat() + "' lon='" + points[i].getPosition().lng() 
-        + "'><name>" + (points[i].instruction.waypointNumber() ? points[i].instruction.waypointNumber() : "") + "</name><desc></desc>"
-        + this.buildOpenRallyExtensionsString(wptCount, points[i].instruction) + "</wpt>";
-        waypoints += waypoint;
-        wptCount++;
+        var waypoint = xmlDoc.createElement('wpt');
+        waypoint.setAttribute('lat', points[i].getPosition().lat());
+        waypoint.setAttribute('lon', points[i].getPosition().lng());
+        waypoint.appendChild(xmlDoc.createElement("name")).textContent = instCount++;
+        var desc = xmlDoc.createElement('desc');
+        desc.textContent = "";
+        waypoint.appendChild(desc);
+        waypoint.appendChild(this.buildOpenRallyExtensionsString(xmlDoc, points[i].instruction));
+        root.appendChild(waypoint);
       }
-      var trackPoint = "<trkpt lat='" + points[i].getPosition().lat() + "' lon='" + points[i].getPosition().lng() + "'></trkpt>"
-      trackPoints += trackPoint;
+      // Tracks
+      var trkpt = xmlDoc.createElement("trkpt")
+      trkpt.setAttribute('lat', points[i].getPosition().lat());
+      trkpt.setAttribute('lon', points[i].getPosition().lng());
+      trkseg.appendChild(trkpt);
     }
-    trackPoints += "</trkseg></trk>";
-    gpxString += waypoints;
-    gpxString += trackPoints;
-    gpxString += "</gpx>";
 
-    return gpxString;
+    tracks.appendChild(trkseg);
+    root.appendChild(tracks);
+
+    // Create XML string
+    const serializer = new XMLSerializer();
+    const xmlString = serializer.serializeToString(xmlDoc);
+    return this.prettyPrintXML(xmlString);
   },
 
   /*
     OpenRally enhanced GPX format... route metadata without overriding GPX user-land variables.
   */
-  buildOpenRallyExtensionsString: function (count, waypoint) {
+  buildOpenRallyExtensionsString: function (xmlDoc, waypoint) {
 
-    var string;
-    console.log(waypoint.resetDistance())
-    string = "<extensions>";
-    string += "<openrally:distance>" + (waypoint.kmFromStart() - waypoint.resetDistance())+ "</openrally:distance>"
+    extensions = xmlDoc.createElement('extensions');
+    distance = xmlDoc.createElement('openrally:distance');
+    distance.textContent = (waypoint.kmFromStart() - waypoint.resetDistance());
+    extensions.appendChild(distance);
+
+    extensions.appendChild(xmlDoc.createElement('openrally:tulip')).textContent = "";
+    extensions.appendChild(xmlDoc.createElement('openrally:notes')).textContent = "";
+
+    if (waypoint.showCoordinates())
+      extensions.appendChild(xmlDoc.createElement('openrally:show_coordinates'))
+    if (waypoint.hasResetGlyph())
+      extensions.appendChild(xmlDoc.createElement('openrally:reset'))
+    if (waypoint.hasFuelGlyph())
+      extensions.appendChild(xmlDoc.createElement('openrally:fuel'))
+    if (waypoint.dangerLevel() > 0)
+      extensions.appendChild(xmlDoc.createElement('openrally:danger')).textContent = waypoint.dangerLevel();
+    if (waypoint.showHeading())
+      extensions.appendChild(xmlDoc.createElement('openrally:cap')).textContent = Math.round(waypoint.exactHeading());
+    if (waypoint.speedLimit())
+      extensions.appendChild(xmlDoc.createElement('openrally:speed')).textContent = waypoint.speedLimit();
+
+    // Notification
     if (waypoint.notification && waypoint.notification.openrallytype) {
-      if (waypoint.showCoordinates())
-        string += "<openrally:show_coordinates/>"
-
-      if (waypoint.hasResetGlyph())
-        string += " <openrally:reset/>"
-
-      if (waypoint.dangerLevel() > 0)
-        string += "<openrally:danger>" + waypoint.dangerLevel() + "</openrally:danger>"
-
-      if (waypoint.showHeading())
-        string += "<openrally:cap>" + Math.round(waypoint.exactHeading()) + "</openrally:cap>"
-
-      string += "<openrally:" + waypoint.notification.openrallytype;
-      if (waypoint.notification.openrallytype != 'neutralization') {
-        if (waypoint.notification.openRadius) {
-          string += " open='" + waypoint.notification.openRadius + "'";
-        }
-        if (waypoint.notification.validationRadius) {
-          string += " clear='" + waypoint.notification.validationRadius + "'";
-        }
-        if (waypoint.notification.time && waypoint.notification.openrallytype != 'dt') {
-          string += " time='" + waypoint.notification.time + "'";
-        }
+      notification = xmlDoc.createElement("openrally:" + waypoint.notification.openrallytype);
+      if (waypoint.notification.openrallytype != ('neutralization')) {
+        this.setWaypointXMLAttributes(notification, waypoint);
       }
-      if (waypoint.notification.openrallytype == 'neutralization') {
-        string += ">" + waypoint.notification.time + "</openrally:neutralization>";
-        // if (waypoint.notification.type == 'dns') {
-        //   string += "<openrally:speed>" + waypoint.speedLimit() + "</openrally:speed>";
-        // }
-      } else 
-        string += "/>";
-      if (waypoint.speedLimit()) {
-        string += "<openrally:speed>" + waypoint.speedLimit() + "</openrally:speed>";
+      if (waypoint.notification.openrallytype == ('neutralization')) {
+        notification.removeAttribute('time');
+        notification.textContent = waypoint.notification.time;
+      }
+      extensions.appendChild(notification);
+
+      // Gracefully close zones
+      if (['ft', 'fn'].includes(waypoint.notification.openrallytype) && waypoint.inSpeedZone()) {
+        console.log(waypoint)
+        extra_z = xmlDoc.createElement('openrally:fz');
+        this.setWaypointXMLAttributes(extra_z, waypoint);
+        extensions.appendChild(extra_z);
+      }
+
+      // Add speed limit modifier
+      if (['dns', 'dts'].includes(waypoint.notification.type)) {
+        extra_z = xmlDoc.createElement('openrally:dz');
+        this.setWaypointXMLAttributes(extra_z, waypoint);
+        extra_z.removeAttribute('time');
+        extensions.appendChild(extra_z);
       }
     }
-    string += "</extensions>";
-    return string;
+    return extensions;
+  },
+
+  setWaypointXMLAttributes: function (notification, waypoint) {
+    if (waypoint.notification.openRadius) {
+      notification.setAttribute("open", waypoint.notification.openRadius);
+    }
+
+    if (waypoint.notification.validationRadius) {
+      notification.setAttribute("clear", waypoint.notification.validationRadius);
+    }
+
+    if (waypoint.notification.time) {
+      notification.setAttribute("time", waypoint.notification.time);
+    }
+
+    if (waypoint.notification.waypointNumber) {
+      notification.setAttribute("name", waypoint.waypointNumber());
+    }
   },
 
   /*
@@ -245,4 +310,19 @@ var Io = Class({
 
     return index;
   },
+
+  prettyPrintXML: function (xml) {
+    let formatted = '', indent = '';
+    const tab = '  '; // 2 spaces for indentation
+    xml.split(/>\s*</).forEach(node => {
+      if (node.startsWith("<?xml")) {
+        formatted += `${node}>\n`;
+        return;
+      }
+      if (node.match(/^\/\w/)) indent = indent.slice(tab.length); // Decrease indent for closing tags
+      formatted += `${indent}<${node}>\n`;
+      if (node.match(/^<?\w[^>]*[^\/]$/)) indent += tab; // Increase indent for opening tags
+    });
+    return formatted.slice(0, -2); // Remove trailing newline
+  }
 });
