@@ -69,7 +69,7 @@ var Io = Class({
     // Get the root element
     const root = xmlDoc.getElementsByTagName('gpx')[0];
     root.setAttribute('xmlns', 'http://www.topografix.com/GPX/1/1');
-    root.setAttribute('creator', 'Tulip');
+    root.setAttribute('creator', 'Tulip ' + globalNode.getVersion() + " - https://gitlab.com/drid/tulip");
     root.setAttribute('version', '1.1');
     root.setAttribute('xmlns:openrally', 'http://www.openrally.org/xmlschemas/GpxExtensions/v1.0.3');
     root.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
