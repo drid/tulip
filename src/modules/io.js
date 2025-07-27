@@ -104,23 +104,18 @@ var Io = Class({
 
     // TODO abstract this to the app
     var points = app.mapModel.markers;
-    var wptCount = 1;
+    var instCount = 1;
     for (var i = 0; i < points.length; i++) {
       if (points[i].instruction !== undefined) {
         var waypoint = xmlDoc.createElement('wpt');
         waypoint.setAttribute('lat', points[i].getPosition().lat());
         waypoint.setAttribute('lon', points[i].getPosition().lng());
-        if (points[i].instruction.waypointNumber()) {
-          var name = xmlDoc.createElement('name');
-          name.textContent = points[i].instruction.waypointNumber();
-          waypoint.appendChild(name);
-        }
+        waypoint.appendChild(xmlDoc.createElement("name")).textContent = instCount++;
         var desc = xmlDoc.createElement('desc');
         desc.textContent = "";
         waypoint.appendChild(desc);
         waypoint.appendChild(this.buildOpenRallyExtensionsString(xmlDoc, points[i].instruction));
         root.appendChild(waypoint);
-        wptCount++;
       }
       // Tracks
       var trkpt = xmlDoc.createElement("trkpt")
