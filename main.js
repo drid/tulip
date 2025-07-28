@@ -138,6 +138,13 @@ function createWindow() {
             mainWindow.webContents.send('open-changelog');
           }
         },
+        { label: "User Manual (online)", click: async () => {
+          try {
+            await shell.openExternal('https://drid.gitlab.io/tulip');
+          } catch (err) {
+            console.error('Failed to open URL:', err);
+          }
+        }  },
         { label: "About", click: function () { mainWindow.webContents.send('show-about-info'); } },
       ]
     }
