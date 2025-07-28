@@ -29,6 +29,12 @@ class App {
     this.glyphPlacementPosition = { top: 30, left: 30 };
     this.canEditMap = true;
     this.pointDeleteMode = false;
+    this.documentPath = false;
+
+    /*
+      IPC to Main process
+    */
+    this.ipc = globalNode.ipcRenderer;
 
     /*
       instantiate the roadbook
@@ -39,6 +45,13 @@ class App {
 
     this.roadbookController = new RoadbookController(this.roadbook);
     this.roadbook.controller = this.roadbookController;
+
+    const viewModel = {
+      isSaved: this.roadbookController.isSaved, // Bind to roadbookController's observable
+    };
+    this.roadbookController.isSaved.subscribe((newValue) => {
+      this.ipc.send('update-saved-state', newValue);
+    });
     /*
       instantiate import/export
     */
@@ -48,12 +61,9 @@ class App {
       file io
     */
     this.fs = globalNode.fs;
-    
+
     this.version = globalNode.getVersion()
-    /*
-      IPC to Main process
-    */
-    this.ipc = globalNode.ipcRenderer;
+
     /*
       initialize UI listeners
       */
@@ -65,6 +75,7 @@ class App {
 
     this.settings = this.loadSettings();
 
+    this.ipc.send('get-documents-path');
   }
 
   /*
@@ -243,11 +254,11 @@ class App {
   saveRoadBook() {
     try {
       if (this.roadbook.filePath == null) {
-        // Request documents directory path from node
-        this.ipc.send('get-documents-path');
+        this.saveRoadBookAs();
       } else {
         this.roadbook.finishInstructionEdit();
         this.fs.writeFile(this.roadbook.filePath, JSON.stringify(this.roadbook.statefulJSON(), null, 2), function (err) { });
+        this.roadbookController.isSaved(true);
       }
     } catch (error) {
       console.error(error);
@@ -255,12 +266,15 @@ class App {
   }
 
   saveRoadBookAs() {
+    var filePath;
     if (this.roadbook.filePath == null) {
-      // Request documents directory path from node TODO we really only need to do this once...
-      this.ipc.send('get-documents-path');
+      filePath = this.documentPath + '/'
+        + (this.roadbook.name() == 'Name your roadbook' ? 'Untitled' : this.roadbook.name().replace(/\s/g, '-'))
+        + ".tlp"
     } else {
-      this.showSaveDialog('Save roadbook as', this.roadbook.filePath)
+      filePath = this.roadbook.filePath
     }
+    this.showSaveDialog('Save roadbook as', filePath)
   }
 
   showSaveDialog(title, path) {
@@ -289,6 +303,8 @@ class App {
 
       localStorage.setItem('lastRoadBook', fileName);
       this.updateWindowTitle(fileName);
+      this.roadbookController.isSaved(true);
+
 
       return true;
     });
@@ -461,7 +477,6 @@ class App {
     $('#save-roadbook').click(function (e) {
       e.preventDefault();
       if (_this.canSave()) {
-        $(this).addClass('secondary');
         if (e.shiftKey) {
           _this.saveRoadBookAs();
         } else {
@@ -487,7 +502,7 @@ class App {
 
     $('#roadbook-logo-remove').on('click', function () {
       _this.roadbook.customLogo(null);
-    }) 
+    })
 
     /*
       escape key exits delete modes
@@ -515,9 +530,7 @@ class App {
     // Listener to get path to documents directory from node for saving roadbooks
     // NOTE only use this for roadbooks which haven't been named
     this.ipc.on('documents-path', function (event, arg) {
-      var path = arg + '/';
-      path += _this.roadbook.name() == 'Name your roadbook' ? 'Untitled' : _this.roadbook.name().replace(/\s/g, '-')
-      _this.showSaveDialog('Save roadbook', path)
+      _this.documentPath = arg;
     });
 
     this.ipc.on('save-roadbook', function (event, arg) {
@@ -704,7 +717,7 @@ class App {
       this.settings.showChangelogOnStart = setting;
       this.saveSettings();
     });
-    
+
     this.ipc.on('open-changelog', (event, result) => {
       this.ipc.send('open-changelog');
     });

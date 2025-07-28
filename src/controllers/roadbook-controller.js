@@ -11,10 +11,11 @@ class RoadbookController {
     this.bindToExitTrackSelector();
     this.bindToAddedTrackSelector();
     this.element;
+    this.isSaved = ko.observable(true);
   }
 
   highlightSaveButton() {
-    $('#save-roadbook').removeClass('secondary'); //TODO this shouldn't be here
+    this.isSaved(false);
   }
 
   appendGlyphToNoteTextEditor(image) {
@@ -67,7 +68,7 @@ class RoadbookController {
         $('#roadbook-desc > p').slideUp('fast');
         _this.descriptionTextEditor.focus();
       }
-      $('#save-roadbook').removeClass('secondary');
+      _this.isSaved(false);
       // TODO should we track this here?
       _this.model.editingNameDesc = true;
     });
@@ -148,7 +149,7 @@ class RoadbookController {
 
   populateInstructionPalette(instruction) {
     this.editingElement = instruction.element;
-    $('#save-roadbook').removeClass('secondary');
+    this.isSaved(false);
     $('#note-editor').html(instruction.noteHTML());
     $('#notification-open-radius').val((instruction.notification ? instruction.notification.openRadius : null));
     $('#notification-validation-radius').val((instruction.notification ? instruction.notification.validationRadius : null));
