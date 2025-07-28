@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.6] - 2025-07-28
+
+### 🐛 Bug Fixes
+
+- Roadbook logo removal
+- Glyphs not detected during edit
+
+### 🚜 Refactor
+
+- Update Quill
+
 ## [1.9.5] - 2025-06-10
 
 ### 🚀 Features
