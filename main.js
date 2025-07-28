@@ -18,6 +18,7 @@ const { createChangelogWindow } = require('./src/changelog');
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
 var printWindow = null;
+var isSaved = true;
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -182,7 +183,31 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
     printWindow = null;
-  })
+  });
+  mainWindow.on('close', (event) => {
+    if (!isSaved) {
+      const response = dialog.showMessageBoxSync(mainWindow, {
+        type: 'warning',
+        buttons: ['Save', 'Cancel', 'Don’t Save'],
+        defaultId: 1, // Default to 'Cancel'
+        title: 'Unsaved Changes',
+        message: 'You have unsaved changes. Do you want to save them before closing?',
+        detail: 'If you don’t save, your changes will be lost.',
+      });
+
+      switch (response) {
+        case 0: // Save
+          mainWindow.webContents.send('save-roadbook');
+          event.preventDefault();
+          break;
+        case 1: // Cancel
+          event.preventDefault();
+          break;
+        case 2: // Don’t Save
+          break;
+      }
+    }
+  });
 }
 
 
@@ -310,3 +335,7 @@ ipcMain.on('open-changelog', async () => {
   const result = await createChangelogWindow(mainWindow);
   mainWindow.webContents.send('changelog-result', result);
 });
+
+ipcMain.on('update-saved-state', (event, data) => {
+  isSaved = data;
+})
