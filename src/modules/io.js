@@ -2,7 +2,6 @@
 var Io = Class({
 
   importGPX: function (gpx) {
-    console.log("Parsing gpx", gpx);
     try {
       var gpxDoc = $.parseXML(gpx.trim());
       this.gpx = $(gpxDoc);
@@ -12,7 +11,51 @@ var Io = Class({
       return;
     }
 
-    this.importGPXTracks($.makeArray(this.gpx.find("trkpt")));
+    var name,desc;
+    // Find name and description from route/track
+    this.gpx.find('trk').each(function () {
+      const $trk = $(this);
+      name= $trk.find('name').text() || false
+      desc = $trk.find('desc').text() || false
+    });
+
+    if (! (name || desc)) {
+      this.gpx.find('rte').each(function () {
+        const $rte = $(this);
+        name= $rte.find('name').text() || false
+        desc = $rte.find('desc').text() || false
+      });
+    }
+
+    if (! name) {
+      name = "GPX Import"
+    }
+    if (! desc) {
+      desc = "GPX Import"
+    }
+
+    app.roadbook.name(name);
+    app.roadbook.desc(desc);
+
+
+    // Load track points and fallback to route points
+    path = this.gpx.find("trkpt");
+    if (path.length == 0) {
+      alert("No track is found, trying to load route");
+      path = this.gpx.find("rtept")
+    }
+    // Fallback to just waypoints
+    if (path.length == 0) {
+      alert("No track or route is found, trying to load waypoints");
+      path = this.gpx.find("wpt");
+    }
+
+    if (path.length == 0) {
+      alert("No usable points found, aborting");
+      return;
+    }
+
+    this.importGPXTracks($.makeArray(path));
     this.importGPXWaypoints($.makeArray(this.gpx.find("wpt")));
 
     // TODO abstract this to the app as roadbookHasWaypoints
@@ -238,8 +281,6 @@ var Io = Class({
   },
 
   importGPXTracks: function (tracks) {
-    console.log("importGPXTracks", tracks);
-
     if (tracks.length > 0) {
       var tracks = this.processGpxTracksForImport(tracks);
 
@@ -258,9 +299,6 @@ var Io = Class({
 
 
   importGPXWaypoints: function (waypoints) {
-    console.log("importGPXWaypoints", waypoints);
-
-
     //logic to import into roadbook
     if (waypoints.length > 0) {
       for (waypoint of waypoints) {
