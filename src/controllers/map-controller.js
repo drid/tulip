@@ -151,9 +151,6 @@ class MapController {
   addRoutePoint(latLng) {
     this.model.addRoutePoint(latLng, this.map);
     this.model.updateRoadbookAndInstructions();
-    if (this.model.markers.length == 1) {
-      this.model.makeFirstMarkerInstruction(this.model.markers);
-    }
   }
 
   addWaypointBubble(index, openRadius, validationRadius, fill) {
@@ -210,6 +207,9 @@ class MapController {
     this.map.addListener('click', function (evt) {
       if (_this.mapUnlocked && !this.markerDeleteMode) {
         _this.addRoutePoint(evt.latLng);
+      }
+      if (_this.model.markers.length == 1) {
+        _this.model.makeFirstMarkerInstruction(_this.model.markers);
       }
     });
 
