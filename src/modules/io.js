@@ -57,15 +57,7 @@ var Io = Class({
 
     this.importGPXTracks($.makeArray(path));
     this.importGPXWaypoints($.makeArray(this.gpx.find("wpt")));
-
-    // TODO abstract this to the app as roadbookHasWaypoints
-    if (app.mapModel.markers[0].waypoint == null) {
-      this.addWaypoint(app.mapModel.markers[0]);
-    }
-    // TODO abstract this to the app
-    if (app.mapModel.markers[(app.mapModel.markers.length - 1)].waypoint == null) {
-      this.addWaypoint(app.mapModel.markers[(app.mapModel.markers.length - 1)]);
-    }
+    this.roadbookHasWaypoints();
     app.mapModel.updateRoadbookAndInstructions();
   },
 
@@ -75,6 +67,16 @@ var Io = Class({
     }
   },
 
+  roadbookHasWaypoints() {
+    if (app.mapModel.markers[0].instruction == null) {
+      this.addWaypoint(app.mapModel.markers[0]);
+    }
+    // TODO abstract this to the app
+    if (app.mapModel.markers[(app.mapModel.markers.length - 1)].instruction == null) {
+      this.addWaypoint(app.mapModel.markers[(app.mapModel.markers.length - 1)]);
+    }
+
+  },
 
   // TODO DRY this up
   exportGPX: function () {
