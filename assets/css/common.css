@@ -18,28 +18,28 @@
 
 /* Liberation Sans Variants */
 @font-face {
-  font-family: "Liberation Sans";
+  font-family: "LiberationSans";
   src: url("../fonts/LiberationSans-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Liberation Sans";
+  font-family: "LiberationSans";
   src: url("../fonts/LiberationSans-Bold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Liberation Sans";
+  font-family: "LiberationSans";
   src: url("../fonts/LiberationSans-Italic.ttf") format("truetype");
   font-weight: normal;
   font-style: italic;
 }
 
 @font-face {
-  font-family: "Liberation Sans";
+  font-family: "LiberationSans";
   src: url("../fonts/LiberationSans-BoldItalic.ttf") format("truetype");
   font-weight: bold;
   font-style: italic;
@@ -47,28 +47,28 @@
 
 /* Liberation Sans Narrow Variants */
 @font-face {
-  font-family: "Liberation Sans Narrow";
+  font-family: "LiberationSansNarrow";
   src: url("../fonts/LiberationSansNarrow-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Liberation Sans Narrow";
+  font-family: "LiberationSansNarrow";
   src: url("../fonts/LiberationSansNarrow-Bold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Liberation Sans Narrow";
+  font-family: "LiberationSansNarrow";
   src: url("../fonts/LiberationSansNarrow-Italic.ttf") format("truetype");
   font-weight: normal;
   font-style: italic;
 }
 
 @font-face {
-  font-family: "Liberation Sans Narrow";
+  font-family: "LiberationSansNarrow";
   src: url("../fonts/LiberationSansNarrow-BoldItalic.ttf") format("truetype");
   font-weight: bold;
   font-style: italic;
@@ -80,7 +80,7 @@ body {
 
 /* Optional: Fallback for SVGs with unspecified or proprietary fonts */
 svg text {
-  font-family: "Liberation Sans", "Liberation Sans Narrow", sans-serif !important;
+  font-family: "LiberationSans", "LiberationSansNarrow", sans-serif !important;
 }
 
 /* Roadbook header styles */
@@ -337,9 +337,11 @@ svg text {
 }
 
 .relative-distance {
-  height: 25px;
+  height: 27px;
   color: #000;
   font-weight: bold;
+  font-size: 18px;
+  font-family: LiberationSans;
   border-top: 1px solid #000;
   border-right: 1px solid #000;
   text-align: center;
@@ -353,12 +355,17 @@ svg text {
 
 .total-distance {
   height: 75px;
-  font-family: Tahoma, Geneva, sans-serif;
-  font-size: 2.6em;
+  font-family: LiberationSans;
+  font-size: 47px;
   font-weight: bold;
   color: #000;
   text-align: center;
 }
+
+.total-distance-100m {
+  font-size: 37px;
+}
+
 
 .coordinates {
   text-align: right;
