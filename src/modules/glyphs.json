@@ -382,6 +382,13 @@
           { "src": "./assets/svg/glyphs/speed-175-end.svg", "text": "175km/h" },
           { "src": "./assets/svg/glyphs/speed-180-end.svg", "text": "180km/h" }
         ]
+      },
+      {
+        "id": "road-signs",
+        "title": "Road Signs",
+        "items": [
+          { "src": "./assets/svg/glyphs/roadsign_traffic_light.svg", "text": "Traffic light" }
+        ]
       }
     ]
   },
