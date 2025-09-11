@@ -67,7 +67,8 @@ class App {
     /*
       initialize UI listeners
       */
-    this.glyphControls = new GlyphControls(globalNode.getAppPath());
+    this.glyphStructure = JSON.parse(this.fs.readFileSync(globalNode.getAppPath() + '/src/modules/glyphs.json', 'utf8'));
+    this.glyphControls = new GlyphControls(globalNode.getAppPath(), this.glyphStructure);
 
     this.initListeners();
 
