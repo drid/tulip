@@ -1,10 +1,12 @@
 # Using Tulip
 
 ## Route planning and map controls
-- Click on the map to add route points.
-- Double click on a route point to add an instruction.
-- Double click on an instruction route point to remove the instruction.
-- Right click 2 times on a route point to delete it.
+- **Click** on the map to add route points.
+- **Double click** on a route point to add an instruction.
+- **Double click** on an instruction route point to remove the instruction.
+- **Right click** 2 times on a route point to delete it.
+- To delete a range of points and any related instructions:  
+    **Right click** on the first point to be deleted and then **right click** on the last point to be deleted
 
 ## Instruction editor
 The Tulip Instruction Editor is a key component of the Tulip rally roadbook editor, designed to help you create and customize instructions with precision. This interface allows you to add tracks, glyphs, and waypoint notes, while providing tools to modify and visualize your rally route. Below is an overview of the editor's features based on the provided image.
