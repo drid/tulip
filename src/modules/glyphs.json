@@ -148,8 +148,7 @@
           { "src": "./assets/svg/glyphs/fort-castle_2.svg", "text": "Fort/Castle" },
           { "src": "./assets/svg/glyphs/monument.svg", "text": "Monument" },
           { "src": "./assets/svg/glyphs/tunnel.svg", "text": "Tunnel" },
-          { "src": "./assets/svg/glyphs/notable-element-1.svg", "text": "Notable element" },
-          { "src": "./assets/svg/glyphs/roadworks.svg", "text": "Roadworks" }
+          { "src": "./assets/svg/glyphs/notable-element-1.svg", "text": "Notable element" }
         ]
       },
       {
@@ -387,7 +386,10 @@
         "id": "road-signs",
         "title": "Road Signs",
         "items": [
-          { "src": "./assets/svg/glyphs/roadsign_traffic_light.svg", "text": "Traffic light" }
+          { "src": "./assets/svg/glyphs/roadsign_traffic_light.svg", "text": "Traffic light" },
+          { "src": "./assets/svg/glyphs/roadsign_no-entry.svg", "text": "No Entry" },
+          { "src": "./assets/svg/glyphs/roadworks.svg", "text": "Roadworks" }
+
         ]
       }
     ]
