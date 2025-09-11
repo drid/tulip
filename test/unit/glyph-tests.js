@@ -1,26 +1,47 @@
 const test = require('tape');
-const jsdom = require('jsdom');
 const fs = require('fs').promises;
+const fss = require('fs');
 const path = require('path');
 
-async function checkImagesAndOrphans(htmlFilePath, rootDir, rootId, searchDirs, ignore) {
-    // Load HTML content from file
-    const htmlContent = await fs.readFile(htmlFilePath, 'utf-8');
-    const dom = new jsdom.JSDOM(htmlContent);
-    const document = dom.window.document;
+function findSrcFields(jsonObj, srcList = []) {
+  if (!jsonObj || typeof jsonObj !== 'object') return srcList;
 
-    // Select all img elements that are descendants of the specified ID
-    const images = document.querySelectorAll(`${rootId} img`);
+  for (const key in jsonObj) {
+    if (key === 'src' && typeof jsonObj[key] === 'string') {
+      srcList.push(jsonObj[key]);
+    } else if (typeof jsonObj[key] === 'object') {
+      findSrcFields(jsonObj[key], srcList);
+    }
+  }
+
+  return srcList;
+}
+
+async function checkImagesAndOrphans(hsonFilePath, rootDir, searchDirs, ignore) {
+    srcList = [];
+    try {
+        // Read the JSON file
+        const rawData = fss.readFileSync(hsonFilePath, 'utf8');
+        const jsonObj = JSON.parse(rawData);
+        const srcFields = findSrcFields(jsonObj);
+        // Find all src fields
+        console.log('Found src fields:', srcFields);
+        for (const key in jsonObj) {
+            if (key === 'src' && typeof jsonObj[key] === 'string') {
+            srcList.push(jsonObj[key]);
+            } else if (typeof jsonObj[key] === 'object') {
+            findSrcFields(jsonObj[key], srcList);
+            }
+        }
+    } catch (error) {
+        console.error('Error reading or parsing JSON file:', error.message);
+        return { imageResults: [], orphanResults: [] };
+    }
     const imgSrcs = new Set();
     const results = [];
 
     // Check existence of referenced images
-    for (const img of images) {
-        const src = img.getAttribute('src');
-        if (!src) {
-            //   results.push({ src: null, exists: false, error: 'No src attribute found' });
-            continue;
-        }
+    for (const src of srcList) {
         // Normalize src path to use forward slashes for consistency
         const normalizedSrc = src.replace(/\\/g, '/');
         imgSrcs.add(normalizedSrc);
@@ -77,16 +98,15 @@ async function checkImagesAndOrphans(htmlFilePath, rootDir, rootId, searchDirs, 
 }
 
 test('Image src and orphaned files validation for glyphs ID', async (t) => {
-    const htmlFilePath = 'index.html';
+    const jsonFilePath = './src/modules/glyphs.json'; // Path to the JSON file
     const rootDir = '.'; // Root directory is current directory
-    const targetId = 'body'; // Target ID is glyphs
     const searchDirs = ['./assets/svg/']; // Directories to search for orphaned files
     const ignore = ['./assets/svg/glyphs/missing-glyph.svg']
     try {
-        const { imageResults, orphanResults } = await checkImagesAndOrphans(htmlFilePath, rootDir, targetId, searchDirs, ignore);
+        const { imageResults, orphanResults } = await checkImagesAndOrphans(jsonFilePath, rootDir, searchDirs, ignore);
 
         // Test assertions for referenced images
-        t.ok(imageResults.length > 0, 'Should find at least one image under the glyphs ID');
+        t.ok(imageResults.length > 0, 'Should find at least one image under the glyphs');
 
         let allImagesExist = true;
         imageResults.forEach(result => {
@@ -106,7 +126,7 @@ test('Image src and orphaned files validation for glyphs ID', async (t) => {
         // Test assertions for orphaned files
         if (orphanResults.length > 0) {
             orphanResults.forEach(orphan => {
-                t.fail(`Orphaned file found: ${orphan.file} is not referenced in index.html under glyphs ID`);
+                t.fail(`Orphaned file found: ${orphan.file} is not referenced in glyphs.json`);
             });
         } else {
             t.pass('No orphaned image files found in the specified directories');
