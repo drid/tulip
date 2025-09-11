@@ -438,7 +438,7 @@
     <div class='waypoint row' data-bind="css: assignInstructionColoring()">
       <div class="waypoint-distance" data-bind="css: assignWaypointColoring()">
         <div class='total-distance'>
-          <div data-bind="text: filteredKmFromStart, css: { 'waypoint-danger-2': waypointDanger2() }"></div>
+          <div data-bind="text: filteredKmFromStart, css: { 'waypoint-danger-2': waypointDanger2(), 'total-distance-100m':filteredKmFromStart().length > 5 }"></div>
           <div class="reset-zeroes" data-bind="visible: hasResetGlyph()">0.00</div>
         </div>
         <div class="waypoint-icon" data-bind="html: waypointIcon(), css: { 'waypoint-icon-none': waypointIcon() == undefined }">
