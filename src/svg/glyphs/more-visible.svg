@@ -31,15 +31,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="2510"
-     inkscape:window-height="1363"
+     inkscape:window-width="1870"
+     inkscape:window-height="1131"
      id="namedview11"
      showgrid="false"
      inkscape:zoom="3.5330394"
-     inkscape:cx="64.816713"
+     inkscape:cx="48.11721"
      inkscape:cy="111.66023"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-x="1490"
+     inkscape:window-y="851"
      inkscape:window-maximized="1"
      inkscape:current-layer="Layer_1"
      inkscape:showpageshadow="2"
@@ -52,15 +52,15 @@
 	
 		.st2{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#000000;stroke-width:18.9859;stroke-linecap:round;stroke-miterlimit:10;}
 </style><g
-     transform="matrix(1.0004582,0,0,0.999542,0,-20)"
-     style="font-size:120.08430481px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
+     transform="matrix(1.0004582,0,0,0.999542,0,12.858022)"
+     style="font-size:120.084px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
      id="text5"><path
-       d="m 13.993584,77.741687 22.457172,0 0,-22.574442 18.939078,0 0,22.574442 22.574442,0 0,18.997712 -22.574442,0 0,22.457171 -18.939078,0 0,-22.457171 -22.457172,0 0,-18.997712 z"
-       style="font-size:120.08430481px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
+       d="M 13.993584,77.741687 H 36.450756 V 55.167245 H 55.389834 V 77.741687 H 77.964276 V 96.739399 H 55.389834 V 119.19657 H 36.450756 V 96.739399 H 13.993584 Z"
+       style="font-size:120.084px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
        id="path3375"
        inkscape:connector-curvature="0" /></g><path
-     style="clip-rule:evenodd;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:22.46506119;stroke-linecap:square;stroke-miterlimit:5;stroke-dasharray:none"
-     d="m 90.044098,38.26842 0.003,1.873455 18.448592,95.474185 12.82473,0.0581 17.3636,-97.259886 16.89846,-0.145834"
+     style="clip-rule:evenodd;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:22.4651;stroke-linecap:square;stroke-miterlimit:5;stroke-dasharray:none"
+     d="m 90.044098,51.324034 0.003,1.873455 18.448592,95.474181 12.82473,0.0581 17.3636,-97.259882 16.89846,-0.145834"
      id="polyline9"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="cccccc" /></svg>

@@ -43,9 +43,12 @@ class GlyphControls {
   }
 
   searchGlyphNames(query) {
+    console.log("searching for " + query);
+    query = query.toLowerCase();
     var results = [];
     $.each(this.files, function (i, file) {
-      if (file.indexOf(query) != -1) {
+      var fname = file.toLowerCase();
+      if (fname.indexOf(query) != -1) {
         results.push({ name: file.replace('.svg', ''), path: 'assets/svg/glyphs/' + file })
       }
     });
