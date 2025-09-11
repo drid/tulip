@@ -106,3 +106,4 @@ Licensed under the Liberation Font License (see [LIBERATION_LICENSE](LIBERATION_
 - [Bush icons created by Iconjam - Flaticon](https://www.flaticon.com/free-icons/bush)
 - [Bush icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bush)
 - [Traffic lights icons created by xnimrodx - Flaticon](https://www.flaticon.com/free-icons/traffic-lights)
+- [No Entry](https://freesvg.org/no-entry-road-sign)
