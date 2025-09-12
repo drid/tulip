@@ -299,7 +299,13 @@
           { "src": "./assets/svg/glyphs/clock.svg", "text": "time check" },
           { "src": "./assets/svg/glyphs/control-tyre-marking-zone.svg", "text": "Tyre marking zone" },
           { "src": "./assets/svg/glyphs/control-service-zone.svg", "text": "Assistance/Service zone" },
-          { "src": "./assets/svg/glyphs/control-end-zone.svg", "text": "End zone" }
+          { "src": "./assets/svg/glyphs/control-end-zone.svg", "text": "End zone" },
+          { "src": "./assets/svg/glyphs/media.svg", "text": "Media zone" },
+          { "src": "./assets/svg/glyphs/media-end.svg", "text": "End of media zone" },
+          { "src": "./assets/svg/glyphs/helicopter.svg", "text": "Helicopter" },
+          { "src": "./assets/svg/glyphs/firetruck.svg", "text": "Fire truck" },
+          { "src": "./assets/svg/glyphs/medical-vehicle-point.svg", "text": "Medical Vehicle Point" },
+          { "src": "./assets/svg/glyphs/police.svg", "text": "Police" }
         ]
       },
       {
@@ -388,8 +394,9 @@
         "items": [
           { "src": "./assets/svg/glyphs/roadsign_traffic_light.svg", "text": "Traffic light" },
           { "src": "./assets/svg/glyphs/roadsign_no-entry.svg", "text": "No Entry" },
-          { "src": "./assets/svg/glyphs/roadworks.svg", "text": "Roadworks" }
-
+          { "src": "./assets/svg/glyphs/roadworks.svg", "text": "Roadworks" },
+          { "src": "./assets/svg/glyphs/spectators.svg", "text": "Spectators" }
+          
         ]
       }
     ]
