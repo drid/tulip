@@ -39,6 +39,7 @@ var Instruction = Class({
     this.hasFuelGlyph = ko.observable(false);
     this.resetDistance = ko.observable(0);
     this.dangerLevel = ko.observable(0);
+    this.safetyTags = ko.observableArray([]);
     this.filteredKmFromStart = ko.computed(this.computedKmFromStart, this);
     this.distFromPrev = ko.computed(this.computedDistanceFromPrev, this);
     this.closeProximity = ko.computed(this.instructionCloseProximity, this);
@@ -99,6 +100,20 @@ var Instruction = Class({
     this.hasResetGlyph(match ? true : false);
     match = glyphs.join(' ').match(/fuel-zone/);
     this.hasFuelGlyph(match ? true : false);
+    var safetyTags = [];
+    match = glyphs.join(' ').match(/medical/);
+    if (match) safetyTags.push('medical');
+    match = glyphs.join(' ').match(/helicopter/);
+    if (match) safetyTags.push('helicopter');
+    match = glyphs.join(' ').match(/police/);
+    if (match) safetyTags.push('police');
+    match = glyphs.join(' ').match(/firetruck/);
+    if (match) safetyTags.push('fire');
+    match = glyphs.join(' ').match(/spectators/);
+    if (match) safetyTags.push('spectators');
+    match = glyphs.join(' ').match(/media/);
+    if (match) safetyTags.push('media');
+    this.safetyTags(safetyTags);
   },
 
   hasNotification() {

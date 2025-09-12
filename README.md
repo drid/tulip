@@ -107,3 +107,8 @@ Licensed under the Liberation Font License (see [LIBERATION_LICENSE](LIBERATION_
 - [Bush icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bush)
 - [Traffic lights icons created by xnimrodx - Flaticon](https://www.flaticon.com/free-icons/traffic-lights)
 - [No Entry](https://freesvg.org/no-entry-road-sign)
+- [Spectator gathering icons created by gravisio - Flaticon](https://www.flaticon.com/free-icons/family-gathering "family gathering icons")
+- [Police icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/police "police icons")
+- [Helicopter icons created by Pixel perfect - Flaticon](https://www.flaticon.com/free-icons/helicopter "helicopter icons")
+- [Firetruck icons created by Blak1ta - Flaticon](https://www.flaticon.com/free-icons/firetruck "firetruck icons")
+- [Media icons created by BankSeeNgern - Flaticon](https://www.flaticon.com/free-icons/music-and-multimedia "music-and-multimedia icons")
