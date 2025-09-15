@@ -370,16 +370,7 @@
                     </div>
                   </div>
                   <div class="left large-4 columns note-tools">
-                    <!--
-                      START This gets repositioned over the waypoint note in edit mode
-                    -->
-                    <div id="note-editor-container">
-                      <div id="note-editor" contenteditable="true">
-                      </div>
-                    </div>
-                    <!--
-                       END This gets repositioned over the waypoint note in edit mode
-                    -->
+
                     <div class="row">
                       <div class="left large-12 columns note-glyph-selection">
                         <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add glyphs to the end of the note.">
@@ -484,7 +475,8 @@
         <div class="tulip-checkpoint-number" data-bind="text: checkpointNumber(), visible: checkpointNumber()"></div>
       </div>
       <div class='waypoint-note'>
-        <p data-bind="html: noteHTML"></p>
+        <canvas data-bind="noteCanvasRendered" width='180' height='180'>
+        </canvas>
         <div class='heading' data-bind="css: { 'heading-coordinates-hidden': !showHeading()}, text: heading">
         </div>
         <div class="coordinates" data-bind="css: { 'heading-coordinates-hidden': !showCoordinates()}">
@@ -579,6 +571,7 @@
   <script src='src/models/roadbook-model.js'></script>
   <script src='src/modules/tracks.js'></script>
   <script src='src/modules/tulip.js'></script>
+  <script src='src/modules/note.js'></script>
   <script src='src/modules/notification.js'></script>
   <script src='src/modules/instruction.js'></script>  
   <script>

@@ -150,7 +150,6 @@ class RoadbookController {
   populateInstructionPalette(instruction) {
     this.editingElement = instruction.element;
     this.isSaved(false);
-    $('#note-editor').html(instruction.noteHTML());
     $('#notification-open-radius').val((instruction.notification ? instruction.notification.openRadius : null));
     $('#notification-validation-radius').val((instruction.notification ? instruction.notification.validationRadius : null));
     $('#notification-validation-radius').attr('min', instruction.notification ? Notification.getUiElements(instruction.notification.type).modMin : 5);

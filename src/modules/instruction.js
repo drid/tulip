@@ -79,16 +79,24 @@ var Instruction = Class({
 
     var _this = this;
     var angle = wptJson.relativeAngle;
-    var json = wptJson.tulipJson;
+    var tulipJson = wptJson.tulipJson;
+    var noteJson = wptJson.noteJson;
     var trackTypes = { entryTrackType: this.entryTrackType, exitTrackType: this.exitTrackType };
     ko.bindingHandlers.instructionCanvasRendered = {
       init: function (element) {
-        _this.initTulip(element, angle, trackTypes, json);
+        _this.initTulip(element, angle, trackTypes, tulipJson);
         _this.initInstructionListeners($(element).parents('.waypoint'));
         _this.element = $(element).parents('.waypoint');
       }
-    };
+    }
 
+    ko.bindingHandlers.noteCanvasRendered = {
+      init: function (element) {
+        _this.initNote(element, noteJson);
+        _this.initInstructionListeners($(element).parents('.waypoint'));
+        _this.element = $(element).parents('.waypoint');
+      }
+    }
   },
   //TODO This needs refactored
   parseGlyphInfo(glyphs) {
@@ -137,6 +145,10 @@ var Instruction = Class({
   // definitelty needs to be put at controller level
   initTulip: function (element, angle, trackTypes, json) {
     this.tulip = new Tulip(element, angle, trackTypes, json);
+  },
+
+  initNote: function (element, json) {
+    this.note = new Note(element, json);
   },
 
   updateInstruction: function (geoData, routePointIndex) {
@@ -319,7 +331,15 @@ var Instruction = Class({
     return this.tulip.serialize();
   },
 
+   serializeNote: function () {
+    return this.note.serialize();
+  },
+
   tulipPNG: function () {
     return this.tulip.toPNG();
+  },
+
+  notePNG: function () {
+    return this.note.toPNG();
   },
 });
