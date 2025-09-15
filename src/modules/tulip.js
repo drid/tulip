@@ -99,6 +99,7 @@ var Tulip = Class({
       image.id = globalNode.randomUUID();
       _this.canvas.add(image);
       _this.glyphs.push(image);
+      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction
     }
   },
   /*

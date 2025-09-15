@@ -10,7 +10,6 @@ var Note = Class({
     this.canvas.selection = false;
     this.canvas.hoverCursor = 'moveCursor';
 
-    var _this = this;
     this.canvas.on('object:moving', function (e) {
       // NOTE I do not like this dependency
       if (e.target.editor) {
@@ -50,8 +49,10 @@ var Note = Class({
       image.left = position.left;
       image.scaleToHeight(75);
       image.id = globalNode.randomUUID();
-      _this.canvas.add(image);
       _this.glyphs.push(image);
+      _this.canvas.add(image);
+      // app.noteControls.checkForNotification();
+      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction
     }
   },
   /*
