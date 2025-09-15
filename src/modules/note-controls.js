@@ -3,17 +3,6 @@ class NoteControls {
   constructor() {
     var _this = this;
 
-    $('#note-editor').on('input', function () {
-      _this.checkForNotification()
-    });
-
-    $('#note-selection-size-range').change(function (e) {
-      document.execCommand('fontSize', null, $(this).val());
-      var sizes = { 3: 'small', 4: 'normal', 5: 'large', 6: 'huge' }
-      var size = sizes[$(this).val()];
-      _this.resizeSelection(size);
-    });
-
     $('#note-selection-bold').click(function () {
       document.execCommand('bold', null, false);
       $(this).toggleClass('active');
@@ -44,7 +33,7 @@ class NoteControls {
       $('#notification-open-radius').attr('min', notification.validationRadius);
       notification.time = $('#notification-time').val();
       app.roadbook.currentlyEditingInstruction.updateWaypointBubble();
-      _this.checkForNotification(); //TODO This needs refactored
+      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction
     });
 
   }
@@ -68,25 +57,4 @@ class NoteControls {
     }
   }
 
-  resizeSelection(size) {
-    var sel = window.getSelection();
-    var images = $('#note-editor img')
-    for (var i = 0; i < images.length; i++) {
-      if (sel.containsNode(images[i])) {
-        $(images[i]).removeClass();
-        $(images[i]).addClass(size);
-      }
-    }
-  }
-
-  checkForNotification() {
-    if (app.roadbook.currentlyEditingInstruction) {
-      // reduce DOM image objects in the text editor to a collection of glyph names
-      var glyphs = $('#note-editor').find("img").toArray().map(function (g) {
-        var wp = g.src.match(/\/([A-Za-z0-9.\-_]*)\.svg/)
-        return wp ? wp[1] : '';
-      })
-      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(glyphs);
-    }
-  }
 }

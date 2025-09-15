@@ -60,7 +60,6 @@ bindToGlyphImages() {
   $('.glyph').click(function (e) {
     _this.handleGlyphSelectUI(e);
     _this.addGlyphToInstruction(this);
-    app.noteControls.checkForNotification();
   });
 }
 
@@ -94,6 +93,7 @@ initListeners() {
     e.preventDefault();
     if ($(this).hasClass('undo')) {
       app.roadbook.currentlyEditingInstruction.tulip.removeLastGlyph();
+      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction 
       return false
     }
     _this.showGlyphModal($(this).data('top'), $(this).data('left'));
@@ -103,6 +103,8 @@ initListeners() {
   $(document).on('keydown', function (e) {
     if ((e.key === 'Delete' || e.key === 'Backspace') && !$(e.target).is('input, textarea') && app.roadbook.currentlyEditingInstruction) {
       app.roadbook.currentlyEditingInstruction.tulip.removeActiveGlyph()
+      app.roadbook.currentlyEditingInstruction.note.removeActiveGlyph()
+      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction 
     }
   });
 }
@@ -130,7 +132,6 @@ addGlyphToInstruction(element) {
     // NOTE this module should only know about the roadbook
     app.roadbook.currentlyEditingInstruction.tulip.addGlyph(app.glyphPlacementPosition, src);
   }
-
 }
 
 populateGlyphs() {
