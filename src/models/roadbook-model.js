@@ -79,7 +79,7 @@ class RoadbookModel {
 
         app.mapModel.setMarkerIconToInstructionIcon(marker);
         point.routePointIndex = marker.routePointIndex; //refactor to persist this
-        marker.instruction = this.appendInstruction(point);
+        marker.instruction = this.appendInstruction(this.assignTrackType(point));
       }
     }
     this.reindexInstructions();
@@ -106,6 +106,32 @@ class RoadbookModel {
         return true;
       }
     });
+  }
+
+  assignTrackType(point) {
+    for (var track in point.tulipJson.tracks) {
+      if (point.tulipJson.tracks[track].type)
+          continue; // already migrated
+      // determine track type from graphics
+      if (point.tulipJson.tracks[track].paths[0].strokeDashArray.length == 4) {
+        point.tulipJson.tracks[track].type = 'lowVisTrack';
+      }
+      if (point.tulipJson.tracks[track].paths[0].strokeDashArray.length == 2) {
+        point.tulipJson.tracks[track].type = 'offPiste';
+      }
+      if (point.tulipJson.tracks[track].paths[0].strokeDashArray.length == 0) {
+        if (point.tulipJson.tracks[track].paths.length == 1) { // solid line
+          point.tulipJson.tracks[track].paths[0].strokeWidth == 6 ? point.tulipJson.tracks[track].type = 'track' : point.tulipJson.tracks[track].type = 'smallTrack';
+        }
+        if (point.tulipJson.tracks[track].paths.length == 2) { // double line
+          point.tulipJson.tracks[track].type = 'tarmacRoad';
+        }
+        if (point.tulipJson.tracks[track].paths.length > 2 ) { // highway
+          point.tulipJson.tracks[track].type = 'dcw';
+        }
+      }
+    }
+    return point;
   }
 
   appendGlyphToNoteTextEditor(image) {
