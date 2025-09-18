@@ -100,7 +100,7 @@ async function checkImagesAndOrphans(hsonFilePath, rootDir, searchDirs, ignore) 
 test('Image src and orphaned files validation for glyphs ID', async (t) => {
     const jsonFilePath = './src/modules/glyphs.json'; // Path to the JSON file
     const rootDir = '.'; // Root directory is current directory
-    const searchDirs = ['./assets/svg/']; // Directories to search for orphaned files
+    const searchDirs = ['./assets/svg/glyphs']; // Directories to search for orphaned files
     const ignore = ['./assets/svg/glyphs/missing-glyph.svg']
     try {
         const { imageResults, orphanResults } = await checkImagesAndOrphans(jsonFilePath, rootDir, searchDirs, ignore);
