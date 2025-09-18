@@ -129,6 +129,14 @@ initListeners() {
       app.roadbook.currentlyEditingInstruction.note.removeActiveGlyph()
       app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction 
     }
+    if (e.key === 'PageDown' && !$(e.target).is('input, textarea') && app.roadbook.currentlyEditingInstruction) {
+      e.preventDefault();
+      app.roadbook.currentlyEditingInstruction.tulip.sendBackwardActiveGlyph();
+    }
+    if (e.key === 'PageUp' && !$(e.target).is('input, textarea') && app.roadbook.currentlyEditingInstruction) {
+      e.preventDefault();
+      app.roadbook.currentlyEditingInstruction.tulip.bringForwardActiveGlyph();
+    }
   });
 }
 
@@ -144,8 +152,9 @@ addTextToTulip(top, left) {
   const textObj = new fabric.TextElement();
   textObj.setPosition(top, left);
   textObj.id = globalNode.randomUUID();
+  const idx = app.roadbook.currentlyEditingInstruction.tulip.canvas.add(textObj);
+  textObj.idx = idx._objects.length;
   app.roadbook.currentlyEditingInstruction.tulip.glyphs.push(textObj);
-  app.roadbook.currentlyEditingInstruction.tulip.canvas.add(textObj);
 }
 
 addTextToNote(top, left) {

@@ -88,6 +88,8 @@ function createWindow() {
         { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
         { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
         { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
+        { label: "Bring to front", click: function () { mainWindow.webContents.send('bring-to-front'); } },
+        { label: "Send to back", click: function () { mainWindow.webContents.send('send-to-back'); } },
         { type: "separator" },
         {
           label: "Tracks",

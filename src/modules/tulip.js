@@ -11,6 +11,7 @@ var Tulip = Class({
     this.canvas.selection = false;
     this.canvas.hoverCursor = 'pointer';
     this.selectedTrackId = null;
+    this.canvas.preserveObjectStacking = true;
 
     var _this = this;
     this.canvas.on('object:moving', function (e) {
@@ -107,7 +108,8 @@ var Tulip = Class({
       image.left = position.left;
       image.scaleToHeight(50);
       image.id = globalNode.randomUUID();
-      _this.canvas.add(image);
+      const idx = _this.canvas.add(image);
+      image.idx = idx._objects.length;
       _this.glyphs.push(image);
       app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction
     }
@@ -159,16 +161,20 @@ var Tulip = Class({
         _this.buildEntryTrackFromJson(json.entry, trackTypes.entryTrackType);
         _this.buildExitTrackFromJson(json.exit, trackTypes.exitTrackType);
         _this.buildAddedTracksFromJson(json.tracks);
+        _this.canvas.forEachObject((object, index, array) => {
+          if (object.idx)
+            _this.canvas.moveTo(object, object.idx)
+        })
       }, function (o, object) {
         object.selectable = false;
+        if (object.id === undefined)
+          object.id = globalNode.randomUUID();
         if (object.type == "TextElement") {
           //if the object is an image add it to the glyphs array
-          object.id = globalNode.randomUUID();
           _this.glyphs.push(object);
         }
         if (object.type == "image") {
           //if the object is an image add it to the glyphs array
-          object.id = globalNode.randomUUID();
           _this.glyphs.push(object);
 
           fabric.util.loadImage(object.src, function (img, isError) {
@@ -180,11 +186,12 @@ var Tulip = Class({
                 remmapedSrc = './assets/svg/glyphs/missing-glyph.svg';
               }
               object.setSrc(remmapedSrc, function () {
-                _this.canvas.renderAll();
+                // _this.canvas.renderAll();
               }, { crossOrigin: 'anonymous' });
             }
           }, null, 'anonymous');
         }
+        _this.canvas.renderAll();
       });
     }
   },
@@ -297,6 +304,28 @@ var Tulip = Class({
     }
   },
 
+  sendBackwardActiveGlyph: function () {
+    const activeObject = this.canvas.getActiveObject();
+    if (activeObject && activeObject.id) {
+      this.canvas.sendToBack(activeObject);
+      this.canvas.forEachObject((object, index, array) => {
+        object.idx=index;
+      })
+      this.canvas.renderAll();
+    }
+  },
+  
+  bringForwardActiveGlyph: function () {
+    const activeObject = this.canvas.getActiveObject();
+    if (activeObject && activeObject.id) {
+      this.canvas.bringToFront(activeObject);
+      this.canvas.forEachObject((object, index, array) => {
+        object.idx=index;
+      })
+      this.canvas.renderAll();
+    }
+  },
+
   changeAddedTrackType(type) {
     this.addedTrackType = type
     if (this.selectedTrackId) {
@@ -404,6 +433,8 @@ var Tulip = Class({
       var json = glyph.toJSON()
       if (glyph.type == 'image')
         json.src = this.truncateGlyphSource(json.src);
+      json.id = glyph.id;
+      json.idx = glyph.idx;
       glyphsJson.push(json);
     }
     return glyphsJson;
@@ -413,7 +444,7 @@ var Tulip = Class({
     var tracksJson = [];
     // NOTE not sure, but again here the for loop doesn't error out like the for each
     for (track of this.tracks) {
-      var json = { paths: track.paths, type: track.type };
+      var json = { paths: track.paths, type: track.type, id: track.id };
       tracksJson.push(json);
     }
     return tracksJson;

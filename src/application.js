@@ -729,5 +729,13 @@ class App {
     this.ipc.on('add-roadbook-logo', function (event, arg) {
       _this.openRoadBookLogo();
     });
+
+    this.ipc.on('send-to-back', function (event, arg) {
+      app.roadbook.currentlyEditingInstruction.tulip.sendBackwardActiveGlyph();
+    });
+
+    this.ipc.on('bring-to-front', function (event, arg) {
+      app.roadbook.currentlyEditingInstruction.tulip.bringForwardActiveGlyph();
+    });
   }
 };
