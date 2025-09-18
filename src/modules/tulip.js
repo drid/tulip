@@ -95,7 +95,7 @@ var Tulip = Class({
       var image = new fabric.Image(imgObj);
       image.top = position.top;
       image.left = position.left;
-      image.scaleToHeight(75);
+      image.scaleToHeight(50);
       image.id = globalNode.randomUUID();
       _this.canvas.add(image);
       _this.glyphs.push(image);
