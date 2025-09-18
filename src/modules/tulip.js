@@ -158,7 +158,11 @@ var Tulip = Class({
             if (isError || !img) {
               console.error(`Failed to load image: ${object.src}`);
               // Fallback: Set a default image source
-              object.setSrc('./assets/svg/glyphs/missing-glyph.svg', function() {
+              remmapedSrc = _this.remapOldGlyphs(object.src);
+              if (remmapedSrc === false) {
+                remmapedSrc = './assets/svg/glyphs/missing-glyph.svg';
+              }
+              object.setSrc(remmapedSrc, function() {
                 _this.canvas.renderAll();
               }, { crossOrigin: 'anonymous' });
             }
@@ -166,6 +170,37 @@ var Tulip = Class({
         }
       });
     }
+  },
+
+  // TODO: This needs to move to a common place
+  remapOldGlyphs(oldPath) {
+    // This function remaps old glyph paths to new ones in the roadbook instructions
+    glyphMappings = {
+      "./assets/svg/glyphs/bridge.svg": "./assets/svg/glyphs/under-bridge.svg",
+      "./assets/svg/glyphs/bad.svg": "./assets/svg/glyphs/abbr-MVS.svg",
+      "./assets/svg/glyphs/finish-of-selective-section.svg": "./assets/svg/glyphs/abbr-ASS.svg",
+      "./assets/svg/glyphs/start-of-selective-section.svg": "./assets/svg/glyphs/abbr-DSS.svg",
+      "./assets/svg/glyphs/dune-L1.svg": "./assets/svg/glyphs/abbr-L1.svg",
+      "./assets/svg/glyphs/dune-L2.svg": "./assets/svg/glyphs/abbr-L2.svg",
+      "./assets/svg/glyphs/dune-L3.svg": "./assets/svg/glyphs/abbr-L3.svg",
+      "./assets/svg/glyphs/abbr-dune.svg": "./assets/svg/glyphs/abbr-DN.svg",
+      "./assets/svg/glyphs/always.svg": "./assets/svg/glyphs/abbr-TJS.svg",
+      "./assets/svg/glyphs/collapsed.svg": "./assets/svg/glyphs/abbr-EFF.svg",
+      "./assets/svg/glyphs/gravel.svg": "./assets/svg/glyphs/abbr-GV.svg",
+      "./assets/svg/glyphs/imperative.svg": "./assets/svg/glyphs/abbr-IMP.svg",
+      "./assets/svg/glyphs/main-track.svg": "./assets/svg/glyphs/abbr-PP.svg",
+      "./assets/svg/glyphs/many.svg": "./assets/svg/glyphs/abbr-NBX.svg",
+      "./assets/svg/glyphs/off-track.svg": "./assets/svg/glyphs/abbr-HP.svg",
+      "./assets/svg/glyphs/parallel-tracks.svg": "./assets/svg/glyphs/abbr-.svg",
+      "./assets/svg/glyphs/road.svg": "./assets/svg/glyphs/abbr-RO.svg",
+      "./assets/svg/glyphs/rut.svg": "./assets/svg/glyphs/abbr-ORN.svg",
+      "./assets/svg/glyphs/sand.svg": "./assets/svg/glyphs/abbr-SA.svg",
+      "./assets/svg/glyphs/small-dune.svg": "./assets/svg/glyphs/abbr-DNT.svg",
+      "./assets/svg/glyphs/stone.svg": "./assets/svg/glyphs/abbr-CX.svg",
+      "./assets/svg/glyphs/vegetation.svg": "./assets/svg/glyphs/abbr-CX.svg",
+      "./assets/svg/glyphs/track.svg": "./assets/svg/glyphs/abbr-P.svg",
+    }
+    return glyphMappings[oldPath] || false;
   },
 
   buildEntryTrackFromJson(entry, entryTrackType) {
