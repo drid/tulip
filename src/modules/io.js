@@ -188,8 +188,8 @@ var Io = Class({
     distance.textContent = (waypoint.kmFromStart() - waypoint.resetDistance());
     extensions.appendChild(distance);
 
-    extensions.appendChild(xmlDoc.createElement('openrally:tulip')).textContent = "";
-    extensions.appendChild(xmlDoc.createElement('openrally:notes')).textContent = "";
+    extensions.appendChild(xmlDoc.createElement('openrally:tulip')).textContent = waypoint.tulip.toPNG();
+    extensions.appendChild(xmlDoc.createElement('openrally:notes')).textContent = waypoint.note.toPNG();
 
     if (waypoint.showCoordinates())
       extensions.appendChild(xmlDoc.createElement('openrally:show_coordinates'))
