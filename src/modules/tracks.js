@@ -242,7 +242,7 @@ class Track {
       this.paths.push(path);
     }
   }
-
+  
   clearPathsFromCanvas(canvas) {
     for (var i = 0; i < this.paths.length; i++) {
       canvas.remove(this.paths[i]);
@@ -256,6 +256,11 @@ class EntryTrack extends Track {
   constructor(type, canvas, objects) {
     super();
     if (objects) {
+      // Apply track style
+      for (var j in objects.paths) {
+        const {stroke, ...trackOptions} = this.types[type][j];
+        objects.paths[j].set(trackOptions);
+      }
       this.origin = objects.origin
       this.paths = objects.paths
     } else {
@@ -292,6 +297,11 @@ class ExitTrack extends Track {
   constructor(angle, type, canvas, objects) {
     super();
     if (objects) {
+      // Apply track style
+      for (var j in objects.paths) {
+        const {stroke, ...trackOptions} = this.types[type][j];
+        objects.paths[j].set(trackOptions);
+      }
       this.end = objects.end
       this.paths = objects.paths
     } else {
@@ -339,6 +349,11 @@ class AddedTrack extends Track {
       for (var i = 0; i < objects.track.length; i++) {
         Track.disableDefaults(objects.track[i], true);
         objects.track[i].id = this.id;
+        this.type = type;
+        // Apply track style
+        for (var j in objects.track) {
+          objects.track[j].set(this.types[type][j]);
+        }
       }
       this.paths = objects.track
     } else {

@@ -45,7 +45,7 @@ var Tulip = Class({
   */
   initTulip: function (angle, trackTypes, json) {
     if (json !== undefined && angle == undefined) { //the map point has been created from serialized json
-      this.buildFromJson(json);
+      this.buildFromJson(json, trackTypes);
     } else if (angle !== undefined && trackTypes !== undefined) {
       this.initEntry(trackTypes.entryTrackType);
       this.initExit(angle, trackTypes.exitTrackType);
@@ -105,7 +105,7 @@ var Tulip = Class({
     Builds the tulip from passed in JSON
   */
   // NOTE this is going to have to handle legacy data structure and translate it into new style
-  buildFromJson: function (json) {
+  buildFromJson: function (json, trackTypes) {
     this.exitTrackEdited = json.exitTrackEdited !== undefined ? json.exitTrackEdited : false;
     var _this = this;
     var numTracks = json.tracks.length;
@@ -145,8 +145,8 @@ var Tulip = Class({
       this.canvas.loadFromJSON({ "objects": json.glyphs.reverse() }, function () {
         _this.canvas.renderAll();
         //render the canvas then load the tracks after all images have loaded to make sure things render nice
-        _this.buildEntryTrackFromJson(json.entry);
-        _this.buildExitTrackFromJson(json.exit);
+        _this.buildEntryTrackFromJson(json.entry, trackTypes.entryTrackType);
+        _this.buildExitTrackFromJson(json.exit, trackTypes.exitTrackType);
         _this.buildAddedTracksFromJson(json.tracks);
       }, function (o, object) {
         if (object.type == "image") {
@@ -168,7 +168,7 @@ var Tulip = Class({
     }
   },
 
-  buildEntryTrackFromJson(entry) {
+  buildEntryTrackFromJson(entry, entryTrackType) {
     entry.paths = entry.paths.map(obj => {
       if (obj.stroke === '#000') {
         return { ...obj, stroke: this.mainTrackColor };
@@ -181,10 +181,10 @@ var Tulip = Class({
     var paths = this.buildPaths(entry.paths);
     var point = new fabric.Circle(entry.point);
     this.canvas.add(point);
-    this.entryTrack = new EntryTrack(null, null, { origin: point, paths: paths });
+    this.entryTrack = new EntryTrack(entryTrackType, null, { origin: point, paths: paths });
   },
 
-  buildExitTrackFromJson(exit) {
+  buildExitTrackFromJson(exit, exitTrackType) {
     exit.paths = exit.paths.map(obj => {
       if (obj.stroke === '#000') {
         return { ...obj, stroke: this.mainTrackColor };
@@ -196,15 +196,16 @@ var Tulip = Class({
     var paths = this.buildPaths(exit.paths);
     var point = new fabric.Triangle(exit.point)
     this.canvas.add(point);
-    this.exitTrack = new ExitTrack(null, null, null, { end: point, paths: paths });
+    this.exitTrack = new ExitTrack(null, exitTrackType, null, { end: point, paths: paths });
   },
 
   buildAddedTracksFromJson(tracks) {
     for (var i = 0; i < tracks.length; i++) {
       var paths = this.buildPaths(tracks[i].paths);
-      var track = new AddedTrack(null, null, this.canvas, { track: paths });
+      var track = new AddedTrack(null, tracks[i].type, this.canvas, { track: paths });
       this.tracks.push(track);
     }
+    this.canvas.renderAll();
   },
 
   buildPaths(array) {
@@ -343,7 +344,7 @@ var Tulip = Class({
     var tracksJson = [];
     // NOTE not sure, but again here the for loop doesn't error out like the for each
     for (track of this.tracks) {
-      var json = { paths: track.paths };
+      var json = { paths: track.paths, type: track.type };
       tracksJson.push(json);
     }
     return tracksJson;
