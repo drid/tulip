@@ -25,7 +25,7 @@ class GlyphControls {
       var img = $('<img>').addClass('glyph').attr('src', result.src)
       var link = $('<a>').addClass('th').attr('title', result.name).append(img).append($('<p>').text(result.text));
       var showResult = $('<li>').append(link);
-      $(img).click(function (e) {
+      $(img).on('click', function (e) {
         _this.handleGlyphSelectUI(e);
         _this.addGlyphToInstruction(this);
       })
@@ -57,7 +57,7 @@ class GlyphControls {
 
 bindToGlyphImages() {
   var _this = this;
-  $('.glyph').click(function (e) {
+  $('.glyph').on('click', function (e) {
     _this.handleGlyphSelectUI(e);
     _this.addGlyphToInstruction(this);
     app.noteControls.checkForNotification();
@@ -66,7 +66,7 @@ bindToGlyphImages() {
 
 initListeners() {
   var _this = this;
-  $('#glyph-search').keyup(function () {
+  $('#glyph-search').on('keyup', function () {
     $('#glyph-search-results').html('');
     if ($(this).val() != '') {
       var results = _this.searchGlyphNames($(this).val());
@@ -76,13 +76,13 @@ initListeners() {
     }
   });
 
-  $('#glyph-search-clear').click(function () {
+  $('#glyph-search-clear').on('click', function () {
     $('#glyph-search').val('');
     $('#glyph-search-results').html('');
     $('#glyph-search').focus();
   })
 
-  $('.note-grid').click(function (e) {
+  $('.note-grid').on('click', function (e) {
     e.preventDefault();
     _this.addToNote = true;
     $('#glyphs').foundation('reveal', 'open');
@@ -90,7 +90,7 @@ initListeners() {
   });
 
   //TODO fill out this todo, you know you wanna.
-  $('.glyph-grid').click(function (e) {
+  $('.glyph-grid').on('click', function (e) {
     e.preventDefault();
     if ($(this).hasClass('undo')) {
       app.roadbook.currentlyEditingInstruction.tulip.removeLastGlyph();

@@ -145,10 +145,10 @@ $(document).ready(function () {
     }
   });
 
-  $('#print-size').change(function () {
+  $('#print-size').on('change', function () {
     printApp.rerenderForPageSize();
   });
-  $('.button').click(function () {
+  $('.button').on('click', function () {
     document.getElementById('overlay').style.display = 'flex';
     printApp.requestPdfPrint();
   });

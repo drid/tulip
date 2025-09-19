@@ -374,48 +374,48 @@ class MapController {
         Nav Bar
     */
     var _this = this;
-    $('#zin').click(function () {
+    $('#zin').on('click', function () {
       _this.zin();
       $(this).blur();
     });
 
-    $('#zout').click(function () {
+    $('#zout').on('click', function () {
       _this.zout();
       $(this).blur();
     });
 
-    $('#map-hybrid-layer').click(function () {
+    $('#map-hybrid-layer').on('click', function () {
       _this.map.setMapTypeId(google.maps.MapTypeId.HYBRID);
       _this.updateLayerDropdown(this)
     });
 
-    $('#map-satellite-layer').click(function () {
+    $('#map-satellite-layer').on('click', function () {
       _this.map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
       _this.updateLayerDropdown(this)
     });
 
-    $('#map-roadmap-layer').click(function () {
+    $('#map-roadmap-layer').on('click', function () {
       _this.map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
       _this.updateLayerDropdown(this)
     });
 
-    $('#map-terrain-layer').click(function () {
+    $('#map-terrain-layer').on('click', function () {
       _this.map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
       _this.updateLayerDropdown(this)
     });
 
-    $('#draw-route').click(function () {
+    $('#draw-route').on('click', function () {
       _this.toggleMapLock(this);
     });
 
     /*
         Instruction Palette
     */
-    $('#orient-map').click(function () {
+    $('#orient-map').on('click', function () {
       _this.orientMap();
     });
 
-    $('#hide-palette').click(function () {
+    $('#hide-palette').on('click', function () {
       _this.unlockMap();
       _this.reorient();
     });

@@ -57,7 +57,7 @@ class RoadbookController {
   };
   bindToNameDescEditButtons() {
     var _this = this;
-    $('#roadbook-desc, #roadbook-name').find('a.show-editor').click(function () {
+    $('#roadbook-desc, #roadbook-name').find('a.show-editor').on('click', function () {
       $(this).hide();
       $(this).siblings('.hide-editor').show();
       $(this).siblings('.roadbook-header-input-container').slideDown('fast');
@@ -73,7 +73,7 @@ class RoadbookController {
       _this.model.editingNameDesc = true;
     });
 
-    $('#roadbook-desc, #roadbook-name').find('a.hide-editor').click(function () {
+    $('#roadbook-desc, #roadbook-name').find('a.hide-editor').on('click', function () {
       $(this).hide();
       $(this).siblings('.show-editor').show();
       $(this).siblings('.roadbook-header-input-container').slideUp('fast');
@@ -85,7 +85,7 @@ class RoadbookController {
 
   bindToPaletteControls() {
     var _this = this;
-    $('#hide-palette').click(function () {
+    $('#hide-palette').on('click', function () {
       _this.model.finishInstructionEdit(_this.getNoteEditorHTML(), _this.getNotificationOpenRadiusVal(), _this.getNotificationValidationRadiusVal(), _this.getNotificationTimeVal());
       _this.resetInstructionPalette();
       $('#save-roadbook').removeAttr('href', '#') // Removes the href attribute
@@ -95,11 +95,11 @@ class RoadbookController {
         });
     });
 
-    $('#toggle-heading').change(function () {
+    $('#toggle-heading').on('change', function () {
       $('#note-editor-container').toggleClass('hideCap', !_this.model.instructionShowHeading())
       _this.model.currentlyEditingInstruction.showHeading(_this.model.instructionShowHeading());
     });
-    $('#toggle-coordinates').change(function () {
+    $('#toggle-coordinates').on('change', function () {
       $('#note-editor-container').toggleClass('hideCoordinates', !_this.model.instructionShowCoordinates())
       _this.model.currentlyEditingInstruction.showCoordinates(_this.model.instructionShowCoordinates());
     });
@@ -110,7 +110,7 @@ class RoadbookController {
 
   bindToTrackGrid() {
     var _this = this;
-    $('.track-grid').click(function (e) {
+    $('.track-grid').on('click', function (e) {
       if ($(this).hasClass('undo')) {
         _this.model.currentlyEditingInstruction.tulip.removeLastTrack();
         return
@@ -122,7 +122,7 @@ class RoadbookController {
 
   bindToEntryTrackSelector() {
     var _this = this;
-    $('.entry-track-selector').click(function (e) {
+    $('.entry-track-selector').on('click', function (e) {
       e.preventDefault();
       _this.model.changeEditingInstructionEntry($(this).data('track'));
     });
@@ -130,7 +130,7 @@ class RoadbookController {
 
   bindToExitTrackSelector() {
     var _this = this;
-    $('.exit-track-selector').click(function (e) {
+    $('.exit-track-selector').on('click', function (e) {
       e.preventDefault();
       _this.model.changeEditingInstructionExit($(this).data('track'));
     });
@@ -138,7 +138,7 @@ class RoadbookController {
 
   bindToAddedTrackSelector() {
     var _this = this;
-    $('.added-track-selector').click(function (e) {
+    $('.added-track-selector').on('click', function (e) {
       e.preventDefault();
       _this.model.changeEditingInstructionAdded($(this).data('track'));
 

@@ -471,7 +471,7 @@ class App {
       $(this).blur();
     });
 
-    $('#save-roadbook').click(function (e) {
+    $('#save-roadbook').on('click', function (e) {
       e.preventDefault();
       if (_this.canSave()) {
         if (e.shiftKey) {
@@ -483,16 +483,16 @@ class App {
       $(this).blur();
     });
 
-    $('#set-current-view-as-home').click(function () {
+    $('#set-current-view-as-home').on('click', function () {
       _this.setHomeView();
       _this.saveSettings();
     });
 
-    $('#save-settings').click(function () {
+    $('#save-settings').on('click', function () {
       _this.saveSettings();
     });
 
-    $('[name="toggle-insert-type"]').change(function () {
+      $('[name="toggle-insert-type"]').on('change', function () {
       $('.track-selection').toggleClass('hidden');
       $('.glyph-selection').toggleClass('hidden');
     });
@@ -504,7 +504,7 @@ class App {
     /*
       escape key exits delete modes
     */
-    $(document).keyup(function (e) {
+    $(document).on('keyup', function (e) {
       if (e.keyCode == 27) {
         if (_this.roadbook.currentlyEditingInstruction) {
           _this.roadbook.currentlyEditingInstruction.tulip.finishRemove();
