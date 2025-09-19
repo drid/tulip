@@ -31,28 +31,33 @@ var Note = Class({
   */
   initNote: function (json) {
     if (json !== undefined) { //the map point has been created from serialized json
-      this.buildFromJson(json);
+      if (json.htmlText !== undefined) {
+        // Migrate old html format
+        this.buildFromHtml(json.htmlText);
+      } else {
+        this.buildFromJson(json);
+      }
     }
     this.canvas.on('mouse:down', (options) => {
     });
   },
 
-  addGlyph: function (position, uri) {
+  addGlyph: function (position, uri, vsize=50) {
     this.finishRemove();
     var _this = this;
     var position = position;
     var imgObj = new Image();
     imgObj.src = uri;
     imgObj.onload = function () {
-      var image = new fabric.Image(imgObj);
-      image.top = position.top;
-      image.left = position.left;
-      image.scaleToHeight(75);
-      image.id = globalNode.randomUUID();
-      _this.glyphs.push(image);
-      _this.canvas.add(image);
-      // app.noteControls.checkForNotification();
-      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction
+              var image = new fabric.Image(imgObj);
+              image.top = position.top;
+              image.left = position.left;
+              image.scaleToHeight(vsize);
+              image.id = globalNode.randomUUID();
+              _this.glyphs.push(image);
+              _this.canvas.add(image);
+              if (app.roadbook && app.roadbook.currentlyEditingInstruction)
+                app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction
     }
   },
   /*
@@ -74,7 +79,11 @@ var Note = Class({
         if (isError || !img) {
             console.error(`Failed to load image: ${object.src}`);
             // Fallback: Set a default image source
-            object.setSrc('./assets/svg/glyphs/missing-glyph.svg', function() {
+              remmapedSrc = _this.remapOldGlyphs(object.src);
+              if (remmapedSrc === false) {
+                remmapedSrc = './assets/svg/glyphs/missing-glyph.svg';
+              }
+              object.setSrc(remmapedSrc, function() {
             _this.canvas.renderAll();
             }, { crossOrigin: 'anonymous' });
         }
@@ -83,6 +92,36 @@ var Note = Class({
     });
   },
 
+  // TODO: This needs to move to a common place
+  remapOldGlyphs(oldPath) {
+    // This function remaps old glyph paths to new ones in the roadbook instructions
+    glyphMappings = {
+      "./assets/svg/glyphs/bridge.svg": "./assets/svg/glyphs/under-bridge.svg",
+      "./assets/svg/glyphs/bad.svg": "./assets/svg/glyphs/abbr-MVS.svg",
+      "./assets/svg/glyphs/finish-of-selective-section.svg": "./assets/svg/glyphs/abbr-ASS.svg",
+      "./assets/svg/glyphs/start-of-selective-section.svg": "./assets/svg/glyphs/abbr-DSS.svg",
+      "./assets/svg/glyphs/dune-L1.svg": "./assets/svg/glyphs/abbr-L1.svg",
+      "./assets/svg/glyphs/dune-L2.svg": "./assets/svg/glyphs/abbr-L2.svg",
+      "./assets/svg/glyphs/dune-L3.svg": "./assets/svg/glyphs/abbr-L3.svg",
+      "./assets/svg/glyphs/abbr-dune.svg": "./assets/svg/glyphs/abbr-DN.svg",
+      "./assets/svg/glyphs/always.svg": "./assets/svg/glyphs/abbr-TJS.svg",
+      "./assets/svg/glyphs/collapsed.svg": "./assets/svg/glyphs/abbr-EFF.svg",
+      "./assets/svg/glyphs/gravel.svg": "./assets/svg/glyphs/abbr-GV.svg",
+      "./assets/svg/glyphs/imperative.svg": "./assets/svg/glyphs/abbr-IMP.svg",
+      "./assets/svg/glyphs/main-track.svg": "./assets/svg/glyphs/abbr-PP.svg",
+      "./assets/svg/glyphs/many.svg": "./assets/svg/glyphs/abbr-NBX.svg",
+      "./assets/svg/glyphs/off-track.svg": "./assets/svg/glyphs/abbr-HP.svg",
+      "./assets/svg/glyphs/parallel-tracks.svg": "./assets/svg/glyphs/abbr-.svg",
+      "./assets/svg/glyphs/road.svg": "./assets/svg/glyphs/abbr-RO.svg",
+      "./assets/svg/glyphs/rut.svg": "./assets/svg/glyphs/abbr-ORN.svg",
+      "./assets/svg/glyphs/sand.svg": "./assets/svg/glyphs/abbr-SA.svg",
+      "./assets/svg/glyphs/small-dune.svg": "./assets/svg/glyphs/abbr-DNT.svg",
+      "./assets/svg/glyphs/stone.svg": "./assets/svg/glyphs/abbr-CX.svg",
+      "./assets/svg/glyphs/vegetation.svg": "./assets/svg/glyphs/abbr-CX.svg",
+      "./assets/svg/glyphs/track.svg": "./assets/svg/glyphs/abbr-P.svg",
+    }
+    return glyphMappings[oldPath] || false;
+  },
 
   buildPaths(array) {
     var paths = [];
@@ -142,7 +181,9 @@ var Note = Class({
     // NOTE not sure, but again here the for loop doesn't error out like the for each
     for (glyph of this.glyphs) {
       var json = glyph.toJSON()
-      json.src = this.truncateGlyphSource(json.src);
+      if (json.src) {
+        json.src = this.truncateGlyphSource(json.src);
+      }
       glyphsJson.push(json);
     }
     return glyphsJson;
@@ -162,4 +203,89 @@ var Note = Class({
     return "./" + src.slice(index);
   },
 
+  buildFromHtml: function (html) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(html, 'text/html');
+    var body = doc.body;
+    var nodes = body.childNodes;
+    var images = doc.getElementsByTagName('img');
+    var text = [];
+    var top =30;
+    var left =30;
+    // Get images
+    for (var i = 0; i < images.length; i++) {
+      var img = images[i];
+      var position = { top: top, left: left };
+      remappedSrc = this.remapOldGlyphs(img.src);
+      if (remappedSrc !== false) {
+        img.src = remappedSrc;
+      }
+      this.addGlyph(position, img.src);
+      left += 60;
+      if (left > 180) {
+        left = 30;
+        top += 60;
+      }
+    }
+    // Get text nodes
+    for (let node of nodes) {
+        // Extract text and styles from the current node and its children
+        const textWithStyles = this.extractTextWithStyles(node);
+        
+        // Process each extracted text with its styles
+        for (let { text, styles } of textWithStyles) {
+            const position = { top, left };
+            // Pass text and styles to addText
+            this.addText(position, text, styles);
+            left += 60;
+            if (left > 180) {
+                left = 30;
+                top += 60;
+            }
+        }
+    }
+  },
+
+  addText(position, text, styles) {
+    this.finishRemove();
+    var _this = this;
+    var position = position;
+    var textObj = new fabric.IText(text, {
+      left: position.left,
+      top: position.top,
+      fontSize: 20,
+      fill: '#000000',
+      editable: true,
+      underline: true,
+      fontWeight: (styles.bold ? 'bold' : 'normal'),
+      fontStyle: (styles.italic ? 'italic' : 'normal')      
+    });
+    textObj.id = globalNode.randomUUID();
+    _this.glyphs.push(textObj);
+    _this.canvas.add(textObj);
+  },
+
+  extractTextWithStyles(node, styles = { italic: false, bold: false, underline: false }, result = []) {
+    // If it's a text node with non-empty content
+    if ((node.nodeType === Node.TEXT_NODE || node.nodeName === 'DIV') && node.textContent.trim() !== '') {
+        result.push({
+            text: node.textContent.trim(),
+            styles: { ...styles } // Clone styles to avoid mutating
+        });
+    }
+    // If it's an element node (<i>, <b>, <u>)
+    else if (node.nodeType === Node.ELEMENT_NODE) {
+        // Update styles based on the current node
+        const newStyles = { ...styles };
+        if (node.nodeName === 'I') newStyles.italic = true;
+        if (node.nodeName === 'B') newStyles.bold = true;
+        if (node.nodeName === 'U') newStyles.underline = true;
+
+        // Recursively process child nodes
+        for (let child of node.childNodes) {
+            this.extractTextWithStyles(child, newStyles, result);
+        }
+    }
+    return result;
+  }
 });
