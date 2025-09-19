@@ -30,7 +30,7 @@ $(document).ready(function () {
 			$(".main-nav").removeClass("main-nav-scrolled");
 		}
 	});
-	$('.button').click(function () {
+	$('.button').on('click', function () {
 		requestPdfPrint();
 	});
 });

@@ -293,7 +293,7 @@ var Instruction = Class({
 
   initInstructionListeners: function (element) {
     var _this = this;
-    $(element).dblclick(function (e) {
+    $(element).on('dblclick', function (e) {
       if (_this.roadbook.requestInstructionEdit(_this)) {
         $('#save-roadbook').removeAttr('href') // Removes the href attribute
             .css({
@@ -303,7 +303,7 @@ var Instruction = Class({
         _this.tulip.beginEdit();
       }
     });
-    $(element).click(function (e) {
+    $(element).on('click', function (e) {
       $("div.waypoint").removeClass("waypoint-selected")
       element.addClass("waypoint-selected");
       app.mapController.centerOnInstruction(_this);
