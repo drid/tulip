@@ -373,30 +373,21 @@
 
                     <div class="row">
                       <div class="left large-12 columns note-glyph-selection">
-                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add glyphs to the end of the note.">
+                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add glyphs to the the note.">
                           Insert glyph
                         </span>
-                        <div class="note-grid" data-target="add"><i class="fi-plus"></i></i></div>
+                        <div class="note-grid" data-target="add" id="note-add-glyph"><i class="fi-plus"></i></i></div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="left large-12 columns">
-                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Use the slider to resize selected glyhs and text. Click the style buttons to restyle selected text.">
-                          Modify selection
+                      <div class="left large-12 columns note-text-insertion">
+                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add text to the note.">
+                          Insert text
                         </span>
-                        <input type="range" min="3" max="6" value="4" id="note-selection-size-range" style="margin-top:10px;width:100%;" list="note-glyph-sizes">
-                        <datalist id="note-glyph-sizes">
-                        	<option>3</option>
-                        	<option>4</option>
-                        	<option>5</option>
-                        	<option>6</option>
-                        </datalist>
-
-                        <button id="note-selection-bold" class="tiny secondary"><i class="fi-bold"></i></button>
-                        <button id="note-selection-italic" class="tiny secondary "><i class="fi-italic"></i></button>
-                        <button id="note-selection-underline" class="tiny secondary"><i class="fi-underline"></i></button>
+                        <div class="note-grid" data-target="add" id="note-add-text"><i class="fi-plus"></i></i></div>
                       </div>
                     </div>
+
                     <div class="row hidden" id="notification-options"  >
                       <div class="left large-12 columns">
                         <span data-tooltip aria-haspopup="true" class="has-tip" title="Change the waypoint open and validation radius.">

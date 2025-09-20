@@ -81,11 +81,16 @@ initListeners() {
     $('#glyph-search').focus();
   })
 
-  $('.note-grid').on('click', function (e) {
+  $('#note-add-glyph').on('click', function (e) {
     e.preventDefault();
     _this.addToNote = true;
     $('#glyphs').foundation('reveal', 'open');
     setTimeout(function () { $('#glyph-search').focus(); }, 600); //we have to wait for the modal to be visible before we can assign focus
+  });
+
+  $('#note-add-text').on('click', function (e) {
+    e.preventDefault();
+    _this.addTextToNote(120, 50);
   });
 
   //TODO fill out this todo, you know you wanna.
@@ -137,6 +142,18 @@ addTextToTulip(top, left) {
     });
   app.roadbook.currentlyEditingInstruction.tulip.glyphs.push(textObj);
   app.roadbook.currentlyEditingInstruction.tulip.canvas.add(textObj);
+}
+
+addTextToNote(top, left) {
+  var textObj = new fabric.IText('New Text', {
+      left: left,
+      top: top,
+      fontSize: 20,
+      fill: '#000000',
+      editable: true,
+    });
+  app.roadbook.currentlyEditingInstruction.note.glyphs.push(textObj);
+  app.roadbook.currentlyEditingInstruction.note.canvas.add(textObj);
 }
 
 addGlyphToInstruction(element) {
