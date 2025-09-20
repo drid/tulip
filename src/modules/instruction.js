@@ -105,24 +105,27 @@ var Instruction = Class({
     var tulipGlyphs = '';
     if (this.noteJson && this.noteJson.glyphs) {
       noteGlyphs = this.noteJson.glyphs.map(glyph => {
-        return glyph.src.split('/').pop();
+        if (glyph.type == 'image')
+          return glyph.src.split('/').pop();
       });
     }
     if (this.note && this.note.glyphs) {
       noteGlyphs = this.note.glyphs.map(glyph => {
-        if (glyph._element)
+        if (glyph.type == 'image')
           return glyph._element.src.split('/').pop();
       });
     }
 
     if (this.tulipJson && this.tulipJson.glyphs) {
       tulipGlyphs = this.tulipJson.glyphs.map(glyph => {
-        return glyph.src.split('/').pop();
+        if (glyph.type == 'image')
+          return glyph.src.split('/').pop();
       });
     }
     if (this.tulip && this.tulip.glyphs) {
       tulipGlyphs = this.tulip.glyphs.map(glyph => {
-        return glyph._element.src.split('/').pop();
+        if (glyph.type == 'image')
+          return glyph._element.src.split('/').pop();
       });
     }
     const glyphs = noteGlyphs.concat(tulipGlyphs).concat(extraGlyphs)

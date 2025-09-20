@@ -8,7 +8,7 @@ var Note = Class({
   create: function (el, json) {
     this.canvas = new fabric.Canvas(el);
     this.canvas.selection = false;
-    this.canvas.hoverCursor = 'moveCursor';
+    this.canvas.hoverCursor = 'pointer';
 
     this.canvas.on('object:moving', function (e) {
       // NOTE I do not like this dependency
@@ -31,7 +31,7 @@ var Note = Class({
   */
   initNote: function (json) {
     if (json !== undefined) { //the map point has been created from serialized json
-      if (json.htmlText !== undefined) {
+      if (json.htmlText != '') {
         // Migrate old html format
         this.buildFromHtml(json.htmlText);
       } else {
@@ -70,6 +70,12 @@ var Note = Class({
     this.canvas.loadFromJSON({ "objects": json.glyphs.reverse() }, function () {
     _this.canvas.renderAll();
     }, function (o, object) {
+    object.selectable = false;
+    if (object.type == "iText") {
+      //if the object is an image add it to the glyphs array
+      object.id = globalNode.randomUUID();
+      _this.glyphs.push(object);
+    }
     if (object.type == "image") {
         //if the object is an image add it to the glyphs array
         object.id = globalNode.randomUUID();
@@ -134,6 +140,9 @@ var Note = Class({
   },
 
   beginEdit: function () {
+    this.canvas.forEachObject(function(obj) {
+      obj.selectable = true;
+    });
   },
 
   removeActiveGlyph: function () {
@@ -148,11 +157,10 @@ var Note = Class({
   },
 
   finishEdit: function () {
-    for (var i = 0; i < this.activeEditors.length; i++) {
-      this.activeEditors[i].destroy();
-    }
-    this.activeEditors = [];
     // remove controls from glyphs and update the canvas' visual state
+    this.canvas.forEachObject(function(obj) {
+      obj.selectable = false;
+    });
     this.canvas.deactivateAll().renderAll();
   },
 
