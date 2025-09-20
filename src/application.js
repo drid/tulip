@@ -506,24 +506,6 @@ class App {
     })
 
     /*
-      escape key exits delete modes
-    */
-    $(document).on('keyup', function (e) {
-      if (e.keyCode == 27) {
-        if (_this.roadbook.currentlyEditingInstruction) {
-          _this.roadbook.currentlyEditingInstruction.tulip.finishRemove();
-          _this.roadbook.currentlyEditingInstruction.tulip.beginEdit();
-        }
-        if (_this.mapController.markerDeleteMode == true) {
-          // TODO move this to the map controller
-          var marker = _this.mapModel.markers[_this.mapModel.deleteQueue.pop()];
-          _this.mapController.returnPointToNaturalColor(marker);
-          _this.mapController.markerDeleteMode = false;
-        }
-      }
-    })
-
-    /*
       We're adding IPC listeners in here I guess eh?
 
       This super duper needs to be cleaned up

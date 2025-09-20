@@ -149,6 +149,7 @@ var Tulip = Class({
         _this.buildExitTrackFromJson(json.exit, trackTypes.exitTrackType);
         _this.buildAddedTracksFromJson(json.tracks);
       }, function (o, object) {
+        object.selectable = false;
         if (object.type == "image") {
           //if the object is an image add it to the glyphs array
           object.id = globalNode.randomUUID();
@@ -257,6 +258,9 @@ var Tulip = Class({
   beginEdit: function () {
     this.activeEditors.push(new EntryTrackEditor(this.canvas, this.entryTrack));
     this.activeEditors.push(new ExitTrackEditor(this.canvas, this.exitTrack));
+    this.canvas.forEachObject(function(obj) {
+      obj.selectable = true;
+    });
   },
 
   removeActiveGlyph: function () {
@@ -314,6 +318,9 @@ var Tulip = Class({
     }
     this.activeEditors = [];
     // remove controls from glyphs and update the canvas' visual state
+    this.canvas.forEachObject(function(obj) {
+      obj.selectable = false;
+    });
     this.canvas.deactivateAll().renderAll();
   },
 
