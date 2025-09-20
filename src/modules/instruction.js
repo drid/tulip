@@ -301,6 +301,7 @@ var Instruction = Class({
                 'color': '#cccccc' // Visually indicates disabled state
             });
         _this.tulip.beginEdit();
+        _this.note.beginEdit();
       }
     });
     $(element).on('click', function (e) {
