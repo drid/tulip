@@ -100,6 +100,16 @@ initListeners() {
     return false
   });
 
+  $('.text-grid').on('click', function (e) {
+    e.preventDefault();
+    if ($(this).hasClass('undo')) {
+      // app.roadbook.currentlyEditingInstruction.tulip.removeLastGlyph();
+      return false
+    }
+    _this.addTextToTulip($(this).data('top'), $(this).data('left'));
+    return false
+  });
+
   $(document).on('keydown', function (e) {
     if ((e.key === 'Delete' || e.key === 'Backspace') && !$(e.target).is('input, textarea') && app.roadbook.currentlyEditingInstruction) {
       app.roadbook.currentlyEditingInstruction.tulip.removeActiveGlyph()
@@ -113,6 +123,18 @@ showGlyphModal(top, left) {
   $('#glyphs').foundation('reveal', 'open');
   setTimeout(function () { $('#glyph-search').focus(); }, 600); //we have to wait for the modal to be visible before we can assign focus
   return false
+}
+
+addTextToTulip(top, left) {
+  var textObj = new fabric.IText('New Text', {
+      left: left,
+      top: top,
+      fontSize: 20,
+      fill: '#000000',
+      editable: true,
+    });
+  app.roadbook.currentlyEditingInstruction.tulip.glyphs.push(textObj);
+  app.roadbook.currentlyEditingInstruction.tulip.canvas.add(textObj);
 }
 
 addGlyphToInstruction(element) {
