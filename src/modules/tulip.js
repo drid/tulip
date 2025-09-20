@@ -150,6 +150,11 @@ var Tulip = Class({
         _this.buildAddedTracksFromJson(json.tracks);
       }, function (o, object) {
         object.selectable = false;
+        if (object.type == "iText") {
+          //if the object is an image add it to the glyphs array
+          object.id = globalNode.randomUUID();
+          _this.glyphs.push(object);
+        }
         if (object.type == "image") {
           //if the object is an image add it to the glyphs array
           object.id = globalNode.randomUUID();
@@ -376,7 +381,8 @@ var Tulip = Class({
     // NOTE not sure, but again here the for loop doesn't error out like the for each
     for (glyph of this.glyphs) {
       var json = glyph.toJSON()
-      json.src = this.truncateGlyphSource(json.src);
+      if (glyph.type == 'image')
+        json.src = this.truncateGlyphSource(json.src);
       glyphsJson.push(json);
     }
     return glyphsJson;

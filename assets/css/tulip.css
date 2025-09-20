@@ -360,6 +360,7 @@ ul.track-selection li.accordion-navigation a {
   box-shadow: none;
 }
 
+.text-selection,
 .glyph-selection,
 .track-selection {
   min-height: 130px;
@@ -370,6 +371,7 @@ ul.track-selection li.accordion-navigation a {
   margin-bottom: 5px;
 }
 
+.text-grid,
 .glyph-grid,
 .track-grid {
   width: 40px;
@@ -387,11 +389,13 @@ ul.track-selection li.accordion-navigation a {
   box-shadow: 2px 2px 5px -2px rgba(0, 0, 0, 0.60);
 }
 
+.text-grid.undo,
 .glyph-grid.undo,
 .track-grid.undo {
   color: #000;
 }
 
+.text-grid:hover,
 .glyph-grid:hover,
 .track-grid:hover {
   background-color: rgba(255, 144, 0, 1);
@@ -399,17 +403,21 @@ ul.track-selection li.accordion-navigation a {
   box-shadow: 5px 5px 22px -2px rgba(0, 0, 0, 0.60);
 }
 
+.text-grid.undo:hover,
 .glyph-grid.undo:hover,
 .track-grid.undo:hover {
   background-color: #000;
   color: #ffba29;
 }
 
+.text-grid i,
 .glyph-grid i,
 .track-grid i {
   display: none;
 }
 
+.text-grid.undo i,
+.text-grid:hover i,
 .glyph-grid.undo i,
 .glyph-grid:hover i,
 .track-grid.undo i,
@@ -417,6 +425,7 @@ ul.track-selection li.accordion-navigation a {
   display: block;
 }
 
+.text-grid.undo i,
 .glyph-grid.undo i,
 .track-grid.undo i {
   transform: scale(-1, 1);
