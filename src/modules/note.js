@@ -10,12 +10,7 @@ var Note = Class({
     this.canvas.selection = false;
     this.canvas.hoverCursor = 'pointer';
 
-    this.canvas.on('object:moving', function (e) {
-      // NOTE I do not like this dependency
-      if (e.target.editor) {
-        e.target.editor.pointMoving(e.target);
-      }
-    });
+    this.setupEventListeners();
 
     this.glyphs = [];
     this.activeEditors = [];
@@ -39,6 +34,15 @@ var Note = Class({
       }
     }
     this.canvas.on('mouse:down', (options) => {
+    });
+  },
+
+  setupEventListeners() {
+    this.canvas.on('object:moving', function (e) {
+      // NOTE I do not like this dependency
+      if (e.target.editor) {
+        e.target.editor.pointMoving(e.target);
+      }
     });
   },
 
@@ -71,7 +75,7 @@ var Note = Class({
     _this.canvas.renderAll();
     }, function (o, object) {
     object.selectable = false;
-    if (object.type == "iText") {
+    if (object.type == "i-text") {
       //if the object is an image add it to the glyphs array
       object.id = globalNode.randomUUID();
       _this.glyphs.push(object);
@@ -252,22 +256,13 @@ var Note = Class({
             }
         }
     }
+
   },
 
-  addText(position, text, styles) {
+  addText(position, text, styles = {bold: false, italic: false, underline: false}) {
     this.finishRemove();
     var _this = this;
-    var position = position;
-    var textObj = new fabric.IText(text, {
-      left: position.left,
-      top: position.top,
-      fontSize: 20,
-      fill: '#000000',
-      editable: true,
-      underline: true,
-      fontWeight: (styles.bold ? 'bold' : 'normal'),
-      fontStyle: (styles.italic ? 'italic' : 'normal')      
-    });
+    const textObj = new TextElement(position, text, styles)
     textObj.id = globalNode.randomUUID();
     _this.glyphs.push(textObj);
     _this.canvas.add(textObj);
@@ -295,5 +290,12 @@ var Note = Class({
         }
     }
     return result;
+  },
+  setTextStyle(style) {
+    const activeObject = this.canvas.getActiveObject();
+    if (activeObject && activeObject.id && activeObject.type == 'i-text') {
+      activeObject.setTextStyle(style);
+      this.canvas.renderAll();
+    }
   }
 });

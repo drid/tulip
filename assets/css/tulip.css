@@ -579,3 +579,33 @@ nav.top-bar {
   color: crimson;
   cursor: pointer;
 }
+
+#text-modifier-bold {
+  font-weight: bold;
+}
+
+#text-modifier-red {
+  font-style: italic;
+}
+
+#text-modifier-red {
+  color: red;
+}
+
+#text-modifier-green {
+  color: green;
+}
+
+#text-modifier-lgray {
+  color: lightgray;
+}
+
+#text-modifier-bg-cyan {
+  color: black;
+  background-color: cyan;
+}
+
+#text-modifier-bg-yellow {
+  color: black;
+  background-color: yellow;
+}

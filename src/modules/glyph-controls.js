@@ -93,6 +93,14 @@ initListeners() {
     _this.addTextToNote(120, 50);
   });
 
+  $('.text-modifier').on('click', function (e) {
+    e.preventDefault();
+    const style = e.target.id.split('-').pop();
+    app.roadbook.currentlyEditingInstruction.tulip.setTextStyle(style);
+    app.roadbook.currentlyEditingInstruction.note.setTextStyle(style);
+    
+  });
+
   //TODO fill out this todo, you know you wanna.
   $('.glyph-grid').on('click', function (e) {
     e.preventDefault();
@@ -133,27 +141,14 @@ showGlyphModal(top, left) {
 }
 
 addTextToTulip(top, left) {
-  var textObj = new fabric.IText('New Text', {
-      left: left,
-      top: top,
-      fontSize: 20,
-      fill: '#000000',
-      editable: true,
-    });
+  const textObj = new TextElement({top: top, left: left})
+  textObj.id = globalNode.randomUUID();
   app.roadbook.currentlyEditingInstruction.tulip.glyphs.push(textObj);
   app.roadbook.currentlyEditingInstruction.tulip.canvas.add(textObj);
 }
 
 addTextToNote(top, left) {
-  var textObj = new fabric.IText('New Text', {
-      left: left,
-      top: top,
-      fontSize: 20,
-      fill: '#000000',
-      editable: true,
-    });
-  app.roadbook.currentlyEditingInstruction.note.glyphs.push(textObj);
-  app.roadbook.currentlyEditingInstruction.note.canvas.add(textObj);
+  app.roadbook.currentlyEditingInstruction.note.addText({top: top, left: left}, 'New Text')
 }
 
 addGlyphToInstruction(element) {
