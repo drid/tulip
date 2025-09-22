@@ -18,10 +18,6 @@ class RoadbookController {
     this.isSaved(false);
   }
 
-  appendGlyphToNoteTextEditor(image) {
-    $('#note-editor').append(image);
-  }
-
   /*
     initialize rich text editor for the roadbook description
   */
@@ -86,7 +82,7 @@ class RoadbookController {
   bindToPaletteControls() {
     var _this = this;
     $('#hide-palette').on('click', function () {
-      _this.model.finishInstructionEdit(_this.getNoteEditorHTML(), _this.getNotificationOpenRadiusVal(), _this.getNotificationValidationRadiusVal(), _this.getNotificationTimeVal());
+      _this.model.finishInstructionEdit(_this.getNotificationOpenRadiusVal(), _this.getNotificationValidationRadiusVal(), _this.getNotificationTimeVal());
       _this.resetInstructionPalette();
       $('#save-roadbook').removeAttr('href', '#') // Removes the href attribute
         .css({
@@ -150,7 +146,6 @@ class RoadbookController {
   populateInstructionPalette(instruction) {
     this.editingElement = instruction.element;
     this.isSaved(false);
-    $('#note-editor').html(instruction.noteHTML());
     $('#notification-open-radius').val((instruction.notification ? instruction.notification.openRadius : null));
     $('#notification-validation-radius').val((instruction.notification ? instruction.notification.validationRadius : null));
     $('#notification-validation-radius').attr('min', instruction.notification ? Notification.getUiElements(instruction.notification.type).modMin : 5);
@@ -198,21 +193,14 @@ class RoadbookController {
     $('#waypoint-palette').find('.note-tools').append($('#note-editor-container'));
     $('#waypoint-palette').slideUp('slow');
     $('#note-selection-bold, #note-selection-italic, #note-selection-underline').removeClass('active');
-    $('#note-selection-size-range').val(4);
-    $('#note-selection-size-range').change();
     $('.added-track-selector').removeClass('active');
     $($('.added-track-selector')[1]).addClass('active');
     // $('#roadbook').css('padding-bottom', '150%');
     $('#roadbook').find('.roadbook-info').show();
     $('#notification-options').addClass('hidden');
     $('#roadbook').scrollTop(this.editingElement.position().top - 80);
-    $('#note-editor').html('');
     $('.waypoint.row').find('.waypoint-icon').off();
     $('.waypoint.row').find('.waypoint-icon').removeClass('delete-suggestion');
-  }
-
-  getNoteEditorHTML() {
-    return $('#note-editor').html()
   }
 
   getNotificationOpenRadiusVal() {

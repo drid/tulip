@@ -370,42 +370,72 @@
                     </div>
                   </div>
                   <div class="left large-4 columns note-tools">
-                    <!--
-                      START This gets repositioned over the waypoint note in edit mode
-                    -->
-                    <div id="note-editor-container">
-                      <div id="note-editor" contenteditable="true">
-                      </div>
-                    </div>
-                    <!--
-                       END This gets repositioned over the waypoint note in edit mode
-                    -->
+
                     <div class="row">
                       <div class="left large-12 columns note-glyph-selection">
-                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add glyphs to the end of the note.">
+                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add glyphs to the the note.">
                           Insert glyph
                         </span>
-                        <div class="note-grid" data-target="add"><i class="fi-plus"></i></i></div>
+                        <div class="note-grid" data-target="add" id="note-add-glyph"><i class="fi-plus"></i></i></div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="left large-12 columns">
-                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Use the slider to resize selected glyhs and text. Click the style buttons to restyle selected text.">
-                          Modify selection
+                      <div class="left large-12 columns note-text-insertion">
+                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add text to the note.">
+                          Insert text
                         </span>
-                        <input type="range" min="3" max="6" value="4" id="note-selection-size-range" style="margin-top:10px;width:100%;" list="note-glyph-sizes">
-                        <datalist id="note-glyph-sizes">
-                        	<option>3</option>
-                        	<option>4</option>
-                        	<option>5</option>
-                        	<option>6</option>
-                        </datalist>
-
-                        <button id="note-selection-bold" class="tiny secondary"><i class="fi-bold"></i></button>
-                        <button id="note-selection-italic" class="tiny secondary "><i class="fi-italic"></i></button>
-                        <button id="note-selection-underline" class="tiny secondary"><i class="fi-underline"></i></button>
+                        <div class="note-grid" data-target="add" id="note-add-text"><i class="fi-plus"></i></i></div>
                       </div>
                     </div>
+                    <div class="row">
+                      <h5><span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Select a text item to apply text sytles.">Text styles</span></h5>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Bold." id="text-modifier-normal">
+                            Normal
+                          </span>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Bold." id="text-modifier-bold">
+                            Bold
+                          </span>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Italic." id="text-modifier-italic">
+                            Italic
+                          </span>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Underline." id="text-modifier-underline">
+                            Underline
+                          </span>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Red." id="text-modifier-red">
+                            Red
+                          </span>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Green." id="text-modifier-green">
+                            Green
+                          </span>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Light Gray." id="text-modifier-lgray">
+                            Light Gray
+                          </span>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Cyan background." id="text-modifier-bgcyan">
+                            Cyan background
+                          </span>
+                    </div>
+                    <div class="row">
+                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Yellow background." id="text-modifier-bgyellow">
+                            Yellow background
+                          </span>
+                    </div>
+
                     <div class="row hidden" id="notification-options"  >
                       <div class="left large-12 columns">
                         <span data-tooltip aria-haspopup="true" class="has-tip" title="Change the waypoint open and validation radius.">
@@ -484,7 +514,8 @@
         <div class="tulip-checkpoint-number" data-bind="text: checkpointNumber(), visible: checkpointNumber()"></div>
       </div>
       <div class='waypoint-note'>
-        <p data-bind="html: noteHTML"></p>
+        <canvas data-bind="noteCanvasRendered" width='180' height='180'>
+        </canvas>
         <div class='heading' data-bind="css: { 'heading-coordinates-hidden': !showHeading()}, text: heading">
         </div>
         <div class="coordinates" data-bind="css: { 'heading-coordinates-hidden': !showCoordinates()}">
@@ -575,13 +606,22 @@
   <!--
     Load Models
   -->
+  <script src='src/modules/text-element.js'></script>
   <script src='src/models/map-model.js'></script>
   <script src='src/models/roadbook-model.js'></script>
   <script src='src/modules/tracks.js'></script>
   <script src='src/modules/tulip.js'></script>
+  <script src='src/modules/note.js'></script>
   <script src='src/modules/notification.js'></script>
   <script src='src/modules/instruction.js'></script>  
   <script>
+    fabric.TextElement = TextElement;
+    fabric.TextElement.fromObject = function (object, callback) {
+      const instance = new fabric.TextElement(object.text, object);
+      if (callback) {
+        callback(instance);
+      }
+      return instance;    };
   /*
     ---------------------------------------------------------------------------
     Instantiate the application

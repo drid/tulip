@@ -110,48 +110,28 @@ textarea.waypoint-palette {
   height: 100%;
 }
 
-#note-editor {
-  width: 100%;
-  height: 100%;
-  box-shadow: 0px 2px 6px 1px rgba(255, 144, 0, 0.60);
-  background: #fff;
-  padding: 0;
-  display: block;
-  overflow: hidden;
-}
-
 #note-selection-bold.active,
 #note-selection-italic.active,
 #note-selection-underline.active {
   background-color: #b9b9b9;
 }
 
-#note-editor div img.small,
-#note-editor img.small,
 .waypoint-note p div img.small,
 .waypoint-note p img.small {
   height: 35px;
 }
 
-#note-editor div img.normal,
-#note-editor img,
-#note-editor img.normal,
 .waypoint-note div img.normal,
-.waypoint-note img.normal #note-editor div img,
 .waypoint-note p div img,
 .waypoint-note p img {
   height: 55px;
 }
 
-#note-editor div img.large,
-#note-editor img.large,
 .waypoint-note p div img.large,
 .waypoint-note p img.large {
   height: 75px;
 }
 
-#note-editor div img.huge,
-#note-editor img.huge,
 .waypoint-note p div img.huge,
 .waypoint-note p img.huge {
   height: 95px;
@@ -578,4 +558,38 @@ nav.top-bar {
   height: 1.5em;
   color: crimson;
   cursor: pointer;
+}
+
+#text-modifier-bold {
+  font-weight: bold;
+}
+
+#text-modifier-italic {
+  font-style: italic;
+}
+
+#text-modifier-underline {
+  text-decoration: underline;
+}
+
+#text-modifier-red {
+  color: red;
+}
+
+#text-modifier-green {
+  color: green;
+}
+
+#text-modifier-lgray {
+  color: lightgray;
+}
+
+#text-modifier-bg-cyan {
+  color: black;
+  background-color: cyan;
+}
+
+#text-modifier-bg-yellow {
+  color: black;
+  background-color: yellow;
 }

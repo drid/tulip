@@ -60,7 +60,6 @@ bindToGlyphImages() {
   $('.glyph').on('click', function (e) {
     _this.handleGlyphSelectUI(e);
     _this.addGlyphToInstruction(this);
-    app.noteControls.checkForNotification();
   });
 }
 
@@ -82,11 +81,24 @@ initListeners() {
     $('#glyph-search').focus();
   })
 
-  $('.note-grid').on('click', function (e) {
+  $('#note-add-glyph').on('click', function (e) {
     e.preventDefault();
     _this.addToNote = true;
     $('#glyphs').foundation('reveal', 'open');
     setTimeout(function () { $('#glyph-search').focus(); }, 600); //we have to wait for the modal to be visible before we can assign focus
+  });
+
+  $('#note-add-text').on('click', function (e) {
+    e.preventDefault();
+    _this.addTextToNote(120, 50);
+  });
+
+  $('.text-modifier').on('click', function (e) {
+    e.preventDefault();
+    const style = e.target.id.split('-').pop();
+    app.roadbook.currentlyEditingInstruction.tulip.setTextStyle(style);
+    app.roadbook.currentlyEditingInstruction.note.setTextStyle(style);
+    
   });
 
   //TODO fill out this todo, you know you wanna.
@@ -94,6 +106,7 @@ initListeners() {
     e.preventDefault();
     if ($(this).hasClass('undo')) {
       app.roadbook.currentlyEditingInstruction.tulip.removeLastGlyph();
+      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction 
       return false
     }
     _this.showGlyphModal($(this).data('top'), $(this).data('left'));
@@ -113,6 +126,8 @@ initListeners() {
   $(document).on('keydown', function (e) {
     if ((e.key === 'Delete' || e.key === 'Backspace') && !$(e.target).is('input, textarea') && app.roadbook.currentlyEditingInstruction) {
       app.roadbook.currentlyEditingInstruction.tulip.removeActiveGlyph()
+      app.roadbook.currentlyEditingInstruction.note.removeActiveGlyph()
+      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction 
     }
   });
 }
@@ -126,15 +141,15 @@ showGlyphModal(top, left) {
 }
 
 addTextToTulip(top, left) {
-  var textObj = new fabric.IText('New Text', {
-      left: left,
-      top: top,
-      fontSize: 20,
-      fill: '#000000',
-      editable: true,
-    });
+  const textObj = new fabric.TextElement();
+  textObj.setPosition(top, left);
+  textObj.id = globalNode.randomUUID();
   app.roadbook.currentlyEditingInstruction.tulip.glyphs.push(textObj);
   app.roadbook.currentlyEditingInstruction.tulip.canvas.add(textObj);
+}
+
+addTextToNote(top, left) {
+  app.roadbook.currentlyEditingInstruction.note.addText({top: top, left: left}, 'NewText')
 }
 
 addGlyphToInstruction(element) {
@@ -147,12 +162,11 @@ addGlyphToInstruction(element) {
   }
   if (this.addToNote) {
     // NOTE this module should only know about the roadbook
-    app.roadbook.appendGlyphToNoteTextEditor($('<img>').attr('src', src).addClass('normal'));
+    app.roadbook.currentlyEditingInstruction.note.addGlyph({ top: 30, left: 30 }, src);
   } else {
     // NOTE this module should only know about the roadbook
     app.roadbook.currentlyEditingInstruction.tulip.addGlyph(app.glyphPlacementPosition, src);
   }
-
 }
 
 populateGlyphs() {

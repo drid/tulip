@@ -134,10 +134,6 @@ class RoadbookModel {
     return point;
   }
 
-  appendGlyphToNoteTextEditor(image) {
-    this.controller.appendGlyphToNoteTextEditor(image);
-  }
-
   appendInstruction(wptData) {
     var instruction = new Instruction(this, wptData);
     this.instructions.push(instruction);
@@ -312,7 +308,7 @@ class RoadbookModel {
     }
   }
 
-  finishInstructionEdit(noteVal, openRadius, validationRadius, time) {
+  finishInstructionEdit(openRadius, validationRadius, time) {
     if (this.currentlyEditingInstruction !== null) {
       this.updateInstructionAfterEdit(noteVal, openRadius, validationRadius, time);
       this.currentlyEditingInstruction = null;
@@ -321,9 +317,8 @@ class RoadbookModel {
     return true;
   }
 
-  updateInstructionAfterEdit(noteVal, openRadius, validationRadius, time) {
-    this.currentlyEditingInstruction.changeAddedTrackType('track');
-    this.currentlyEditingInstruction.noteHTML(noteVal);
+  updateInstructionAfterEdit(openRadius, validationRadius, time) {
+    // this.currentlyEditingInstruction.changeAddedTrackType('track');
     if (this.currentlyEditingInstruction.notification) {
       this.currentlyEditingInstruction.notification.openRadius = openRadius;
       this.currentlyEditingInstruction.notification.validationRadius = validationRadius;
@@ -331,6 +326,8 @@ class RoadbookModel {
     }
     this.currentlyEditingInstruction.tulip.finishEdit();
     this.currentlyEditingInstruction.tulip.finishRemove();
+    this.currentlyEditingInstruction.note.finishEdit();
+    this.currentlyEditingInstruction.note.finishRemove();
   }
 
   updateTotalDistance() {
@@ -373,10 +370,8 @@ class RoadbookModel {
         entryTrackType: points[i].instruction ? points[i].instruction.entryTrackType : null,
         exitTrackType: points[i].instruction ? points[i].instruction.exitTrackType : null,
         notification: points[i].instruction && points[i].instruction.notification ? points[i].instruction.notification : null,
-        notes: {
-          text: points[i].instruction ? points[i].instruction.noteHTML() : null,
-        },
         tulipJson: points[i].instruction ? points[i].instruction.serializeTulip() : null,
+        noteJson: points[i].instruction ? points[i].instruction.serializeNote() : null,
       }
       roadbookJSON.instructions.push(instructionJSON);
     }
@@ -421,10 +416,8 @@ class RoadbookModel {
           assignTulipColoring: points[i].instruction.assignTulipColoring(),
           checkpointNumber: points[i].instruction.checkpointNumber(),
           waypointNumber: points[i].instruction.waypointNumber(),
-          notes: {
-            text: points[i].instruction.noteHTML(),
-          },
           tulip: points[i].instruction.tulipPNG(),
+          note: points[i].instruction.notePNG(),
         }
         roadbookJSON.instructions.push(instructionJSON);
       }

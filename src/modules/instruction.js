@@ -57,18 +57,8 @@ var Instruction = Class({
     this.entryTrackType = wptJson.entryTrackType == undefined ? 'track' : wptJson.entryTrackType;
     this.exitTrackType = wptJson.exitTrackType == undefined ? 'track' : wptJson.exitTrackType;
 
-    // instruction don't get any note info when they are added via UI so intialize them to blank
-    var text = (wptJson.notes == undefined ? '' : wptJson.notes.text || "");
-    this.noteHTML = ko.observable(text);
-    this.noteHTML.subscribe((noteHTML) => {
-      if (this.dangerLevel() == 3 && this.notification == false) {
-        console.log('Settings waypoint to WPS');
-        this._notification(new Notification('waypoint-security'));
-      }
-    })
-    const glyphs = [...text.matchAll(/<img[^>]*src="[^"]*\/([a-z0-9,-]*)\.[^"]*"/g)]
-      .map(match => match[1]); // Extract the captured group
-    this.parseGlyphInfo(glyphs);
+    this.noteJson = wptJson.noteJson || { glyphs: [] };
+    this.tulipJson = wptJson.tulipJson || {};
 
     this.roadbook = roadbook;
     this.routePointIndex = wptJson.routePointIndex == undefined ? null : wptJson.routePointIndex;
@@ -79,19 +69,67 @@ var Instruction = Class({
 
     var _this = this;
     var angle = wptJson.relativeAngle;
-    var json = wptJson.tulipJson;
+    var tulipJson = wptJson.tulipJson;
+    var noteJson = wptJson.noteJson || { glyphs: [] };
+    noteJson.htmlText = wptJson.notes ? wptJson.notes.text : '';
+    var oldHTMLGlyphs = '';
+    try {
+      oldHTMLGlyphs = [...noteJson.htmlText.matchAll(/<img[^>]*src="[^"]*\/([a-z0-9,-]*)\.[^"]*"/g)]
+        .map(match => match[1]); // Extract the captured group
+    }
+    catch (e){
+    }
+
     var trackTypes = { entryTrackType: this.entryTrackType, exitTrackType: this.exitTrackType };
     ko.bindingHandlers.instructionCanvasRendered = {
       init: function (element) {
-        _this.initTulip(element, angle, trackTypes, json);
+        _this.initTulip(element, angle, trackTypes, tulipJson);
         _this.initInstructionListeners($(element).parents('.waypoint'));
         _this.element = $(element).parents('.waypoint');
       }
-    };
+    }
 
+    ko.bindingHandlers.noteCanvasRendered = {
+      init: function (element) {
+        _this.initNote(element, noteJson);
+        _this.initInstructionListeners($(element).parents('.waypoint'));
+        _this.element = $(element).parents('.waypoint');
+      }
+    }
+
+    this.parseGlyphInfo(oldHTMLGlyphs);
   },
   //TODO This needs refactored
-  parseGlyphInfo(glyphs) {
+  parseGlyphInfo(extraGlyphs = []) {
+    var noteGlyphs = '';
+    var tulipGlyphs = '';
+    if (this.noteJson && this.noteJson.glyphs) {
+      noteGlyphs = this.noteJson.glyphs.map(glyph => {
+        if (glyph.type == 'image')
+          return glyph.src.split('/').pop();
+      });
+    }
+    if (this.note && this.note.glyphs) {
+      noteGlyphs = this.note.glyphs.map(glyph => {
+        if (glyph.type == 'image')
+          return glyph._element.src.split('/').pop();
+      });
+    }
+
+    if (this.tulipJson && this.tulipJson.glyphs) {
+      tulipGlyphs = this.tulipJson.glyphs.map(glyph => {
+        if (glyph.type == 'image')
+          return glyph.src.split('/').pop();
+      });
+    }
+    if (this.tulip && this.tulip.glyphs) {
+      tulipGlyphs = this.tulip.glyphs.map(glyph => {
+        if (glyph.type == 'image')
+          return glyph._element.src.split('/').pop();
+      });
+    }
+    const glyphs = noteGlyphs.concat(tulipGlyphs).concat(extraGlyphs)
+
     match = glyphs.join(' ').match(/danger-(\d+)/);
     this.dangerLevel(match ? match[1] : 0);
     match = glyphs.join(' ').match(/speed-(\d+)/);
@@ -114,6 +152,11 @@ var Instruction = Class({
     match = glyphs.join(' ').match(/media/);
     if (match) safetyTags.push('media');
     this.safetyTags(safetyTags);
+    // if there is a danger glyph and no notification, set the notification to WPS
+    if (this.dangerLevel() == 3 && this.notification == false) {
+      console.log('Settings waypoint to WPS');
+      this._notification(new Notification('waypoint-security'));
+    }
   },
 
   hasNotification() {
@@ -137,6 +180,10 @@ var Instruction = Class({
   // definitelty needs to be put at controller level
   initTulip: function (element, angle, trackTypes, json) {
     this.tulip = new Tulip(element, angle, trackTypes, json);
+  },
+
+  initNote: function (element, json) {
+    this.note = new Note(element, json);
   },
 
   updateInstruction: function (geoData, routePointIndex) {
@@ -296,11 +343,12 @@ var Instruction = Class({
     $(element).on('dblclick', function (e) {
       if (_this.roadbook.requestInstructionEdit(_this)) {
         $('#save-roadbook').removeAttr('href') // Removes the href attribute
-            .css({
-                'pointer-events': 'none', // Prevents clicking
-                'color': '#cccccc' // Visually indicates disabled state
-            });
+          .css({
+            'pointer-events': 'none', // Prevents clicking
+            'color': '#cccccc' // Visually indicates disabled state
+          });
         _this.tulip.beginEdit();
+        _this.note.beginEdit();
       }
     });
     $(element).on('click', function (e) {
@@ -318,7 +366,15 @@ var Instruction = Class({
     return this.tulip.serialize();
   },
 
+  serializeNote: function () {
+    return this.note.serialize();
+  },
+
   tulipPNG: function () {
     return this.tulip.toPNG();
+  },
+
+  notePNG: function () {
+    return this.note.toPNG();
   },
 });
