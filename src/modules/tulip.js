@@ -99,6 +99,7 @@ var Tulip = Class({
       image.id = globalNode.randomUUID();
       _this.canvas.add(image);
       _this.glyphs.push(image);
+      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction
     }
   },
   /*
@@ -150,7 +151,7 @@ var Tulip = Class({
         _this.buildAddedTracksFromJson(json.tracks);
       }, function (o, object) {
         object.selectable = false;
-        if (object.type == "iText") {
+        if (object.type == "i-text") {
           //if the object is an image add it to the glyphs array
           object.id = globalNode.randomUUID();
           _this.glyphs.push(object);
@@ -160,7 +161,7 @@ var Tulip = Class({
           object.id = globalNode.randomUUID();
           _this.glyphs.push(object);
 
-          fabric.util.loadImage(object.src, function(img, isError) {
+          fabric.util.loadImage(object.src, function (img, isError) {
             if (isError || !img) {
               console.error(`Failed to load image: ${object.src}`);
               // Fallback: Set a default image source
@@ -168,7 +169,7 @@ var Tulip = Class({
               if (remmapedSrc === false) {
                 remmapedSrc = './assets/svg/glyphs/missing-glyph.svg';
               }
-              object.setSrc(remmapedSrc, function() {
+              object.setSrc(remmapedSrc, function () {
                 _this.canvas.renderAll();
               }, { crossOrigin: 'anonymous' });
             }
@@ -263,7 +264,7 @@ var Tulip = Class({
   beginEdit: function () {
     this.activeEditors.push(new EntryTrackEditor(this.canvas, this.entryTrack));
     this.activeEditors.push(new ExitTrackEditor(this.canvas, this.exitTrack));
-    this.canvas.forEachObject(function(obj) {
+    this.canvas.forEachObject(function (obj) {
       obj.selectable = true;
     });
   },
@@ -323,7 +324,7 @@ var Tulip = Class({
     }
     this.activeEditors = [];
     // remove controls from glyphs and update the canvas' visual state
-    this.canvas.forEachObject(function(obj) {
+    this.canvas.forEachObject(function (obj) {
       obj.selectable = false;
     });
     this.canvas.deactivateAll().renderAll();
@@ -427,6 +428,13 @@ var Tulip = Class({
         delete this.tracks[i].editor
       }
       this.activeEditors.push(new AddedTrackEditor(this.canvas, track));
+    }
+  },
+  setTextStyle(style) {
+    const activeObject = this.canvas.getActiveObject();
+    if (activeObject && activeObject.id && activeObject.type == 'i-text') {
+      activeObject.setTextStyle(style);
+      this.canvas.renderAll();
     }
   }
 });
