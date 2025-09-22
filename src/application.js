@@ -346,11 +346,6 @@ class App {
   }
 
   newRoadbook() {
-    // app.roadbook.name('New Roadbook');
-    // app.roadbook.desc('Roadbook description');
-    // app.roadbook.totalDistance(0);
-    // app.roadbook.customLogo(null)
-    // this.roadbook.filePath = null;
     this.roadbook.newRoadbook();
     while (true) {
       try {
@@ -457,8 +452,9 @@ class App {
 
   }
 
-  updateWindowTitle(filename) {
-    filename = " - " + filename;
+  updateWindowTitle(filename = '') {
+    if (filename != '')
+      filename = " - " + filename;
     document.title = "Tulip " + this.version + filename;
   }
   /*
@@ -681,8 +677,9 @@ class App {
     this.ipc.on('new-roadbook', function (event, arg) {
       var nr = window.confirm("Start a new roadbook? Unsaved changes will be lost");
       if (nr) {
+        _this.updateWindowTitle();
         _this.newRoadbook();
-      } ``
+      }
     });
 
     this.ipc.on('open-settings', function (event, arg) {
