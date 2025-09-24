@@ -58,6 +58,7 @@ var Tulip = Class({
       }
       else {
         this.selectedTrackId = null;
+        this.removeTrackHandles();
       }
     });
   },
@@ -446,6 +447,20 @@ var Tulip = Class({
       this.activeEditors.push(new AddedTrackEditor(this.canvas, track));
     }
   },
+
+  removeTrackHandles(options) {
+    for (var i = 0; i < this.activeEditors.length; i++) {
+      if (this.activeEditors[i] instanceof EntryTrackEditor || this.activeEditors[i] instanceof ExitTrackEditor)
+        continue
+      this.activeEditors[i].destroy();
+      this.activeEditors.splice(i, 1);
+    }
+
+    for (var i = 0; i < this.tracks.length; i++) {
+      delete this.tracks[i].editor
+    }
+  },
+
   setTextStyle(style) {
     const activeObject = this.canvas.getActiveObject();
     if (activeObject && activeObject.id && activeObject.type == 'TextElement') {
