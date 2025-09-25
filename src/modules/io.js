@@ -106,7 +106,7 @@ var Io = Class({
     return gpxString;
   },
   // TODO DRY this up
-  exportOpenRallyGPX: function () {
+  exportOpenRallyGPX: function (strict) {
     // Create a new XML document
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString('<?xml version="1.0" encoding="UTF-8"?><gpx></gpx>', 'application/xml');
@@ -159,7 +159,7 @@ var Io = Class({
         var desc = xmlDoc.createElement('desc');
         desc.textContent = "";
         waypoint.appendChild(desc);
-        waypoint.appendChild(this.buildOpenRallyExtensionsString(xmlDoc, points[i].instruction));
+        waypoint.appendChild(this.buildOpenRallyExtensionsString(xmlDoc, points[i].instruction, strict));
         root.appendChild(waypoint);
       }
       // Tracks
@@ -180,8 +180,9 @@ var Io = Class({
 
   /*
     OpenRally enhanced GPX format... route metadata without overriding GPX user-land variables.
+    strict: Comply with openrally 1.0.2 or follow unpublished changes
   */
-  buildOpenRallyExtensionsString: function (xmlDoc, waypoint) {
+  buildOpenRallyExtensionsString: function (xmlDoc, waypoint, strict=false) {
 
     extensions = xmlDoc.createElement('extensions');
     distance = xmlDoc.createElement('openrally:distance');
@@ -211,10 +212,12 @@ var Io = Class({
     // Notification
     if (waypoint.notification && waypoint.notification.openrallytype) {
       notification = xmlDoc.createElement("openrally:" + waypoint.notification.openrallytype);
-      if (waypoint.notification.openrallytype != ('neutralization')) {
-        this.setWaypointXMLAttributes(notification, waypoint);
-      }
+      this.setWaypointXMLAttributes(notification, waypoint);
       if (waypoint.notification.openrallytype == ('neutralization')) {
+        if (strict) {
+          notification.removeAttribute('open');
+          notification.removeAttribute('clear');
+        }
         notification.removeAttribute('time');
         notification.textContent = waypoint.notification.time;
       }
@@ -224,17 +227,19 @@ var Io = Class({
       if (['ft', 'fn'].includes(waypoint.notification.openrallytype) && waypoint.inSpeedZone()) {
         console.log(waypoint)
         extra_z = xmlDoc.createElement('openrally:fz');
-        this.setWaypointXMLAttributes(extra_z, waypoint);
         extensions.appendChild(extra_z);
       }
 
       // Add speed limit modifier
       if (['dns', 'dts'].includes(waypoint.notification.type)) {
         extra_z = xmlDoc.createElement('openrally:dz');
-        this.setWaypointXMLAttributes(extra_z, waypoint);
         extra_z.removeAttribute('time');
         extensions.appendChild(extra_z);
       }
+
+      // Remove time from dt when strict
+      if (waypoint.notification.openrallytype == 'dt' && strict)
+        notification.removeAttribute('time');
     }
     return extensions;
   },

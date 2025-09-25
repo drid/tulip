@@ -4,6 +4,7 @@ nav:
   - Home: index.md
   - Setup: setup.md
   - Usage: usage.md
+  - OpenRally: openrally.md
   - Shortcuts: shortcuts.md
 theme:
   name: material

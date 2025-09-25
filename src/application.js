@@ -205,7 +205,7 @@ class App {
 
   exportOpenRallyGPX() {
     if (this.canExport()) {
-      var gpx = this.io.exportOpenRallyGPX();
+      var gpx = this.io.exportOpenRallyGPX(this.settings.openRallyStrict);
 
       var filename = this.roadbook.filePath.replace('.tlp', '-openrally.gpx');
 
@@ -389,6 +389,8 @@ class App {
     settings.showCoordinates = $('#show_coordinates').prop('checked');
     settings.coordinatesFormat = $('#coordinates_format').find(":selected").val();
     settings.showChangelogOnStart = this.settings.showChangelogOnStart ?? { 'version': this.version };
+    settings.openRallyStrict = $('#openrally_strict').prop('checked');
+
 
     localStorage.setItem('settings', JSON.stringify(settings));
     app.settings = settings;
@@ -398,6 +400,9 @@ class App {
 
   loadSettings() {
     const settings = JSON.parse(localStorage.getItem('settings') ?? "{}");
+    if (settings.openRallyStrict === undefined) {
+      settings.openRallyStrict = false;
+    }
     $('#open_last').prop('checked', settings.loadLastRoadbook ?? false);
     $('#gmap_key').val(settings.gmapKey ?? '');
     $('#google_directions_key').val(settings.googleDirectionsKey ?? '');
@@ -406,6 +411,7 @@ class App {
     $('#show_cap_heading').prop('checked', settings.showCapHeading ?? false);
     $('#show_coordinates').prop('checked', settings.showCoordinates ?? false);
     $('#coordinates_format').val(settings.coordinatesFormat ?? 'ddmmss');
+    $('#openrally_strict').prop('checked', settings.openRallyStrict);
 
     if (settings.openDevConsole) {
       this.ipc.send('open-dev-tools');
