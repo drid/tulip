@@ -96,7 +96,7 @@ class RoadbookModel {
       bounds.extend(marker.getPosition());
     });
     app.mapController.fitBounds(bounds);
-    app.mapController.map.setZoom(app.mapController.map.getZoom()-1);
+    app.mapController.map.setZoom(app.mapController.map.getZoom() - 1);
   }
 
   needsTrackTypeUpdate(instructions) {
@@ -111,7 +111,7 @@ class RoadbookModel {
   assignTrackType(point) {
     for (var track in point.tulipJson.tracks) {
       if (point.tulipJson.tracks[track].type)
-          continue; // already migrated
+        continue; // already migrated
       // determine track type from graphics
       if (point.tulipJson.tracks[track].paths[0].strokeDashArray.length == 4) {
         point.tulipJson.tracks[track].type = 'lowVisTrack';
@@ -126,7 +126,7 @@ class RoadbookModel {
         if (point.tulipJson.tracks[track].paths.length == 2) { // double line
           point.tulipJson.tracks[track].type = 'tarmacRoad';
         }
-        if (point.tulipJson.tracks[track].paths.length > 2 ) { // highway
+        if (point.tulipJson.tracks[track].paths.length > 2) { // highway
           point.tulipJson.tracks[track].type = 'dcw';
         }
       }
@@ -304,6 +304,20 @@ class RoadbookModel {
       this.instructionShowCoordinates(instruction.showCoordinates());
       app.mapController.centerOnInstruction(instruction);
       this.controller.populateInstructionPalette(instruction)
+      
+      instruction.tulip.canvas.off('mouse:down');
+      instruction.note.canvas.off('mouse:down');
+      // When Tulip canvas is clicked, deselect Note canvas
+      instruction.tulip.canvas.on('mouse:down', () => {
+        instruction.note.canvas.discardActiveObject();
+        instruction.note.canvas.renderAll();
+      });
+
+      // When Note canvas is clicked, deselect Tulip canvas
+      instruction.note.canvas.on('mouse:down', () => {
+        instruction.tulip.canvas.discardActiveObject();
+        instruction.tulip.canvas.renderAll();
+      });
       return true;
     }
   }
@@ -388,7 +402,7 @@ class RoadbookModel {
       totalDistance: this.totalDistance(),
       fuelRange: this.fuelRange(),
       filePath: this.filePath,
-      customLogo: this.customLogo(), 
+      customLogo: this.customLogo(),
       instructions: [],
     }
 
