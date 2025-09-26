@@ -37,6 +37,8 @@ var Instruction = Class({
     this.speedLimit = ko.observable(false);
     this.hasResetGlyph = ko.observable(false);
     this.hasFuelGlyph = ko.observable(false);
+    this.hasTimedStop = ko.observable(wptJson.hasTimedStop === undefined ? false : wptJson.hasTimedStop);
+    this.stopTimeSec = ko.observable(wptJson.stopTimeSec === undefined ? null : wptJson.stopTimeSec);
     this.resetDistance = ko.observable(0);
     this.dangerLevel = ko.observable(0);
     this.safetyTags = ko.observableArray([]);
@@ -138,6 +140,9 @@ var Instruction = Class({
     this.hasResetGlyph(match ? true : false);
     match = glyphs.join(' ').match(/fuel-zone/);
     this.hasFuelGlyph(match ? true : false);
+    match = glyphs.join(' ').match(/stop-round/);
+    this.hasTimedStop(match ? true : false);
+
     var safetyTags = [];
     match = glyphs.join(' ').match(/medical/);
     if (match) safetyTags.push('medical');

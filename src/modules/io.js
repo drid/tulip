@@ -206,6 +206,8 @@ var Io = Class({
       extensions.appendChild(xmlDoc.createElement('openrally:cap')).textContent = Math.round(waypoint.exactHeading());
     if (waypoint.speedLimit())
       extensions.appendChild(xmlDoc.createElement('openrally:speed')).textContent = waypoint.speedLimit();
+    if (waypoint.hasTimedStop())
+      extensions.appendChild(xmlDoc.createElement('openrally:stop')).textContent = waypoint.stopTimeSec();
     for (tag of waypoint.safetyTags()) {
       extensions.appendChild(xmlDoc.createElement('openrally:'+tag));
     }

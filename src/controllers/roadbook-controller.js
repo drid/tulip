@@ -82,7 +82,7 @@ class RoadbookController {
   bindToPaletteControls() {
     var _this = this;
     $('#hide-palette').on('click', function () {
-      _this.model.finishInstructionEdit(_this.getNotificationOpenRadiusVal(), _this.getNotificationValidationRadiusVal(), _this.getNotificationTimeVal());
+      _this.model.finishInstructionEdit(_this.getNotificationOpenRadiusVal(), _this.getNotificationValidationRadiusVal(), _this.getNotificationTimeVal(), _this.getStopTimeVal());
       _this.resetInstructionPalette();
       $('#save-roadbook').removeAttr('href', '#') // Removes the href attribute
         .css({
@@ -186,6 +186,10 @@ class RoadbookController {
       }
     }
     $('#added-' + instruction.entryTrackType).trigger('click');
+
+    $('#stop-time').val((instruction.stopTimeSec() ? instruction.stopTimeSec() : 60));
+    $('#stop-time-options').attr("data-bind", "visible: hasTimedStop");
+    ko.applyBindingsToNode($('#stop-time-options')[0], { visible: instruction.hasTimedStop });
   }
 
   resetInstructionPalette() {
@@ -201,6 +205,10 @@ class RoadbookController {
     $('#roadbook').scrollTop(this.editingElement.position().top - 80);
     $('.waypoint.row').find('.waypoint-icon').off();
     $('.waypoint.row').find('.waypoint-icon').removeClass('delete-suggestion');
+    // Clean Knockout bindings
+    ko.cleanNode($('#stop-time-options')[0]);
+    // Remove data-bind attribute
+    $('#stop-time-options').removeAttr("data-bind");
   }
 
   getNotificationOpenRadiusVal() {
@@ -213,5 +221,9 @@ class RoadbookController {
 
   getNotificationTimeVal() {
     return $('#notification-time').val();
+  }
+
+  getStopTimeVal() {
+    return $('#stop-time').val();
   }
 }

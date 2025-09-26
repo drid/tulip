@@ -322,23 +322,24 @@ class RoadbookModel {
     }
   }
 
-  finishInstructionEdit(openRadius, validationRadius, time) {
+  finishInstructionEdit(openRadius, validationRadius, time, stopTime) {
     if (this.currentlyEditingInstruction !== null) {
       this.currentlyEditingInstruction.finishEdit()
-      this.updateInstructionAfterEdit(openRadius, validationRadius, time);
+      this.updateInstructionAfterEdit(openRadius, validationRadius, time, stopTime);
       this.currentlyEditingInstruction = null;
     }
     this.reindexInstructions();
     return true;
   }
 
-  updateInstructionAfterEdit(openRadius, validationRadius, time) {
+  updateInstructionAfterEdit(openRadius, validationRadius, time, stopTime) {
     // this.currentlyEditingInstruction.changeAddedTrackType('track');
     if (this.currentlyEditingInstruction.notification) {
       this.currentlyEditingInstruction.notification.openRadius = openRadius;
       this.currentlyEditingInstruction.notification.validationRadius = validationRadius;
       this.currentlyEditingInstruction.notification.time = time;
     }
+    this.currentlyEditingInstruction.stopTimeSec(stopTime);
     this.currentlyEditingInstruction.tulip.finishEdit();
     this.currentlyEditingInstruction.tulip.finishRemove();
     this.currentlyEditingInstruction.note.finishEdit();
@@ -382,6 +383,7 @@ class RoadbookModel {
         heading: points[i].instruction ? points[i].instruction.exactHeading() : null,
         showHeading: points[i].instruction ? points[i].instruction.showHeading() : null,
         showCoordinates: points[i].instruction ? points[i].instruction.showCoordinates() : null,
+        stopTimeSec: points[i].instruction ? points[i].instruction.stopTimeSec() : null,
         entryTrackType: points[i].instruction ? points[i].instruction.entryTrackType : null,
         exitTrackType: points[i].instruction ? points[i].instruction.exitTrackType : null,
         notification: points[i].instruction && points[i].instruction.notification ? points[i].instruction.notification : null,
@@ -425,6 +427,7 @@ class RoadbookModel {
           inSpeedZone: points[i].instruction.inSpeedZone(),
           dangerLevel: points[i].instruction.dangerLevel(),
           hasResetGlyph: points[i].instruction.hasResetGlyph(),
+          hasTimedStop: points[i].instruction.hasTimedStop(),
           waypointIcon: points[i].instruction.waypointIcon(),
           waypointColoring: points[i].instruction.waypointColoring(),
           instructionColoring: points[i].instruction.instructionColoring(),
