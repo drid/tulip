@@ -56,7 +56,7 @@ var Tulip = Class({
         this.addTrackHandles(options);
         this.selectedTrackId = options.target.id;
       }
-      else {
+      if (options.target === undefined) {
         this.selectedTrackId = null;
         this.removeTrackHandles();
       }
@@ -83,6 +83,9 @@ var Tulip = Class({
   addTrack: function (angle) {
     this.finishRemove();
     var track = new AddedTrack(angle, this.addedTrackType, this.canvas)
+    // track.paths[0].on('mousedown', function(e) {
+    //   console.log('Clicked on path!', e);
+    // });
     this.tracks.push(track);
 
     //NOTE this solves the problem of having overlapping handles if a control is clicked twice or things get too close to one another.

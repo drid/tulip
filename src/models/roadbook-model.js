@@ -305,8 +305,6 @@ class RoadbookModel {
       app.mapController.centerOnInstruction(instruction);
       this.controller.populateInstructionPalette(instruction)
       
-      instruction.tulip.canvas.off('mouse:down');
-      instruction.note.canvas.off('mouse:down');
       // When Tulip canvas is clicked, deselect Note canvas
       instruction.tulip.canvas.on('mouse:down', () => {
         instruction.note.canvas.discardActiveObject();
