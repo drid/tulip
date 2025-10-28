@@ -24,6 +24,7 @@ Double click on roadbook instruction to begin editing.
 ### Insert Tulip items
 - Tracks: Toggle to enable the insertion of track elements.
 - Glyphs: Toggle to enable the insertion of glyphs.
+- Text: Toggle to enable the insertion of text.
 
 ### Modify Selection
 - A slider to adjust the properties of the selected note text, offering fine-tuned control over its appearance or position.
@@ -35,19 +36,22 @@ To add a Tulip track, first select your preferred track type from the list. Then
 
 Tracks can be moved by selecting them and using the handles to shape and adjust their form.
 
+To change track type, select a track and click on the new track type.
+
 **Enter on**: Sets the entry track type for the current instruction. Additionally, it modifies the exit track type of the previous instruction to ensure a seamless transition.
 
 **Exit on**: Sets the exit track type for the current instruction. It also modifies the enter track type of the next instruction to maintain route continuity.
 
-**Delete tracks/glyphs** - Use the trash can icon to delete the selected track or glyph from Tulip. Note that entry and exit tracks cannot be deleted to maintain route integrity.
+**Delete tracks/glyphs** - Use the trash can icon or "Delete" to delete the selected track or glyph from Tulip. Note that entry and exit tracks cannot be deleted to maintain route integrity.
 
 ## Insert tulip glyphs
 Toggle to enable or disable the insertion of glyphs (must be on to add glyphs). Once enabled, click on the 3x3 grid to set the glyph position. A popup with available glyphs will appear for selection. Holding the Shift key while clicking on a glyph allows for multiple insertions.
 Show in sidebar
 
 ## Waypoint Notes
-- To add text to notes, simply type it directly into the text field.
 - To add a glyph, use the "Insert glyph" button to open the glyph selection popup, where you can choose from available glyphs. Holding the Shift key while clicking on a glyph allows for multiple insertions.
-- To delete items from notes place the cursor after the item and press the backspace button
+- To add text to notes use the Insert Text button.
+- Click on text style to change the selected text item.
+- To delete items from notes select item and press "Delete"
 - CAP: Toggle to show or hide CAP headings in the notes.
 - Lat/Lon: Toggle to show or hide latitude/longitude coordinates in the notes.
