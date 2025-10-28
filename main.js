@@ -81,13 +81,13 @@ function createWindow() {
     {
       label: "Edit",
       submenu: [
-        { label: "Undo Text", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-        { label: "Redo Text", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
-        { type: "separator" },
-        { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-        { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-        { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-        { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
+        // { label: "Undo Text", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+        // { label: "Redo Text", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+        // { type: "separator" },
+        // { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+        // { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+        // { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+        // { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
         { label: "Bring to front", click: function () { mainWindow.webContents.send('bring-to-front'); } },
         { label: "Send to back", click: function () { mainWindow.webContents.send('send-to-back'); } },
         { type: "separator" },
@@ -120,8 +120,12 @@ function createWindow() {
     {
       label: "View",
       submenu: [
-        { label: "Reload", accelerator: "CmdOrCtrl+R", click: function () { mainWindow.webContents.send('reload-roadbook'); } },
-        { type: "separator" },
+        ...(isDev ?
+        [
+          { label: "Reload", accelerator: "CmdOrCtrl+R", click: function () { mainWindow.webContents.send('reload-roadbook'); } },
+          { type: "separator" }
+        ] : []
+        ),
         { label: "Toggle Roadbook", accelerator: "CmdOrCtrl+B", click: function () { mainWindow.webContents.send('toggle-roadbook'); } },
         { type: "separator" },
         { label: "Zoom in", accelerator: "CmdOrCtrl+Plus", click: function () { mainWindow.webContents.send('zoom-in'); } },
