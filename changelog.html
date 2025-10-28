@@ -56,8 +56,41 @@
 <body>
   <div class="content-container">
     <h1>Changelog</h1>
+    Full list of changes on https://gitlab.com/drid/tulip/-/blob/master/CHANGELOG.md
+    <h2>Version 1.10.0</h2>
+    <b>Important note:</b> Roadbooks saved with this version are not compatible with older versions. Backup your
+    roadbooks.
+    <p>Roadbooks from v1.9.6 and earlier are migrated on load. Notes may need editing and glyphs may need resizing</p>
+    <h3>Features</h3>
+    <ul>
+      <li>Make instruction notes a canvas. Glyphs and text items are migrated</li>
+      <li>Add option to add text to tulip</li>
+      <li><b>Openrally:</b> Export tulip and note images</li>
+      <li>Add filename to window title</li>
+      <li>Add menu link for online manual</li>
+      <li>Add change added track type</li>
+      <li>Openrally: Option to export in strict or undocumented format</li>
+      <li>Add time option to stop glyph</li>
+      <li>Add tulip object stacking order</li>
+      <li>Change track type to comply with FIM/FIA</li>
+      <li>Change track graphics for better visibility</li>
+      <li>Add migration of old track types</li>
+    </ul>
+
+    <h3>Bug fixes</h3>
+
+    <ul>
+      <li>Open rally export</li>
+      <li>Ask to save before closing app</li>
+      <li>GPX Import crash if no points</li>
+      <li>GPX import creating duplicate 1st and last instruction</li>
+      <li>Prevent glyphs from being changed when not edited</li>
+      <li>Remove track handles when clicking on canvas</li>
+      <li>Allow only one canvas element selected among note and tulip</li>
+    </ul>
+
     <h2>Version 1.9.6</h2>
-       <h3>Bug fixes</h3>
+    <h3>Bug fixes</h3>
     <ul>
       <li>Roadbook logo removal</li>
       <li>Glyphs not detected during edit</li>

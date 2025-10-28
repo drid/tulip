@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### 🚀 Features
+
+- Export additional elements
+- Add filename to window title
+- Add menu link for online manual
+- *(icons)* Add traffic light glyph
+- *(icons)* Add roadsign no entry, move roadworks to roadsigns
+- *(style)* Increase distance text size
+- *(glyphs)* Add openrally safety tags
+- *(tulip)* Add track type Low/Less visible
+- *(tulip)* Rename internal track types, Add migration code
+- *(tulip)* Change track width for better visibility
+- *(tulip)* Add migration of tracks
+- *(tulip)* Add text to tulip
+- *(note)* Make instruction notes a canvas
+- *(openrally)* Export tulip and note images
+- Add change added track type
+- Enable sentry only in production
+- Open dialog improvement
+- *(openrally)* Option to export in strict or undocumented format
+- Add time option to stop glyph
+- Add tulip object stacking order
+
+### 🐛 Bug Fixes
+
+- Open rally export
+- Ask to save before closing app
+- GPX Import crash if no points
+- GPX import creating duplicate 1st and last instruction
+- *(tulip)* Set initial glyph height to 50px
+- Prevent glyphs from being changed when not edited
+- Remove track handles when clicking on canvas
+- Allow only one canvas element selected among note and tulip
+- Track deselect
+- Remove unused menu items, show reload on dev only
+
+### 💼 Other
+
+- Fix notes on PDF output
+
+
+- 1.10.0
+
+### 🚜 Refactor
+
+- *(xml)* Enhance openrally xml generation
+- Glyphs are loaded from JSON file, glyph search uses description text
+- Use js .on
+
+### 📚 Documentation
+
+- Add gitlab process to CONTRIBUTE
+- Add manual
+- Add analytics to docs
+- Describe map route controls, clarify CAP and coordinate buttons function
+- Add range of point delete
+
+### ⚙️ Miscellaneous Tasks
+
+- Added script to autogenerate abbreviations
+- *(glyphs)* Remove duplicates and orphans
+- Remove glyph margins
+
 ## [1.9.6] - 2025-07-28
 
 ### 🐛 Bug Fixes
