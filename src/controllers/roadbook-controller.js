@@ -40,7 +40,7 @@ class RoadbookController {
     }
 
     this.descriptionTextEditor.on('text-change', function (delta, source) {
-      var newValue = _this.descriptionTextEditor.getSemanticHTML();
+      var newValue = _this.descriptionTextEditor.getSemanticHTML().replaceAll(/((?:&nbsp;)*)&nbsp;/g, '$1 '); // TODO: Remove replace once quill is fixed
 
       _this.model.desc(newValue);
     });
@@ -54,6 +54,7 @@ class RoadbookController {
   bindToNameDescEditButtons() {
     var _this = this;
     $('#roadbook-desc, #roadbook-name').find('a.show-editor').on('click', function () {
+      _this.enterEditMode(_this.model.desc());
       $(this).hide();
       $(this).siblings('.hide-editor').show();
       $(this).siblings('.roadbook-header-input-container').slideDown('fast');
