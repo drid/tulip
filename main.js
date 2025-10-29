@@ -114,6 +114,7 @@ function createWindow() {
         },
         { type: "separator" },
         { label: "Add Glyph", accelerator: "CmdOrCtrl+Option+G", click: function () { mainWindow.webContents.send('add-glyph'); } },
+        { label: "Fill zone speed limit", click: function () { mainWindow.webContents.send('fill-zone-speed-limit'); } },
         { label: "Roadbook logo", accelerator: "", click: function () { mainWindow.webContents.send('add-roadbook-logo'); } },
         { label: "Settings", click: function () { mainWindow.webContents.send('open-settings'); } },
       ]

@@ -8,6 +8,7 @@ class RoadbookModel {
     */
     this.currentlyEditingInstruction = null;
     this.editingNameDesc = false;
+    this.selectedInstruction = null;
 
     /*
       Declare some internal variables
@@ -304,7 +305,7 @@ class RoadbookModel {
       this.instructionShowCoordinates(instruction.showCoordinates());
       app.mapController.centerOnInstruction(instruction);
       this.controller.populateInstructionPalette(instruction)
-      
+
       // When Tulip canvas is clicked, deselect Note canvas
       instruction.tulip.canvas.on('mouse:down', () => {
         instruction.note.canvas.discardActiveObject();
@@ -441,6 +442,27 @@ class RoadbookModel {
     return roadbookJSON;
   }
 
+  fillZoneSpeedLimit() {
+    if (this.selectedInstruction) {
+      var idx = this.selectedInstruction -1;
+      var instruction = this.instructions()[idx++];
+      var speedLimit = instruction.speedLimit();
+      if (instruction.inSpeedZone() && speedLimit) {
+        instruction = this.instructions()[idx];
+        while (instruction.inSpeedZone()) {
+          if (!instruction.speedLimit() && !['fsz', 'fn', 'ft'].includes(instruction.notification.type)) {
+            const src = './assets/svg/glyphs/speed-'+ speedLimit +'.svg'
+            instruction.note.addGlyph({top: 30, left: 30}, src);
+          } else {
+            const src = './assets/svg/glyphs/speed-'+ speedLimit +'-end.svg'
+            instruction.note.addGlyph({top: 30, left: (instruction.speedLimit() ? 90 : 30)}, src);
+            speedLimit = instruction.speedLimit();
+          }
+          instruction = this.instructions()[++idx];
+        }
+      }
+    }
+  }
 };
 /*
   Node exports for test suite

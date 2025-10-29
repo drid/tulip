@@ -737,5 +737,9 @@ class App {
     this.ipc.on('bring-to-front', function (event, arg) {
       app.roadbook.currentlyEditingInstruction.tulip.bringForwardActiveGlyph();
     });
+
+    this.ipc.on('fill-zone-speed-limit', function (event, arg) {
+      app.roadbook.fillZoneSpeedLimit();
+    });
   }
 };
