@@ -94,7 +94,6 @@ var Instruction = Class({
     ko.bindingHandlers.noteCanvasRendered = {
       init: function (element) {
         _this.initNote(element, noteJson);
-        _this.initInstructionListeners($(element).parents('.waypoint'));
         _this.element = $(element).parents('.waypoint');
       }
     }
@@ -360,6 +359,7 @@ var Instruction = Class({
       $("div.waypoint").removeClass("waypoint-selected")
       element.addClass("waypoint-selected");
       app.mapController.centerOnInstruction(_this);
+      app.roadbook.selectedInstruction = _this.id;
     });
   },
 
