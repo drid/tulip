@@ -715,7 +715,7 @@ class App {
 
     this.ipc.on('changelog-result', (event, result) => {
       var setting = result || {
-        'showOnStart': this.settings.showChangelogOnStart.showOnStart ?? true
+        'showOnStart': this.settings?.showChangelogOnStart?.showOnStart ?? true
       };
       setting['version'] = this.version;
       this.settings.showChangelogOnStart = setting;
