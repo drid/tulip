@@ -16,6 +16,7 @@ if (!getIsDev()) {
         integrations: [],
         tracesSampleRate: 1.0,
     });
+    Sentry.setUser({ip_address: '0.0.0.0'});
 }
 
 contextBridge.exposeInMainWorld("globalNode", {

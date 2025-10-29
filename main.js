@@ -3,11 +3,12 @@ const Sentry = require('@sentry/electron/main');
 const isDev = require('electron-is-dev');
 console.log(isDev ? 'Running in development' : 'Running in production');
 
-if (!isDev) {
+if (isDev) {
   Sentry.init({
     dsn: "https://d5e95e1373931cff30184a1e7d504619@o4508879179284480.ingest.de.sentry.io/4508880154918992",
     debug: true
   });
+  Sentry.setUser({ip_address: '0.0.0.0'});
 }
 
 const fs = require('fs');
