@@ -1,3 +1,5 @@
+@import url('../../node_modules/@fortawesome/fontawesome-free/css/all.min.css');
+
 a.added-track-selector,
 a.entry-track-selector,
 a.exit-track-selector {
@@ -510,7 +512,6 @@ nav.top-bar {
   align-content: center;
   flex-wrap: wrap;
   justify-content: center;
-  padding-top: 3px;
 }
 
 #orient-map {
@@ -536,6 +537,10 @@ nav.top-bar {
 
 #delete-tulip-item {
   color: darkred;
+}
+
+#rotate-km-marker {
+  color: black;
 }
 
 .tulip-edit-controls {

@@ -103,6 +103,9 @@ class RoadbookController {
     $('#delete-tulip-item').on("click", function () {
       _this.model.currentlyEditingInstruction.tulip.removeActiveGlyph()
     })
+    $('#rotate-km-marker').on("click", function () {
+      _this.model.currentlyEditingInstruction.tulip.rotateKmMarker()
+    })
   }
 
   bindToTrackGrid() {

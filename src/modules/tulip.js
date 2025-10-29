@@ -31,6 +31,7 @@ var Tulip = Class({
     // TODO should this be checking JSON for this?
     this.exitTrackEdited = false;
     this.mainTrackColor = '#22F';
+    this.markerAngle = 45;
     this.initTulip(angle, trackTypes, json);
   },
 
@@ -47,11 +48,15 @@ var Tulip = Class({
   */
   initTulip: function (angle, trackTypes, json) {
     if (json !== undefined && angle == undefined) { //the map point has been created from serialized json
+      if (json.markerAngle) this.makerAngle = json.markerAngle;
       this.buildFromJson(json, trackTypes);
     } else if (angle !== undefined && trackTypes !== undefined) {
       this.initEntry(trackTypes.entryTrackType);
       this.initExit(angle, trackTypes.exitTrackType);
+      // Add km marker
+      this.addKmMarker(this.makerAngle);
     }
+
     this.canvas.on('mouse:down', (options) => {
       if (options.target && options.target.type && options.target.type == "path" && options.target.selectable) {
         this.addTrackHandles(options);
@@ -165,6 +170,7 @@ var Tulip = Class({
           if (object.idx)
             _this.canvas.moveTo(object, object.idx)
         })
+        _this.addKmMarker(_this.makerAngle);
       }, function (o, object) {
         object.selectable = false;
         if (object.id === undefined)
@@ -422,6 +428,7 @@ var Tulip = Class({
       },
       tracks: this.serializeTracks(),
       glyphs: this.serializeGlyphs(),
+      markerAngle: this.markerAngle,
     };
     return json;
   },
@@ -499,6 +506,50 @@ var Tulip = Class({
     const activeObject = this.canvas.getActiveObject();
     if (activeObject && activeObject.id && activeObject.type == 'TextElement') {
       activeObject.setTextStyle(style);
+      this.canvas.renderAll();
+    }
+  },
+
+  addKmMarker(angle = 45) {
+    const lineLength = 20;
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+    var line = new fabric.Line([0, 0, lineLength, 0], {  // We'll rotate it later
+      stroke: 'black',
+      strokeWidth: 2,
+      originX: 'center',
+      originY: 'center'
+    });
+    var circle = new fabric.Circle({
+      radius: 3,
+      fill: 'black',
+      originX: 'center',
+      originY: 'center',
+      left: lineLength,  // Positioned at the end of the line
+      top: 0
+    });
+    var marker = new fabric.Group([line, circle], {
+      left: centerX,
+      top: centerY,
+      originX: 'top',
+      originY: 'center',
+      angle: angle,  // Rotate the entire group 45 degrees
+      selectable: false,   // Cannot be selected
+      evented: false,      // Ignores mouse events (fully non-interactive)
+      hoverCursor: 'default',
+      id: "kmMarker"
+    });
+
+    // Add group to canvas
+    this.canvas.add(marker);
+  },
+
+  rotateKmMarker() {
+    var group = this.canvas.getObjects().find(obj => obj.id === 'kmMarker');
+    if (group) {
+      this.markerAngle += 90;
+      if (this.markerAngle > 360) this.markerAngle -= 360;
+      group.set('angle', this.markerAngle);
       this.canvas.renderAll();
     }
   }

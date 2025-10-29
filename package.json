@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@electron/remote": "^2.0.9",
+    "@fortawesome/fontawesome-free": "^7.1.0",
     "@sentry/cli": "^2.42.2",
     "@sentry/electron": "^6.1.0",
     "electron-is-dev": "^1.2.0",
