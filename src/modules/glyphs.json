@@ -250,7 +250,6 @@
           { "src": "./assets/svg/glyphs/danger-1.svg", "text": "Danger: Boo-Boo" },
           { "src": "./assets/svg/glyphs/danger-2.svg", "text": "Danger: Maim" },
           { "src": "./assets/svg/glyphs/danger-3.svg", "text": "Danger: Kill" },
-          { "src": "./assets/svg/glyphs/stop.svg", "text": "Stop" },
           { "src": "./assets/svg/glyphs/stop-round.svg", "text": "Stop" },
           { "src": "./assets/svg/glyphs/village.svg", "text": "Village" },
           { "src": "./assets/svg/glyphs/animals.svg", "text": "Animals" },
@@ -392,10 +391,12 @@
         "title": "Road Signs",
         "items": [
           { "src": "./assets/svg/glyphs/roadsign_traffic_light.svg", "text": "Traffic light" },
+          { "src": "./assets/svg/glyphs/stop.svg", "text": "Stop" },
           { "src": "./assets/svg/glyphs/roadsign_no-entry.svg", "text": "No Entry" },
           { "src": "./assets/svg/glyphs/roadworks.svg", "text": "Roadworks" },
-          { "src": "./assets/svg/glyphs/spectators.svg", "text": "Spectators" }
-          
+          { "src": "./assets/svg/glyphs/spectators.svg", "text": "Spectators" },
+          { "src": "./assets/svg/glyphs/roundabout-left.svg", "text": "Roundabout" },
+          { "src": "./assets/svg/glyphs/roundabout-right.svg", "text": "Roundabout" }       
         ]
       }
     ]
