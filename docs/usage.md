@@ -55,3 +55,21 @@ Show in sidebar
 - To delete items from notes select item and press "Delete"
 - CAP: Toggle to show or hide CAP headings in the notes.
 - Lat/Lon: Toggle to show or hide latitude/longitude coordinates in the notes.
+
+
+## Hepler tools
+### Speed zones autofill
+
+There is an option to populate all speed limit glyphs within a speed zone.
+The first instruction in the zone must have a speed limit. Select the instruction and go to Edit -> Fill zone speed limit
+
+If there are multiple speed limits within a zone these limits are respected for consecutive instructions. On the speed limit change instruction a previous speed limit end glyph is added.
+
+Last instruction (FZ,FT,FN) is populated with speed limit end glyph
+
+If 2 zones are one exactly after another, both zones will be filled as if it was a speed limit change.
+
+### Street View
+A google street view window is available under View -> Instruction street view
+
+Click on an instruction to get streetview of that point

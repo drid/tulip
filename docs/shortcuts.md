@@ -33,4 +33,4 @@
 - **Toggle Roadbook**: `Ctrl+B` or `Cmd+B` - Toggles the roadbook view.
 - **Zoom In**: `Ctrl+Plus` or `Cmd+Plus` - Zooms in on the editor view.
 - **Zoom Out**: `Ctrl+-` or `Cmd+-` - Zooms out of the editor view.
-- **Toggle Developer Tools**: `Ctrl+Shift+I` or `Alt+Cmd+I` - Opens or closes the developer tools.`Ctrl+R` or `Cmd+R` - Relo
+- **Toggle Developer Tools**: `Ctrl+Shift+I` or `Alt+Cmd+I` - Opens or closes the developer tools.`Ctrl+R` or `Cmd+R`
