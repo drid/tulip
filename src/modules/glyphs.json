@@ -397,7 +397,32 @@
           { "src": "./assets/svg/glyphs/spectators.svg", "text": "Spectators" },
           { "src": "./assets/svg/glyphs/roundabout-left.svg", "text": "Roundabout" },
           { "src": "./assets/svg/glyphs/roundabout-right.svg", "text": "Roundabout" },
-          { "src": "./assets/svg/glyphs/dead-end.svg", "text": "Dead End" }   
+          { "src": "./assets/svg/glyphs/dead-end.svg", "text": "Dead End" },
+          { "src": "./assets/svg/glyphs/triangle-warning.svg", "text": "Warning" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_2.2.svg", "text": "End of priority road" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_2.1.svg", "text": "Priority road" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_3.1.svg", "text": "Do not enter" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.30.svg", "text": "Low-flying aircraft" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.29.svg", "text": "Crosswinds" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.28.svg", "text": "Falling stones" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.23.svg", "text": "Children" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.22.svg", "text": "Pedestrian crossing" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.20.3.svg", "text": "Road narrows" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.20.2.svg", "text": "Road narrows" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.21.svg", "text": "Two-way traffic" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.20.1.svg", "text": "Road narrows" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.2.svg", "text": "Level crossing without barriers ahead" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.19.svg", "text": "Dangerous roadside" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.18.svg", "text": "Loose chippings" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.15.svg", "text": "Slippery road surface" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.12.1.svg", "text": "Dangerous bends" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.12.2.svg", "text": "Dangerous bends" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.11.1.svg", "text": "Dangerous bend" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.11.2.svg", "text": "Dangerous bend" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.10.svg", "text": "Unprotected quayside or riverbank" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.9.svg", "text": "Opening or swing bridge" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.5.svg", "text": "Tram crossing ahead" },
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.5.svg", "text": "Tram crossing ahead" }
         ]
       }
     ]
