@@ -396,7 +396,8 @@
           { "src": "./assets/svg/glyphs/roadworks.svg", "text": "Roadworks" },
           { "src": "./assets/svg/glyphs/spectators.svg", "text": "Spectators" },
           { "src": "./assets/svg/glyphs/roundabout-left.svg", "text": "Roundabout" },
-          { "src": "./assets/svg/glyphs/roundabout-right.svg", "text": "Roundabout" }       
+          { "src": "./assets/svg/glyphs/roundabout-right.svg", "text": "Roundabout" },
+          { "src": "./assets/svg/glyphs/dead-end.svg", "text": "Dead End" }   
         ]
       }
     ]
