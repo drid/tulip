@@ -16,7 +16,7 @@ if (!getIsDev()) {
         integrations: [],
         tracesSampleRate: 1.0,
     });
-    Sentry.setUser({ip_address: '0.0.0.0'});
+    Sentry.setUser({ ip_address: '0.0.0.0' });
 }
 
 contextBridge.exposeInMainWorld("globalNode", {
@@ -45,7 +45,8 @@ contextBridge.exposeInMainWorld("globalNode", {
     randomUUID: () => {
         return randomUUID();
     },
-    sendChangelogResult: (result) => ipcRenderer.send('changelog-result', result)
+    sendChangelogResult: (result) => ipcRenderer.send('changelog-result', result),
+    setCoords: (data) => ipcRenderer.send('streetview:set-coords', data),
 });
 
 contextBridge.exposeInMainWorld("Sentry", {

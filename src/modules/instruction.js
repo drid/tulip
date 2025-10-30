@@ -345,6 +345,7 @@ var Instruction = Class({
   initInstructionListeners: function (element) {
     var _this = this;
     $(element).on('dblclick', function (e) {
+      e.stopPropagation();
       if (_this.roadbook.requestInstructionEdit(_this)) {
         $('#save-roadbook').removeAttr('href') // Removes the href attribute
           .css({
@@ -353,6 +354,8 @@ var Instruction = Class({
           });
         _this.tulip.beginEdit();
         _this.note.beginEdit();
+        if (!_this.roadbook.currentlyEditingInstruction)
+          globalNode.setCoords({ "lat": _this.lat(), "lng": _this.lng(), "heading": _this.exactHeading() });
       }
     });
     $(element).on('click', function (e) {
@@ -360,6 +363,8 @@ var Instruction = Class({
       element.addClass("waypoint-selected");
       app.mapController.centerOnInstruction(_this);
       app.roadbook.selectedInstruction = _this.id;
+      if (!_this.roadbook.currentlyEditingInstruction)
+        globalNode.setCoords({ "lat": _this.lat(), "lng": _this.lng(), "heading": _this.exactHeading() });
     });
   },
 

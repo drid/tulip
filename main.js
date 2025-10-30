@@ -18,6 +18,7 @@ if (require('electron-squirrel-startup')) app.quit();
 const path = require('path');
 require('@electron/remote/main').initialize();
 const { createChangelogWindow } = require('./src/changelog');
+const { createStreetviewWindow } = require('./src/streetview');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -132,6 +133,7 @@ function createWindow() {
         { type: "separator" },
         { label: "Zoom in", accelerator: "CmdOrCtrl+Plus", click: function () { mainWindow.webContents.send('zoom-in'); } },
         { label: "Zoom out", accelerator: "CmdOrCtrl+-", click: function () { mainWindow.webContents.send('zoom-out'); } },
+        { label: "Instruction Street View", click: openStreetviewWindow },
         { type: "separator" },
         {
           label: 'Toggle Developer Tools',
@@ -321,6 +323,10 @@ function printPdf(event, arg) {
       console.log(error);
     });
 };
+
+async function openStreetviewWindow() {
+  await createStreetviewWindow(mainWindow);
+}
 
 //listens for the browser window to ask for the documents folder
 ipcMain.on('get-documents-path', (event) => {
