@@ -401,7 +401,6 @@
           { "src": "./assets/svg/glyphs/triangle-warning.svg", "text": "Warning" },
           { "src": "./assets/svg/glyphs/ru_road_sign_2.2.svg", "text": "End of priority road" },
           { "src": "./assets/svg/glyphs/ru_road_sign_2.1.svg", "text": "Priority road" },
-          { "src": "./assets/svg/glyphs/ru_road_sign_3.1.svg", "text": "Do not enter" },
           { "src": "./assets/svg/glyphs/ru_road_sign_1.30.svg", "text": "Low-flying aircraft" },
           { "src": "./assets/svg/glyphs/ru_road_sign_1.29.svg", "text": "Crosswinds" },
           { "src": "./assets/svg/glyphs/ru_road_sign_1.28.svg", "text": "Falling stones" },
@@ -422,7 +421,21 @@
           { "src": "./assets/svg/glyphs/ru_road_sign_1.10.svg", "text": "Unprotected quayside or riverbank" },
           { "src": "./assets/svg/glyphs/ru_road_sign_1.9.svg", "text": "Opening or swing bridge" },
           { "src": "./assets/svg/glyphs/ru_road_sign_1.5.svg", "text": "Tram crossing ahead" },
-          { "src": "./assets/svg/glyphs/ru_road_sign_1.5.svg", "text": "Tram crossing ahead" }
+          { "src": "./assets/svg/glyphs/ru_road_sign_1.5.svg", "text": "Tram crossing ahead" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-47.svg", "text": "Left only" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-48.svg", "text": "Right only" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-49.svg", "text": "Forward only" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-50.svg", "text": "Turn left or right" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-50a.svg", "text": "Turn left" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-50d.svg", "text": "Turn right" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-51a.svg", "text": "Turn left or continue straight ahead" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-51d.svg", "text": "Turn right or continue straight ahead" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-52.svg", "text": "Cross either on left or right" },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-52a.svg", "text": "Passing to the right required." },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-52d.svg", "text": "Passing to the right required." },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-39.svg", "text": "Parking is prohibited." },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-40.svg", "text": "Parking and stopping prohibited." },
+          { "src": "./assets/svg/glyphs/traffic_sign_gr_-_kok_2009_-_r-8.svg", "text": "Closed to all vehicles in both directions." }
         ]
       }
     ]

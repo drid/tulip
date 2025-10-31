@@ -47,6 +47,20 @@
 - [File:RU_road_sign_1.10.svg](https://commons.wikimedia.org/wiki/File:RU_road_sign_1.10.svg) by Юкатан, [CC BY-SA 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
 - [File:RU_road_sign_1.9.svg](https://commons.wikimedia.org/wiki/File:RU_road_sign_1.9.svg) by Юкатан, [CC BY-SA 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
 - [File:RU_road_sign_1.5.svg](https://commons.wikimedia.org/wiki/File:RU_road_sign_1.5.svg) by Nikolaev_ec06ffa5, [CC BY-SA 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-47.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-47.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-48.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-48.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-49.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-49.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-50.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-50.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-50a.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-50a.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-50d.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-50d.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-51a.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-51a.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-51d.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-51d.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-52.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-52.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-52a.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-52a.svg) by Christaras A, [3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-52d.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-52d.svg) by Christaras A, [3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-39.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-39.svg) by Christaras A, [3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-40.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-40.svg) by Christaras A, [3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
+- [File:Traffic_Sign_GR_-_KOK_2009_-_R-8.svg](https://commons.wikimedia.org/wiki/File:Traffic_Sign_GR_-_KOK_2009_-_R-8.svg) by Peeperman, [Creative Commons CC0 License](https://creativecommons.org/publicdomain/zero/1.0/)
 
 ## Other
 
