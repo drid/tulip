@@ -133,7 +133,7 @@ var Instruction = Class({
 
     match = glyphs.join(' ').match(/danger-(\d+)/);
     this.dangerLevel(match ? match[1] : 0);
-    match = glyphs.join(' ').match(/speed-(\d+)/);
+    match = glyphs.join(' ').match(/speed-(\d+)\.svg/);
     this.speedLimit(match ? match[1] : false);
     match = glyphs.join(' ').match(/reset-distance/);
     this.hasResetGlyph(match ? true : false);
