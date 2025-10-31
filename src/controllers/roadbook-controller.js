@@ -53,7 +53,7 @@ class RoadbookController {
   };
   bindToNameDescEditButtons() {
     var _this = this;
-    $('#roadbook-desc, #roadbook-name').find('a.show-editor').on('click', function () {
+    $('#roadbook-desc').find('a.show-editor').on('click', function () {
       _this.enterEditMode(_this.model.desc());
       $(this).hide();
       $(this).siblings('.hide-editor').show();
@@ -70,7 +70,7 @@ class RoadbookController {
       _this.model.editingNameDesc = true;
     });
 
-    $('#roadbook-desc, #roadbook-name').find('a.hide-editor').on('click', function () {
+    $('#roadbook-desc').find('a.hide-editor').on('click', function () {
       $(this).hide();
       $(this).siblings('.show-editor').show();
       $(this).siblings('.roadbook-header-input-container').slideUp('fast');

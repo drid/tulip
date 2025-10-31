@@ -307,8 +307,8 @@
         ]
       },
       {
-        "id": "speed-zones",
-        "title": "Speed Zones",
+        "id": "speed",
+        "title": "Speed",
         "items": [
           { "src": "./assets/svg/glyphs/speed-start.svg", "text": "start speed zone" },
           { "src": "./assets/svg/glyphs/speed-end.svg", "text": "end speed zone" },

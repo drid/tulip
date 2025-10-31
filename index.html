@@ -59,7 +59,7 @@
           <li>Google Maps API key<input type="text" id="gmap_key" class="settings-text"/></li>
           <li>Google Directions API key<input type="text" id="google_directions_key" class="settings-text"/>
           <a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank">API keys help</a></li>
-          <li><input type="checkbox" id="open_last"/>Open last roadbook on start</li>
+          <li><input type="checkbox" id="open_last"/>Open last roadbook</li>
           <hr>
           <h4>Tulip settings</h4>
           <li>Tulip close distance (m)<input type="text" id="tulip_near_distance" class="settings-text"/></li>
@@ -74,7 +74,7 @@
           <h4>Map settings</h4>
           <li>Set current view as home<br><input type="button" id="set-current-view-as-home" value="Set"/></li>
           <h4>Debug settings</h4>
-          <li><input type="checkbox" id="open_dev_console"/>Open dev console on start</li>
+          <li><input type="checkbox" id="open_dev_console"/>Dev console on start</li>
           
           <li><input type="button" id="save-settings" value="Save settings"/></li>
         </ul>
@@ -107,12 +107,7 @@
                 <i id="roadbook-logo-remove" class="fi-trash"></i>
               </div>
               <div id="roadbook-name" class="large-12 columns">
-                <a class="button tiny round alert hide-editor" title="Hide editor.">&#215;</a>
-                <a href=# class="button tiny radius secondary show-editor rb-name"><i class="fi-pencil"></i></a>
-                <p href="#" data-bind="text: app.roadbook.name"></p>
-                <div class="roadbook-header-input-container">
-                  <input type="text" placeholder="Roadbook Name" data-bind="textInput: app.roadbook.name" />
-                </div>
+                <p data-bind="text: app.roadbook.name, event: { blur: app.roadbook.updateName }" contenteditable="true"></p>
               </div>
               <div id="roadbook-details">
                 <div class="large-3 column header-route-info">

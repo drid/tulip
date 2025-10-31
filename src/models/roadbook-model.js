@@ -33,6 +33,14 @@ class RoadbookModel {
     this.controller.descriptionTextEditor.setContents(delta);
   }
 
+  updateName = function (rb, event) {
+    var newValue = event.target.innerText.trim();
+    if (rb.name() != newValue) {
+      this.name(newValue || 'Name your roadbook');
+      this.controller.isSaved(false);
+    }
+  }
+
   addInstruction(instructionData) {
 
     this.finishInstructionEdit(); //TODO make callback?
@@ -444,18 +452,18 @@ class RoadbookModel {
 
   fillZoneSpeedLimit() {
     if (this.selectedInstruction) {
-      var idx = this.selectedInstruction -1;
+      var idx = this.selectedInstruction - 1;
       var instruction = this.instructions()[idx++];
       var speedLimit = instruction.speedLimit();
       if (instruction.inSpeedZone() && speedLimit) {
         instruction = this.instructions()[idx];
         while (instruction.inSpeedZone()) {
           if (!instruction.speedLimit() && !['fsz', 'fn', 'ft'].includes(instruction.notification.type)) {
-            const src = './assets/svg/glyphs/speed-'+ speedLimit +'.svg'
-            instruction.note.addGlyph({top: 30, left: 30}, src);
+            const src = './assets/svg/glyphs/speed-' + speedLimit + '.svg'
+            instruction.note.addGlyph({ top: 30, left: 30 }, src);
           } else {
-            const src = './assets/svg/glyphs/speed-'+ speedLimit +'-end.svg'
-            instruction.note.addGlyph({top: 30, left: (instruction.speedLimit() ? 90 : 30)}, src);
+            const src = './assets/svg/glyphs/speed-' + speedLimit + '-end.svg'
+            instruction.note.addGlyph({ top: 30, left: (instruction.speedLimit() ? 90 : 30) }, src);
             speedLimit = instruction.speedLimit();
           }
           instruction = this.instructions()[++idx];

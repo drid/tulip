@@ -21,12 +21,6 @@ h2 {
   font-size: 30px;
 }
 
-img.glyph {
-  height: 100px;
-  margin: auto;
-  display: block;
-}
-
 canvas {
   width: var(--instruction-height);
   height: var(--instruction-height);
@@ -172,16 +166,14 @@ textarea.waypoint-palette {
   padding: 0 .65rem 0 .65rem;
 }
 
-#roadbook-desc a.hide-editor,
-#roadbook-name a.hide-editor {
+#roadbook-desc a.hide-editor {
   display: none;
 }
 
-#roadbook-desc .roadbook-header-input-container,
-#roadbook-name .roadbook-header-input-container {
+#roadbook-desc .roadbook-header-input-container {
   display: none;
   width: 100%;
-  margin-top: 15px;
+  /* margin-top: 15px; */
 }
 
 #roadbook-name p {
@@ -207,12 +199,14 @@ a.rb-desc {
   padding: 0.40rem .55rem 0.40rem .55rem !important;
 }
 
-#detail-glyphs li img,
-#feature-glyphs li img,
-#orga-glyphs li img,
-#track-glyphs li img {
-  min-width: 100px;
-  height: 100px;
+#glyph-content li a.th img.glyph {
+  width: 100%;
+  height: 100%;
+}
+
+#glyph-content li a.th {
+  aspect-ratio: 1 / 1;
+  width: 100%
 }
 
 #detail-glyphs li.tab-title,
@@ -498,6 +492,10 @@ nav.top-bar {
 
 .right-off-canvas-menu>ul>li {
   margin-bottom: 1rem;
+}
+
+.right-off-canvas-menu input[type=checkbox] {
+  margin-right: 0.3rem;
 }
 
 .delete-suggestion {
