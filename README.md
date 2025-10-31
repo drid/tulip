@@ -91,25 +91,4 @@ Licensed under the Liberation Font License (see [LIBERATION_LICENSE](LIBERATION_
 
 ## Attributions
 
-### Icons
-- [Recycle icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/recycle)
-- [Restriction icons created by Nuricon - Flaticon](https://www.flaticon.com/free-icons/restriction)
-- [Roadworks icons created by Muhammad Ali - Flaticon](https://www.flaticon.com/free-icons/roadworks)
-- [Fort icons created by DinosoftLabs - Flaticon](https://www.flaticon.com/free-icons/fort)
-- [Statue icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/statue)
-- [Cow icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/cow)
-- [Camel icons created by PLANBSTUDIO - Flaticon](https://www.flaticon.com/free-icons/camel)
-- [Deer icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/deer)
-- [Horse icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/horse)
-- [Wolf icons created by Park Jisun - Flaticon](https://www.flaticon.com/free-icons/wolf)
-- [Bear icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bear)
-- [Bush icons created by Iconjam - Flaticon](https://www.flaticon.com/free-icons/bush)
-- [Bush icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bush)
-- [Traffic lights icons created by xnimrodx - Flaticon](https://www.flaticon.com/free-icons/traffic-lights)
-- [No Entry](https://freesvg.org/no-entry-road-sign)
-- [Spectator gathering icons created by gravisio - Flaticon](https://www.flaticon.com/free-icons/family-gathering "family gathering icons")
-- [Police icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/police "police icons")
-- [Helicopter icons created by Pixel perfect - Flaticon](https://www.flaticon.com/free-icons/helicopter "helicopter icons")
-- [Firetruck icons created by Blak1ta - Flaticon](https://www.flaticon.com/free-icons/firetruck "firetruck icons")
-- [Media icons created by BankSeeNgern - Flaticon](https://www.flaticon.com/free-icons/music-and-multimedia "music-and-multimedia icons")
-- [Roundabout icons created by amonrat rungreangfangsai - Flaticon](https://www.flaticon.com/free-icons/roundabout)
+Glyphs and icons attributions can be found in [GLYPHS.md](GLYPHS.md)
