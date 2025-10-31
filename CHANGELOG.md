@@ -2,7 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [1.10.1] - 2025-10-31
+
+### 🚀 Features
+
+- Add km marker
+- Add action to autofill speed limit in zones
+- Add streetview to instructions
+
+### 🐛 Bug Fixes
+
+- Handle about window with no result and app first run
+- Remove IP from sentry reporting
+- Quill2.0.3 nbsp workaround
+- Remove duplicate instruction listener
+- Speed limit end detected as speed limit
+- Update UI elements
+
+### 📚 Documentation
+
+- Update track and notes
+
+### ⚙️ Miscellaneous Tasks
+
+- Add road signs
+
+## [1.10.0] - 2025-10-28
 
 ### 🚀 Features
 
@@ -45,7 +70,6 @@ All notable changes to this project will be documented in this file.
 - Fix notes on PDF output
 
 
-- 1.10.0
 
 ### 🚜 Refactor
 

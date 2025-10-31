@@ -58,7 +58,7 @@ commit_preprocessors = [
   # If the spelling is incorrect, it will be automatically fixed.
   #{ pattern = '.*', replace_command = 'typos --write-changes -' },
   { pattern = "Signed-off-by:.*$", replace = "" },
-#  { pattern = "^[0-9].[0-9].[0-9](-[0-9])?$", replace = "" }
+#  { pattern = "^[0-9].[0-9]([0-9])?.[0-9](-[0-9])?$", replace = "" }
 ]
 # regex for parsing and grouping commits
 commit_parsers = [
@@ -76,7 +76,7 @@ commit_parsers = [
   { message = "^chore|^ci", group = "<!-- 7 -->⚙️ Miscellaneous Tasks" },
   { body = ".*security", group = "<!-- 8 -->🛡️ Security" },
   { message = "^revert", group = "<!-- 9 -->◀️ Revert" },
-  { message = "^[0-9].[0-9].[0-9](-[0-9])?*", skip = true },
+  { message = "^[0-9].[0-9]([0-9])?.[0-9](-[0-9])?*", skip = true },
   { message = ".*", group = "<!-- 10 -->💼 Other" },
 ]
 # filter out the commits that are not matched by commit parsers
