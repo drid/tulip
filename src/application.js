@@ -63,6 +63,7 @@ class App {
     this.fs = globalNode.fs;
 
     this.version = globalNode.getVersion()
+    this.schemaVersion = 2;
 
     /*
       initialize UI listeners
@@ -118,6 +119,8 @@ class App {
     _this.fs.readFile(fileName, 'utf-8', function (err, data) {
       try {
         var json = JSON.parse(data);
+        if (!_this.checkRoadbookVersion(json))
+          return
         if (!append) {
           _this.newRoadbook()
         }
@@ -130,10 +133,27 @@ class App {
     });
     _this.showRoadbook();
     $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
-    $('#print-roadbook').removeClass('disabled')
-    $('#export-gpx').removeClass('disabled')
-    $('#export-openrally-gpx').removeClass('disabled');
     this.updateWindowTitle(fileName);
+  }
+
+  checkRoadbookVersion(json) {
+    var _this = this;
+    var schemaVersion;
+    if (!json.schemaVersion) {
+      schemaVersion = (json.appVersion == '1.10.0' ? 2 : 1)
+    } else {
+      schemaVersion = json.schemaVersion;
+    }
+    console.log("Schema version:", schemaVersion);
+    if (schemaVersion < this.schemaVersion) {
+      alert("This is a roadbook from an old Tulip version\n\nRoadbook schema has changed to accommodate new notes format, saving this roadbook will make it incompatible with versions 1.9.6 and earlier.\
+        \n1.Make a backup or save under new name\n2.Check roadbook glyphs for size and position.\n3.See changelog for details")
+    }
+    if (schemaVersion > this.schemaVersion) {
+      alert("This roadbook has been created with a later version of Tulip and cannot be loaded.\n\Please update Tulip");
+      return false;
+    }
+    return true;
   }
 
   openRoadBook(append = false) {

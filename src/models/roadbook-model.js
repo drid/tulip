@@ -375,6 +375,7 @@ class RoadbookModel {
       totalDistance: this.totalDistance(),
       filePath: this.filePath,
       appVersion: app.version,
+      schemaVersion: 2,
       customLogo: this.customLogo(),
       instructions: [],
     }
