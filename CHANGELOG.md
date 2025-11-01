@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.2] - 2025-11-01
+
+### 🚀 Features
+
+- Handle roadbook schema versions
+
+### 📚 Documentation
+
+- Add zone autofill and streetview documentation
+
 ## [1.10.1] - 2025-10-31
 
 ### 🚀 Features

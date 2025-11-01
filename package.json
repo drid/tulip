@@ -1,7 +1,7 @@
 {
   "name": "Tulip",
   "productName": "Tulip",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "description": "Rally Roadbook Creator",
   "main": "main.js",
   "type": "commonjs",
@@ -11,7 +11,7 @@
     "build-win": "electron-builder --windows",
     "build-mac": "electron-forge package --platform=\"darwin\"",
     "test": "tape test/unit/*-tests.js",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --oreleaserg drid --project tulip ./dist && sentry-cli sourcemaps upload --org drid --project tulip ./dist",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org drid --project tulip ./dist && sentry-cli sourcemaps upload --org drid --project tulip ./dist",
     "convert-svg": "node utils/convert_svgs.js",
     "changelog": "git cliff --unreleased --tag \"v$npm_package_version\" --prepend CHANGELOG.md",
     "release": "scripts/version.sh"
