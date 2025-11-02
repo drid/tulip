@@ -48,13 +48,14 @@ var Tulip = Class({
   */
   initTulip: function (angle, trackTypes, json) {
     if (json !== undefined && angle == undefined) { //the map point has been created from serialized json
-      if (json.markerAngle) this.makerAngle = json.markerAngle;
+      if (json.markerAngle)
+        this.markerAngle = json.markerAngle;
       this.buildFromJson(json, trackTypes);
     } else if (angle !== undefined && trackTypes !== undefined) {
       this.initEntry(trackTypes.entryTrackType);
       this.initExit(angle, trackTypes.exitTrackType);
       // Add km marker
-      this.addKmMarker(this.makerAngle);
+      this.addKmMarker(this.markerAngle);
     }
 
     this.canvas.on('mouse:down', (options) => {
@@ -170,7 +171,7 @@ var Tulip = Class({
           if (object.idx)
             _this.canvas.moveTo(object, object.idx)
         })
-        _this.addKmMarker(_this.makerAngle);
+        _this.addKmMarker(_this.markerAngle);
       }, function (o, object) {
         object.selectable = false;
         if (object.id === undefined)
