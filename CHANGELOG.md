@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.3] - 2025-11-02
+
+### 🐛 Bug Fixes
+
+- Km marker rotation not persisting
+- Use native Quill toolbar
+
+### 💼 Other
+
+- Update README.md
+
 ## [1.10.2] - 2025-11-01
 
 ### 🚀 Features
