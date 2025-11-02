@@ -25,9 +25,11 @@ class RoadbookController {
     var _this = this;
     _this.descriptionTextEditor = new Quill('#description-editor', {
       modules: {
-        toolbar: {
-          container: '#description-toolbar'
-        }
+        toolbar: [
+          [{ 'size': ['small', false, 'large', 'huge'] },'bold', 'italic', 'underline','link',{ 'color': [] }, { 'background': [] },'clean'],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          [{ 'indent': '-1' }, { 'indent': '+1' }]
+        ]
       },
       theme: 'snow'
     });
@@ -40,7 +42,7 @@ class RoadbookController {
     }
 
     this.descriptionTextEditor.on('text-change', function (delta, source) {
-      var newValue = _this.descriptionTextEditor.getSemanticHTML().replaceAll(/((?:&nbsp;)*)&nbsp;/g, '$1 '); // TODO: Remove replace once quill is fixed
+      var newValue = _this.descriptionTextEditor.getSemanticHTML().replaceAll(/((?:&nbsp;)*)&nbsp;/g, '$1 ').replaceAll("<p></p>", "<p>&nbsp;</p>"); // TODO: Remove replace once quill is fixed
 
       _this.model.desc(newValue);
     });

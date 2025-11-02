@@ -596,3 +596,16 @@ nav.top-bar {
   color: black;
   background-color: yellow;
 }
+
+.ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button {
+  margin: auto;
+}
+
+#roadbook-desc > a.button.tiny.radius.secondary.show-editor.rb-desc,
+#roadbook-desc > a.button.tiny.round.alert.hide-editor.rb-desc {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    padding: 0.325rem 0.95rem 0.1875rem;
+    font-size: 1em;
+}
