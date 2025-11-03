@@ -57,7 +57,7 @@ Show in sidebar
 - Lat/Lon: Toggle to show or hide latitude/longitude coordinates in the notes.
 
 
-## Hepler tools
+## Helper tools
 ### Speed zones autofill
 
 There is an option to populate all speed limit glyphs within a speed zone.

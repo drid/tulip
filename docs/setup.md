@@ -35,17 +35,18 @@ By using your own Google Maps API key, you contribute to the sustainability of T
 
 ## Settings
 
-### General Settings
-- **Open last roadbook on start**: Automatically opens the most recently edited roadbook when launching Tulip, streamlining your workflow for ongoing projects.
+### Application Settings
+- **Open last roadbook**: Automatically opens the most recently edited roadbook when launching Tulip, streamlining your workflow for ongoing projects.
+
+### Tulip settings
 - **Tulip close distance (m)**: Defines the distance threshold (in meters) for considering next instruction as "close." The default is 300 meters, adjustable to match your rally’s precision requirements.
 - **Show CAP heading**: Controls the default visibility of CAP heading for new instructions in the roadbook.
 - **Show coordinates**: Determines whether geographic coordinates are displayed by default for new instructions in the roadbook. 
-
-### Coordinates Format
 - **Coordinates Format**: Allows you to choose from three coordinate display formats for new instructions when the "Show coordinates" option is enabled. The available formats are:
   - **DD MM SS.SSS**: Displays coordinates in degrees, minutes, and seconds (e.g., 40° 26' 46.123" N), offering high precision for rally navigation and compatibility with standard GPS systems.
   - **DD MM.MMM**: Displays coordinates in degrees and decimal minutes (e.g., 40° 26.768' N), providing a balance of precision and readability.
   - **DD.DDDDD**: Displays coordinates in decimal degrees (e.g., 40.44613° N), ideal for applications requiring a compact, numerical format.
+- **Openrally strict export:** See [Openrally](openrally)
 
 ### Map Settings
 - **Set current view as home**: Saves the current map view (including zoom level and center point) as the default "home" view. This is useful for users who frequently work within a specific geographic area, enabling quick access to their preferred map perspective.
