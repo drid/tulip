@@ -58,10 +58,6 @@
     "knockout": "^3.4.0",
     "quill": "^2.0.3"
   },
-  "snap": {
-    "productName": "tulip-roadbook",
-    "grade": "devel"
-  },
   "build": {
     "appId": "tulip.app",
     "win": {
@@ -97,9 +93,6 @@
       "icon": "tulip-logo.icns",
       "executableName": "tulip-roadbook",
       "target": [
-        {
-          "target": "snap"
-        },
         {
           "target": "AppImage",
           "arch": [
