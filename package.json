@@ -9,7 +9,7 @@
     "start": "electron-forge start",
     "build-linux": "electron-builder --linux --publish never && npm run sentry:sourcemaps",
     "build-win": "electron-builder --windows",
-    "build-mac": "electron-forge package --platform=\"darwin\"",
+    "build-mac": "electron-builder --mac",
     "test": "tape test/unit/*-tests.js",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org drid --project tulip ./dist && sentry-cli sourcemaps upload --org drid --project tulip ./dist",
     "convert-svg": "node utils/convert_svgs.js",
@@ -38,10 +38,8 @@
   },
   "homepage": "https://drid.gitlab.io/tulip",
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.5",
-    "@electron-forge/maker-dmg": "^7.6.0",
     "electron": "^29.4.6",
-    "electron-builder": "^25.1.8",
+    "electron-builder": "^26.0.12",
     "jsdom": "^26.1.0",
     "source-map-support": "^0.5.21",
     "tape": "^4.17.0",
@@ -87,13 +85,10 @@
     },
     "mac": {
       "category": "Editors",
-      "icon": "tulip-logo.ico",
+      "icon": "tulip-logo.icns",
       "target": [
         {
-          "target": "dmg",
-          "arch": [
-            "universal"
-          ]
+          "target": "zip"
         }
       ]
     },

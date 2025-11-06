@@ -48,7 +48,7 @@ build-win:
   before_script:
     - apt-get update -y
     - apt-get install --no-install-recommends -y gcc-multilib g++-multilib
-    - npm install electron-builder
+    - npm ci
   script:
     - npm run build-win
   artifacts:
@@ -68,7 +68,7 @@ build-linux:
   before_script:
     - apt-get update -y
     - apt-get install -y fakeroot
-    - npm install electron-builder
+    - npm ci
   script:
     - export VERSION=$(node -e "console.log(require('./package.json').version)")
     - echo "VERSION=$VERSION" >> variables.env
@@ -84,24 +84,34 @@ build-linux:
       - $CI_PROJECT_DIR/dist/*.*
     when: on_success
 
-# build-mac:
-#   stage: build
-#   image: ${BUILDER_IMAGE}
-#   before_script:
-#     - npm install
-#   script:
-#     - export VERSION=$(node -e "console.log(require('./package.json').version)")
-#     - echo "VERSION=$VERSION" >> variables.env
-#     - export APPNAME=$(node -e "console.log(require('./package.json').productName)")
-#     - echo "APPNAME=$APPNAME" >> variables.env
-#     - npm run build-mac
-#   artifacts:
-#     reports:
-#       dotenv: variables.env
-#     name: $CI_COMMIT_REF_SLUG
-#     paths:
-#       - $CI_PROJECT_DIR/out/*.*
-#     when: on_success
+build-mac:
+  stage: build
+  # tags:
+  #   - saas-macos-medium-m1
+  # image: macos-14-xcode-15
+  image: ${BUILDER_IMAGE}
+  needs: 
+    - generate-glyphs
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+  before_script:
+    # - brew install --cask electron-builder
+    - npm ci
+  script:
+    - export VERSION=$(node -e "console.log(require('./package.json').version)")
+    - echo "VERSION=$VERSION" >> variables.env
+    - export APPNAME=$(node -e "console.log(require('./package.json').productName)")
+    - echo "APPNAME=$APPNAME" >> variables.env
+    - npm run build-mac
+  artifacts:
+    reports:
+      dotenv: variables.env
+    name: $CI_COMMIT_REF_SLUG
+    paths:
+      # - dist/*.dmg
+      - dist/*.zip
+    when: on_success
 
 upload_package:
   stage: package
@@ -122,6 +132,8 @@ upload_package:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.x86_64.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.x86_64.rpm"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.aarch64.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.aarch64.rpm"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.armv7l.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.armv7l.rpm"'
+    # - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.dmg" "$PKG_PATH/${APPNAME}-${VERSION}.dmg"'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}-mac.zip" "$PKG_PATH/${APPNAME}-${VERSION}-mac.zip"'
 
 release_job:
   stage: release
@@ -165,6 +177,12 @@ release_job:
           link_type: package
         - name: "${APPNAME}_${VERSION}_x86_64.rpm"
           url: "$PKG_PATH/${APPNAME}-${VERSION}.x86_64.rpm"
+          link_type: package
+        # - name: "${APPNAME}_${VERSION}.dmg"
+        #   url: "$PKG_PATH/${APPNAME}-${VERSION}.dmg"
+        #   link_type: package
+        - name: "${APPNAME}_${VERSION}-mac.zip"
+          url: "$PKG_PATH/${APPNAME}-${VERSION}-mac.zip"
           link_type: package
 
 
