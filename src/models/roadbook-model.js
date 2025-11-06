@@ -370,6 +370,7 @@ class RoadbookModel {
   // This can be reloaded into app for futher editing
   statefulJSON() {
     var roadbookJSON = {
+      "//TLP_ROADBOOK": "Tulip Roadbook file",
       name: this.name(),
       desc: this.desc(),
       totalDistance: this.totalDistance(),

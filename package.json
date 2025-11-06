@@ -1,5 +1,5 @@
 {
-  "name": "Tulip",
+  "name": "tulip",
   "productName": "Tulip",
   "version": "1.10.4",
   "description": "Rally Roadbook Creator",
@@ -64,6 +64,15 @@
   },
   "build": {
     "appId": "tulip.app",
+    "fileAssociations": [
+      {
+        "ext": "tlp",
+        "name": "Roadbook",
+        "description": "Tulip roadbook file",
+        "mimeType": "application/x-tlp",
+        "role": "Editor"
+      }
+    ],
     "win": {
       "icon": "tulip-logo.ico",
       "target": [
@@ -96,6 +105,19 @@
       "category": "Editors",
       "icon": "tulip-logo.icns",
       "executableName": "tulip-roadbook",
+      "mimeTypes": [
+        "application/x-tlp"
+      ],
+      "extraResources": [
+        {
+          "from": "build-resources/application-x-tlp.xml",
+          "to": "usr/share/mime/packages/application-x-tlp.xml"
+        },
+        {
+          "from": "src/svg/TulipLogo.svg",
+          "to": "usr/share/icons/hicolor/scalable/mimetypes/application-x-tlp.svg"
+        }
+      ],
       "target": [
         {
           "target": "snap"

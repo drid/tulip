@@ -11,10 +11,19 @@ if (isDev) {
   Sentry.setUser({ip_address: '0.0.0.0'});
 }
 
+const { Menu, app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
+
+// Single instance
+const gotLock = app.requestSingleInstanceLock();
+if (!gotLock) {
+  app.quit();
+  return
+}
+
+if (require('electron-squirrel-startup')) app.quit();
+
 const fs = require('fs');
 const fsPromises = require('fs').promises; // For promise-based methods
-const { Menu, app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
-if (require('electron-squirrel-startup')) app.quit();
 const path = require('path');
 require('@electron/remote/main').initialize();
 const { createChangelogWindow } = require('./src/changelog');
@@ -25,6 +34,19 @@ const { createStreetviewWindow } = require('./src/streetview');
 var mainWindow = null;
 var printWindow = null;
 var isSaved = true;
+var fileArg = process.argv.find(arg => arg.endsWith('.tlp'));
+
+// Handle file argument
+if (gotLock) {
+  app.on('second-instance', (e, argv) => {
+    const file = argv.find(a => a.endsWith('.tlp'));
+    if (file) handleOpenFile(file);
+    if (mainWindow) mainWindow.focus();
+  });
+}
+
+// — macOS —
+app.on('open-file', (e, p) => { e.preventDefault(); handleOpenFile(p); });
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -222,6 +244,13 @@ function createWindow() {
       }
     }
   });
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (fileArg) {
+      mainWindow.webContents.send('load-roadbook', fileArg);
+      fileArg = null;
+    }
+  });
 }
 
 
@@ -326,6 +355,14 @@ function printPdf(event, arg) {
 
 async function openStreetviewWindow() {
   await createStreetviewWindow(mainWindow);
+}
+
+function handleOpenFile(filePath) {
+  if (mainWindow && mainWindow.webContents.isLoading?.() === false) {
+    mainWindow.webContents.send('load-roadbook', filePath);
+  } else {
+    fileArg = path; // queue it
+  }
 }
 
 //listens for the browser window to ask for the documents folder
