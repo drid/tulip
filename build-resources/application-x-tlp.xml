@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-tlp">
+    <comment>Tulip Roadbook Project</comment>
+    <sub-class-of type="application/json"/>
+    <glob pattern="*.tlp" weight="60"/>
+    <magic priority="70">
+      <match type="string" offset="0:8192" value="//TLP_ROADBOOK"/>
+    </magic>
+    <icon name="application-x-tlp"/>
+  </mime-type>
+</mime-info>

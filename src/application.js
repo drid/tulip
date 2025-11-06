@@ -843,5 +843,10 @@ class App {
       _this.userGlyphs = result;
       _this.glyphControls.updateUserGlyphs(result);
     });
+    
+    this.ipc.on('load-roadbook', function (event, path) {
+      _this.loadRoadBook(path);
+    });
+    
   }
 };
