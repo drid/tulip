@@ -16,10 +16,6 @@
     "changelog": "git cliff --unreleased --tag \"v$npm_package_version\" --prepend CHANGELOG.md",
     "release": "scripts/version.sh"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/storm-factory/tulip.git"
-  },
   "keywords": [
     "Electron",
     "roadbook",
@@ -33,10 +29,14 @@
     "Ilias Daradimos <judgedrid@gmail.com>"
   ],
   "license": "GPL-2.0",
-  "bugs": {
-    "url": "https://github.com/storm-factory/tulip/issues"
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/drid/tulip.git"
   },
-  "homepage": "https://github.com/storm-factory/tulip",
+  "bugs": {
+    "url": "https://gitlab.com/drid/tulip/-/issues"
+  },
+  "homepage": "https://drid.gitlab.io/tulip",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",
     "@electron-forge/maker-dmg": "^7.6.0",
