@@ -135,6 +135,7 @@
           { "src": "./assets/svg/glyphs/electric-pole2.svg", "text": "second electric pole" },
           { "src": "./assets/svg/glyphs/high-voltage-line.svg", "text": "high voltage line" },
           { "src": "./assets/svg/glyphs/water-trough.svg", "text": "water trough" },
+          { "src": "./assets/svg/glyphs/aqueduct-canal.svg", "text": "Aqueduct/Canal" },
           { "src": "./assets/svg/glyphs/petrol-station.svg", "text": "Petrol station" },
           { "src": "./assets/svg/glyphs/fuel-type-95-green.svg", "text": "Fuel Petrol/Gasoline" },
           { "src": "./assets/svg/glyphs/fuel-type-95-red.svg", "text": "Fuel Petrol/Gasoline" },
