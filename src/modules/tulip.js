@@ -186,14 +186,14 @@ var Tulip = Class({
 
           fabric.util.loadImage(object.src, function (img, isError) {
             if (isError || !img) {
-              console.error(`Failed to load image: ${object.src}`);
+              console.warn(`Failed to load image: ${object.src}`);
               // Fallback: Set a default image source
               remmapedSrc = _this.remapOldGlyphs(object.src);
               if (remmapedSrc === false) {
                 remmapedSrc = './assets/svg/glyphs/missing-glyph.svg';
               }
               object.setSrc(remmapedSrc, function () {
-                // _this.canvas.renderAll();
+                _this.canvas.renderAll();
               }, { crossOrigin: 'anonymous' });
             }
           }, null, 'anonymous');
@@ -316,18 +316,18 @@ var Tulip = Class({
     if (activeObject && activeObject.id) {
       this.canvas.sendToBack(activeObject);
       this.canvas.forEachObject((object, index, array) => {
-        object.idx=index;
+        object.idx = index;
       })
       this.canvas.renderAll();
     }
   },
-  
+
   bringForwardActiveGlyph: function () {
     const activeObject = this.canvas.getActiveObject();
     if (activeObject && activeObject.id) {
       this.canvas.bringToFront(activeObject);
       this.canvas.forEachObject((object, index, array) => {
-        object.idx=index;
+        object.idx = index;
       })
       this.canvas.renderAll();
     }
@@ -439,8 +439,12 @@ var Tulip = Class({
     // NOTE not sure, but again here the for loop doesn't error out like the for each
     for (glyph of this.glyphs) {
       var json = glyph.toJSON()
-      if (glyph.type == 'image')
+      if (glyph.type == 'image') {
+        // Do not store missing glyph image
+        if (json.src.includes("missing-glyph"))
+          json.src = glyph.src;
         json.src = this.truncateGlyphSource(json.src);
+      }
       json.id = glyph.id;
       json.idx = glyph.idx;
       glyphsJson.push(json);
