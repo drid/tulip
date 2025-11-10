@@ -70,7 +70,12 @@ function createWindow() {
         { label: "Append", click: function () { mainWindow.webContents.send('append-roadbook'); } },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: function () { mainWindow.webContents.send('save-roadbook'); } },
         { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: function () { mainWindow.webContents.send('save-roadbook-as'); } },
-        { label: "Import GPX", accelerator: "CmdOrCtrl+I", click: function () { mainWindow.webContents.send('import-gpx'); } },
+        { label: "Import",
+          submenu: [
+            { label: "GPX", accelerator: "CmdOrCtrl+I", click: function () { mainWindow.webContents.send('import-gpx'); } },
+            { label: "Rally Navigator", accelerator: "CmdOrCtrl+G", click: function () { mainWindow.webContents.send('import-rn'); } },
+          ]
+        },
         {
           label: "Export",
           submenu: [

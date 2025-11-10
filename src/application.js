@@ -295,13 +295,21 @@ class App {
     }
   }
 
-  importGPX() {
+  importThirdParty(type="gpx") {
     var _this = this;
 
+    switch (type) {
+      case 'gpx':
+        var filters = [{ name: 'Import GPX', extensions: ['gpx'] }]
+        break;
+      case 'rn':
+        var filters = [{ name: 'Import Rally Navigator 2', extensions: ['rn2'] }]
+        break;
+      default:
+        return;
+    }
     globalNode.dialog().showOpenDialog({
-      filters: [
-        { name: 'import gpx', extensions: ['gpx'] }
-      ]
+      filters: filters
     }).then(openInfo => {
       var fileNames = openInfo.filePaths;
 
@@ -313,11 +321,20 @@ class App {
       $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
 
       var fileName = fileNames[0];
-      console.log("Reading GPX file:", fileName);
+      console.log("Reading",type,"file:", fileName);
 
       globalNode.fs.readFile(fileName, 'utf-8', function (err, data) {
         try {
-          _this.io.importGPX(data);
+          switch (type) {
+            case 'gpx':
+              _this.io.importGPX(data);
+              break;
+            case 'rn':
+              _this.io.importRN(data);
+              break;
+            default:
+              return;
+          }
         } catch (error) {
           console.error(error);
         }
@@ -655,7 +672,11 @@ class App {
     });
 
     this.ipc.on('import-gpx', function (event, arg) {
-      _this.importGPX();
+      _this.importThirdParty('gpx');
+    });
+
+    this.ipc.on('import-rn', function (event, arg) {
+      _this.importThirdParty('rn');
     });
 
     this.ipc.on('export-gpx', function (event, arg) {
