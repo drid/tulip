@@ -146,11 +146,18 @@ class App {
     }
     console.log("Schema version:", schemaVersion);
     if (schemaVersion < this.schemaVersion) {
-      alert("This is a roadbook from an old Tulip version\n\nRoadbook schema has changed to accommodate new notes format, saving this roadbook will make it incompatible with versions 1.9.6 and earlier.\
-        \n1.Make a backup or save under new name\n2.Check roadbook glyphs for size and position.\n3.See changelog for details")
+      globalNode.dialog().showMessageBoxSync({
+        message: "This is a roadbook from an old Tulip version\n\nRoadbook schema has changed to accommodate new notes format, saving this roadbook will make it incompatible with versions 1.9.6 and earlier.\
+        \n1.Make a backup or save under new name\n2.Check roadbook glyphs for size and position.\n3.See changelog for details",
+        type: 'info',
+        buttons: ['Understood']})
     }
     if (schemaVersion > this.schemaVersion) {
-      alert("This roadbook has been created with a later version of Tulip and cannot be loaded.\n\Please update Tulip");
+      globalNode.dialog().showMessageBoxSync({
+        message: "This roadbook has been created with a later version of Tulip and cannot be loaded.\n\Please update Tulip",
+        type: 'info',
+        buttons: ['OK']
+      });
       return false;
     }
     return true;
@@ -161,7 +168,7 @@ class App {
     var defaultPath = "";
     try {
       defaultPath = localStorage.getItem('lastRoadBook').match(/^(.*[\\/])/)[1];
-    } catch {}
+    } catch { }
     globalNode.dialog().showOpenDialog({
       'title': 'Open Roadbook',
       'defaultPath': defaultPath,
@@ -217,9 +224,17 @@ class App {
       var filename = this.roadbook.filePath.replace('tlp', 'gpx');
       globalNode.fs.writeFile(filename, gpx, function (err) { });
       $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
-      alert('Your gpx has been exported to the same directory you saved your roadbook');
+      globalNode.dialog().showMessageBoxSync({
+        message: "Your gpx has been exported to the same directory you saved your roadbook",
+        type: 'info',
+        buttons: ['OK']
+      });
     } else {
-      alert('F@#k1ng Kamaz! You must save your roadbook before you can export GPX tracks');
+      globalNode.dialog().showMessageBoxSync({
+        message: "You must save your roadbook before you can export GPX tracks",
+        type: 'info',
+        buttons: ['OK']
+      });
     }
   }
 
@@ -234,9 +249,17 @@ class App {
       console.log("exported openrally gpx to", filename);
 
       $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
-      alert('Your gpx has been exported to the same directory you saved your roadbook');
+      globalNode.dialog().showMessageBoxSync({
+        message: "Your gpx has been exported to the same directory you saved your roadbook",
+        type: 'info',
+        buttons: ['OK']
+      });
     } else {
-      alert('F@#k1ng Kamaz! You must save your roadbook before you can export GPX tracks');
+      globalNode.dialog().showMessageBoxSync({
+        message: "You must save your roadbook before you can export GPX tracks",
+        type: 'info',
+        buttons: ['OK']
+      });
     }
   }
 
@@ -275,7 +298,11 @@ class App {
       $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
       this.ipc.send('ignite-print', app.roadbook.statelessJSON(), this.settings);
     } else {
-      alert('You must save your roadbook before you can export it as a PDF');
+      globalNode.dialog().showMessageBoxSync({
+        message: "You must save your roadbook before you can save it as PDF.",
+        type: 'info',
+        buttons: ['OK']
+      });
     }
   }
 
@@ -460,7 +487,11 @@ class App {
           this.loadGoogleMaps(proxyUrl);
         } else {
           console.log("No API key and proxy is unavailable.");
-          window.alert("You must set your Google Maps key in settings and restart the app.");
+          globalNode.dialog().showMessageBoxSync({
+            message: "You must set your Google Maps key in settings and restart the app.",
+            type: 'info',
+            buttons: ['OK']
+          });
           $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-left');
         }
       });
@@ -526,11 +557,12 @@ class App {
     });
 
     $('[name="toggle-insert-type"]').on('change', function (e) {
-      if (e.target.id == 'toggle-insert-track'){
+      if (e.target.id == 'toggle-insert-track') {
         $('.track-selection').removeClass('hidden');
         $('.glyph-selection').addClass('hidden');
-        $('.text-selection').addClass('hidden');}
-      else if (e.target.id == 'toggle-insert-glyph'){
+        $('.text-selection').addClass('hidden');
+      }
+      else if (e.target.id == 'toggle-insert-glyph') {
         $('.track-selection').addClass('hidden');
         $('.glyph-selection').removeClass('hidden');
         $('.text-selection').addClass('hidden');

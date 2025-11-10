@@ -6,7 +6,11 @@ var Io = Class({
       var gpxDoc = $.parseXML(gpx.trim());
       this.gpx = $(gpxDoc);
     } catch (e) {
-      alert("Error parsing GPX :-(");
+      globalNode.dialog().showMessageBoxSync({
+        message: "Error parsing GPX :-(",
+        type: 'error',
+        buttons: ['OK']
+      });
       app.stopLoading();
       return;
     }
@@ -41,17 +45,29 @@ var Io = Class({
     // Load track points and fallback to route points
     path = this.gpx.find("trkpt");
     if (path.length == 0) {
-      alert("No track is found, trying to load route");
+      globalNode.dialog().showMessageBoxSync({
+        message: "No track is found, trying to load route",
+        type: 'warning',
+        buttons: ['Continue']
+      });
       path = this.gpx.find("rtept")
     }
     // Fallback to just waypoints
     if (path.length == 0) {
-      alert("No track or route is found, trying to load waypoints");
+      globalNode.dialog().showMessageBoxSync({
+        message: "No track or route is found, trying to load waypoints",
+        type: 'warning',
+        buttons: ['Continue']
+      });
       path = this.gpx.find("wpt");
     }
 
     if (path.length == 0) {
-      alert("No usable points found, aborting");
+      globalNode.dialog().showMessageBoxSync({
+        message: "No usable points found, aborting",
+        type: 'error',
+        buttons: ['OK']
+      });
       return;
     }
 
