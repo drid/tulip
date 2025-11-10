@@ -385,5 +385,21 @@ var Io = Class({
       if (node.match(/^<?\w[^>]*[^\/]$/)) indent += tab; // Increase indent for opening tags
     });
     return formatted.slice(0, -2); // Remove trailing newline
+  },
+
+  // Rally Navigator 2 import
+  importRN(data) {
+    const rnr = JSON.parse(data);
+    if (rnr.route.name)
+      app.roadbook.name(rnr.route.name)
+    if (rnr.route.description)
+      app.roadbook.desc(rnr.route.description)
+    rnr.route.waypoints.forEach(waypoint => {
+      var latLng = new google.maps.LatLng(waypoint.lat, waypoint.lon);
+      app.mapController.addRoutePoint(latLng);
+      if (waypoint.show)
+        this.addWaypoint(app.mapModel.markers[waypoint.waypointid]);
+    });
+    app.mapModel.updateRoadbookAndInstructions();
   }
 });
