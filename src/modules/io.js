@@ -31,16 +31,10 @@ var Io = Class({
       });
     }
 
-    if (! name) {
-      name = "GPX Import"
-    }
-    if (! desc) {
-      desc = "GPX Import"
-    }
-
-    app.roadbook.name(name);
-    app.roadbook.desc(desc);
-
+    if (app.roadbook.name() == 'Name your roadbook')
+        app.roadbook.name(name || "GPX Import");
+    if (app.roadbook.desc() == 'Describe your roadbook' && desc !== false)
+        app.roadbook.desc(desc);
 
     // Load track points and fallback to route points
     path = this.gpx.find("trkpt");

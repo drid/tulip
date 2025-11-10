@@ -24,8 +24,8 @@ class RoadbookModel {
   */
 
   newRoadbook() {
-    this.name('New Roadbook');
-    this.desc('Roadbook description');
+    this.name('Name your roadbook');
+    this.desc('Describe your roadbook');
     this.totalDistance(0);
     this.customLogo(null)
     this.filePath = null;
