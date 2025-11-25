@@ -359,3 +359,34 @@ ipcMain.on('update-saved-state', (event, data) => {
 })
 
 ipcMain.handle('get-is-dev', () => isDev);
+
+ipcMain.on('get-user-glyphs', (event, glyphPath) => {
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg']
+      .map(e => e.toLowerCase());
+
+    const results = [];
+
+    function scan(currentPath) {
+      const files = fs.readdirSync(currentPath);
+
+      for (const file of files) {
+        const fullPath = path.join(currentPath, file);
+        const stat = fs.statSync(fullPath);
+
+        if (stat.isDirectory()) {
+          if (!file.startsWith('.') && file !== 'node_modules') {
+            scan(fullPath);
+            continue;
+          }
+        } else {
+          const ext = path.extname(file).toLowerCase();
+          if (imageExtensions.includes(ext)) {
+            results.push(fullPath);
+          }
+        }
+      }
+    }
+
+    scan(path.resolve(glyphPath));
+    event.sender.send('user-glyphs', results);
+})

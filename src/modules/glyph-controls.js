@@ -1,8 +1,7 @@
 // TODO refactor this to use MVC pattern and act as a controller for the currentlyEditingInstruction for the roadbook
 class GlyphControls {
 
-  constructor(app_path, glyphStructure) {
-    this.glyph_path = app_path + '/assets/svg/glyphs/';
+  constructor(glyphStructure) {
     this.glyphStructure = glyphStructure
     this.populateGlyphs();
     this.initListeners();
@@ -57,7 +56,7 @@ class GlyphControls {
 
 bindToGlyphImages() {
   var _this = this;
-  $('.glyph').on('click', function (e) {
+  $('.glyph').off('click').on('click', function (e) {
     _this.handleGlyphSelectUI(e);
     _this.addGlyphToInstruction(this);
   });
@@ -100,6 +99,11 @@ initListeners() {
     app.roadbook.currentlyEditingInstruction.note.setTextStyle(style);
     
   });
+
+  $('#user-add-glyph').on('click', function() {
+    console.log('Update user glyph');
+    app.requestUserGlyphsUpdate();
+  })
 
   //TODO fill out this todo, you know you wanna.
   $('.glyph-grid').on('click', function (e) {
@@ -181,6 +185,7 @@ addGlyphToInstruction(element) {
 populateGlyphs() {
   const accordion = this._generateAccordion(this.glyphStructure);
   $('#glyph-content').html(accordion);
+  $('#user-glyphs ul').append('<li><a class="th" href="#" id="user-add-glyph"><i class="fi-refresh"></i></a><p>Reload Glyphs</p></li>')
 }
 
 // Function to generate HTML for items
@@ -203,7 +208,6 @@ _generateTabs(tabs) {
       </ul>
     </div>
   `).join('');
-
   return `
     <ul class="tabs" data-tab>
       ${tabTitles}
@@ -233,4 +237,16 @@ _generateAccordion(data) {
     </ul>
   `;
 }
+
+updateUserGlyphs(filenames) {
+  const items = filenames.map(filename => ({
+    src: filename,
+    text: ''
+  }));
+  const html = this._generateItems(items);
+  $('#user-glyphs ul li').slice(1).remove();
+  $('#user-glyphs ul').append(html);
+  this.bindToGlyphImages();
+}
+
 };

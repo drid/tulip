@@ -472,7 +472,7 @@ var Tulip = Class({
 
   truncateGlyphSource: function (src) {
     var index = src.lastIndexOf("assets/svg/glyphs");
-    return "./" + src.slice(index);
+    return (index == -1 ? src.replace(app.settings.user_glyph_path, "{user_glyphs_path}") : "./" + src.slice(index));
   },
 
   addTrackHandles(options) {

@@ -67,15 +67,18 @@ class App {
 
     /*
       initialize UI listeners
-      */
-    this.glyphStructure = JSON.parse(this.fs.readFileSync(globalNode.getAppPath() + '/src/modules/glyphs.json', 'utf8'));
-    this.glyphControls = new GlyphControls(globalNode.getAppPath(), this.glyphStructure);
+    */
 
     this.initListeners();
 
     this.noteControls = new NoteControls();
 
     this.settings = this.loadSettings();
+
+    this.glyphStructure = JSON.parse(this.fs.readFileSync(globalNode.getAppPath() + '/src/modules/glyphs.json', 'utf8'));
+    this.glyphControls = new GlyphControls(this.glyphStructure);
+    if (this.settings.user_glyph_path)
+      this.ipc.send('get-user-glyphs', this.settings.user_glyph_path)
 
     this.ipc.send('get-documents-path');
   }
@@ -118,7 +121,7 @@ class App {
     //we need to figure out how to watch a file while it's being edited so if it's moved it gets saved to the right place ***fs.watch***
     _this.fs.readFile(fileName, 'utf-8', function (err, data) {
       try {
-        var json = JSON.parse(data);
+        var json = JSON.parse(data.replaceAll("{user_glyphs_path}", _this.settings.user_glyph_path ?? ""));
         if (!_this.checkRoadbookVersion(json))
           return
         if (!append) {
@@ -150,7 +153,8 @@ class App {
         message: "This is a roadbook from an old Tulip version\n\nRoadbook schema has changed to accommodate new notes format, saving this roadbook will make it incompatible with versions 1.9.6 and earlier.\
         \n1.Make a backup or save under new name\n2.Check roadbook glyphs for size and position.\n3.See changelog for details",
         type: 'info',
-        buttons: ['Understood']})
+        buttons: ['Understood']
+      })
     }
     if (schemaVersion > this.schemaVersion) {
       globalNode.dialog().showMessageBoxSync({
@@ -216,6 +220,34 @@ class App {
       var imgSrc = "data:image/" + imageType + ";base64," + globalNode.uint8ArrayToBase64(data);
       _this.roadbook.customLogo(imgSrc);
     });
+  }
+
+  openUserGlyphFolder() {
+    var _this = this;
+    globalNode.dialog().showOpenDialog({
+      title: 'Select user glyphs folder',
+      defaultPath: localStorage.getItem('lastRoadBook').match(/^(.*[\\/])/)[1],
+      buttonLabel: 'Select Folder',          // custom button text
+      properties: ['openDirectory', 'createDirectory'] // createDirectory lets user make new folder
+    }).then(openInfo => {
+      if (openInfo.canceled) return;
+
+      var glyphsPath = openInfo.filePaths[0];
+
+      if (glyphsPath === undefined)
+        return;
+
+      _this.settings.user_glyph_path = glyphsPath;
+      $('#user_glyph_path_text').text(glyphsPath);
+      _this.requestUserGlyphsUpdate(glyphsPath);
+    });
+  }
+
+  requestUserGlyphsUpdate(glyphsPath = null) {
+    if (!glyphsPath)
+      glyphsPath = this.settings.user_glyph_path || null;
+    if (glyphsPath)
+      this.ipc.send('get-user-glyphs', glyphsPath);
   }
 
   exportGPX() {
@@ -459,6 +491,7 @@ class App {
     $('#show_coordinates').prop('checked', settings.showCoordinates ?? false);
     $('#coordinates_format').val(settings.coordinatesFormat ?? 'ddmmss');
     $('#openrally_strict').prop('checked', settings.openRallyStrict);
+    $('#user_glyph_path_text').text(settings.user_glyph_path ?? "No path selected");
 
     if (settings.openDevConsole) {
       this.ipc.send('open-dev-tools');
@@ -546,6 +579,10 @@ class App {
       }
       $(this).blur();
     });
+
+    $('#user_glyph_path_select').on('click', function () {
+      _this.openUserGlyphFolder();
+    })
 
     $('#set-current-view-as-home').on('click', function () {
       _this.setHomeView();
@@ -635,7 +672,6 @@ class App {
     this.ipc.on('zoom-out', function (event, arg) {
       _this.mapController.zout();
     });
-
     this.ipc.on('add-glyph', function (event, arg) {
       if (_this.roadbook.currentlyEditingInstruction) {
         _this.glyphControls.showGlyphModal(30, 30);
@@ -756,9 +792,9 @@ class App {
     });
 
     window.addEventListener("beforeunload", function (event) {
-      if (_this.roadbook.filePath) {
+      if (_this.roadbookopen-custom-glyph-folder.filePath) {
         var rb = JSON.stringify(this.roadbook.statefulJSON(), null, 2);
-        var save = _this.dialog.showMessageBox({ message: "Would you like to save before closing? All unsaved changes will be lost.", buttons: ['ok', 'nope'], type: 'question' });
+        var save = open-custom-glyph-folder_this.dialog.showMessageBox({ message: "Would you like to save before closing? All unsaved changes will be lost.", buttons: ['ok', 'nope'], type: 'question' });
         if (save == 0) {
           _this.fs.writeFile(_this.roadbook.filePath, rb, function (err) { });
         }
@@ -792,6 +828,11 @@ class App {
 
     this.ipc.on('fill-zone-speed-limit', function (event, arg) {
       app.roadbook.fillZoneSpeedLimit();
+    });
+
+    this.ipc.on('user-glyphs', (event, result) => {
+      _this.userGlyphs = result;
+      _this.glyphControls.updateUserGlyphs(result);
     });
   }
 };
