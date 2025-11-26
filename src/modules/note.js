@@ -194,9 +194,13 @@ var Note = Class({
     // NOTE not sure, but again here the for loop doesn't error out like the for each
     for (glyph of this.glyphs) {
       var json = glyph.toJSON()
-      if (json.src) {
+      if (glyph.type == 'image') {
+        // Do not store missing glyph image
+        if (json.src.includes("missing-glyph"))
+          json.src = glyph.src;
         json.src = this.truncateGlyphSource(json.src);
       }
+      json.id = glyph.id;
       glyphsJson.push(json);
     }
     return glyphsJson;
