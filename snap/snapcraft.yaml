@@ -1,0 +1,72 @@
+name: tulip-roadbook
+base: core22
+adopt-info: git                  # Auto-version from git tag (v1.10.3 → 1.10.3)
+version: git                     # Fallback if no tag
+summary: Rally Roadbook Creator
+description: |
+  Tulip is a powerful roadbook editor used by rally teams worldwide.
+  Create, edit and print FIM/FIA compliant roadbooks.
+
+grade: devel                     # Switch to 'stable' for release
+confinement: strict
+icon: tulip-logo.icns
+
+apps:
+  tulip:
+    command: tulip-roadbook
+    extensions: [gnome]          # Proper theming on GNOME/Ubuntu
+    plugs:
+      - home
+      - network
+      - network-bind
+      - removable-media
+      - raw-usb
+      - serial-port
+      - joystick
+    environment:
+      HOME: $SNAP_USER_DATA
+    # desktop: snap/gui/tulip-roadbook.desktop
+
+parts:
+  tulip:
+    plugin: npm                  # ← CORRECT PLUGIN FOR core22
+    source: .
+    npm-node-version: 20.18.0    # Latest Node 20 LTS (Electron 29 compatible)
+    npm-include-node: true       # Bundles Node.js runtime in the snap (required!)
+    override-pull: |
+      craftctl default
+      craftctl set version=$(git describe --tags --abbrev=0 | sed 's/^v//')
+    override-build: |
+      npm ci --omit=dev
+      
+      # Build unpacked Electron dir (fast, no packaging)
+      npm run build-linux -- --dir -c.compression=store
+      
+      # Copy to install dir
+      mkdir -p $CRAFT_PART_INSTALL/app
+      cp -r dist/linux-unpacked/* $CRAFT_PART_INSTALL/app/
+      chmod 755 $CRAFT_PART_INSTALL/app/tulip-roadbook
+      
+      # Copy GUI assets
+      mkdir -p $CRAFT_PART_INSTALL/meta/gui
+      cp snap/gui/tulip-roadbook.png $CRAFT_PART_INSTALL/meta/gui/
+      cp snap/gui/tulip-roadbook.desktop $CRAFT_PART_INSTALL/meta/gui/
+    stage-packages:
+      - libgtk-3-0
+      - libnotify4
+      - libnss3
+      - libxss1
+      - libxtst6
+      - xdg-utils
+      - libatspi2.0-0
+      - libuuid1
+      - libappindicator3-1
+      - libsecret-1-0
+      - libasound2
+    prime:
+      - -usr/share/doc/*
+      - -usr/share/lintian/*
+
+layout:
+  /usr/share/electron29:
+    bind: $SNAP/electron29
