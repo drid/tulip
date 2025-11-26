@@ -6,7 +6,7 @@
   "main": "main.js",
   "type": "commonjs",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "electron .",
     "build-linux": "electron-builder --linux --publish never && npm run sentry:sourcemaps",
     "build-win": "electron-builder --windows",
     "build-mac": "electron-builder --mac",
