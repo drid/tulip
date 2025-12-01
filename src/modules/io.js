@@ -161,7 +161,7 @@ var Io = Class({
     var points = app.mapModel.markers;
     var instCount = 1;
     for (var i = 0; i < points.length; i++) {
-      if (points[i].instruction !== undefined) {
+      if (points[i].instruction) {
         var waypoint = xmlDoc.createElement('wpt');
         waypoint.setAttribute('lat', points[i].getPosition().lat());
         waypoint.setAttribute('lon', points[i].getPosition().lng());
