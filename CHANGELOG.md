@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.4] - 2025-12-15
+
+### 🚀 Features
+
+- Add aqueduct glyph
+- Custom glyphs folder
+
+### 🐛 Bug Fixes
+
+- Missing glyphs icon saved to roadbook
+- Import GPX name and description when RB has default values
+- Note saving missing image
+- Npm start using electron-forge
+- GPX export exception when instruction has been deleted
+
+### 🚜 Refactor
+
+- Change alert to messagebox due to focus bug on electron
+
+### 📚 Documentation
+
+- Add new glyph process to CONTRIBUTE.md
+- Add user glyphs documentation
+
+### ⚙️ Miscellaneous Tasks
+
+- Build for mac
+
 ## [1.10.3] - 2025-11-02
 
 ### 🐛 Bug Fixes
