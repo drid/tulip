@@ -80,7 +80,7 @@ We welcome contributions! Please submit all merge requests to our **GitLab repos
 
 The GitHub repository is a **read-only mirror** and does not accept contributions.
 
-For guidelines on contributing, see [CONTRIBUTE.md](CONTRIBUTE.md).
+For guidelines on contributing, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## LICENSE
 
