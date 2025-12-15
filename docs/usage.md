@@ -73,3 +73,6 @@ If 2 zones are one exactly after another, both zones will be filled as if it was
 A google street view window is available under View -> Instruction street view
 
 Click on an instruction to get streetview of that point
+
+### Rescan custom glyphs folder
+Under **User glyphs** the first icon rescans user glyphs folder.

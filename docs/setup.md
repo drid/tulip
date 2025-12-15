@@ -38,6 +38,11 @@ By using your own Google Maps API key, you contribute to the sustainability of T
 ### Application Settings
 - **Open last roadbook**: Automatically opens the most recently edited roadbook when launching Tulip, streamlining your workflow for ongoing projects.
 
+### Custom glyph path
+Select the path for custom glyphs. All images in this path will be available under **User glyphs**
+
+**Note:** When sharing a roadbook file also share the custom glyphs used.
+
 ### Tulip settings
 - **Tulip close distance (m)**: Defines the distance threshold (in meters) for considering next instruction as "close." The default is 300 meters, adjustable to match your rally’s precision requirements.
 - **Show CAP heading**: Controls the default visibility of CAP heading for new instructions in the roadbook.

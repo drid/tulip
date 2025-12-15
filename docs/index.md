@@ -6,9 +6,11 @@ Tulip is a powerful and user-friendly editor designed specifically for creating 
 ## Key Features
 - **GPX File Import**: Easily import GPX files to start building or refining your rally routes.
 - **Interactive Route Planning**: Plan and visualize routes directly on an integrated map interface, ensuring precision and clarity.
+- **Streetview helper**: Provides google streetview for instructions.
 - **Flexible Export Options**: Export routes in both standard GPX and OpenRally GPX formats for compatibility with various navigation systems.
 - **Professional Roadbook Output**: Generate high-quality roadbook PDFs ready for printing or digital distribution, tailored to rally standards.
 - **Cross-Platform Compatibility**: Runs smoothly on Linux, macOS, and Windows, providing a consistent experience across all major operating systems.
+- **User glpyhs**: Allows for user images and icons to be used as glyphs
 
 Tulip is designed to empower rally teams with the tools needed to create accurate and professional roadbooks efficiently, making it an essential companion for rally planning and execution.
 
