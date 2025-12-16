@@ -178,6 +178,10 @@ addGlyphToInstruction(element) {
     app.roadbook.currentlyEditingInstruction.note.addGlyph({ top: 30, left: 30 }, src);
   } else {
     // NOTE this module should only know about the roadbook
+    // Force red color for Qt, -V, E3
+    src = src.replace('/leave.svg', '/leave-red.svg');
+    src = src.replace('/narrow.svg', '/narrow-red.svg');
+    src = src.replace('/less-visible.svg', '/less-visible-red.svg');
     app.roadbook.currentlyEditingInstruction.tulip.addGlyph(app.glyphPlacementPosition, src);
   }
 }

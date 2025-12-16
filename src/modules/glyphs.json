@@ -13,7 +13,6 @@
           { "src": "./assets/svg/glyphs/more-or-less-visible.svg", "text": "more or less visible" },
           { "src": "./assets/svg/glyphs/more-visible.svg", "text": "More visible" },
           { "src": "./assets/svg/glyphs/less-visible.svg", "text": "Less visible" },
-          { "src": "./assets/svg/glyphs/less-visible-red.svg", "text": "Less visible" },
           { "src": "./assets/svg/glyphs/narrow.svg", "text": "narrow" },
           { "src": "./assets/svg/glyphs/abbr-IMP.svg", "text": "imperative" },
           { "src": "./assets/svg/glyphs/distance-arrow.svg", "text": "Distance arrow" },
