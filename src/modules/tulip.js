@@ -30,7 +30,6 @@ var Tulip = Class({
     this.addedTrackType = 'track';
     // TODO should this be checking JSON for this?
     this.exitTrackEdited = false;
-    this.mainTrackColor = '#22F';
     this.markerAngle = 45;
     this.initTulip(angle, trackTypes, json);
   },
@@ -257,14 +256,6 @@ var Tulip = Class({
   },
 
   buildEntryTrackFromJson(entry, entryTrackType) {
-    entry.paths = entry.paths.map(obj => {
-      if (obj.stroke === '#000') {
-        return { ...obj, stroke: this.mainTrackColor };
-      }
-      return obj;
-    });
-    entry.point.stroke = this.mainTrackColor;
-    entry.point.fill = this.mainTrackColor;
     entry.point.selectable = false;
     var paths = this.buildPaths(entry.paths);
     var point = new fabric.Circle(entry.point);
@@ -273,14 +264,6 @@ var Tulip = Class({
   },
 
   buildExitTrackFromJson(exit, exitTrackType) {
-    exit.paths = exit.paths.map(obj => {
-      if (obj.stroke === '#000') {
-        return { ...obj, stroke: this.mainTrackColor };
-      }
-      return obj;
-    });
-    exit.point.stroke = this.mainTrackColor;
-    exit.point.fill = this.mainTrackColor;
     var paths = this.buildPaths(exit.paths);
     var point = new fabric.Triangle(exit.point)
     this.canvas.add(point);
