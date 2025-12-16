@@ -106,11 +106,12 @@ class Track {
   }
 
   static disableDefaults(object, secondaryTrack = false) {
-    object.hasBorders = secondaryTrack;
+    object.hasBorders = false;
     object.selectable = secondaryTrack;
     object.hasControls = false;
     object.lockMovementX = true;
     object.lockMovementY = true;
+    object.perPixelTargetFind = true;
   }
 
   initTypes() {
@@ -220,10 +221,18 @@ class Track {
     }];
   }
 
+  getTypeOptions(type) {
+    var typeOptions = this.types[type].map(obj => {
+      obj.perPixelTargetFind = true;
+      return obj;
+    });
+    return typeOptions;
+  }
+
   changeType(type, canvas, mainTrack = true) {
     var pathSVG = $(this.paths[0].toSVG()).attr('d')
     this.clearPathsFromCanvas(canvas);
-    var typeOptions = this.types[type];
+    var typeOptions = this.getTypeOptions(type);
     if (mainTrack) {
       typeOptions = typeOptions.map(obj => {
         if (obj.stroke === this.trackColor) {
