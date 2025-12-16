@@ -30,10 +30,10 @@ class Track {
     }
   }
 
-  buildTrackPaths(angle, origin, type, mainTrack = false) {
+  buildTrackPaths(angle, origin, type, mainTrack = false, path = null) {
     type = (type !== undefined ? type : 'track')
     var paths = [];
-    var typeOptions = this.types[type] || this.types['track'];
+    var typeOptions = this.getTypeOptions(type || 'track');
     if (mainTrack) {
       typeOptions = typeOptions.map(obj => {
         if (obj.stroke === this.trackColor) {
@@ -46,9 +46,13 @@ class Track {
         return { ...obj, id: this.id };
       });
     }
+
+    // fabric 1.5 path and path from string behave differently
+    const pathStr = path ? path.map(segment => segment.join(" ")).join(" ") : this.buildTrackPathString(angle, origin);
+
     for (var i = 0; i < typeOptions.length; i++) {
       Track.disableDefaults(typeOptions[i], true);
-      paths.push(new fabric.Path(this.buildTrackPathString(angle, origin), typeOptions[i]));
+      paths.push(new fabric.Path(pathStr, typeOptions[i]));
     }
     return paths;
   }
@@ -106,62 +110,37 @@ class Track {
   }
 
   static disableDefaults(object, secondaryTrack = false) {
-    object.hasBorders = false;
     object.selectable = secondaryTrack;
-    object.hasControls = false;
-    object.lockMovementX = true;
-    object.lockMovementY = true;
-    object.perPixelTargetFind = true;
   }
 
   initTypes() {
     const small = 4;
     const track = 6;
     const tarmac = 8;
-    
+
     this.types.lowVisTrack = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: small,
-      strokeDashArray: [small*1.469, small*1.063, small*3.2405, small*1.063],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
+      strokeDashArray: [small * 1.469, small * 1.063, small * 3.2405, small * 1.063],
     }];
     this.types.offPiste = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: small,
-      strokeDashArray: [small*1.3, small*1.3],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
+      strokeDashArray: [small * 1.3, small * 1.3],
     }];
     this.types.smallTrack = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: small,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     }];
     this.types.track = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: track,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     }];
 
     this.types.tarmacRoad = [{
@@ -169,61 +148,41 @@ class Track {
       stroke: this.trackColor,
       strokeWidth: tarmac,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     },
     {
       fill: '',
       stroke: '#fff',
-      strokeWidth: tarmac/2,
+      strokeWidth: tarmac / 2,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     }];
     this.types.dcw = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: 10,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     },
     {
       fill: '',
       stroke: '#fff',
       strokeWidth: 6,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     },
     {
       fill: '',
       stroke: this.trackColor,
       strokeWidth: 2,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     }];
   }
 
   getTypeOptions(type) {
-    var typeOptions = this.types[type].map(obj => {
+    const typeOptions = this.types[type].map(obj => {
       obj.perPixelTargetFind = true;
+      obj.hasControls = false;
+      obj.lockMovementX = true;
+      obj.lockMovementY = true;
+      obj.hasBorders = false;
+      obj.selectable = false;
       return obj;
     });
     return typeOptions;
@@ -253,7 +212,7 @@ class Track {
       this.paths.push(path);
     }
   }
-  
+
   clearPathsFromCanvas(canvas) {
     for (var i = 0; i < this.paths.length; i++) {
       canvas.remove(this.paths[i]);
@@ -261,19 +220,28 @@ class Track {
     // clear out old values
     this.paths.length = 0;
   }
+
+  getEndAngle(path) {
+    const p1 = { x: path[3][5], y: path[3][6] };
+    const p2 = { x: path[3][1], y: path[3][2] };
+
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+
+    // Returns degrees for Fabric.js
+    return Math.atan2(dy, dx) * (180 / Math.PI) - 90;
+  }
 }
 
 class EntryTrack extends Track {
-  constructor(type, canvas, objects) {
+  constructor(type, canvas, path, showOrigin = true) {
     super();
-    if (objects) {
-      // Apply track style
-      for (var j in objects.paths) {
-        const {stroke, ...trackOptions} = this.types[type][j];
-        objects.paths[j].set(trackOptions);
-      }
-      this.origin = objects.origin
-      this.paths = objects.paths
+    if (path) {
+      // Generate track
+      this.paths = super.buildTrackPaths(null, this.canvas_center, type, true, path)
+
+      this.origin = this.buildEntryPoint(path[0][1], path[0][2]);
+      this.addObjectsToCanvas(showOrigin ? this.paths.concat(this.origin) : this.paths, canvas);
     } else {
       this.buildTrackObjects(type, canvas);
     }
@@ -283,19 +251,23 @@ class EntryTrack extends Track {
   buildTrackObjects(type, canvas) {
     type = (type !== undefined ? type : 'track');
     var paths = super.buildTrackPaths(0, this.entry_track_origin, type, true)
-    var point = new fabric.Circle({
-      left: paths[0].path[0][1],
-      top: paths[0].path[0][2],
+    var point = this.buildEntryPoint(paths[0].path[0][1], paths[0].path[0][2]);
+    this.origin = point;
+    this.paths = paths;
+    var objects = paths.concat(point);
+    this.addObjectsToCanvas(objects, canvas);
+  }
+
+  buildEntryPoint(left, top) {
+    return new fabric.Circle({
+      left: left,
+      top: top,
       strokeWidth: 1,
       radius: 7,
       fill: this.mainTrackColor,
       stroke: this.mainTrackColor,
       selectable: false
     });
-    this.origin = point;
-    this.paths = paths;
-    var objects = paths.concat(point);
-    this.addObjectsToCanvas(objects, canvas);
   }
 
   changeType(type, canvas) {
@@ -305,16 +277,15 @@ class EntryTrack extends Track {
 }
 
 class ExitTrack extends Track {
-  constructor(angle, type, canvas, objects) {
+  constructor(angle, type, canvas, path) {
     super();
-    if (objects) {
-      // Apply track style
-      for (var j in objects.paths) {
-        const {stroke, ...trackOptions} = this.types[type][j];
-        objects.paths[j].set(trackOptions);
-      }
-      this.end = objects.end
-      this.paths = objects.paths
+    if (path) {
+      // Generate track
+      this.paths = super.buildTrackPaths(null, this.canvas_center, type, true, path)
+
+      this.end = this.buildExitPoint(path[3][5], path[3][6], this.getEndAngle(path));
+      this.addObjectsToCanvas(this.paths.concat(this.end), canvas);
+
     } else {
       this.buildTrackObjects(angle, type, canvas);
     }
@@ -322,9 +293,17 @@ class ExitTrack extends Track {
 
   buildTrackObjects(angle, type, canvas) {
     var paths = super.buildTrackPaths(angle, this.canvas_center, type, true)
-    var point = new fabric.Triangle({
-      left: paths[0].path[3][5],
-      top: paths[0].path[3][6],
+    var point = this.buildExitPoint(paths[0].path[3][5], paths[0].path[3][6], angle);
+    this.end = point;
+    this.paths = paths
+    var objects = paths.concat(point);
+    this.addObjectsToCanvas(objects, canvas);
+  }
+
+  buildExitPoint(left, top, angle) {
+    return new fabric.Triangle({
+      left: left,
+      top: top,
       strokeWidth: 1,
       height: 18,
       width: 18,
@@ -332,10 +311,6 @@ class ExitTrack extends Track {
       stroke: this.mainTrackColor,
       angle: angle,
     });
-    this.end = point;
-    this.paths = paths
-    var objects = paths.concat(point);
-    this.addObjectsToCanvas(objects, canvas);
   }
 
   changeAngle(angle, type, canvas) {
@@ -354,19 +329,12 @@ class ExitTrack extends Track {
 }
 
 class AddedTrack extends Track {
-  constructor(angle, type, canvas, objects, id = null) {
+  constructor(angle, type, canvas, path, id = null) {
     super(id);
-    if (objects) {
-      for (var i = 0; i < objects.track.length; i++) {
-        Track.disableDefaults(objects.track[i], true);
-        objects.track[i].id = this.id;
-        this.type = type;
-        // Apply track style
-        for (var j in objects.track) {
-          objects.track[j].set(this.types[type][j]);
-        }
-      }
-      this.paths = objects.track
+    if (path) {
+      // Generate track
+      this.paths = super.buildTrackPaths(null, this.canvas_center, type, false, path);
+      this.addObjectsToCanvas(this.paths, canvas);
     } else {
       this.paths = this.buildTrackPaths(angle, this.canvas_center, type)
       for (var i = 0; i < this.paths.length; i++) {
