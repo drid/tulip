@@ -115,7 +115,6 @@ class TrackEditor {
 
   // TODO explain the significance of the 2D and 3D arrays and how they are derived from the fabric.js path object
   pointMoving(point) {
-    var linear;
     if (point.name == "originHandle") {
       this.transformPath([[[0, 1], [0, 2]], [[3, 5], [3, 6]]], point.left, point.top)
       this.setTrackCapPosition("origin", point.left, point.top);

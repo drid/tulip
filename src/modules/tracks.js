@@ -33,7 +33,7 @@ class Track {
   buildTrackPaths(angle, origin, type, mainTrack = false) {
     type = (type !== undefined ? type : 'track')
     var paths = [];
-    var typeOptions = this.types[type] || this.types['track'];
+    var typeOptions = this.getTypeOptions(type || 'track');
     if (mainTrack) {
       typeOptions = typeOptions.map(obj => {
         if (obj.stroke === this.trackColor) {
@@ -106,62 +106,37 @@ class Track {
   }
 
   static disableDefaults(object, secondaryTrack = false) {
-    object.hasBorders = false;
     object.selectable = secondaryTrack;
-    object.hasControls = false;
-    object.lockMovementX = true;
-    object.lockMovementY = true;
-    object.perPixelTargetFind = true;
   }
 
   initTypes() {
     const small = 4;
     const track = 6;
     const tarmac = 8;
-    
+
     this.types.lowVisTrack = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: small,
-      strokeDashArray: [small*1.469, small*1.063, small*3.2405, small*1.063],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
+      strokeDashArray: [small * 1.469, small * 1.063, small * 3.2405, small * 1.063],
     }];
     this.types.offPiste = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: small,
-      strokeDashArray: [small*1.3, small*1.3],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
+      strokeDashArray: [small * 1.3, small * 1.3],
     }];
     this.types.smallTrack = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: small,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     }];
     this.types.track = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: track,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     }];
 
     this.types.tarmacRoad = [{
@@ -169,61 +144,41 @@ class Track {
       stroke: this.trackColor,
       strokeWidth: tarmac,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     },
     {
       fill: '',
       stroke: '#fff',
-      strokeWidth: tarmac/2,
+      strokeWidth: tarmac / 2,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     }];
     this.types.dcw = [{
       fill: '',
       stroke: this.trackColor,
       strokeWidth: 10,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     },
     {
       fill: '',
       stroke: '#fff',
       strokeWidth: 6,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     },
     {
       fill: '',
       stroke: this.trackColor,
       strokeWidth: 2,
       strokeDashArray: [],
-      hasControls: false,
-      lockMovementX: true,
-      lockMovementY: true,
-      hasBorders: false,
-      selectable: false,
     }];
   }
 
   getTypeOptions(type) {
     var typeOptions = this.types[type].map(obj => {
       obj.perPixelTargetFind = true;
+      obj.hasControls = false;
+      obj.lockMovementX = true;
+      obj.lockMovementY = true;
+      obj.hasBorders = false;
+      obj.selectable = false;
       return obj;
     });
     return typeOptions;
@@ -253,7 +208,7 @@ class Track {
       this.paths.push(path);
     }
   }
-  
+
   clearPathsFromCanvas(canvas) {
     for (var i = 0; i < this.paths.length; i++) {
       canvas.remove(this.paths[i]);
@@ -269,9 +224,12 @@ class EntryTrack extends Track {
     if (objects) {
       // Apply track style
       for (var j in objects.paths) {
-        const {stroke, ...trackOptions} = this.types[type][j];
+        const { stroke, ...trackOptions } = this.getTypeOptions(type)[j];
+        trackOptions.stroke = this.mainTrackColor;
         objects.paths[j].set(trackOptions);
       }
+      objects.origin.stroke = this.mainTrackColor;
+      objects.origin.fill = this.mainTrackColor;
       this.origin = objects.origin
       this.paths = objects.paths
     } else {
@@ -310,9 +268,12 @@ class ExitTrack extends Track {
     if (objects) {
       // Apply track style
       for (var j in objects.paths) {
-        const {stroke, ...trackOptions} = this.types[type][j];
+        const { stroke, ...trackOptions } = this.getTypeOptions(type)[j];
+        trackOptions.stroke = this.mainTrackColor;
         objects.paths[j].set(trackOptions);
       }
+      objects.end.fill = this.mainTrackColor;
+      objects.end.stroke = this.mainTrackColor;
       this.end = objects.end
       this.paths = objects.paths
     } else {
@@ -363,7 +324,7 @@ class AddedTrack extends Track {
         this.type = type;
         // Apply track style
         for (var j in objects.track) {
-          objects.track[j].set(this.types[type][j]);
+          objects.track[j].set(this.getTypeOptions(type)[j]);
         }
       }
       this.paths = objects.track
