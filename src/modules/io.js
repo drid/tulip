@@ -15,26 +15,26 @@ var Io = Class({
       return;
     }
 
-    var name,desc;
+    var name, desc;
     // Find name and description from route/track
     this.gpx.find('trk').each(function () {
       const $trk = $(this);
-      name= $trk.find('name').text() || false
+      name = $trk.find('name').text() || false
       desc = $trk.find('desc').text() || false
     });
 
-    if (! (name || desc)) {
+    if (!(name || desc)) {
       this.gpx.find('rte').each(function () {
         const $rte = $(this);
-        name= $rte.find('name').text() || false
+        name = $rte.find('name').text() || false
         desc = $rte.find('desc').text() || false
       });
     }
 
     if (app.roadbook.name() == 'Name your roadbook')
-        app.roadbook.name(name || "GPX Import");
+      app.roadbook.name(name || "GPX Import");
     if (app.roadbook.desc() == 'Describe your roadbook' && desc !== false)
-        app.roadbook.desc(desc);
+      app.roadbook.desc(desc);
 
     // Load track points and fallback to route points
     path = this.gpx.find("trkpt");
@@ -192,7 +192,7 @@ var Io = Class({
     OpenRally enhanced GPX format... route metadata without overriding GPX user-land variables.
     strict: Comply with openrally 1.0.2 or follow unpublished changes
   */
-  buildOpenRallyExtensionsString: function (xmlDoc, waypoint, strict=false) {
+  buildOpenRallyExtensionsString: function (xmlDoc, waypoint, strict = false) {
 
     extensions = xmlDoc.createElement('extensions');
     distance = xmlDoc.createElement('openrally:distance');
@@ -219,7 +219,7 @@ var Io = Class({
     if (waypoint.hasTimedStop())
       extensions.appendChild(xmlDoc.createElement('openrally:stop')).textContent = waypoint.stopTimeSec();
     for (tag of waypoint.safetyTags()) {
-      extensions.appendChild(xmlDoc.createElement('openrally:'+tag));
+      extensions.appendChild(xmlDoc.createElement('openrally:' + tag));
     }
     // Notification
     if (waypoint.notification && waypoint.notification.openrallytype) {
@@ -394,11 +394,33 @@ var Io = Class({
       app.roadbook.name(rnr.route.name)
     if (rnr.route.description)
       app.roadbook.desc(rnr.route.description)
+    var instructionIdx = 0;
     rnr.route.waypoints.forEach(waypoint => {
       var latLng = new google.maps.LatLng(waypoint.lat, waypoint.lon);
       app.mapController.addRoutePoint(latLng);
-      if (waypoint.show)
+      if (waypoint.show) {
         this.addWaypoint(app.mapModel.markers[waypoint.waypointid]);
+        // Notification
+        if (waypoint.waypointIcon) {
+          var n = {}
+          switch (waypoint.waypointIcon.type) {
+            case 'dz':
+              n.type = 'dsz'
+              break;
+            case 'fz':
+              n.type = 'fsz'
+              break;
+            case 'sn':
+              n.type='dn'
+              break;
+            default:
+              n.type = waypoint.waypointIcon.type
+              break;
+          }
+          app.roadbook.instructions()[instructionIdx]._notification(new Notification(n));
+        }
+        instructionIdx++;
+      }
     });
     app.mapModel.updateRoadbookAndInstructions();
   }
