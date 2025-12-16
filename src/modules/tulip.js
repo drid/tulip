@@ -15,7 +15,6 @@ class Tulip extends InstructionCanvas {
     this.addedTrackType = 'track';
     // TODO should this be checking JSON for this?
     this.exitTrackEdited = false;
-    this.mainTrackColor = '#22F';
     this.markerAngle = 45;
     this.initTulip(angle, trackTypes, json);
   }
@@ -217,63 +216,28 @@ class Tulip extends InstructionCanvas {
   }
 
   buildEntryTrackFromJson(entry, entryTrackType) {
-    entry.paths = entry.paths.map(obj => {
-      if (obj.stroke === '#000') {
-        return { ...obj, stroke: this.mainTrackColor };
-      }
-      return obj;
-    });
-    entry.point.stroke = this.mainTrackColor;
-    entry.point.fill = this.mainTrackColor;
-    entry.point.selectable = false;
-    var paths = this.buildPaths(entry.paths);
-    var point = new fabric.Circle(entry.point);
-    this.canvas.add(point);
-    this.entryTrack = new EntryTrack(entryTrackType, null, { origin: point, paths: paths });
+    var path = entry.path ?? entry.paths[0].path;
+    this.entryTrack = new EntryTrack(entryTrackType, this.canvas, path);
   }
 
   buildExitTrackFromJson(exit, exitTrackType) {
-    exit.paths = exit.paths.map(obj => {
-      if (obj.stroke === '#000') {
-        return { ...obj, stroke: this.mainTrackColor };
-      }
-      return obj;
-    });
-    exit.point.stroke = this.mainTrackColor;
-    exit.point.fill = this.mainTrackColor;
-    var paths = this.buildPaths(exit.paths);
-    var point = new fabric.Triangle(exit.point)
-    this.canvas.add(point);
-    this.exitTrack = new ExitTrack(null, exitTrackType, null, { end: point, paths: paths });
+    var path = exit.path ?? exit.paths[0].path;
+    this.exitTrack = new ExitTrack(null, exitTrackType, this.canvas, path);
   }
 
   buildAddedTracksFromJson(tracks) {
-    for (var i = 0; i < tracks.length; i++) {
-      var paths = this.buildPaths(tracks[i].paths);
-      var track = new AddedTrack(null, tracks[i].type, this.canvas, { track: paths }, tracks[i].id ?? null);
-      this.tracks.push(track);
-    }
+    tracks.forEach(track => {
+      var path = track.path ?? track.paths[0].path;
+      var addedTrack = new AddedTrack(null, track.type, this.canvas, path, track.id ?? null);
+      this.tracks.push(addedTrack);
+    });
     this.canvas.renderAll();
-  }
-
-  buildPaths(array) {
-    var paths = [];
-    for (var i = 0; i < array.length; i++) {
-      var path = new fabric.Path(array[i].path, array[i]);
-      Track.disableDefaults(path);
-      this.canvas.add(path);
-      paths.push(path)
-    }
-    return paths;
   }
 
   beginEdit() {
     this.activeEditors.push(new EntryTrackEditor(this.canvas, this.entryTrack));
     this.activeEditors.push(new ExitTrackEditor(this.canvas, this.exitTrack));
     super.beginEdit();
-    // this.canvas.forEachObject(function (obj) {
-    //   obj.selectable = true;
-    // });
   }
 
   removeActiveGlyph() {
