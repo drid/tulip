@@ -66,7 +66,7 @@ class Track {
     var segmentLen = this.canvas_center[1] / 10;
     var segment1 = [segmentLen, segmentLen * 2, segmentLen * 3];
     var segment2 = [segmentLen * 4, segmentLen * 5, segmentLen * 6];
-    var segment3 = [segmentLen * 7, segmentLen * 8, segmentLen * 9];
+    var segment3 = [segmentLen * 7, segmentLen * 8, segmentLen * 9];git rebase --skip
 
     var set1 = this.buildTrackPathsSet(segment1, angle, origin)
     var set2 = this.buildTrackPathsSet(segment2, angle, origin)
