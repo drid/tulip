@@ -68,6 +68,28 @@ var Tulip = Class({
         this.removeTrackHandles();
       }
     });
+
+    // TODO: this is a hack for fabric 1.5  
+    this.canvas.on('object:modified', function (options) {
+      var obj = options.target;
+      if (obj.editor instanceof AddedTrackEditor) {
+        var bbTop = Math.min(obj.editor.originHandle.top, obj.editor.endHandle.top, obj.editor.joinOneHandle.top, obj.editor.joinTwoHandle.top);
+        var bbLeft = Math.min(obj.editor.originHandle.left, obj.editor.endHandle.left, obj.editor.joinOneHandle.left, obj.editor.joinTwoHandle.left);
+        var bbBottom = Math.max(obj.editor.originHandle.top, obj.editor.endHandle.top, obj.editor.joinOneHandle.top, obj.editor.joinTwoHandle.top);
+        var bbRight = Math.max(obj.editor.originHandle.left, obj.editor.endHandle.left, obj.editor.joinOneHandle.left, obj.editor.joinTwoHandle.left);
+        var bbHeight = Math.abs(bbTop - bbBottom);
+        var bbWidth = Math.abs(bbLeft - bbRight);
+        for (let index = 0; index < obj.editor.paths.length; index++) {
+          obj.editor.paths[index].top = bbTop + bbHeight / 2;
+          obj.editor.paths[index].left = bbLeft + bbWidth / 2;
+          obj.editor.paths[index].height = bbHeight;
+          obj.editor.paths[index].width = bbWidth;
+          obj.editor.paths[index].pathOffset.x = bbLeft + bbWidth / 2;
+          obj.editor.paths[index].pathOffset.y = bbTop + bbHeight / 2;
+          obj.editor.paths[index].setCoords();
+        } 
+      }
+    });
   },
 
   initEntry: function (trackType) {
