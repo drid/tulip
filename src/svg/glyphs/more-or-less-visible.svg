@@ -36,8 +36,8 @@
      id="namedview11"
      showgrid="false"
      inkscape:zoom="3.5330394"
-     inkscape:cx="48.11721"
-     inkscape:cy="111.37719"
+     inkscape:cx="12.453866"
+     inkscape:cy="111.66023"
      inkscape:window-x="1490"
      inkscape:window-y="851"
      inkscape:window-maximized="1"
@@ -52,22 +52,22 @@
 	
 		.st2{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#000000;stroke-width:18.9859;stroke-linecap:round;stroke-miterlimit:10;}
 </style><g
-     transform="matrix(1.0004582,0,0,0.999542,0,12.858022)"
+     transform="matrix(1.0004582,0,0,0.999542,0,4.858022)"
      style="font-size:120.084px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
      id="text5"><path
        d="M 13.993584,77.741687 H 36.450756 V 55.167245 H 55.389834 V 77.741687 H 77.964276 V 96.739399 H 55.389834 V 119.19657 H 36.450756 V 96.739399 H 13.993584 Z"
        style="font-size:120.084px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
        id="path3375"
-       inkscape:connector-curvature="0" /></g><g
-     transform="matrix(0.58495873,0,0,1.7095223,0,-36.165261)"
-     style="font-size:213.808px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
-     id="text7"><path
-       d="M 23.933313,74.326745 H 133.34274 V 84.975372 H 23.933313 Z"
-       style="font-size:213.808px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
-       id="path3372"
        inkscape:connector-curvature="0" /></g><path
      style="clip-rule:evenodd;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:22.4651;stroke-linecap:square;stroke-miterlimit:5;stroke-dasharray:none"
      d="m 90.044098,51.324034 0.003,1.873455 18.448592,95.474181 12.82473,0.0581 17.3636,-97.259882 16.89846,-0.145834"
      id="polyline9"
      inkscape:connector-curvature="0"
-     sodipodi:nodetypes="cccccc" /></svg>
+     sodipodi:nodetypes="cccccc" /><g
+     transform="matrix(0.47006956,0,0,1.7095223,9.034655,5.834739)"
+     style="font-size:213.808px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
+     id="g245"><path
+       d="M 23.933313,74.326745 H 133.34274 V 84.975372 H 23.933313 Z"
+       style="font-size:213.808px;font-family:'Arial Black', 'Arial Bold', Gadget, sans-serif"
+       id="path243"
+       inkscape:connector-curvature="0" /></g></svg>
