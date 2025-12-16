@@ -73,7 +73,7 @@ function createWindow() {
         { label: "Import",
           submenu: [
             { label: "GPX", accelerator: "CmdOrCtrl+I", click: function () { mainWindow.webContents.send('import-gpx'); } },
-            { label: "Rally Navigator", accelerator: "CmdOrCtrl+G", click: function () { mainWindow.webContents.send('import-rn'); } },
+            { label: "Rally Navigator (Experimental)", accelerator: "CmdOrCtrl+G", click: function () { mainWindow.webContents.send('import-rn'); } },
           ]
         },
         {
