@@ -142,6 +142,22 @@ initListeners() {
       app.roadbook.currentlyEditingInstruction.tulip.bringForwardActiveGlyph();
     }
   });
+
+  $('#drawing-preset-wadi').on('click', function (e) {
+    app.roadbook.fillColor("#d3d3d3");
+    app.roadbook.brushColor("#808080");
+    app.roadbook.isPathFilled(true);
+  })
+  $('#drawing-preset-water').on('click', function (e) {
+    app.roadbook.fillColor("#80b3ff");
+    app.roadbook.brushColor("#bdbdbd");
+    app.roadbook.isPathFilled(true);
+  })
+  $('#drawing-preset-sand').on('click', function (e) {
+    app.roadbook.fillColor("#f3be82");
+    app.roadbook.brushColor("#808080");
+    app.roadbook.isPathFilled(true);
+  })
 }
 
 showGlyphModal(top, left) {
@@ -155,7 +171,8 @@ showGlyphModal(top, left) {
 addTextToTulip(top, left) {
   const textObj = new fabric.TextElement();
   textObj.setPosition(top, left);
-  textObj.id = globalNode.randomUUID();
+  textObj.id = globalNode.randomUUID();    app.roadbook.isPathFilled(true);
+
   const idx = app.roadbook.currentlyEditingInstruction.tulip.canvas.add(textObj);
   textObj.idx = idx._objects.length;
   app.roadbook.currentlyEditingInstruction.tulip.glyphs.push(textObj);

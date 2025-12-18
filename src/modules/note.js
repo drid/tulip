@@ -39,11 +39,23 @@ var Note = Class({
   },
 
   setupEventListeners() {
+    var _this = this;
     this.canvas.on('object:moving', function (e) {
       // NOTE I do not like this dependency
       if (e.target.editor) {
         e.target.editor.pointMoving(e.target);
       }
+    });
+    this.canvas.on('path:created', function (options) {
+      options.path.set({
+        fill: options.path.canvas.freeDrawingBrush.fill,
+        strokeLineJoin: 'round',
+        strokeLineCap: 'round'
+      });
+      options.path.canvas.renderAll();
+
+      options.path.id = 'draw_' + globalNode.randomUUID();
+      _this.glyphs.push(options.path);
     });
   },
 
@@ -76,11 +88,11 @@ var Note = Class({
     _this.canvas.renderAll();
     }, function (o, object) {
     object.selectable = false;
-    if (object.type == "TextElement") {
-      //if the object is an image add it to the glyphs array
-      object.id = globalNode.randomUUID();
-      _this.glyphs.push(object);
-    }
+    // if (object.type == "TextElement") {
+    //   //if the object is an image add it to the glyphs array
+    //   object.id = globalNode.randomUUID();
+    //   _this.glyphs.push(object);
+    // }
     if (object.type == "image") {
         //if the object is an image add it to the glyphs array
         object.id = globalNode.randomUUID();
@@ -98,6 +110,10 @@ var Note = Class({
             }, { crossOrigin: 'anonymous' });
         }
         }, null, 'anonymous');
+    } else {
+      if (!object.id)
+        object.id = globalNode.randomUUID();
+      _this.glyphs.push(object);
     }
     });
   },

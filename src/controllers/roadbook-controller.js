@@ -104,6 +104,7 @@ class RoadbookController {
     });
     $('#delete-tulip-item').on("click", function () {
       _this.model.currentlyEditingInstruction.tulip.removeActiveGlyph()
+      _this.model.currentlyEditingInstruction.note.removeActiveGlyph()
     })
     $('#rotate-km-marker').on("click", function () {
       _this.model.currentlyEditingInstruction.tulip.rotateKmMarker()

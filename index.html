@@ -142,6 +142,7 @@
             <div id="waypoint-palette">
               <div class="row">
                 <div class="tulip-edit-controls large-12 columns text-right">
+                  <a id="draw-freehand" class="button_round" title="Draw" data-bind="click: toggleDrawing, css: isDrawing() ? 'draw-btn-active' : 'draw-btn-inactive'"><i class="fa-solid fa-pencil"></i></a>
                   <a id="rotate-km-marker" class="button_round" title="Rotate km marker"><i class="fa-solid fa-map-pin"></i></a>
                   <a id="delete-tulip-item" class="button_round" title="Delete Glyph"><i class="fi-trash"></i></a>
                   <span data-tooltip aria-haspopup="true" class="has-tip button tiny radius warning map-rotate-notice" style="display: none;" title="Map interaction other than zoom is disabled when map is rotated.">
@@ -357,7 +358,6 @@
                     </div>
                   </div>
                   <div class="left large-4 columns note-tools">
-
                     <div class="row">
                       <div class="left large-12 columns note-glyph-selection">
                         <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add glyphs to the the note.">
@@ -372,6 +372,26 @@
                           Insert text
                         </span>
                         <div class="note-grid" data-target="add" id="note-add-text"><i class="fi-plus"></i></i></div>
+                      </div>
+                    </div>
+                    <div data-bind="visible: isDrawing">
+                      <div class="row">
+                        <h5><span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Set drawing style.">Drawing styles</span></h5>
+                      </div>
+                      <div class="row">
+                        <input type="range" min="2" max="7" step="1" data-bind="value: brushWidth"/>
+                      </div>
+                      <div class="row drawColorPick">
+                        Line: <input type="color" data-bind="value: brushColor" id="drawing-color-picker-stroke"/>
+                        Fill: <input type="color" data-bind="value: fillColor" id="drawing-color-picker-fill"/>
+                      </div>
+                      <div class="row">
+                        <input type="checkbox" data-bind="checked: isPathFilled"  id="drawing-shape-filled"> Fill shape
+                      </div>
+                      <div class="row">
+                        <div id="drawing-preset-wadi" class="drawing-preset ">Wadi</div>
+                        <div id="drawing-preset-water" class="drawing-preset ">Water</div>
+                        <div id="drawing-preset-sand" class="drawing-preset ">Sand</div>
                       </div>
                     </div>
                     <div class="row">

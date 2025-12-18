@@ -150,6 +150,7 @@ class RoadbookModel {
   }
 
   bindToKnockout() {
+    var _this = this;
     /*
       declare some observable instance variables
     */
@@ -162,6 +163,61 @@ class RoadbookModel {
     this.instructions = ko.observableArray([]);
     this.instructionShowHeading = ko.observable(true);
     this.instructionShowCoordinates = ko.observable(true);
+
+    this.isDrawing = ko.observable(false);
+    this.isDrawing.subscribe(function (drawing) {
+      if (app.roadbook.currentlyEditingInstruction) {
+        app.roadbook.currentlyEditingInstruction.tulip.canvas.isDrawingMode = drawing;
+        app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush.width = 3;
+        app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush.fill = _this.isPathFilled() ? _this.fillColor() : null;
+        app.roadbook.currentlyEditingInstruction.note.canvas.isDrawingMode = drawing;
+        app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush.width = 3;
+        app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush.fill = _this.isPathFilled() ? _this.fillColor() : null;
+      }
+    });
+    this.toggleDrawing = function () {
+      this.isDrawing(!this.isDrawing());
+    }
+    this.brushWidth = ko.observable(3);
+    this.brushColor = ko.observable("#000000");
+    this.isPathFilled = ko.observable(false);
+    this.fillColor = ko.observable("#d3d3d3");
+
+    this.isPathFilled.subscribe(function(shouldFill) {
+        if(app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush) {
+            app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush.fill = shouldFill ? _this.fillColor() : null;
+        }
+        if(app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush) {
+            app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush.fill = shouldFill ? _this.fillColor() : null;
+        }
+    });
+
+    this.fillColor.subscribe(function(shouldFill) {
+        if(app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush) {
+            app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush.fill = shouldFill ? _this.fillColor() : null;
+        }
+        if(app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush) {
+            app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush.fill = shouldFill ? _this.fillColor() : null;
+        }
+    });
+
+    this.brushColor.subscribe(function(newColor) {
+        if(app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush) {
+            app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush.color = newColor;
+        }
+        if(app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush) {
+            app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush.color = newColor;
+        }
+    });
+    this.brushWidth.subscribe(function(brushWidth) {
+        if(app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush) {
+            app.roadbook.currentlyEditingInstruction.tulip.canvas.freeDrawingBrush.width = brushWidth;
+        }
+        if(app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush) {
+            app.roadbook.currentlyEditingInstruction.note.canvas.freeDrawingBrush.width = brushWidth;
+        }
+    });
+
   }
 
   changeEditingInstructionAdded(type) {
@@ -330,6 +386,7 @@ class RoadbookModel {
   }
 
   finishInstructionEdit(openRadius, validationRadius, time, stopTime) {
+    this.isDrawing(false);
     if (this.currentlyEditingInstruction !== null) {
       this.currentlyEditingInstruction.finishEdit()
       this.updateInstructionAfterEdit(openRadius, validationRadius, time, stopTime);
