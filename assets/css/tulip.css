@@ -640,21 +640,22 @@ nav.top-bar {
   border-color: black;
   border-width: 2px;
   border: black solid 2px;
+  cursor: pointer;
 }
 
 #drawing-preset-wadi {
   background-color: #d3d3d3;
-
+  border-color: #808080;
 }
 
 #drawing-preset-water {
   background-color: #80b3ff;
-
+  border-color: #bdbdbd;
 }
 
 #drawing-preset-sand {
   background-color: #f3be82;
-
+  border-color: #808080;
 }
 
 .drawColorPick {
