@@ -70,9 +70,14 @@ var Tulip = Class({
       }
       if (options.target === undefined) {
         this.selectedTrackId = null;
+        app.roadbook.canvasSelectedItemType(null);
         this.removeTrackHandles();
       }
     });
+    
+    this.canvas.on('object:selected', (options) => {
+      app.roadbook.canvasSelectedItemType(options.target?.type || null);
+    })
 
     // TODO: this is a hack for fabric 1.5  
     this.canvas.on('object:modified', function (options) {

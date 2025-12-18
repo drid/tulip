@@ -171,9 +171,10 @@ showGlyphModal(top, left) {
 addTextToTulip(top, left) {
   const textObj = new fabric.TextElement();
   textObj.setPosition(top, left);
-  textObj.id = globalNode.randomUUID();    app.roadbook.isPathFilled(true);
+  textObj.id = globalNode.randomUUID();
 
   const idx = app.roadbook.currentlyEditingInstruction.tulip.canvas.add(textObj);
+  app.roadbook.currentlyEditingInstruction.tulip.canvas.setActiveObject(textObj);
   textObj.idx = idx._objects.length;
   app.roadbook.currentlyEditingInstruction.tulip.glyphs.push(textObj);
 }

@@ -422,67 +422,69 @@
                         <div id="drawing-preset-sand" class="drawing-preset ">Sand</div>
                       </div>
                     </div>
-                    <div class="row">
-                      <h5><span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Select a text item to apply text sytles.">Text styles</span></h5>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Bold." id="text-modifier-normal">
-                            Normal
-                          </span>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Bold." id="text-modifier-bold">
-                            Bold
-                          </span>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Italic." id="text-modifier-italic">
-                            Italic
-                          </span>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Underline." id="text-modifier-underline">
-                            Underline
-                          </span>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Red." id="text-modifier-red">
-                            Red
-                          </span>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Green." id="text-modifier-green">
-                            Green
-                          </span>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Light Gray." id="text-modifier-lgray">
-                            Light Gray
-                          </span>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Cyan background." id="text-modifier-bgcyan">
-                            Cyan background
-                          </span>
-                    </div>
-                    <div class="row">
-                          <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Yellow background." id="text-modifier-bgyellow">
-                            Yellow background
-                          </span>
-                    </div>
-                    <div class="row" id="stop-time-options">
-                        <h5 data-tooltip aria-haspopup="true" class="has-tip" title="Set stop time.">
-                          Stop time</h5>
-                        <div class="row collapse" id="stop-time-wrapper">
-                          <div class="large-6 columns">
-                            <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Stop time.">
-                              Time(s):
+                    <div id="text-properties" data-bind="visible: canvasSelectedItemType() === 'TextElement'">
+                      <div class="row">
+                        <h5><span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Select a text item to apply text sytles.">Text styles</span></h5>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Bold." id="text-modifier-normal">
+                              Normal
                             </span>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Bold." id="text-modifier-bold">
+                              Bold
+                            </span>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Italic." id="text-modifier-italic">
+                              Italic
+                            </span>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Underline." id="text-modifier-underline">
+                              Underline
+                            </span>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Red." id="text-modifier-red">
+                              Red
+                            </span>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Green." id="text-modifier-green">
+                              Green
+                            </span>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Light Gray." id="text-modifier-lgray">
+                              Light Gray
+                            </span>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Cyan background." id="text-modifier-bgcyan">
+                              Cyan background
+                            </span>
+                      </div>
+                      <div class="row">
+                            <span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Make text Yellow background." id="text-modifier-bgyellow">
+                              Yellow background
+                            </span>
+                      </div>
+                      <div class="row" id="stop-time-options">
+                          <h5 data-tooltip aria-haspopup="true" class="has-tip" title="Set stop time.">
+                            Stop time</h5>
+                          <div class="row collapse" id="stop-time-wrapper">
+                            <div class="large-6 columns">
+                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Stop time.">
+                                Time(s):
+                              </span>
+                            </div>
+                            <div class="large-6 columns">
+                              <input type="number" id="stop-time">
+                            </div>
                           </div>
-                          <div class="large-6 columns">
-                            <input type="number" id="stop-time">
-                          </div>
-                        </div>
+                      </div>
                     </div>
                   </div>
               </div>

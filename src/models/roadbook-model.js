@@ -218,6 +218,7 @@ class RoadbookModel {
         }
     });
 
+    this.canvasSelectedItemType = ko.observable(null);
   }
 
   changeEditingInstructionAdded(type) {

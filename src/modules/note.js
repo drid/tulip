@@ -34,8 +34,6 @@ var Note = Class({
         this.buildFromJson(json);
       }
     }
-    this.canvas.on('mouse:down', (options) => {
-    });
   },
 
   setupEventListeners() {
@@ -57,6 +55,16 @@ var Note = Class({
       options.path.id = 'draw_' + globalNode.randomUUID();
       _this.glyphs.push(options.path);
     });
+    this.canvas.on('object:selected', (options) => {
+      app.roadbook.canvasSelectedItemType(options.target?.type || null);
+    });
+    this.canvas.on('mouse:down', (options) => {
+      if (options.target === undefined) {
+        this.selectedTrackId = null;
+        app.roadbook.canvasSelectedItemType(null);
+      }
+    });
+
   },
 
   addGlyph: function (position, uri, vsize=50) {
@@ -294,6 +302,7 @@ var Note = Class({
     textObj.id = globalNode.randomUUID();
     _this.glyphs.push(textObj);
     _this.canvas.add(textObj);
+    _this.canvas.setActiveObject(textObj);
   },
 
   extractTextWithStyles(node, styles = { italic: false, bold: false, underline: false }, result = []) {
