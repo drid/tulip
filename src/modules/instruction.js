@@ -272,7 +272,7 @@ var Instruction = Class({
   removeWaypoint: function () {
     this.notification = false;
     this._notification(false);
-    $('#notification-options').addClass('hidden');
+    $('#notification-options').hide();
     app.mapController.deleteWaypointBubble(this.routePointIndex);
     this.assignWaypointColoring();
   },
@@ -288,7 +288,7 @@ var Instruction = Class({
       } else {
         app.mapController.addWaypointBubble(this.routePointIndex, this._notification().openRadius || 0, this._notification().validationRadius, this._notification().fill)
         // show notification options
-        $('#notification-options').removeClass('hidden');
+        $('#notification-options').show();
         app.noteControls.updateNotificationControls(this._notification());
       }
     } else {

@@ -180,7 +180,7 @@ class RoadbookController {
     // $('#roadbook').css('padding-bottom', '0');
     $('#roadbook').find('.roadbook-info').hide();
     if (instruction.notification) {
-      $('#notification-options').removeClass('hidden');
+      $('#notification-options').show();
       if (instruction.notification.openRadius) {
         $('#notification-open-radius-wrapper').removeClass('waypoint-parameter-none')
       } else {
@@ -208,7 +208,7 @@ class RoadbookController {
     $($('.added-track-selector')[1]).addClass('active');
     // $('#roadbook').css('padding-bottom', '150%');
     $('#roadbook').find('.roadbook-info').show();
-    $('#notification-options').addClass('hidden');
+    $('#notification-options').hide();
     $('#roadbook').scrollTop(this.editingElement.position().top - 80);
     $('.waypoint.row').find('.waypoint-icon').off();
     $('.waypoint.row').find('.waypoint-icon').removeClass('delete-suggestion');

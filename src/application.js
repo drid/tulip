@@ -596,17 +596,20 @@ class App {
     $('[name="toggle-insert-type"]').on('change', function (e) {
       if (e.target.id == 'toggle-insert-track') {
         $('.track-selection').removeClass('hidden');
-        $('.glyph-selection').addClass('hidden');
-        $('.text-selection').addClass('hidden');
+        $('#track-selection-grid').show();
+        $('#glyph-selection-grid').hide();
+        $('#text-selection-grid').hide();
       }
       else if (e.target.id == 'toggle-insert-glyph') {
         $('.track-selection').addClass('hidden');
-        $('.glyph-selection').removeClass('hidden');
-        $('.text-selection').addClass('hidden');
+        $('#track-selection-grid').hide();
+        $('#glyph-selection-grid').show();
+        $('#text-selection-grid').hide();
       } else if (e.target.id == 'toggle-insert-text') {
         $('.track-selection').addClass('hidden');
-        $('.glyph-selection').addClass('hidden');
-        $('.text-selection').removeClass('hidden');
+        $('#track-selection-grid').hide();
+        $('#glyph-selection-grid').hide();
+        $('#text-selection-grid').show();
       }
     });
 

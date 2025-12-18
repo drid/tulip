@@ -155,11 +155,46 @@
               <div id="waypoint-tulip-controls" class="content active">
                 <div class="row">
                   <div class="large-4 columns selection-label">
-                    <h5>
-                      <span data-tooltip aria-haspopup="true" class="has-tip track-selection" title="Select the type of tracks added to the tulip, the track type the rider will enter the tulip on, and the track type the rider will exit the tulip on.">
-                        Tulip track types
-                      </span>
-                    </h5>
+                    <div class="row" id="notification-options"  >
+                      <div class="left large-12 columns">
+                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Change the waypoint open and validation radius.">
+                          Waypoint options
+                        </span>
+                        <br>
+                        <div>
+                          <div class="row collapse" id="notification-open-radius-wrapper">
+                            <div class="large-6 columns">
+                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Waypoint open radius.">
+                                Open(m):
+                              </span>
+                            </div>
+                            <div class="large-6 columns">
+                              <input type="number" id="notification-open-radius" min="10" max="2000" step="10">
+                            </div>
+                          </div>
+                          <div class="row collapse">
+                            <div class="large-6 columns">
+                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Waypoint validation radius.">
+                                Validation:
+                              </span>
+                            </div>
+                            <div class="large-6 columns">
+                              <input type="number" id="notification-validation-radius" min="5" max="2000" step="5">
+                            </div>
+                          </div>
+                          <div class="row collapse" id="notification-time-wrapper">
+                            <div class="large-6 columns">
+                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Time limit.">
+                                Time(s):
+                              </span>
+                            </div>
+                            <div class="large-6 columns">
+                              <input type="number" id="notification-time">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="large-4 columns selection-label">
                     <h5>
@@ -214,6 +249,10 @@
                       </span>
                     </h5>
                     <div class="row">
+                      <div class="left large-12 columns note-glyph-selection">
+                        <div class="note-grid" data-target="add" id="note-add-glyph" data-tooltip aria-haspopup="true" class="has-tip" title="Click to add glyphs to the the note."><i class="fa fa-image"></i></i></div>
+                        <div class="note-grid" data-target="add" id="note-add-text" data-tooltip aria-haspopup="true" class="has-tip" title="Click to add text to the note."><i class="fa fa-t"></i></i></div>
+                      </div>
                       <div class="large-6 columns">
                         <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add show or hide the CAP heading for this instruction">
                           CAP
@@ -244,6 +283,11 @@
                 </div>
                 <div class="row">
                   <div class="large-4 columns">
+                    <h5>
+                      <span data-tooltip aria-haspopup="true" class="has-tip track-selection" title="Select the type of tracks added to the tulip, the track type the rider will enter the tulip on, and the track type the rider will exit the tulip on.">
+                        Tulip track types
+                      </span>
+                    </h5>
                     <ul class="accordion track-selection" data-accordion>
                       <li class="accordion-navigation">
                         <a href="#added-track-tab" class='track-tab-title'>Add as</a>
@@ -317,7 +361,7 @@
                     </ul>
                   </div>
                   <div class="left large-4 columns">
-                    <div class="text-selection hidden">
+                    <div class="text-selection" id="text-selection-grid">
                       <div class="tl text-grid" data-top="30" data-left="30"><i class="fi-pencil"></i></div>
                       <div class="tm text-grid" data-top="30" data-left="85"><i class="fi-pencil"></i></div>
                       <div class="tr text-grid" data-top="30" data-left="145"><i class="fi-pencil"></i></div>
@@ -330,7 +374,7 @@
                       <div class="lm text-grid" data-top="140" data-left="85"><i class="fi-pencil"></i></div>
                       <div class="lr text-grid" data-top="140" data-left="145"><i class="fi-pencil"></i></div>
                     </div>
-                    <div class="glyph-selection hidden">
+                    <div class="glyph-selection" id="glyph-selection-grid">
                       <div class="tl glyph-grid" data-top="30" data-left="30"><i class="fi-plus"></i></div>
                       <div class="tm glyph-grid" data-top="30" data-left="85"><i class="fi-plus"></i></div>
                       <div class="tr glyph-grid" data-top="30" data-left="145"><i class="fi-plus"></i></div>
@@ -343,7 +387,7 @@
                       <div class="lm glyph-grid" data-top="140" data-left="85"><i class="fi-plus"></i></div>
                       <div class="lr glyph-grid" data-top="140" data-left="145"><i class="fi-plus"></i></div>
                     </div>
-                    <div class="track-selection">
+                    <div class="track-selection" id="track-selection-grid">
                       <div class="tl track-grid" data-angle="-45"><div><i class="fi-arrow-up"></i></div></div>
                       <div class="tm track-grid" data-angle="0"><i class="fi-arrow-up"></i></div>
                       <div class="tr track-grid" data-angle="45"><div><i class="fi-arrow-up"></i></div></div>
@@ -358,22 +402,6 @@
                     </div>
                   </div>
                   <div class="left large-4 columns note-tools">
-                    <div class="row">
-                      <div class="left large-12 columns note-glyph-selection">
-                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add glyphs to the the note.">
-                          Insert glyph
-                        </span>
-                        <div class="note-grid" data-target="add" id="note-add-glyph"><i class="fi-plus"></i></i></div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="left large-12 columns note-text-insertion">
-                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Click to add text to the note.">
-                          Insert text
-                        </span>
-                        <div class="note-grid" data-target="add" id="note-add-text"><i class="fi-plus"></i></i></div>
-                      </div>
-                    </div>
                     <div data-bind="visible: isDrawing">
                       <div class="row">
                         <h5><span data-tooltip aria-haspopup="true" class="has-tip text-modifier" title="Set drawing style.">Drawing styles</span></h5>
@@ -455,47 +483,6 @@
                             <input type="number" id="stop-time">
                           </div>
                         </div>
-                    </div>
-                    
-                    <div class="row hidden" id="notification-options"  >
-                      <div class="left large-12 columns">
-                        <span data-tooltip aria-haspopup="true" class="has-tip" title="Change the waypoint open and validation radius.">
-                          Waypoint options
-                        </span>
-                        <br>
-                        <div>
-                          <div class="row collapse" id="notification-open-radius-wrapper">
-                            <div class="large-6 columns">
-                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Waypoint open radius.">
-                                Open(m):
-                              </span>
-                            </div>
-                            <div class="large-6 columns">
-                              <input type="number" id="notification-open-radius" min="10" max="2000" step="10">
-                            </div>
-                          </div>
-                          <div class="row collapse">
-                            <div class="large-6 columns">
-                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Waypoint validation radius.">
-                                Validation:
-                              </span>
-                            </div>
-                            <div class="large-6 columns">
-                              <input type="number" id="notification-validation-radius" min="5" max="2000" step="5">
-                            </div>
-                          </div>
-                          <div class="row collapse" id="notification-time-wrapper">
-                            <div class="large-6 columns">
-                              <span data-tooltip aria-haspopup="true" class="has-tip prefix" title="Time limit.">
-                                Time(s):
-                              </span>
-                            </div>
-                            <div class="large-6 columns">
-                              <input type="number" id="notification-time">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
               </div>
