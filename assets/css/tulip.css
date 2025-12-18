@@ -617,3 +617,52 @@ nav.top-bar {
   font-size: 60px;
   color: mediumseagreen;
 }
+
+.draw-btn-inactive {
+  color: #000;
+}
+.draw-btn-inactive:hover {
+  color: dimgray;
+}
+
+.draw-btn-active {
+  color: limegreen;
+}
+.draw-btn-active:hover {
+  color: green;
+}
+
+.drawing-preset {
+  display: inline-block;
+  width: 31%;
+  padding: 0 5px;
+  text-align: center;
+  border-color: black;
+  border-width: 2px;
+  border: black solid 2px;
+}
+
+#drawing-preset-wadi {
+  background-color: #d3d3d3;
+
+}
+
+#drawing-preset-water {
+  background-color: #80b3ff;
+
+}
+
+#drawing-preset-sand {
+  background-color: #f3be82;
+
+}
+
+.drawColorPick {
+  display: flex;
+}
+
+.drawColorPick input {
+  margin: 0px 5px;
+  padding: 1px 2px;
+  height: auto;
+}

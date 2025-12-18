@@ -46,6 +46,7 @@ var Tulip = Class({
     Creates a tulip either from passed in json from a file load or from a angle provided by UI wpt creation
   */
   initTulip: function (angle, trackTypes, json) {
+    var _this = this;
     if (json !== undefined && angle == undefined) { //the map point has been created from serialized json
       if (json.markerAngle)
         this.markerAngle = json.markerAngle;
@@ -59,7 +60,11 @@ var Tulip = Class({
 
     this.canvas.on('mouse:down', (options) => {
       if (options.target && options.target.type && options.target.type == "path" && options.target.selectable) {
-        this.addTrackHandles(options);
+        try {
+          this.addTrackHandles(options);
+        } catch (error) {
+          return;          
+        }
         this.selectedTrackId = options.target.id;
       }
       if (options.target === undefined) {
@@ -88,6 +93,18 @@ var Tulip = Class({
           obj.editor.paths[index].setCoords();
         } 
       }
+    });
+
+    this.canvas.on('path:created', function(options) {
+      options.path.set({
+        fill: options.path.canvas.freeDrawingBrush.fill,
+        strokeLineJoin: 'round',
+        strokeLineCap: 'round'
+      });
+      options.path.canvas.renderAll();
+
+      options.path.id = 'draw_' + globalNode.randomUUID();
+      _this.glyphs.push(options.path);
     });
   },
 
@@ -197,10 +214,10 @@ var Tulip = Class({
         object.selectable = false;
         if (object.id === undefined)
           object.id = globalNode.randomUUID();
-        if (object.type == "TextElement") {
-          //if the object is an image add it to the glyphs array
-          _this.glyphs.push(object);
-        }
+        // if (object.type == "TextElement") {
+        //   //if the object is an image add it to the glyphs array
+        //   _this.glyphs.push(object);
+        // }
         if (object.type == "image") {
           //if the object is an image add it to the glyphs array
           _this.glyphs.push(object);
@@ -218,6 +235,10 @@ var Tulip = Class({
               }, { crossOrigin: 'anonymous' });
             }
           }, null, 'anonymous');
+        } else {
+          if (!object.id)
+            object.id = globalNode.randomUUID();
+          _this.glyphs.push(object);
         }
         _this.canvas.renderAll();
       });

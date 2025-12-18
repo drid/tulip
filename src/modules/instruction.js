@@ -79,7 +79,7 @@ var Instruction = Class({
       oldHTMLGlyphs = [...noteJson.htmlText.matchAll(/<img[^>]*src="[^"]*\/([a-z0-9,-]*)\.[^"]*"/g)]
         .map(match => match[1]); // Extract the captured group
     }
-    catch (e){
+    catch (e) {
     }
 
     var trackTypes = { entryTrackType: this.entryTrackType, exitTrackType: this.exitTrackType };
@@ -391,5 +391,5 @@ var Instruction = Class({
   finishEdit() {
     this.tulip.finishEdit();
     this.note.finishEdit();
-  }
+  },
 });
