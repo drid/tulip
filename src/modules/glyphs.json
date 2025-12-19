@@ -76,9 +76,12 @@
           { "src": "./assets/svg/glyphs/abbr-RP.svg", "text": "Rejoin" },
           { "src": "./assets/svg/glyphs/abbr-TJS.svg", "text": "always" },
           { "src": "./assets/svg/glyphs/leave.svg", "text": "leave" },
+          { "src": "./assets/svg/glyphs/abbr-BTW.svg", "text": "between" },
           { "src": "./assets/svg/glyphs/abbr-CAPMOY.svg", "text": "bearing (CAPMOY)" },
           { "src": "./assets/svg/glyphs/abbr-OBLIC.svg", "text": "Cap that turns" },
-          { "src": "./assets/svg/glyphs/abbr-BTW.svg", "text": "between" }
+          { "src": "./src/svg/glyphs/CAP.svg", "text": "Exit heading" },
+          { "src": "./src/svg/glyphs/CAP-A.svg", "text": "Average bearing" },
+          { "src": "./src/svg/glyphs/CAP-C.svg", "text": "Calculated bearing" }
         ]
       }
     ]

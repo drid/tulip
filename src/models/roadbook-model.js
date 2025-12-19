@@ -473,6 +473,7 @@ class RoadbookModel {
         kmFromStart: points[i].instruction ? points[i].instruction.kmFromStart() : null,
         kmFromPrev: points[i].instruction ? points[i].instruction.kmFromPrev() : null,
         heading: points[i].instruction ? points[i].instruction.exactHeading() : null,
+        capAvg: points[i].instruction ? points[i].instruction.capAvg() : null,
         showHeading: points[i].instruction ? points[i].instruction.showHeading() : null,
         showCoordinates: points[i].instruction ? points[i].instruction.showCoordinates() : null,
         stopTimeSec: points[i].instruction ? points[i].instruction.stopTimeSec() : null,

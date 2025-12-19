@@ -65,6 +65,7 @@ class MapModel {
   addInstruction(marker) {
     this.setMarkerIconToInstructionIcon(marker);
     marker.instruction = this.addInstructionToRoadbook(this.getInstructionGeodata(marker, this.route, this.markers), this.updateRoadbookAndInstructions);
+    this.updateAllMarkersInstructionGeoData();
   }
 
   addWaypointBubble(index, openRadius, validationRadius, fill, map) {
@@ -129,6 +130,19 @@ class MapModel {
     return heading;
   }
 
+  getHeadingToNextInstruction = function(marker, markers) {
+    var nextMarker = this.getNextInstructionRoutePointIndex(marker.routePointIndex, markers);
+    if (nextMarker) {
+        var from = marker.getPosition();
+        var to = nextMarker.getPosition();
+        
+        var heading = google.maps.geometry.spherical.computeHeading(from, to);
+        
+        var finalHeading = (heading + 360) % 360;
+        return Math.round(finalHeading);
+    }
+    return null;
+  };
   /*
     Compute the angle of the turn from the previous heading to this one
     // TODO doing too many tings
@@ -255,6 +269,8 @@ class MapModel {
   getInstructionGeodata(marker, route, markers) {
     var prevInstructionIndex = this.getPrevInstructionRoutePointIndex(marker.routePointIndex, markers); //TODO pass in markers?
     var heading = this.computeHeading(marker, route);
+    var capAvg = this.getHeadingToNextInstruction(marker, markers);
+    if (!capAvg) capAvg = Math.round(heading);
     var relativeAngle = this.computeRelativeAngle(marker, route, heading);
     return {
       lat: marker.getPosition().lat(),
@@ -263,6 +279,7 @@ class MapModel {
       kmFromStart: this.computeDistanceOnRouteBetweenPoints(0, marker.routePointIndex, route.getArray()), //TODO pass in route?
       kmFromPrev: this.computeDistanceOnRouteBetweenPoints(prevInstructionIndex, marker.routePointIndex, route.getArray()), //TODO pass in route?
       heading: heading,
+      capAvg: capAvg,
       relativeAngle: relativeAngle
     }
   }
@@ -276,6 +293,16 @@ class MapModel {
       }
     }
     return index;
+  }
+
+  getNextInstructionRoutePointIndex(routePointIndex, markersArray) {
+    for (var i = routePointIndex + 1; i < markersArray.length; i++) {
+        var m = markersArray[i];
+        if (m.instruction) {
+            return m;
+        }
+    }
+    return null;
   }
 
   /*

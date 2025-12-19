@@ -23,6 +23,7 @@ var Instruction = Class({
     this.kmFromStart = ko.observable(wptJson.kmFromStart);
     this.kmFromPrev = ko.observable(wptJson.kmFromPrev);
     this.exactHeading = ko.observable(wptJson.heading);
+    this.capAvg = ko.observable(wptJson.capAvg);
     this.lat = ko.observable(wptJson.lat);
     this.lng = ko.observable(wptJson.long);
     this.notification = wptJson.notification || false;
@@ -165,6 +166,10 @@ var Instruction = Class({
     }
   },
 
+  bindCAPs() {
+
+  },
+
   hasNotification() {
     return this._notification() != false;
   },
@@ -201,6 +206,9 @@ var Instruction = Class({
     }
     if (geoData.heading) {
       this.exactHeading(geoData.heading);
+    }
+    if (geoData.capAvg) {
+      this.capAvg(geoData.capAvg);
     }
     if (geoData.relativeAngle) {
       this.tulip.changeExitAngle(geoData.relativeAngle, this.exitTrackType);
@@ -330,7 +338,7 @@ var Instruction = Class({
   computedHeading: function () {
     var heading = Math.round(this.exactHeading());
     //round the exaxt heading and zero pad it
-    return Array(Math.max(3 - String(heading).length + 1, 0)).join(0) + heading + '\xB0';
+    return Array(Math.max(3 - String(heading).length + 1, 0)).join(0) + heading;
   },
 
   computedCoordinates: function () {

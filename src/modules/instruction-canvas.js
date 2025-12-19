@@ -52,6 +52,31 @@ class InstructionCanvas {
             object.selectable = false;
             if (!object.id)
                 object.id = globalNode.randomUUID();
+
+            // Handle CAP objects
+            if (object.subType && object.subType == 'CAP') {
+                var capText = object.getObjects().find(obj => obj.id === 'CAP');
+                if (capText) {
+                    const instructions = app.roadbook.instructions();
+                    const lastInstruction = instructions[instructions.length - 1];
+                    lastInstruction.heading.subscribe(function (newValue) {
+                        capText.setText(String(newValue));
+                        _this.canvas.renderAll();
+                    });
+                }
+            }
+            if (object.subType && (object.subType == 'CAP-A' || object.subType == 'CAP-C')) {
+                var capText = object.getObjects().find(obj => obj.id === 'CAP-A' || obj.id === 'CAP-C');
+                if (capText) {
+                    const instructions = app.roadbook.instructions();
+                    const lastInstruction = instructions[instructions.length - 1];
+                    lastInstruction.capAvg.subscribe(function (newValue) {
+                        capText.setText(String(newValue));
+                        _this.canvas.renderAll();
+                    });
+                }
+            }
+            // Handle image object
             if (object.type == "image") {
                 //if the object is an image add it to the glyphs array
                 _this.glyphs.push(object);
@@ -78,6 +103,46 @@ class InstructionCanvas {
         this.finishRemove();
         var _this = this;
         var position = position;
+
+        if (/\/CAP(-[AC])?\.svg$/.test(uri)) {
+            fabric.loadSVGFromURL(uri, function (objects, options) {
+                const capElement = fabric.util.groupSVGElements(objects, options);
+
+                var capText = capElement.getObjects().find(obj => obj.id === 'CAP' || obj.id === 'CAP-A' || obj.id === 'CAP-C');
+                capElement.subType = options.subType ?? capText?.id ?? null;
+                if (capElement.subType) {
+                    switch (capElement.subType) {
+                        case 'CAP':
+                            capText.setText(String(app.roadbook.currentlyEditingInstruction.heading()));
+                            app.roadbook.currentlyEditingInstruction.heading.subscribe(function (newValue) {
+                                capText.setText(String(newValue));
+                                _this.canvas.renderAll();
+                            });
+                            break;
+                        case 'CAP-A':
+                        case 'CAP-C':
+                            capText.setText(String(app.roadbook.currentlyEditingInstruction.capAvg()));
+                            app.roadbook.currentlyEditingInstruction.capAvg.subscribe(function (newValue) {
+                                capText.setText(String(newValue));
+                                _this.canvas.renderAll();
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                // capElement.scaleToWidth(60);
+                capElement.top = position.top;
+                capElement.left = position.left;
+                capElement.id = globalNode.randomUUID();
+                _this.glyphs.push(capElement);
+                _this.canvas.add(capElement);
+                _this.canvas.renderAll();
+            });
+            return;
+        }
+
         var imgObj = new Image();
         imgObj.src = uri;
         imgObj.onload = function () {
@@ -207,6 +272,9 @@ class InstructionCanvas {
                 json.src = this.truncateGlyphSource(json.src);
             }
             json.id = glyph.id;
+            if (glyph.subType) {
+                json.subType = glyph.subType;
+            }
             json.idx = glyph.idx;
             glyphsJson.push(json);
         }

@@ -160,6 +160,29 @@ class Tulip extends InstructionCanvas {
         object.selectable = false;
         if (!object.id)
           object.id = globalNode.randomUUID();
+        // Handle CAP objects TODO: Duplicate, abstract in instruction canvas
+        if (object.subType && object.subType == 'CAP') {
+            var capText = object.getObjects().find(obj => obj.id === 'CAP');
+            if (capText) {
+                const instructions = app.roadbook.instructions();
+                const lastInstruction = instructions[instructions.length - 1];
+                lastInstruction.heading.subscribe(function (newValue) {
+                    capText.setText(String(newValue));
+                    _this.canvas.renderAll();
+                });
+            }
+        }
+        if (object.subType && (object.subType == 'CAP-A' || object.subType == 'CAP-C')) {
+            var capText = object.getObjects().find(obj => obj.id === 'CAP-A' || obj.id === 'CAP-C');
+            if (capText) {
+                const instructions = app.roadbook.instructions();
+                const lastInstruction = instructions[instructions.length - 1];
+                lastInstruction.capAvg.subscribe(function (newValue) {
+                    capText.setText(String(newValue));
+                    _this.canvas.renderAll();
+                });
+            }
+        }
         if (object.type == "image") {
           //if the object is an image add it to the glyphs array
           _this.glyphs.push(object);

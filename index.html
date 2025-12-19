@@ -618,6 +618,13 @@
   <script src='src/modules/notification.js'></script>
   <script src='src/modules/instruction.js'></script>  
   <script>
+    fabric.Text.ATTRIBUTE_NAMES.push('id');
+    fabric.Object.prototype.toObject = (function(toObject) {
+      return function(propertiesToInclude) {
+        return toObject.call(this, ['id'].concat(propertiesToInclude || []));
+      };
+    })(fabric.Object.prototype.toObject);
+
     fabric.TextElement = TextElement;
     fabric.TextElement.fromObject = function (object, callback) {
       const instance = new fabric.TextElement(object.text, object);
