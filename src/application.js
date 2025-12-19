@@ -226,7 +226,7 @@ class App {
     var _this = this;
     globalNode.dialog().showOpenDialog({
       title: 'Select user glyphs folder',
-      defaultPath: localStorage.getItem('lastRoadBook').match(/^(.*[\\/])/)[1],
+      defaultPath: localStorage.getItem('lastRoadBook')?.match(/^(.*[\\/])/)[1],
       buttonLabel: 'Select Folder',          // custom button text
       properties: ['openDirectory', 'createDirectory'] // createDirectory lets user make new folder
     }).then(openInfo => {
