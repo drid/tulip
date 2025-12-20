@@ -25,6 +25,7 @@ const { createStreetviewWindow } = require('./src/streetview');
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
 var printWindow = null;
+var lexiconWindow = null;
 var isSaved = true;
 
 // This method will be called when Electron has finished
@@ -78,6 +79,7 @@ function createWindow() {
             { label: "Export PDF", accelerator: "CmdOrCtrl+P", click: function () { mainWindow.webContents.send('export-pdf'); } },
           ]
         },
+        { label: "Show Lexicon", click: openLexiconWindow },
         { label: "Quit", accelerator: "CmdOrCtrl+Q", click: function () { app.quit(); } },
       ]
     },
@@ -125,10 +127,10 @@ function createWindow() {
       label: "View",
       submenu: [
         ...(isDev ?
-        [
-          { label: "Reload", accelerator: "CmdOrCtrl+R", click: function () { mainWindow.webContents.send('reload-roadbook'); } },
-          { type: "separator" }
-        ] : []
+          [
+            { role: 'reload', accelerator: 'CmdOrCtrl+R' },
+            { type: "separator" }
+          ] : []
         ),
         { label: "Toggle Roadbook", accelerator: "CmdOrCtrl+B", click: function () { mainWindow.webContents.send('toggle-roadbook'); } },
         { type: "separator" },
@@ -327,6 +329,86 @@ function printPdf(event, arg) {
 
 async function openStreetviewWindow() {
   await createStreetviewWindow(mainWindow);
+}
+
+async function openLexiconWindow() {
+  await createLexiconWindow(mainWindow);
+}
+
+function createLexiconWindow() {
+  return new Promise((resolve) => {
+    // Prevent multiple instances of the Lexicon window
+    if (lexiconWindow) {
+      if (lexiconWindow.isMinimized()) {
+            lexiconWindow.restore();
+        }
+        lexiconWindow.show();
+        lexiconWindow.focus();
+      return;
+    }
+
+    lexiconWindow = new BrowserWindow({
+      width: 900,
+      height: 700,
+      title: 'Lexicon',
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        // Ensure __dirname works correctly in the renderer
+        nodeIntegrationInWorker: true
+      }
+    });
+    require('@electron/remote/main').enable(lexiconWindow.webContents);
+    lexiconWindow.webContents.setWindowOpenHandler((details) => {
+      shell.openExternal(details.url); // Open URL in user's browser.
+      return { action: "deny" }; // Prevent the app from opening the URL.
+    })
+    lexiconWindow.loadURL('file://' + __dirname + '/lexicon.html');
+    setLexiconMenu(lexiconWindow);
+
+
+    // Cleanup when closed
+    lexiconWindow.on('closed', () => {
+      lexiconWindow = null;
+    });
+  });
+}
+
+function setLexiconMenu(windowInstance) {
+    // Safety check: ensure the windowInstance exists before calling setMenu
+    if (!windowInstance) return;
+
+    const lexiconTemplate = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'Save as PDF',
+                    accelerator: 'CmdOrCtrl+S',
+                    click: async () => {
+                        // Use windowInstance directly here
+                        const { filePath } = await dialog.showSaveDialog(windowInstance, {
+                            title: 'Save Lexicon as PDF',
+                            defaultPath: 'lexicon.pdf',
+                            filters: [{ name: 'PDF Files', extensions: ['pdf'] }]
+                        });
+                        
+                        if (filePath) {
+                            const data = await windowInstance.webContents.printToPDF({
+                                printBackground: true 
+                            });
+                            require('fs').writeFileSync(filePath, data);
+                        }
+                    }
+                },
+                { type: 'separator' },
+                { label: 'Close', click: () => windowInstance.close() }
+            ]
+        }
+    ];
+
+    const menu = Menu.buildFromTemplate(lexiconTemplate);
+    windowInstance.setMenu(menu);
 }
 
 //listens for the browser window to ask for the documents folder
