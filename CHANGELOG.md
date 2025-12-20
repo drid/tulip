@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.5] - 2025-12-20
+
+### 🚀 Features
+
+- Enforce color for Qt,E3, -V
+- Add global danger glyphs
+- Implement drawing on tulip and note
+- Rearrange editor elements
+- Show text modifier only when text is selected
+- Add lexicon table
+
+### 🐛 Bug Fixes
+
+- Remove +V glyph
+- Track selection
+- Sentry init
+
+### 🚜 Refactor
+
+- Track type options
+
+### ⚙️ Miscellaneous Tasks
+
+- Rename contribution file
+
 ## [1.10.4] - 2025-12-15
 
 ### 🚀 Features
