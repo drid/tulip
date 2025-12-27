@@ -9,7 +9,7 @@ class Track {
     type = STRING <lowVisTrack,offPiste,track,road,mainRoad,dcw>
     canvas = HTML_CANVAS to render track on
   */
-  constructor() {
+  constructor(id = null) {
     const canvas_width = 180;
     const canvas_height = 180;
     this.mainTrackColor = '#22F';
@@ -18,7 +18,7 @@ class Track {
     this.entry_track_origin = [canvas_width / 2, canvas_height - 10]
     this.types = {};
     this.initTypes();
-    this.id = globalNode.randomUUID();
+    this.id = id ? id : globalNode.randomUUID();
   }
 
   addObjectsToCanvas(objectsArray, canvas) {
@@ -354,8 +354,8 @@ class ExitTrack extends Track {
 }
 
 class AddedTrack extends Track {
-  constructor(angle, type, canvas, objects) {
-    super();
+  constructor(angle, type, canvas, objects, id = null) {
+    super(id);
     if (objects) {
       for (var i = 0; i < objects.track.length; i++) {
         Track.disableDefaults(objects.track[i], true);

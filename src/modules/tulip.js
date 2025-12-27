@@ -316,7 +316,7 @@ var Tulip = Class({
   buildAddedTracksFromJson(tracks) {
     for (var i = 0; i < tracks.length; i++) {
       var paths = this.buildPaths(tracks[i].paths);
-      var track = new AddedTrack(null, tracks[i].type, this.canvas, { track: paths });
+      var track = new AddedTrack(null, tracks[i].type, this.canvas, { track: paths }, tracks[i].id ?? null);
       this.tracks.push(track);
     }
     this.canvas.renderAll();
