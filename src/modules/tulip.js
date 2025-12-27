@@ -4,28 +4,13 @@
 */
 fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
-var Tulip = Class({
+class Tulip extends InstructionCanvas {
 
-  create: function (el, angle, trackTypes, json) {
-    this.canvas = new fabric.Canvas(el);
-    this.canvas.selection = false;
-    this.canvas.hoverCursor = 'pointer';
+  constructor(el, angle, trackTypes, json) {
+    super(el);
     this.selectedTrackId = null;
-    this.canvas.preserveObjectStacking = true;
-
-    var _this = this;
-    this.canvas.on('object:moving', function (e) {
-      // NOTE I do not like this dependency
-      if (e.target.editor) {
-        if (e.target.editor.track instanceof ExitTrack && !_this.exitTrackEdited) {
-          _this.exitTrackEdited = true;
-        }
-        e.target.editor.pointMoving(e.target);
-      }
-    });
 
     this.tracks = [];
-    this.glyphs = [];
     this.activeEditors = [];
     this.addedTrackType = 'track';
     // TODO should this be checking JSON for this?
@@ -33,21 +18,20 @@ var Tulip = Class({
     this.mainTrackColor = '#22F';
     this.markerAngle = 45;
     this.initTulip(angle, trackTypes, json);
-  },
+  }
 
-  clear: function () {
-    this.canvas.clear();
+  clear() {
+    super.clear();
     this.entryTrack = null;
     this.entryTrackOrigin = null;
     this.exitTrack = null;
     this.exitTrackEnd = null;
-  },
+  }
 
   /*
     Creates a tulip either from passed in json from a file load or from a angle provided by UI wpt creation
   */
-  initTulip: function (angle, trackTypes, json) {
-    var _this = this;
+  initTulip(angle, trackTypes, json) {
     if (json !== undefined && angle == undefined) { //the map point has been created from serialized json
       if (json.markerAngle)
         this.markerAngle = json.markerAngle;
@@ -58,26 +42,39 @@ var Tulip = Class({
       // Add km marker
       this.addKmMarker(this.markerAngle);
     }
+  }
 
+  setupEventListeners() {
+    var _this = this;
+    this.canvas.on('object:moving', function (e) {
+      // NOTE I do not like this dependency
+      if (e.target.editor) {
+        if (e.target.editor.track instanceof ExitTrack && !_this.exitTrackEdited) {
+          _this.exitTrackEdited = true;
+        }
+        e.target.editor.pointMoving(e.target);
+      }
+    });
     this.canvas.on('mouse:down', (options) => {
       if (options.target && options.target.type && options.target.type == "path" && options.target.selectable) {
         try {
-          this.addTrackHandles(options);
+          _this.addTrackHandles(options);
         } catch (error) {
-          return;          
+          console.log(error);
+          return;
         }
-        this.selectedTrackId = options.target.id;
+        _this.selectedTrackId = options.target.id;
       }
       if (options.target === undefined) {
-        this.selectedTrackId = null;
+        _this.selectedTrackId = null;
         app.roadbook.canvasSelectedItemType(null);
-        this.removeTrackHandles();
+        _this.removeTrackHandles();
       }
     });
-    
-    this.canvas.on('object:selected', (options) => {
-      app.roadbook.canvasSelectedItemType(options.target?.type || null);
-    })
+
+    // this.canvas.on('object:selected', (options) => {
+    //   app.roadbook.canvasSelectedItemType(options.target?.type || null);
+    // })
 
     // TODO: this is a hack for fabric 1.5  
     this.canvas.on('object:modified', function (options) {
@@ -97,41 +94,29 @@ var Tulip = Class({
           obj.editor.paths[index].pathOffset.x = bbLeft + bbWidth / 2;
           obj.editor.paths[index].pathOffset.y = bbTop + bbHeight / 2;
           obj.editor.paths[index].setCoords();
-        } 
+        }
       }
     });
+  }
 
-    this.canvas.on('path:created', function(options) {
-      options.path.set({
-        fill: options.path.canvas.freeDrawingBrush.fill,
-        strokeLineJoin: 'round',
-        strokeLineCap: 'round'
-      });
-      options.path.canvas.renderAll();
-
-      options.path.id = 'draw_' + globalNode.randomUUID();
-      _this.glyphs.push(options.path);
-    });
-  },
-
-  initEntry: function (trackType) {
+  initEntry(trackType) {
     this.entryTrack = new EntryTrack(trackType, this.canvas);
-  },
+  }
 
-  initExit: function (angle, trackType) {
+  initExit(angle, trackType) {
     this.exitTrack = new ExitTrack(angle, trackType, this.canvas);
-  },
+  }
 
-  initTracks: function (trackArray) {
+  initTracks(trackArray) {
     for (var i = 0; i < trackArray.length; i++) {
       this.tracks.push(new AddedTrack(null, null, null, { track: [trackArray[i]] }))
     }
-  },
+  }
 
   /*
     Adds a track to tulip from UI interaction
   */
-  addTrack: function (angle) {
+  addTrack(angle) {
     this.finishRemove();
     var track = new AddedTrack(angle, this.addedTrackType, this.canvas)
     // track.paths[0].on('mousedown', function(e) {
@@ -144,65 +129,21 @@ var Tulip = Class({
     //     handles to the front.
     this.finishEdit();
     this.beginEdit();
-  },
+  }
 
-  addGlyph: function (position, uri) {
-    this.finishRemove();
-    var _this = this;
-    var position = position;
-    var imgObj = new Image();
-    imgObj.src = uri;
-    imgObj.onload = function () {
-      var image = new fabric.Image(imgObj);
-      image.top = position.top;
-      image.left = position.left;
-      image.scaleToHeight(50);
-      image.id = globalNode.randomUUID();
-      const idx = _this.canvas.add(image);
-      image.idx = idx._objects.length;
-      _this.glyphs.push(image);
-      app.roadbook.currentlyEditingInstruction.parseGlyphInfo(); // TODO: this must be handled by instruction
-    }
-  },
   /*
     Builds the tulip from passed in JSON
   */
   // NOTE this is going to have to handle legacy data structure and translate it into new style
-  buildFromJson: function (json, trackTypes) {
+  buildFromJson(json, trackTypes) {
     this.exitTrackEdited = json.exitTrackEdited !== undefined ? json.exitTrackEdited : false;
     var _this = this;
-    var numTracks = json.tracks.length;
     /*
       Default Tracks
-      // NOTE this will handle legacy track structure but they need to be converted
-    */
-    if (json.entry.path && json.exit.path) {
-      console.log("old style");
-      // build a properly formatted json string to import
-      var json = {
-        "objects": [json.entry.point, json.entry.path, json.exit.path, json.exit.point].concat(json.tracks).concat(json.glyphs.reverse()),
-      };
-      var obs = [];
-      this.canvas.loadFromJSON(json, this.canvas.renderAll.bind(this.canvas), function (o, object) {
-        obs.push(object);
-        if (object.type == "image") {
-          //if the object is an image add it to the glyphs array
-          _this.glyphs.push(object);
-        }
-      });
-      var objects = { origin: obs[0], paths: [obs[1]] };
-      this.entryTrack = new EntryTrack(null, null, objects);
-
-      var objects = { end: obs[3], paths: [obs[2]] };
-      this.exitTrack = new ExitTrack(null, null, null, objects);
-      /*
-        Aux tracks
       */
-      // slice and dice obs
-      if (numTracks > 0) {
-        var tracks = obs.slice(4, 4 + numTracks);
-        this.initTracks(tracks);
-      }
+    if (json.entry.path && json.exit.path) {
+      // NOTE this will handle legacy track structure but they need to be converted
+      this.loadOldTrackFormat(json);
     } else {
       // we load the glyphs from JSON to avoid race conditions with asynchronous image loading
       this.canvas.loadFromJSON({ "objects": json.glyphs.reverse() }, function () {
@@ -218,12 +159,8 @@ var Tulip = Class({
         _this.addKmMarker(_this.markerAngle);
       }, function (o, object) {
         object.selectable = false;
-        if (object.id === undefined)
+        if (!object.id)
           object.id = globalNode.randomUUID();
-        // if (object.type == "TextElement") {
-        //   //if the object is an image add it to the glyphs array
-        //   _this.glyphs.push(object);
-        // }
         if (object.type == "image") {
           //if the object is an image add it to the glyphs array
           _this.glyphs.push(object);
@@ -242,45 +179,42 @@ var Tulip = Class({
             }
           }, null, 'anonymous');
         } else {
-          if (!object.id)
-            object.id = globalNode.randomUUID();
           _this.glyphs.push(object);
         }
         _this.canvas.renderAll();
       });
     }
-  },
+  }
 
-  // TODO: This needs to move to a common place
-  remapOldGlyphs(oldPath) {
-    // This function remaps old glyph paths to new ones in the roadbook instructions
-    glyphMappings = {
-      "./assets/svg/glyphs/bridge.svg": "./assets/svg/glyphs/under-bridge.svg",
-      "./assets/svg/glyphs/bad.svg": "./assets/svg/glyphs/abbr-MVS.svg",
-      "./assets/svg/glyphs/finish-of-selective-section.svg": "./assets/svg/glyphs/abbr-ASS.svg",
-      "./assets/svg/glyphs/start-of-selective-section.svg": "./assets/svg/glyphs/abbr-DSS.svg",
-      "./assets/svg/glyphs/dune-L1.svg": "./assets/svg/glyphs/abbr-L1.svg",
-      "./assets/svg/glyphs/dune-L2.svg": "./assets/svg/glyphs/abbr-L2.svg",
-      "./assets/svg/glyphs/dune-L3.svg": "./assets/svg/glyphs/abbr-L3.svg",
-      "./assets/svg/glyphs/abbr-dune.svg": "./assets/svg/glyphs/abbr-DN.svg",
-      "./assets/svg/glyphs/always.svg": "./assets/svg/glyphs/abbr-TJS.svg",
-      "./assets/svg/glyphs/collapsed.svg": "./assets/svg/glyphs/abbr-EFF.svg",
-      "./assets/svg/glyphs/gravel.svg": "./assets/svg/glyphs/abbr-GV.svg",
-      "./assets/svg/glyphs/imperative.svg": "./assets/svg/glyphs/abbr-IMP.svg",
-      "./assets/svg/glyphs/main-track.svg": "./assets/svg/glyphs/abbr-PP.svg",
-      "./assets/svg/glyphs/many.svg": "./assets/svg/glyphs/abbr-NBX.svg",
-      "./assets/svg/glyphs/off-track.svg": "./assets/svg/glyphs/abbr-HP.svg",
-      "./assets/svg/glyphs/parallel-tracks.svg": "./assets/svg/glyphs/abbr-.svg",
-      "./assets/svg/glyphs/road.svg": "./assets/svg/glyphs/abbr-RO.svg",
-      "./assets/svg/glyphs/rut.svg": "./assets/svg/glyphs/abbr-ORN.svg",
-      "./assets/svg/glyphs/sand.svg": "./assets/svg/glyphs/abbr-SA.svg",
-      "./assets/svg/glyphs/small-dune.svg": "./assets/svg/glyphs/abbr-DNT.svg",
-      "./assets/svg/glyphs/stone.svg": "./assets/svg/glyphs/abbr-CX.svg",
-      "./assets/svg/glyphs/vegetation.svg": "./assets/svg/glyphs/abbr-CX.svg",
-      "./assets/svg/glyphs/track.svg": "./assets/svg/glyphs/abbr-P.svg",
+  loadOldTrackFormat(json) {
+    console.log("old style");
+    var numTracks = json.tracks.length;
+    // build a propperly formatted json string to import
+    var json = {
+      "objects": [json.entry.point, json.entry.path, json.exit.path, json.exit.point].concat(json.tracks).concat(json.glyphs.reverse()),
+    };
+    var obs = [];
+    this.canvas.loadFromJSON(json, this.canvas.renderAll.bind(this.canvas), function (o, object) {
+      obs.push(object);
+      if (object.type == "image") {
+        //if the object is an image add it to the glyphs array
+        _this.glyphs.push(object);
+      }
+    });
+    var objects = { origin: obs[0], paths: [obs[1]] };
+    this.entryTrack = new EntryTrack(null, null, objects);
+
+    var objects = { end: obs[3], paths: [obs[2]] };
+    this.exitTrack = new ExitTrack(null, null, null, objects);
+    /*
+      Aux tracks
+    */
+    // slice and dice obs
+    if (numTracks > 0) {
+      var tracks = obs.slice(4, 4 + numTracks);
+      this.initTracks(tracks);
     }
-    return glyphMappings[oldPath] || false;
-  },
+  }
 
   buildEntryTrackFromJson(entry, entryTrackType) {
     entry.paths = entry.paths.map(obj => {
@@ -296,7 +230,7 @@ var Tulip = Class({
     var point = new fabric.Circle(entry.point);
     this.canvas.add(point);
     this.entryTrack = new EntryTrack(entryTrackType, null, { origin: point, paths: paths });
-  },
+  }
 
   buildExitTrackFromJson(exit, exitTrackType) {
     exit.paths = exit.paths.map(obj => {
@@ -311,7 +245,7 @@ var Tulip = Class({
     var point = new fabric.Triangle(exit.point)
     this.canvas.add(point);
     this.exitTrack = new ExitTrack(null, exitTrackType, null, { end: point, paths: paths });
-  },
+  }
 
   buildAddedTracksFromJson(tracks) {
     for (var i = 0; i < tracks.length; i++) {
@@ -320,7 +254,7 @@ var Tulip = Class({
       this.tracks.push(track);
     }
     this.canvas.renderAll();
-  },
+  }
 
   buildPaths(array) {
     var paths = [];
@@ -331,17 +265,18 @@ var Tulip = Class({
       paths.push(path)
     }
     return paths;
-  },
+  }
 
-  beginEdit: function () {
+  beginEdit() {
     this.activeEditors.push(new EntryTrackEditor(this.canvas, this.entryTrack));
     this.activeEditors.push(new ExitTrackEditor(this.canvas, this.exitTrack));
-    this.canvas.forEachObject(function (obj) {
-      obj.selectable = true;
-    });
-  },
+    super.beginEdit();
+    // this.canvas.forEachObject(function (obj) {
+    //   obj.selectable = true;
+    // });
+  }
 
-  removeActiveGlyph: function () {
+  removeActiveGlyph() {
     const activeObject = this.canvas.getActiveObject();
     var tracks = this.tracks;
     var glyphs = this.glyphs;
@@ -357,9 +292,9 @@ var Tulip = Class({
       this.glyphs = glyphs.filter(g => g.id !== activeObject.id);
       this.tracks = tracks.filter(g => g.id !== activeObject.id);
     }
-  },
+  }
 
-  sendBackwardActiveGlyph: function () {
+  sendBackwardActiveGlyph() {
     const activeObject = this.canvas.getActiveObject();
     if (activeObject && activeObject.id) {
       this.canvas.sendToBack(activeObject);
@@ -368,9 +303,9 @@ var Tulip = Class({
       })
       this.canvas.renderAll();
     }
-  },
+  }
 
-  bringForwardActiveGlyph: function () {
+  bringForwardActiveGlyph() {
     const activeObject = this.canvas.getActiveObject();
     if (activeObject && activeObject.id) {
       this.canvas.bringToFront(activeObject);
@@ -379,7 +314,7 @@ var Tulip = Class({
       })
       this.canvas.renderAll();
     }
-  },
+  }
 
   changeAddedTrackType(type) {
     this.addedTrackType = type
@@ -391,19 +326,19 @@ var Tulip = Class({
       this.canvas.renderAll();
       this.beginEdit()
     }
-  },
+  }
 
   changeEntryTrackType(type) {
     this.finishEdit();
     this.entryTrack.changeType(type, this.canvas);
     this.beginEdit()
-  },
+  }
 
   changeExitTrackType(type) {
     this.finishEdit();
     this.exitTrack.changeType(type, this.canvas);
     this.beginEdit()
-  },
+  }
 
   changeExitAngle(angle, exitTrackType) {
     if (!this.exitTrackEdited && this.exitTrack) {
@@ -413,9 +348,9 @@ var Tulip = Class({
         this.beginEdit();
       }
     }
-  },
+  }
 
-  finishEdit: function () {
+  finishEdit() {
     for (var i = 0; i < this.activeEditors.length; i++) {
       this.activeEditors[i].destroy();
     }
@@ -432,19 +367,9 @@ var Tulip = Class({
     this.canvas.deactivateAllWithDispatch();
     this.selectedTrackId = null;
     this.canvas.deactivateAll().renderAll();
-  },
+  }
 
-  finishRemove: function () {
-    // remove controls from glyphs and update the canvas' visual state
-    this.canvas.deactivateAll().renderAll();
-  },
-
-  removeLastGlyph: function () {
-    var glyph = this.glyphs.pop()
-    this.canvas.remove(glyph);
-  },
-
-  removeTrack: function (track) {
+  removeTrack(track) {
     if (track) {
       for (var i = 0; i < track.paths.length; i++) {
         this.canvas.remove(track.paths[i]);
@@ -455,16 +380,16 @@ var Tulip = Class({
         }
       }
     }
-  },
+  }
 
-  removeLastTrack: function () {
+  removeLastTrack() {
     this.removeTrack(this.tracks.pop());
-  },
+  }
 
   /*
     return the canvas object as JSON so it can be persisted
   */
-  serialize: function () {
+  serialize() {
     var json = {
       entry: {
         point: this.entryTrack.origin,
@@ -480,53 +405,22 @@ var Tulip = Class({
       markerAngle: this.markerAngle,
     };
     return json;
-  },
+  }
 
-  serializeGlyphs: function () {
-    var glyphsJson = [];
-    // NOTE not sure, but again here the for loop doesn't error out like the for each
-    for (glyph of this.glyphs) {
-      var json = glyph.toJSON()
-      if (glyph.type == 'image') {
-        // Do not store missing glyph image
-        if (json.src.includes("missing-glyph"))
-          json.src = glyph.src;
-        json.src = this.truncateGlyphSource(json.src);
-      }
-      json.id = glyph.id;
-      json.idx = glyph.idx;
-      glyphsJson.push(json);
-    }
-    return glyphsJson;
-  },
-
-  serializeTracks: function () {
+  serializeTracks() {
     var tracksJson = [];
     // NOTE not sure, but again here the for loop doesn't error out like the for each
-    for (track of this.tracks) {
+    for (var track of this.tracks) {
       var json = { paths: track.paths, type: track.type, id: track.id };
       tracksJson.push(json);
     }
     return tracksJson;
-  },
-
-  toPNG: function () {
-    return this.canvas.toDataURL('image/png', 1);
-  },
-
-  toSVG: function () {
-    return this.canvas.toSVG();
-  },
-
-  truncateGlyphSource: function (src) {
-    var index = src.lastIndexOf("assets/svg/glyphs");
-    return (index == -1 ? src.replace(app.settings.user_glyph_path, "{user_glyphs_path}") : "./" + src.slice(index));
-  },
+  }
 
   addTrackHandles(options) {
     const target = options.target;
     if (target && target.id) {
-      track = this.tracks.find(({ id }) => id === target.id);
+      // var track = this.tracks.find(({ id }) => id === target.id);
 
       for (var i = 0; i < this.activeEditors.length; i++) {
         if (this.activeEditors[i] instanceof EntryTrackEditor || this.activeEditors[i] instanceof ExitTrackEditor)
@@ -538,9 +432,9 @@ var Tulip = Class({
       for (var i = 0; i < this.tracks.length; i++) {
         delete this.tracks[i].editor
       }
-      this.activeEditors.push(new AddedTrackEditor(this.canvas, track));
+      this.activeEditors.push(new AddedTrackEditor(this.canvas, this.tracks.find(({ id }) => id === target.id)));
     }
-  },
+  }
 
   removeTrackHandles(options) {
     for (var i = 0; i < this.activeEditors.length; i++) {
@@ -553,15 +447,7 @@ var Tulip = Class({
     for (var i = 0; i < this.tracks.length; i++) {
       delete this.tracks[i].editor
     }
-  },
-
-  setTextStyle(style) {
-    const activeObject = this.canvas.getActiveObject();
-    if (activeObject && activeObject.id && activeObject.type == 'TextElement') {
-      activeObject.setTextStyle(style);
-      this.canvas.renderAll();
-    }
-  },
+  }
 
   addKmMarker(angle = 45) {
     const lineLength = 20;
@@ -595,7 +481,7 @@ var Tulip = Class({
 
     // Add group to canvas
     this.canvas.add(marker);
-  },
+  }
 
   rotateKmMarker() {
     var group = this.canvas.getObjects().find(obj => obj.id === 'kmMarker');
@@ -606,4 +492,4 @@ var Tulip = Class({
       this.canvas.renderAll();
     }
   }
-});
+}
