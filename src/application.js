@@ -344,7 +344,9 @@ class App {
         this.saveRoadBookAs();
       } else {
         this.roadbook.finishInstructionEdit();
-        this.fs.writeFile(this.roadbook.filePath, JSON.stringify(this.roadbook.statefulJSON(), null, 2), function (err) { });
+        var tulipFile = this.roadbook.statefulJSON();
+        delete tulipFile.filePath;
+        this.fs.writeFile(this.roadbook.filePath, JSON.stringify(tulipFile, null, 2), function (err) { });
         this.roadbookController.isSaved(true);
       }
     } catch (error) {
@@ -380,7 +382,7 @@ class App {
       // assign the file path to the json for first time players
       // TODO figure out what to do if the user changes the name of the file
       var tulipFile = _this.roadbook.statefulJSON();
-      tulipFile.filePath = fileName;
+      delete tulipFile.filePath;
       _this.roadbook.filePath = fileName;
       tulipFile = JSON.stringify(tulipFile, null, 2);
 
