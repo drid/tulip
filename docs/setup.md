@@ -51,7 +51,7 @@ Select the path for custom glyphs. All images in this path will be available und
   - **DD MM SS.SSS**: Displays coordinates in degrees, minutes, and seconds (e.g., 40° 26' 46.123" N), offering high precision for rally navigation and compatibility with standard GPS systems.
   - **DD MM.MMM**: Displays coordinates in degrees and decimal minutes (e.g., 40° 26.768' N), providing a balance of precision and readability.
   - **DD.DDDDD**: Displays coordinates in decimal degrees (e.g., 40.44613° N), ideal for applications requiring a compact, numerical format.
-- **Openrally strict export:** See [Openrally](openrally)
+- **Openrally strict export:** See [Openrally](openrally.md)
 
 ### Map Settings
 - **Set current view as home**: Saves the current map view (including zoom level and center point) as the default "home" view. This is useful for users who frequently work within a specific geographic area, enabling quick access to their preferred map perspective.

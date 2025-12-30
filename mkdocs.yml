@@ -15,3 +15,8 @@ extra:
   analytics:
     provider: google
     property: G-1VYMMX1XZ4
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  # - pymdownx.blocks.caption
