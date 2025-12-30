@@ -97,7 +97,8 @@ This is valid for:
 - DN/FN
 - DT/FT
 
-For **DN** and **DT** a time option is also available
+For **DN** and **DT** a time option is also available  
+To **delete** a waypoint, double click on the waypoint icon
 
 ## Helper tools
 ### Speed zones autofill
@@ -124,5 +125,7 @@ Click on an instruction to get street-view of that point
 ### Rescan custom glyphs folder
 
 Under **User glyphs** the first icon rescans user glyphs folder.
+
 ![alt text](image-4.png)
+
 **Note:** User glyphs are not saved in the roadbook file.
