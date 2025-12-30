@@ -1,6 +1,6 @@
 /*
   Creates a tulip canvas object from either UI interaction or the loading of a saved file
-  // TODO seperate into tulip model and tulip controller to seperate UI interaction from state the tulip canvas would be the view
+  // TODO separate into tulip model and tulip controller to separate UI interaction from state the tulip canvas would be the view
 */
 fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
@@ -178,7 +178,7 @@ var Tulip = Class({
     */
     if (json.entry.path && json.exit.path) {
       console.log("old style");
-      // build a propperly formatted json string to import
+      // build a properly formatted json string to import
       var json = {
         "objects": [json.entry.point, json.entry.path, json.exit.path, json.exit.point].concat(json.tracks).concat(json.glyphs.reverse()),
       };
@@ -204,7 +204,7 @@ var Tulip = Class({
         this.initTracks(tracks);
       }
     } else {
-      // we load the glyphs from JSON to avoid race conditions with asyncronius image loading
+      // we load the glyphs from JSON to avoid race conditions with asynchronous image loading
       this.canvas.loadFromJSON({ "objects": json.glyphs.reverse() }, function () {
         _this.canvas.renderAll();
         //render the canvas then load the tracks after all images have loaded to make sure things render nice
@@ -232,11 +232,11 @@ var Tulip = Class({
             if (isError || !img) {
               console.warn(`Failed to load image: ${object.src}`);
               // Fallback: Set a default image source
-              remmapedSrc = _this.remapOldGlyphs(object.src);
-              if (remmapedSrc === false) {
-                remmapedSrc = './assets/svg/glyphs/missing-glyph.svg';
+              remappedSrc = _this.remapOldGlyphs(object.src);
+              if (remappedSrc === false) {
+                remappedSrc = './assets/svg/glyphs/missing-glyph.svg';
               }
-              object.setSrc(remmapedSrc, function () {
+              object.setSrc(remappedSrc, function () {
                 _this.canvas.renderAll();
               }, { crossOrigin: 'anonymous' });
             }
