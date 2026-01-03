@@ -797,9 +797,9 @@ class App {
     });
 
     window.addEventListener("beforeunload", function (event) {
-      if (_this.roadbookopen-custom-glyph-folder.filePath) {
+      if (_this.roadbook.filePath) {
         var rb = JSON.stringify(this.roadbook.statefulJSON(), null, 2);
-        var save = open-custom-glyph-folder_this.dialog.showMessageBox({ message: "Would you like to save before closing? All unsaved changes will be lost.", buttons: ['ok', 'nope'], type: 'question' });
+        var save = _this.dialog.showMessageBox({ message: "Would you like to save before closing? All unsaved changes will be lost.", buttons: ['ok', 'nope'], type: 'question' });
         if (save == 0) {
           _this.fs.writeFile(_this.roadbook.filePath, rb, function (err) { });
         }
