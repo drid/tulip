@@ -170,12 +170,12 @@ test( 'Sets a markers icon to a instruction icon', function(assert){
   assert.end();
 });
 
-test( 'Adds a marker index to the delete queue if it is empty otherwise deletes all the markers between indecies in queue from the route', function(assert){
+test( 'Adds a marker index to the delete queue if it is empty otherwise deletes all the markers between indecies in queue from the route', async function(assert){
   var mapModel = new model();
   mapModel.deleteQueue = [];
   mapModel.setMarkerIconToDeleteQueueIcon = function(marker){marker.icon = 'delete queue icon'};
   var end, start;
-  mapModel.deletePointsBetweenMarkersInQueueFromRoute = function(){
+  mapModel.deletePointsBetweenMarkersInQueueFromRoute = async function(){
     end = mapModel.deleteQueue.pop();
     start = mapModel.deleteQueue.pop();
   }
@@ -186,12 +186,12 @@ test( 'Adds a marker index to the delete queue if it is empty otherwise deletes 
   var callback1 = function(){callback1Sent=true;};
   var callback2 = function(){callback2Sent=true;};
 
-  mapModel.processMarkerForDeletion(marker1, callback1, callback2);
+  await mapModel.processMarkerForDeletion(marker1, callback1, callback2);
   assert.ok(!callback1Sent, "callback1 doesn't run with when a marker is sent to an empty queue");
   assert.ok(!callback2Sent, "callback2 doesn't run with when a marker is sent to an empty queue");
   assert.equal(mapModel.deleteQueue[0], marker1.routePointIndex, "Inserts the marker's route point index into the queue");
 
-  mapModel.processMarkerForDeletion(marker2, callback1, callback2);
+  await mapModel.processMarkerForDeletion(marker2, callback1, callback2);
   assert.ok(callback1Sent, "callback1 runs when a marker is sent to a queue with an index already in it");
   assert.ok(callback2Sent, "callback2 runs when a marker is sent to a queue with an index already in it");
   assert.equal(start, 11, "starts deletion at the correct index");

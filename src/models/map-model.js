@@ -73,13 +73,13 @@ class MapModel {
   }
 
   // TODO this whole process could be more elegant
-  processMarkerForDeletion(marker, callback1, callback2) {
+  async processMarkerForDeletion(marker, callback1, callback2) {
     if (this.deleteQueue.length == 0) {
       this.addMarkerIndexToDeleteQueue(marker.routePointIndex);
       this.setMarkerIconToDeleteQueueIcon(marker);
     } else {
       this.addMarkerIndexToDeleteQueue(marker.routePointIndex);
-      this.deletePointsBetweenMarkersInQueueFromRoute();
+      const mDeleted = await this.deletePointsBetweenMarkersInQueueFromRoute();
       callback1.call(this);
       callback2.call(this);
     }
@@ -95,6 +95,13 @@ class MapModel {
 
   setMarkerIconToInstructionIcon(marker) {
     marker.setIcon(this.buildInstructionIcon());
+  }
+
+  restoreMarkerIcon(marker) {
+    if (marker.instruction)
+      this.setMarkerIconToInstructionIcon(marker)
+    else
+      marker.setIcon(this.buildVertexIcon());
   }
 
   computeDistanceOnRouteBetweenPoints(beginIndex, endIndex, route) {
@@ -189,11 +196,34 @@ class MapModel {
       this.markers[routePointIndex].validationBubble.setMap(null);
     }
   }
+
+  async confirmAction(message, title) {
+    return await window.globalNode.confirmAction({
+      type: 'warning',
+      buttons: ['Delete', 'Cancel'],
+      title: title,
+      message: message
+    });
+  }
+
   // TODO this whole process could be more elegant
-  deletePointsBetweenMarkersInQueueFromRoute() {
+  async deletePointsBetweenMarkersInQueueFromRoute() {
     this.deleteQueue.sort(function (a, b) { return a - b });
-    var end = this.deleteQueue.pop();
-    var start = this.deleteQueue.pop();
+    var start = this.deleteQueue[0];
+    var end = this.deleteQueue[this.deleteQueue.length - 1];
+
+    if (start != end) {
+      const result = await this.confirmAction(
+        "You are about to delete multiple markers",
+        "Warning"
+      );
+
+      if (result == 1) {
+        // Restore marker icon state
+        this.exitControllerDeleteMode()
+        return false;
+      }
+    }
 
     for (var i = end; i >= start; i--) {
       if (this.markers[i].instruction) {
@@ -201,6 +231,8 @@ class MapModel {
       }
       this.deletePointFromRoute(this.markers[i].routePointIndex);
     }
+    this.deleteQueue = [];
+    return true;
   }
 
   /*
@@ -304,6 +336,14 @@ class MapModel {
     controller interface
   */
   exitControllerDeleteMode() {
+    // if (this.deleteQueue.length > 0) {
+    //   this.restoreMarkerIcon(this.markers[this.deleteQueue[0]]);
+    //   this.restoreMarkerIcon(this.markers[this.deleteQueue[1]]);
+    // }
+    this.deleteQueue.forEach(element => {
+      this.restoreMarkerIcon(this.markers[element])
+    });
+    this.deleteQueue = [];
     this.controller.exitDeleteMode();
   }
 

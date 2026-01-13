@@ -205,7 +205,7 @@ class MapController {
   bindToMapSurface() {
     var _this = this;
     this.map.addListener('click', function (evt) {
-      if (_this.mapUnlocked && !this.markerDeleteMode) {
+      if (_this.mapUnlocked && !_this.markerDeleteMode) {
         _this.addRoutePoint(evt.latLng);
       }
       if (_this.model.markers.length == 1) {
@@ -214,7 +214,7 @@ class MapController {
     });
 
     this.map.addListener('rightclick', function (evt) {
-      if (_this.routePolyline.getPath().length > 0) {
+      if (_this.mapUnlocked && !_this.markerDeleteMode && (_this.routePolyline.getPath().length > 0)) {
         globalNode.dialog()
           .showMessageBox({
             type: "question",
@@ -230,6 +230,9 @@ class MapController {
             }
           });
       }
+      if (_this.markerDeleteMode) {
+        _this.model.exitControllerDeleteMode();
+      }
     });
   }
 
@@ -242,7 +245,6 @@ class MapController {
     google.maps.event.addListener(marker, 'click', function (evt) {
       if (this.instruction && !this.markerDeleteMode) {
         // TODO make into instruction controller function and abstract it from here
-        $('#roadbook').scrollTop(0);
         $('#roadbook').scrollTop(($(this.instruction.element).offset().top - 100));
         $("div.waypoint").removeClass("waypoint-selected")
         this.instruction.element.addClass("waypoint-selected")

@@ -20,6 +20,7 @@ contextBridge.exposeInMainWorld("globalNode", {
     dialog: () => {
         return dialog;
     },
+    confirmAction: (options) => ipcRenderer.invoke('dialog:showMessageBox', options),
     uint8ArrayToBase64: (uint8Array) => Buffer.from(uint8Array).toString('base64'),
     printToPdf: (data) => {
         return ipcRenderer.invoke('print-pdf', data);
