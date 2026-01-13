@@ -473,3 +473,7 @@ ipcMain.on('get-user-glyphs', (event, glyphPath) => {
     scan(path.resolve(glyphPath));
     event.sender.send('user-glyphs', results);
 })
+
+ipcMain.handle('dialog:showMessageBox', (event, options) => {
+  return dialog.showMessageBoxSync(mainWindow, options);
+});
