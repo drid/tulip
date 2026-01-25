@@ -411,7 +411,7 @@ var Io = Class({
               n.type = 'fsz'
               break;
             case 'sn':
-              n.type='dn'
+              n.type = 'dn'
               break;
             default:
               n.type = waypoint.waypointIcon.type
@@ -419,9 +419,104 @@ var Io = Class({
           }
           app.roadbook.instructions()[instructionIdx]._notification(new Notification(n));
         }
+        // Heading and coordinates visibility
+        app.roadbook.instructions()[instructionIdx].showHeading(waypoint.showHeading);
+        app.roadbook.instructions()[instructionIdx].showCoordinates(waypoint.showCoordinates);
+        // Import Tulip elements
+        waypoint.tulip.elements.forEach(tulipElement => {
+          switch (tulipElement.type) {
+            case "Track":
+              // Set defaults
+              if (!tulipElement.roadOut.start)
+                tulipElement.roadOut.start = { "x": 90, "y": 90 };
+              if (!tulipElement.roadOut.end)
+                tulipElement.roadOut.end = { "x": 0, "y": -70 };
+              if (!tulipElement.roadIn.end)
+                tulipElement.roadIn.end = { "x": 0, "y": 70 };
+
+              tulipElement.roadIn.start = tulipElement.roadOut.start;
+
+              var entry = {
+                path: this._qubik2quadratic(tulipElement.roadIn, true)
+              };
+              var exit = {
+                path: this._qubik2quadratic(tulipElement.roadOut)
+              };
+              app.roadbook.instructions()[instructionIdx].tulip.clear();
+              app.roadbook.instructions()[instructionIdx].tulip.buildEntryTrackFromJson(entry, 'track')
+              app.roadbook.instructions()[instructionIdx].tulip.buildExitTrackFromJson(exit, 'track');
+              // app.roadbook.instructions()[instructionIdx].tulip.buildAddedTracksFromJson(exit);
+              break;
+            case "Road":
+              break;
+            case "Line":
+            default:
+              break;
+          }
+        });
         instructionIdx++;
       }
     });
     app.mapModel.updateRoadbookAndInstructions();
+  },
+
+  _qubik2quadratic(data, invert = false) {
+    const { start, end, handles } = data;
+    const h = handles[0];
+
+    // 1. Convert Relative to Absolute
+    const p0 = invert ? { x: start.x + end.x, y: start.y + end.y } : { x: start.x, y: start.y };
+    const p1 = { x: start.x + h.x, y: start.y + h.y };
+    const p2 = invert ? { x: start.x, y: start.y } : { x: start.x + end.x, y: start.y + end.y };
+
+    // Helper: Quadratic Bezier formula B(t) = (1-t)^2*P0 + 2(1-t)t*P1 + t^2*P2
+    const getPoint = (t) => ({
+      x: Math.pow(1 - t, 2) * p0.x + 2 * (1 - t) * t * p1.x + Math.pow(t, 2) * p2.x,
+      y: Math.pow(1 - t, 2) * p0.y + 2 * (1 - t) * t * p1.y + Math.pow(t, 2) * p2.y
+    });
+
+    // Helper: Derivative (velocity) to find handles for Cubic segments
+    const getDerivative = (t) => ({
+      x: 2 * (1 - t) * (p1.x - p0.x) + 2 * t * (p2.x - p1.x),
+      y: 2 * (1 - t) * (p1.y - p0.y) + 2 * t * (p2.y - p1.y)
+    });
+
+    // We split at t=1/3 and t=2/3
+    const t1 = 1 / 3;
+    const t2 = 2 / 3;
+
+    const split1 = getPoint(t1);
+    const split2 = getPoint(t2);
+
+    // Calculate Cubic handles for each segment (length of derivative/3)
+    const d0 = getDerivative(0);
+    const d1 = getDerivative(t1);
+    const d2 = getDerivative(t2);
+    const d3 = getDerivative(1);
+
+    return [
+      ["M", p0.x, p0.y],
+      // Segment 1 (t: 0 to 0.33)
+      [
+        "C",
+        p0.x + d0.x / 9, p0.y + d0.y / 9,
+        split1.x - d1.x / 9, split1.y - d1.y / 9,
+        split1.x, split1.y
+      ],
+      // Segment 2 (t: 0.33 to 0.66)
+      [
+        "C",
+        split1.x + d1.x / 9, split1.y + d1.y / 9,
+        split2.x - d2.x / 9, split2.y - d2.y / 9,
+        split2.x, split2.y
+      ],
+      // Segment 3 (t: 0.66 to 1.0)
+      [
+        "C",
+        split2.x + d2.x / 9, split2.y + d2.y / 9,
+        p2.x - d3.x / 9, p2.y - d3.y / 9,
+        p2.x, p2.y
+      ]
+    ];
   }
 });
