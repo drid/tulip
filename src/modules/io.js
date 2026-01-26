@@ -396,7 +396,7 @@ var Io = Class({
       app.roadbook.desc(rnr.route.description)
     var instructionIdx = 0;
     var lastTrackType = 'track';
-    this._rnCalcExitEndPoints(rnr.route);
+    this._rn_CalcExitEndPoints(rnr.route);
     rnr.route.waypoints.forEach(waypoint => {
       // Create map point
       var latLng = new google.maps.LatLng(waypoint.lat, waypoint.lon);
@@ -426,6 +426,7 @@ var Io = Class({
       // Heading and coordinates visibility
       app.roadbook.instructions()[instructionIdx].showHeading(waypoint.showHeading);
       app.roadbook.instructions()[instructionIdx].showCoordinates(waypoint.showCoordinates);
+      app.roadbook.instructions()[instructionIdx].tulip.clear();
       // Import Tulip elements
       waypoint.tulip.elements.forEach(tulipElement => {
         switch (tulipElement.type) {
@@ -440,20 +441,19 @@ var Io = Class({
             tulipElement.roadIn.start = tulipElement.roadOut.start;
 
             var entry = {
-              path: this._generateFabricPath(tulipElement.roadIn, true)
+              path: this._rn_generateTrackPath(tulipElement.roadIn, true)
             };
             var exit = {
-              path: this._generateFabricPath(tulipElement.roadOut)
+              path: this._rn_generateTrackPath(tulipElement.roadOut)
             };
-            app.roadbook.instructions()[instructionIdx].tulip.clear();
             // Entry
             if (tulipElement.roadIn.typeId)
-              lastTrackType = this.getRNTrackType(tulipElement.roadIn.typeId);
+              lastTrackType = this._rn_getTrackType(tulipElement.roadIn.typeId);
             app.roadbook.instructions()[instructionIdx].tulip.buildEntryTrackFromJson(entry, lastTrackType);
             app.roadbook.instructions()[instructionIdx].entryTrackType = lastTrackType;
             // Exit
             if (tulipElement.roadOut.typeId)
-              lastTrackType = this.getRNTrackType(tulipElement.roadOut.typeId);
+              lastTrackType = this._rn_getTrackType(tulipElement.roadOut.typeId);
             app.roadbook.instructions()[instructionIdx].tulip.buildExitTrackFromJson(exit, lastTrackType);
             app.roadbook.instructions()[instructionIdx].exitTrackType = lastTrackType;
             app.roadbook.instructions()[instructionIdx].tulip.exitTrackEdited = (tulipElement.roadOut.edited);
@@ -463,6 +463,7 @@ var Io = Class({
           case "Road":
             break;
           case "Line":
+            app.roadbook.instructions()[instructionIdx].tulip.canvas.add(this._rn_createFabricPath(tulipElement));
           default:
             break;
         }
@@ -473,7 +474,7 @@ var Io = Class({
     app.mapModel.updateRoadbookAndInstructions();
   },
 
-  getRNTrackType(id) {
+  _rn_getTrackType(id) {
     const rnmap = {
       15: 'lowVisTrack',
       16: 'offPiste',
@@ -489,7 +490,7 @@ var Io = Class({
  * Modifies the route object in place to add 'end' coordinates to roadOut.
  * @param {Object} route - The main route object containing waypoints.
  */
-  _rnCalcExitEndPoints(route) {
+  _rn_CalcExitEndPoints(route) {
     const DISTANCE = 54;
     const waypoints = route.waypoints;
 
@@ -535,7 +536,7 @@ var Io = Class({
     }
   },
 
-  _generateFabricPath(data, reverse = false) {
+  _rn_generateTrackPath(data, reverse = false) {
     let { start, handles, end } = data;
 
     // 1. Handle Reversal Logic
@@ -612,5 +613,31 @@ var Io = Class({
     }
 
     return pathArray;
+  },
+
+  /**
+   * Converts custom Line objects into Fabric.js Path instances.
+   * @param {Object} data - The custom object containing path and styles.
+   * @returns {fabric.Path}
+   */
+  _rn_createFabricPath(data) {
+    // 1. Transform nested arrays into the format Fabric expects: 
+    // e.g., [['M', 10, 20], ['L', 30, 40]]
+    // Since your input is already in this structure, we just ensure it's a clean copy.
+    const pathData = data.path;
+
+    // 2. Map custom properties to Fabric-specific properties
+    let options = {
+      ...data,
+      fill: data.fill === 'transparent' ? '' : data.fill,
+      originX: !data.left ? 'left' : 'center',
+      originY: !data.top ? 'top' : 'center',
+      pathOffset: (!data.left && !data.top) ? undefined : data.pathOffset,
+      left: data.left || data.pathOffset?.x || 0,
+      top: data.top || data.pathOffset?.y || 0,
+    };
+    // Ensure the path stays exactly where coordinates say it should be
+    var line = new fabric.Path(pathData, options);
+    return line;
   }
 });
