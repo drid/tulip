@@ -395,128 +395,222 @@ var Io = Class({
     if (rnr.route.description)
       app.roadbook.desc(rnr.route.description)
     var instructionIdx = 0;
+    var lastTrackType = 'track';
+    this._rnCalcExitEndPoints(rnr.route);
     rnr.route.waypoints.forEach(waypoint => {
+      // Create map point
       var latLng = new google.maps.LatLng(waypoint.lat, waypoint.lon);
       app.mapController.addRoutePoint(latLng);
-      if (waypoint.show) {
-        this.addWaypoint(app.mapModel.markers[waypoint.waypointid]);
-        // Notification
-        if (waypoint.waypointIcon) {
-          var n = {}
-          switch (waypoint.waypointIcon.type) {
-            case 'dz':
-              n.type = 'dsz'
-              break;
-            case 'fz':
-              n.type = 'fsz'
-              break;
-            case 'sn':
-              n.type = 'dn'
-              break;
-            default:
-              n.type = waypoint.waypointIcon.type
-              break;
-          }
-          app.roadbook.instructions()[instructionIdx]._notification(new Notification(n));
+      if (!waypoint.show) return;
+      console.log("Processing instruction ", instructionIdx + 1)
+      this.addWaypoint(app.mapModel.markers[waypoint.waypointid]);
+      // Notification
+      if (waypoint.waypointIcon) {
+        var n = {}
+        switch (waypoint.waypointIcon.type) {
+          case 'dz':
+            n.type = 'dsz'
+            break;
+          case 'fz':
+            n.type = 'fsz'
+            break;
+          case 'sn':
+            n.type = 'dn'
+            break;
+          default:
+            n.type = waypoint.waypointIcon.type
+            break;
         }
-        // Heading and coordinates visibility
-        app.roadbook.instructions()[instructionIdx].showHeading(waypoint.showHeading);
-        app.roadbook.instructions()[instructionIdx].showCoordinates(waypoint.showCoordinates);
-        // Import Tulip elements
-        waypoint.tulip.elements.forEach(tulipElement => {
-          switch (tulipElement.type) {
-            case "Track":
-              // Set defaults
-              if (!tulipElement.roadOut.start)
-                tulipElement.roadOut.start = { "x": 90, "y": 90 };
-              if (!tulipElement.roadOut.end)
-                tulipElement.roadOut.end = { "x": 0, "y": -70 };
-              if (!tulipElement.roadIn.end)
-                tulipElement.roadIn.end = { "x": 0, "y": 70 };
-
-              tulipElement.roadIn.start = tulipElement.roadOut.start;
-
-              var entry = {
-                path: this._qubik2quadratic(tulipElement.roadIn, true)
-              };
-              var exit = {
-                path: this._qubik2quadratic(tulipElement.roadOut)
-              };
-              app.roadbook.instructions()[instructionIdx].tulip.clear();
-              app.roadbook.instructions()[instructionIdx].tulip.buildEntryTrackFromJson(entry, 'track')
-              app.roadbook.instructions()[instructionIdx].tulip.buildExitTrackFromJson(exit, 'track');
-              // app.roadbook.instructions()[instructionIdx].tulip.buildAddedTracksFromJson(exit);
-              break;
-            case "Road":
-              break;
-            case "Line":
-            default:
-              break;
-          }
-        });
-        instructionIdx++;
+        app.roadbook.instructions()[instructionIdx]._notification(new Notification(n));
       }
+      // Heading and coordinates visibility
+      app.roadbook.instructions()[instructionIdx].showHeading(waypoint.showHeading);
+      app.roadbook.instructions()[instructionIdx].showCoordinates(waypoint.showCoordinates);
+      // Import Tulip elements
+      waypoint.tulip.elements.forEach(tulipElement => {
+        switch (tulipElement.type) {
+          case "Track":
+            // Set defaults
+            console.log("Adding track. In handles", tulipElement.roadIn.handles.length, ", Out handles", tulipElement.roadOut.handles.length)
+            if (!tulipElement.roadOut.start)
+              tulipElement.roadOut.start = { "x": 90, "y": 90 };
+            if (!tulipElement.roadIn.end)
+              tulipElement.roadIn.end = { "x": 0, "y": 40 };
+
+            tulipElement.roadIn.start = tulipElement.roadOut.start;
+
+            var entry = {
+              path: this._generateFabricPath(tulipElement.roadIn, true)
+            };
+            var exit = {
+              path: this._generateFabricPath(tulipElement.roadOut)
+            };
+            app.roadbook.instructions()[instructionIdx].tulip.clear();
+            // Entry
+            if (tulipElement.roadIn.typeId)
+              lastTrackType = this.getRNTrackType(tulipElement.roadIn.typeId);
+            app.roadbook.instructions()[instructionIdx].tulip.buildEntryTrackFromJson(entry, lastTrackType);
+            app.roadbook.instructions()[instructionIdx].entryTrackType = lastTrackType;
+            // Exit
+            if (tulipElement.roadOut.typeId)
+              lastTrackType = this.getRNTrackType(tulipElement.roadOut.typeId);
+            app.roadbook.instructions()[instructionIdx].tulip.buildExitTrackFromJson(exit, lastTrackType);
+            app.roadbook.instructions()[instructionIdx].exitTrackType = lastTrackType;
+            app.roadbook.instructions()[instructionIdx].tulip.exitTrackEdited = (tulipElement.roadOut.edited);
+            // Added tracks
+            // app.roadbook.instructions()[instructionIdx].tulip.buildAddedTracksFromJson(exit);
+            break;
+          case "Road":
+            break;
+          case "Line":
+          default:
+            break;
+        }
+      });
+      instructionIdx++;
+
     });
     app.mapModel.updateRoadbookAndInstructions();
   },
 
-  _qubik2quadratic(data, invert = false) {
-    const { start, end, handles } = data;
-    const h = handles[0];
+  getRNTrackType(id) {
+    const rnmap = {
+      15: 'lowVisTrack',
+      16: 'offPiste',
+      4: 'smallTrack',
+      17: 'track',
+      18: 'tarmacRoad',
+      12: 'dcw'
+    }
+    return rnmap[id] ?? 'track';
+  },
 
-    // 1. Convert Relative to Absolute
-    const p0 = invert ? { x: start.x + end.x, y: start.y + end.y } : { x: start.x, y: start.y };
-    const p1 = { x: start.x + h.x, y: start.y + h.y };
-    const p2 = invert ? { x: start.x, y: start.y } : { x: start.x + end.x, y: start.y + end.y };
+  /**
+ * Modifies the route object in place to add 'end' coordinates to roadOut.
+ * @param {Object} route - The main route object containing waypoints.
+ */
+  _rnCalcExitEndPoints(route) {
+    const DISTANCE = 54;
+    const waypoints = route.waypoints;
 
-    // Helper: Quadratic Bezier formula B(t) = (1-t)^2*P0 + 2(1-t)t*P1 + t^2*P2
-    const getPoint = (t) => ({
-      x: Math.pow(1 - t, 2) * p0.x + 2 * (1 - t) * t * p1.x + Math.pow(t, 2) * p2.x,
-      y: Math.pow(1 - t, 2) * p0.y + 2 * (1 - t) * t * p1.y + Math.pow(t, 2) * p2.y
-    });
+    if (!waypoints || waypoints.length < 2) return;
 
-    // Helper: Derivative (velocity) to find handles for Cubic segments
-    const getDerivative = (t) => ({
-      x: 2 * (1 - t) * (p1.x - p0.x) + 2 * t * (p2.x - p1.x),
-      y: 2 * (1 - t) * (p1.y - p0.y) + 2 * t * (p2.y - p1.y)
-    });
+    // Helper to get absolute bearing between two points
+    const getBearing = (p1, p2) => {
+      const latRad = p1.lat * (Math.PI / 180);
+      const dLat = p2.lat - p1.lat;
+      const dLon = (p2.lon - p1.lon) * Math.cos(latRad);
+      return Math.atan2(dLon, dLat);
+    };
 
-    // We split at t=1/3 and t=2/3
-    const t1 = 1 / 3;
-    const t2 = 2 / 3;
+    for (let i = 0; i < waypoints.length - 1; i++) {
+      const curr = waypoints[i];
+      const next = waypoints[i + 1];
+      let relativeAngle;
 
-    const split1 = getPoint(t1);
-    const split2 = getPoint(t2);
+      if (i === 0) {
+        // First waypoint: No previous point, so we use absolute bearing to next
+        relativeAngle = 0; // Or getBearing(curr, next) if you want it relative to North
+      } else {
+        // Standard waypoints: Difference between entry and exit
+        const prev = waypoints[i - 1];
+        const entryBearing = getBearing(prev, curr);
+        const exitBearing = getBearing(curr, next);
+        relativeAngle = exitBearing - entryBearing;
+      }
 
-    // Calculate Cubic handles for each segment (length of derivative/3)
-    const d0 = getDerivative(0);
-    const d1 = getDerivative(t1);
-    const d2 = getDerivative(t2);
-    const d3 = getDerivative(1);
+      // Calculate integer coordinates
+      const endX = Math.round(DISTANCE * Math.sin(relativeAngle));
+      const endY = Math.round(-(DISTANCE * Math.cos(relativeAngle)));
 
-    return [
-      ["M", p0.x, p0.y],
-      // Segment 1 (t: 0 to 0.33)
-      [
-        "C",
-        p0.x + d0.x / 9, p0.y + d0.y / 9,
-        split1.x - d1.x / 9, split1.y - d1.y / 9,
-        split1.x, split1.y
-      ],
-      // Segment 2 (t: 0.33 to 0.66)
-      [
-        "C",
-        split1.x + d1.x / 9, split1.y + d1.y / 9,
-        split2.x - d2.x / 9, split2.y - d2.y / 9,
-        split2.x, split2.y
-      ],
-      // Segment 3 (t: 0.66 to 1.0)
-      [
-        "C",
-        split2.x + d2.x / 9, split2.y + d2.y / 9,
-        p2.x - d3.x / 9, p2.y - d3.y / 9,
-        p2.x, p2.y
-      ]
-    ];
+      // Inject 'end' into the roadOut object
+      const roadOut = curr.tulip?.elements?.[0]?.roadOut;
+      roadOut.edited = (roadOut.end !== undefined) || roadOut.handles.length > 0;
+      if (roadOut && !roadOut.end) {
+        roadOut.end = {
+          x: endX,
+          y: endY
+        };
+      }
+    }
+  },
+
+  _generateFabricPath(data, reverse = false) {
+    let { start, handles, end } = data;
+
+    // 1. Handle Reversal Logic
+    if (reverse) {
+      const absoluteEnd = { x: start.x + end.x, y: start.y + end.y };
+      // New handles relative to the new start (the old absolute end)
+      const reversedHandles = handles.map(h => ({
+        x: (start.x + h.x) - absoluteEnd.x,
+        y: (start.y + h.y) - absoluteEnd.y
+      })).reverse();
+
+      const reversedEnd = {
+        x: start.x - absoluteEnd.x,
+        y: start.y - absoluteEnd.y
+      };
+
+      start = absoluteEnd;
+      handles = reversedHandles;
+      end = reversedEnd;
+    }
+
+    // 2. Convert to absolute coordinates for calculation
+    const pStart = { x: start.x, y: start.y };
+    const pEnd = { x: start.x + end.x, y: start.y + end.y };
+    let points = [pStart];
+
+    // 3. Coordinate Distribution Logic
+    if (!handles || handles.length === 0) {
+      // 0 Handles: Linear distribution at 33% and 66%
+      points.push({ x: pStart.x + (pEnd.x - pStart.x) * 0.33, y: pStart.y + (pEnd.y - pStart.y) * 0.33 });
+      points.push({ x: pStart.x + (pEnd.x - pStart.x) * 0.66, y: pStart.y + (pEnd.y - pStart.y) * 0.66 });
+      points.push(pEnd);
+    }
+    else if (handles.length === 1) {
+      // 1 Handle: Place handle at 50%, add points at 25% and 75%
+      const h1 = { x: start.x + handles[0].x, y: start.y + handles[0].y };
+      points = [
+        pStart,
+        { x: pStart.x + (h1.x - pStart.x) * 0.5, y: pStart.y + (h1.y - pStart.y) * 0.5 }, // 25% mark
+        h1,                                                                          // 50% mark
+        { x: h1.x + (pEnd.x - h1.x) * 0.5, y: h1.y + (pEnd.y - h1.y) * 0.5 },         // 75% mark
+        pEnd
+      ];
+      points = [
+        pStart,
+        { x: pStart.x + (h1.x - pStart.x) * 0.7, y: pStart.y + (h1.y - pStart.y) * 0.7 },
+        { x: h1.x + (pEnd.x - h1.x) * 0.3, y: h1.y + (pEnd.y - h1.y) * 0.3 },
+        pEnd
+      ];
+    }
+    else {
+      // 2+ Handles: Use Start, H1, H2, End
+      points.push({ x: start.x + handles[0].x, y: start.y + handles[0].y });
+      points.push({ x: start.x + handles[1].x, y: start.y + handles[1].y });
+      points.push(pEnd);
+    }
+
+    // 4. Generate the [M, C, C, C] Array
+    const pathArray = [['M', points[0].x, points[0].y]];
+    const tension = 0.9;
+
+    for (let i = 0; i < 3; i++) {
+      const p0 = points[i - 1] || points[i];
+      const p1 = points[i];
+      const p2 = points[i + 1];
+      const p3 = points[i + 2] || p2;
+
+      const cp1x = p1.x + (p2.x - p0.x) / 6 * tension;
+      const cp1y = p1.y + (p2.y - p0.y) / 6 * tension;
+      const cp2x = p2.x - (p3.x - p1.x) / 6 * tension;
+      const cp2y = p2.y - (p3.y - p1.y) / 6 * tension;
+
+      pathArray.push(['C', cp1x, cp1y, cp2x, cp2y, p2.x, p2.y]);
+    }
+
+    return pathArray;
   }
 });

@@ -222,8 +222,8 @@ class Track {
   }
 
   getEndAngle(path) {
-    const p1 = { x: path[3][5], y: path[3][6] };
-    const p2 = { x: path[3][1], y: path[3][2] };
+    const p1 = { x: path.at(-1).at(-2), y: path.at(-1).at(-1) };
+    const p2 = { x: path.at(-1)[1], y: path.at(-1)[2] };
 
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
@@ -283,7 +283,7 @@ class ExitTrack extends Track {
       // Generate track
       this.paths = super.buildTrackPaths(null, this.canvas_center, type, true, path)
 
-      this.end = this.buildExitPoint(path[3][5], path[3][6], this.getEndAngle(path));
+      this.end = this.buildExitPoint(path.at(-1).at(-2), path.at(-1).at(-1), this.getEndAngle(path));
       this.addObjectsToCanvas(this.paths.concat(this.end), canvas);
 
     } else {
