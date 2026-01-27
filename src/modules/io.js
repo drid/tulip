@@ -457,10 +457,30 @@ var Io = Class({
             app.roadbook.instructions()[instructionIdx].tulip.buildExitTrackFromJson(exit, lastTrackType);
             app.roadbook.instructions()[instructionIdx].exitTrackType = lastTrackType;
             app.roadbook.instructions()[instructionIdx].tulip.exitTrackEdited = (tulipElement.roadOut.edited);
-            // Added tracks
-            // app.roadbook.instructions()[instructionIdx].tulip.buildAddedTracksFromJson(exit);
             break;
           case "Road":
+            if (!tulipElement.start)
+              tulipElement.start = { "x": 90, "y": 90 };
+            else {
+              const oldStart = { ...tulipElement.start };
+              tulipElement.start.x += 100;
+              tulipElement.start.y += 85;
+              tulipElement.end = {
+                x: tulipElement.end.x - oldStart.x,
+                y: tulipElement.end.y - oldStart.y
+              };
+
+              tulipElement.handles = tulipElement.handles.map(h => ({
+                x: h.x - oldStart.x,
+                y: h.y - oldStart.y
+              }));
+            }
+            // Added tracks
+            var track = [{
+              path: this._rn_generateTrackPath(tulipElement),
+              type: this._rn_getTrackType(tulipElement.typeId)
+            }]
+            app.roadbook.instructions()[instructionIdx].tulip.buildAddedTracksFromJson(track);
             break;
           case "Line":
             app.roadbook.instructions()[instructionIdx].tulip.canvas.add(this._rn_createFabricPath(tulipElement));
@@ -525,7 +545,8 @@ var Io = Class({
       const endY = Math.round(-(DISTANCE * Math.cos(relativeAngle)));
 
       // Inject 'end' into the roadOut object
-      const roadOut = curr.tulip?.elements?.[0]?.roadOut;
+      const index = curr.tulip.elements.findIndex(item => item.type === "Track");
+      const roadOut = curr.tulip?.elements?.[index]?.roadOut;
       roadOut.edited = (roadOut.end !== undefined) || roadOut.handles.length > 0;
       if (roadOut && !roadOut.end) {
         roadOut.end = {
