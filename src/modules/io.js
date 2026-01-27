@@ -484,6 +484,12 @@ var Io = Class({
             break;
           case "Line":
             app.roadbook.instructions()[instructionIdx].tulip.canvas.add(this._rn_createFabricPath(tulipElement));
+            break;
+          case "Icon":
+            const glyph = this.findByRnid(app.glyphStructure, tulipElement.id);
+            if (glyph)  // Add glyph. Left is scaled down to match width
+              app.roadbook.instructions()[instructionIdx].tulip.addGlyph({ left: tulipElement.x * 180 / 200, top: tulipElement.y }, glyph.src, tulipElement.w);
+            break;
           default:
             break;
         }
@@ -660,5 +666,37 @@ var Io = Class({
     // Ensure the path stays exactly where coordinates say it should be
     var line = new fabric.Path(pathData, options);
     return line;
+  },
+
+  findByRnid(data, id) {
+    // Check if current level is what we want
+    if (data && data.rnid === id) return data;
+
+    // If it's an array, iterate through it
+    if (Array.isArray(data)) {
+      for (let item of data) {
+        let result = this.findByRnid(item, id);
+        if (result) return result;
+      }
+    }
+    // If it's an object, check all keys (like 'tabs' or 'items')
+    else if (data !== null && typeof data === 'object') {
+      for (let key of Object.keys(data)) {
+        let result = this.findByRnid(data[key], id);
+        if (result) return result;
+      }
+    }
+    return null;
+  },
+
+  _rn_WaypointMap(rnType) {
+    const map = {
+      'dz': 'dsz',
+      'fz': 'fsz',
+      'sn': 'dn',
+      'ass': 'fss'
+    }
+    console.log(rnType, map[rnType]);
+    return map[rnType] || rnType;
   }
 });
