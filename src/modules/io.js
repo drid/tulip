@@ -424,7 +424,7 @@ var Io = Class({
         switch (tulipElement.type) {
           case "Track":
             // Set defaults
-            console.log("Adding track. In handles", tulipElement.roadIn.handles.length, ", Out handles", tulipElement.roadOut.handles.length)
+            console.log("Adding track. In handles", tulipElement.roadIn?.handles?.length || 0, ", Out handles", tulipElement.roadOut?.handles?.length || 0)
             if (!tulipElement.roadOut.start)
               tulipElement.roadOut.start = { "x": 90, "y": 90 };
             if (!tulipElement.roadOut.end)
@@ -457,17 +457,18 @@ var Io = Class({
               tulipElement.start = { "x": 90, "y": 90 };
             else {
               const oldStart = { ...tulipElement.start };
-              tulipElement.start.x += 100;
-              tulipElement.start.y += 85;
+              tulipElement.start.x += 90;
+              tulipElement.start.y += 90;
               tulipElement.end = {
                 x: tulipElement.end.x - oldStart.x,
                 y: tulipElement.end.y - oldStart.y
               };
-
-              tulipElement.handles = tulipElement.handles.map(h => ({
-                x: h.x - oldStart.x,
-                y: h.y - oldStart.y
-              }));
+              if (tulipElement.handles) {
+                tulipElement.handles = tulipElement.handles.map(h => ({
+                  x: h.x - oldStart.x,
+                  y: h.y - oldStart.y
+                }));
+              }
             }
             // Added tracks
             var track = [{
@@ -547,12 +548,14 @@ var Io = Class({
       // Inject 'end' into the roadOut object
       const index = curr.tulip.elements.findIndex(item => item.type === "Track");
       const roadOut = curr.tulip?.elements?.[index]?.roadOut;
-      roadOut.edited = (roadOut.end !== undefined) || roadOut.handles.length > 0;
-      if (roadOut && !roadOut.end) {
-        roadOut.end = {
-          x: endX,
-          y: endY
-        };
+      if (roadOut) {
+        roadOut.edited = (roadOut.end !== undefined) || roadOut.handles.length > 0;
+        if (!roadOut.end) {
+          roadOut.end = {
+            x: endX,
+            y: endY
+          };
+        }
       }
     }
   },
@@ -564,10 +567,13 @@ var Io = Class({
     if (reverse) {
       const absoluteEnd = { x: start.x + end.x, y: start.y + end.y };
       // New handles relative to the new start (the old absolute end)
-      const reversedHandles = handles.map(h => ({
-        x: (start.x + h.x) - absoluteEnd.x,
-        y: (start.y + h.y) - absoluteEnd.y
-      })).reverse();
+      if (handles) {
+        const reversedHandles = handles.map(h => ({
+          x: (start.x + h.x) - absoluteEnd.x,
+          y: (start.y + h.y) - absoluteEnd.y
+        })).reverse();
+        handles = reversedHandles;
+      }
 
       const reversedEnd = {
         x: start.x - absoluteEnd.x,
@@ -575,7 +581,6 @@ var Io = Class({
       };
 
       start = absoluteEnd;
-      handles = reversedHandles;
       end = reversedEnd;
     }
 
