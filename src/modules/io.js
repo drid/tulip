@@ -406,22 +406,14 @@ var Io = Class({
       this.addWaypoint(app.mapModel.markers[waypoint.waypointid]);
       // Notification
       if (waypoint.waypointIcon) {
-        var n = {}
-        switch (waypoint.waypointIcon.type) {
-          case 'dz':
-            n.type = 'dsz'
-            break;
-          case 'fz':
-            n.type = 'fsz'
-            break;
-          case 'sn':
-            n.type = 'dn'
-            break;
-          default:
-            n.type = waypoint.waypointIcon.type
-            break;
+
+        const n = {
+          type: this._rn_WaypointMap(waypoint.waypointIcon.type),
+          openRadius: waypoint.waypointIcon.options.open ?? null,
+          validationRadius: waypoint.waypointIcon.options.clear ?? null,
+          time: waypoint.waypointIcon.options.time ?? null
         }
-        app.roadbook.instructions()[instructionIdx]._notification(new Notification(n));
+        app.roadbook.instructions()[instructionIdx].manageWaypoint(n);
       }
       // Heading and coordinates visibility
       app.roadbook.instructions()[instructionIdx].showHeading(waypoint.showHeading);
@@ -435,6 +427,8 @@ var Io = Class({
             console.log("Adding track. In handles", tulipElement.roadIn.handles.length, ", Out handles", tulipElement.roadOut.handles.length)
             if (!tulipElement.roadOut.start)
               tulipElement.roadOut.start = { "x": 90, "y": 90 };
+            if (!tulipElement.roadOut.end)
+              tulipElement.roadOut.end = { "x": 0, "y": -70 };
             if (!tulipElement.roadIn.end)
               tulipElement.roadIn.end = { "x": 0, "y": 40 };
 
@@ -696,7 +690,6 @@ var Io = Class({
       'sn': 'dn',
       'ass': 'fss'
     }
-    console.log(rnType, map[rnType]);
     return map[rnType] || rnType;
   }
 });

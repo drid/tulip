@@ -12,8 +12,14 @@
 class Notification {
   constructor(name) {
     var type = false
+    var openRadius = null;
+    var validationRadius = null;
+    var time = null;
     if (typeof (name) === "object") {
       type = name.type;
+      openRadius = name.openRadius;
+      validationRadius = name.validationRadius;
+      time = name.time;
     }
     else
       type = Notification.mapFileNameToType(name);
@@ -22,10 +28,10 @@ class Notification {
       var notification = Notification.buildNotification(type);
       this.type = notification.type;
       this.openrallytype = notification.openrallytype;
-      this.openRadius = notification.openRadius;
-      this.validationRadius = notification.validationRadius;
+      this.openRadius = openRadius ?? notification.openRadius;
+      this.validationRadius = validationRadius ?? notification.validationRadius;
       this.fill = notification.fill;
-      this.time = notification.time;
+      this.time = time ?? notification.time;
     }
   }
 
@@ -229,7 +235,7 @@ class Notification {
         validationRadius: 90,
         modMin: 10,
         modMax: 1000,
-        modStep:105,
+        modStep: 105,
         time: 600
       },
       ft: {
