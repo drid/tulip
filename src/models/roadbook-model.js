@@ -519,10 +519,10 @@ class RoadbookModel {
         while (instruction.inSpeedZone()) {
           if (!instruction.speedLimit() && !['fsz', 'fn', 'ft'].includes(instruction.notification.type)) {
             const src = './assets/svg/glyphs/speed-' + speedLimit + '.svg'
-            instruction.note.addGlyph({ top: 30, left: 30 }, src);
+            instruction.note.addGlyph({ top: 30, left: 30 }, src, undefined, false);
           } else {
             const src = './assets/svg/glyphs/speed-' + speedLimit + '-end.svg'
-            instruction.note.addGlyph({ top: 30, left: (instruction.speedLimit() ? 90 : 30) }, src);
+            instruction.note.addGlyph({ top: 30, left: (instruction.speedLimit() ? 90 : 30) }, src, undefined, false);
             speedLimit = instruction.speedLimit();
           }
           instruction = this.instructions()[++idx];

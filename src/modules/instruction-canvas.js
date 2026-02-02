@@ -74,7 +74,7 @@ class InstructionCanvas {
         });
     }
 
-    addGlyph(position, uri, vsize = 50) {
+    addGlyph(position, uri, vsize = 50, selectable = true) {
         this.finishRemove();
         var _this = this;
         var position = position;
@@ -86,6 +86,7 @@ class InstructionCanvas {
             image.left = position.left;
             image.scaleToHeight(vsize);
             image.id = globalNode.randomUUID();
+            image.selectable = selectable;
             const idx = _this.canvas.add(image);
             image.idx = idx._objects.length;
             _this.glyphs.push(image);
