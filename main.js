@@ -17,6 +17,7 @@ const fsPromises = require('fs').promises; // For promise-based methods
 const { Menu, app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
 if (require('electron-squirrel-startup')) app.quit();
 const path = require('path');
+const { saveRecent, getRecents, clearRecents } = require('./src/recentFiles');
 require('@electron/remote/main').initialize();
 const { createChangelogWindow } = require('./src/changelog');
 const { createStreetviewWindow } = require('./src/streetview');
@@ -60,7 +61,26 @@ app.on('activate', () => {
   }
 });
 
-function createWindow() {
+function buildMenu() {
+  const recents = getRecents();
+
+  const recentSubmenu = recents.length > 0
+    ? [
+      ...recents.map(filePath => ({
+        label: require('path').basename(filePath),
+        sublabel: filePath,
+        click: () => sendToWindow('load-roadbook', filePath)
+      })),
+      { type: 'separator' },
+      {
+        label: 'Clear Recent',
+        click: () => {
+          clearRecents();
+          buildMenu(); // rebuild menu
+        }
+      }
+    ]
+    : [{ label: 'No Recent Files', enabled: false }];
   const template = [
     {
       label: "File",
@@ -68,6 +88,7 @@ function createWindow() {
         { label: "New", accelerator: "CmdOrCtrl+N", click: () => sendToWindow('new-roadbook') },
         { label: "Open", accelerator: "CmdOrCtrl+O", click: () => sendToWindow('open-roadbook') },
         { label: "Append", click: () => sendToWindow('append-roadbook') },
+        { label: 'Open Recent', submenu: recentSubmenu },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: () => sendToWindow('save-roadbook') },
         { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: () => sendToWindow('save-roadbook-as') },
         { label: "Import GPX", accelerator: "CmdOrCtrl+I", click: () => sendToWindow('import-gpx') },
@@ -169,8 +190,11 @@ function createWindow() {
 
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu);
+}
 
+function createWindow() {
   // Create the browser window.
+  buildMenu();
   mainWindow = new BrowserWindow({
     width: 1500,
     height: 1000,
@@ -486,3 +510,8 @@ ipcMain.on('get-user-glyphs', (event, glyphPath) => {
 ipcMain.handle('dialog:showMessageBox', (event, options) => {
   return dialog.showMessageBoxSync(mainWindow, options);
 });
+
+ipcMain.on('save-recent-filename', (event, filename) => {
+    saveRecent(filename);
+    buildMenu();
+})

@@ -137,6 +137,7 @@ class App {
     _this.showRoadbook();
     $('.off-canvas-wrap').foundation('offcanvas', 'hide', 'move-left');
     this.updateWindowTitle(fileName);
+    this.ipc.send('save-recent-filename', fileName);
   }
 
   checkRoadbookVersion(json) {
@@ -393,8 +394,7 @@ class App {
       localStorage.setItem('lastRoadBook', fileName);
       this.updateWindowTitle(fileName);
       this.roadbookController.isSaved(true);
-
-
+      this.ipc.send('save-recent-filename', fileName);
       return true;
     });
   }
@@ -640,6 +640,10 @@ class App {
 
     this.ipc.on('open-roadbook', function (event, arg) {
       _this.openRoadBook();
+    });
+
+    this.ipc.on('load-roadbook', function (event, fileName) {
+      _this.loadRoadBook(fileName);
     });
 
     this.ipc.on('append-roadbook', function (event, arg) {
