@@ -65,18 +65,18 @@ function createWindow() {
     {
       label: "File",
       submenu: [
-        { label: "New", accelerator: "CmdOrCtrl+N", click: function () { mainWindow.webContents.send('new-roadbook'); } },
-        { label: "Open", accelerator: "CmdOrCtrl+O", click: function () { mainWindow.webContents.send('open-roadbook'); } },
-        { label: "Append", click: function () { mainWindow.webContents.send('append-roadbook'); } },
-        { label: "Save", accelerator: "CmdOrCtrl+S", click: function () { mainWindow.webContents.send('save-roadbook'); } },
-        { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: function () { mainWindow.webContents.send('save-roadbook-as'); } },
-        { label: "Import GPX", accelerator: "CmdOrCtrl+I", click: function () { mainWindow.webContents.send('import-gpx'); } },
+        { label: "New", accelerator: "CmdOrCtrl+N", click: () => sendToWindow('new-roadbook') },
+        { label: "Open", accelerator: "CmdOrCtrl+O", click: () => sendToWindow('open-roadbook') },
+        { label: "Append", click: () => sendToWindow('append-roadbook') },
+        { label: "Save", accelerator: "CmdOrCtrl+S", click: () => sendToWindow('save-roadbook') },
+        { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: () => sendToWindow('save-roadbook-as') },
+        { label: "Import GPX", accelerator: "CmdOrCtrl+I", click: () => sendToWindow('import-gpx') },
         {
           label: "Export",
           submenu: [
-            { label: "Export GPX", accelerator: "CmdOrCtrl+E", click: function () { mainWindow.webContents.send('export-gpx'); } },
-            { label: "Export OpenRally GPX", click: function () { mainWindow.webContents.send('export-openrally-gpx'); } },
-            { label: "Export PDF", accelerator: "CmdOrCtrl+P", click: function () { mainWindow.webContents.send('export-pdf'); } },
+            { label: "Export GPX", accelerator: "CmdOrCtrl+E", click: () => sendToWindow('export-gpx') },
+            { label: "Export OpenRally GPX", click: () => sendToWindow('export-openrally-gpx') },
+            { label: "Export PDF", accelerator: "CmdOrCtrl+P", click: () => sendToWindow('export-pdf') },
           ]
         },
         { label: "Show Lexicon", click: openLexiconWindow },
@@ -93,34 +93,34 @@ function createWindow() {
         // { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
         // { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
         // { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
-        { label: "Bring to front", click: function () { mainWindow.webContents.send('bring-to-front'); } },
-        { label: "Send to back", click: function () { mainWindow.webContents.send('send-to-back'); } },
+        { label: "Bring to front", click: () => sendToWindow('bring-to-front') },
+        { label: "Send to back", click: () => sendToWindow('send-to-back') },
         { type: "separator" },
         {
           label: "Tracks",
           submenu: [
-            { label: "Add Track 360", accelerator: "CmdOrCtrl+1", click: function () { mainWindow.webContents.send('add-track-0'); } },
-            { label: "Add Track 45", accelerator: "CmdOrCtrl+2", click: function () { mainWindow.webContents.send('add-track-45'); } },
-            { label: "Add Track 90", accelerator: "CmdOrCtrl+3", click: function () { mainWindow.webContents.send('add-track-90'); } },
-            { label: "Add Track 135", accelerator: "CmdOrCtrl+4", click: function () { mainWindow.webContents.send('add-track-135'); } },
-            { label: "Add Track 180", accelerator: "CmdOrCtrl+5", click: function () { mainWindow.webContents.send('add-track-180'); } },
-            { label: "Add Track 225", accelerator: "CmdOrCtrl+6", click: function () { mainWindow.webContents.send('add-track-225'); } },
-            { label: "Add Track 270", accelerator: "CmdOrCtrl+7", click: function () { mainWindow.webContents.send('add-track-270'); } },
-            { label: "Add Track 315", accelerator: "CmdOrCtrl+8", click: function () { mainWindow.webContents.send('add-track-315'); } },
+            { label: "Add Track 360", accelerator: "CmdOrCtrl+1", click: () => sendToWindow('add-track-0') },
+            { label: "Add Track 45", accelerator: "CmdOrCtrl+2", click: () => sendToWindow('add-track-45') },
+            { label: "Add Track 90", accelerator: "CmdOrCtrl+3", click: () => sendToWindow('add-track-90') },
+            { label: "Add Track 135", accelerator: "CmdOrCtrl+4", click: () => sendToWindow('add-track-135') },
+            { label: "Add Track 180", accelerator: "CmdOrCtrl+5", click: () => sendToWindow('add-track-180') },
+            { label: "Add Track 225", accelerator: "CmdOrCtrl+6", click: () => sendToWindow('add-track-225') },
+            { label: "Add Track 270", accelerator: "CmdOrCtrl+7", click: () => sendToWindow('add-track-270') },
+            { label: "Add Track 315", accelerator: "CmdOrCtrl+8", click: () => sendToWindow('add-track-315') },
             { type: "separator" },
-            { label: "Set Track HP", accelerator: "CmdOrCtrl+Option+1", click: function () { mainWindow.webContents.send('set-track-lvt'); } },
-            { label: "Set Track HP", accelerator: "CmdOrCtrl+Option+1", click: function () { mainWindow.webContents.send('set-track-hp'); } },
-            { label: "Set Track P", accelerator: "CmdOrCtrl+Option+2", click: function () { mainWindow.webContents.send('set-track-p'); } },
-            { label: "Set Track PP", accelerator: "CmdOrCtrl+Option+3", click: function () { mainWindow.webContents.send('set-track-pp'); } },
-            { label: "Set Track RO", accelerator: "CmdOrCtrl+Option+4", click: function () { mainWindow.webContents.send('set-track-ro'); } },
-            { label: "Set Track DCW", accelerator: "CmdOrCtrl+Option+5", click: function () { mainWindow.webContents.send('set-track-dcw'); } },
+            { label: "Set Track HP", accelerator: "CmdOrCtrl+Option+1", click: () => sendToWindow('set-track-lvt') },
+            { label: "Set Track HP", accelerator: "CmdOrCtrl+Option+1", click: () => sendToWindow('set-track-hp') },
+            { label: "Set Track P", accelerator: "CmdOrCtrl+Option+2", click: () => sendToWindow('set-track-p') },
+            { label: "Set Track PP", accelerator: "CmdOrCtrl+Option+3", click: () => sendToWindow('set-track-pp') },
+            { label: "Set Track RO", accelerator: "CmdOrCtrl+Option+4", click: () => sendToWindow('set-track-ro') },
+            { label: "Set Track DCW", accelerator: "CmdOrCtrl+Option+5", click: () => sendToWindow('set-track-dcw') },
           ]
         },
         { type: "separator" },
-        { label: "Add Glyph", accelerator: "CmdOrCtrl+Option+G", click: function () { mainWindow.webContents.send('add-glyph'); } },
-        { label: "Fill zone speed limit", click: function () { mainWindow.webContents.send('fill-zone-speed-limit'); } },
-        { label: "Roadbook logo", accelerator: "", click: function () { mainWindow.webContents.send('add-roadbook-logo'); } },
-        { label: "Settings", click: function () { mainWindow.webContents.send('open-settings'); } },
+        { label: "Add Glyph", accelerator: "CmdOrCtrl+Option+G", click: () => sendToWindow('add-glyph') },
+        { label: "Fill zone speed limit", click: () => sendToWindow('fill-zone-speed-limit') },
+        { label: "Roadbook logo", accelerator: "", click: () => sendToWindow('add-roadbook-logo') },
+        { label: "Settings", click: () => sendToWindow('open-settings') },
       ]
     },
     {
@@ -132,10 +132,10 @@ function createWindow() {
             { type: "separator" }
           ] : []
         ),
-        { label: "Toggle Roadbook", accelerator: "CmdOrCtrl+B", click: function () { mainWindow.webContents.send('toggle-roadbook'); } },
+        { label: "Toggle Roadbook", accelerator: "CmdOrCtrl+B", click: () => sendToWindow('toggle-roadbook') },
         { type: "separator" },
-        { label: "Zoom in", accelerator: "CmdOrCtrl+Plus", click: function () { mainWindow.webContents.send('zoom-in'); } },
-        { label: "Zoom out", accelerator: "CmdOrCtrl+-", click: function () { mainWindow.webContents.send('zoom-out'); } },
+        { label: "Zoom in", accelerator: "CmdOrCtrl+Plus", click: () => sendToWindow('zoom-in') },
+        { label: "Zoom out", accelerator: "CmdOrCtrl+-", click: () => sendToWindow('zoom-out') },
         { label: "Instruction Street View", click: openStreetviewWindow },
         { type: "separator" },
         {
@@ -152,9 +152,7 @@ function createWindow() {
       label: "Help",
       submenu: [
         {
-          label: "Changelog", click: function () {
-            mainWindow.webContents.send('open-changelog');
-          }
+          label: "Changelog", click: () => sendToWindow('open-changelog')
         },
         { label: "User Manual (online)", click: async () => {
           try {
@@ -163,7 +161,7 @@ function createWindow() {
             console.error('Failed to open URL:', err);
           }
         }  },
-        { label: "About", click: function () { mainWindow.webContents.send('show-about-info'); } },
+        { label: "About", click: () => sendToWindow('show-about-info') },
       ]
     }
 
@@ -225,6 +223,17 @@ function createWindow() {
       }
     }
   });
+}
+
+function sendToWindow(channel, ...args) {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send(channel, ...args);
+  } else if (process.platform === 'darwin') {
+    createWindow();
+    mainWindow.once('ready-to-show', () => {
+      mainWindow.webContents.send(channel, ...args);
+    });
+  }
 }
 
 
