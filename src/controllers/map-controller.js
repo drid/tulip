@@ -13,7 +13,7 @@ class MapController {
     this.deleteQueue = [];
     this.viewHome = viewHome;
     if (!viewHome) {
-      this.viewHome = {lat:0 ,lon:0, zoom:1}
+      this.viewHome = { lat: 0, lon: 0, zoom: 1 }
     }
     this.initMap();
     this.initRoutePolyline();
@@ -54,12 +54,12 @@ class MapController {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ considerIp: true })
     })
-    .then(response => response.json())
-    .then(data => {
-      _this.setMapCenter(data.location);
-      _this.setMapZoom(14);
-    })
-    .catch(error => console.error("Geolocation API Error:", error));
+      .then(response => response.json())
+      .then(data => {
+        _this.setMapCenter(data.location);
+        _this.setMapZoom(14);
+      })
+      .catch(error => console.error("Geolocation API Error:", error));
   }
 
   setMapCenter(latLng) {
@@ -243,6 +243,17 @@ class MapController {
       When two items are in the queue, all points in between are deleted.
     */
     google.maps.event.addListener(marker, 'click', function (evt) {
+      const previousPosition = marker.routePointIndex > 0 ? _this.model.markers[marker.routePointIndex - 1].position : null;
+      const nextPostion = marker.routePointIndex < _this.model.markers.length - 1 ? _this.model.markers[marker.routePointIndex + 1].position : null;
+
+      if (nextPostion || previousPosition) {
+        var heading = google.maps.geometry.spherical.computeHeading(marker.position, (nextPostion ?? previousPosition));
+        if (heading < 0) heading += 360;
+        if (nextPostion === null) heading -= 180;
+      } else
+        heading = 0;
+
+      globalNode.setCoords({ "lat": marker.position.lat(), "lng": marker.position.lng(), "heading": heading });
       if (this.instruction && !this.markerDeleteMode) {
         // TODO make into instruction controller function and abstract it from here
         $('#roadbook').scrollTop(($(this.instruction.element).offset().top - 100));
