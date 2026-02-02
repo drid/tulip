@@ -243,6 +243,7 @@ class MapController {
       When two items are in the queue, all points in between are deleted.
     */
     google.maps.event.addListener(marker, 'click', function (evt) {
+      globalNode.setCoords({ "lat": marker.position.lat(), "lng": marker.position.lng(), "heading": 0 });
       if (this.instruction && !this.markerDeleteMode) {
         // TODO make into instruction controller function and abstract it from here
         $('#roadbook').scrollTop(($(this.instruction.element).offset().top - 100));
