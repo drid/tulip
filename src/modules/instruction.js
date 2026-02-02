@@ -33,6 +33,8 @@ var Instruction = Class({
       }
     });
     this.inSpeedZone = ko.observable(false);
+    this.inTransferZone = ko.observable(false);
+    this.inNeutralizationZone = ko.observable(false);
     this.checkpointNumber = ko.observable(false);
     this.speedLimit = ko.observable(false);
     this.hasResetGlyph = ko.observable(false);
@@ -263,6 +265,17 @@ var Instruction = Class({
     if (this.hasNotification() && (this.notification.type == "cp")) {
       return "waypoint-tulip-checkpoint";
     }
+    // Transfer/Neutralization coloring
+    if (this.hasNotification()) {
+      if (["dn", "dt", "dns", "dts"].includes(this.notification.type)) {
+        return "tulip-DN-DT ";
+      }
+      if (["fn", "ft"].includes(this.notification.type)) {
+        return "tulip-FN-FT ";
+      }
+    }
+    if (this.inNeutralizationZone() || this.inTransferZone()) return "tulip-neutralization-transfer";
+    return "";
   },
 
   isWaypointDanger2: function () {

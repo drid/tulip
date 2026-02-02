@@ -303,6 +303,8 @@ class RoadbookModel {
 
   reindexInstructions() {
     var inSpeedZone = false;
+    var inTransferZone = false;
+    var inNeutralizationZone = false;
     var checkpointNumber = 0;
     var waypointNumber = 0;
     var lastReset = 0;
@@ -322,6 +324,30 @@ class RoadbookModel {
       if (instruction.notification) {
         if (["fsz", "fn", "ft"].includes(instruction.notification.type) && inSpeedZone) {
           inSpeedZone = false;
+        }
+      }
+      // Update Transfer Zones
+      if (instruction.notification) {
+        if (["dt", "dts"].includes(instruction.notification.type)) {
+          inTransferZone = true;
+        }
+      }
+      instruction.inTransferZone(inTransferZone);
+      if (instruction.notification) {
+        if (["ft"].includes(instruction.notification.type) && inTransferZone) {
+          inTransferZone = false;
+        }
+      }
+      // Update Neutralization Zones
+      if (instruction.notification) {
+        if (["dn", "dns"].includes(instruction.notification.type)) {
+          inNeutralizationZone = true;
+        }
+      }
+      instruction.inNeutralizationZone(inNeutralizationZone);
+      if (instruction.notification) {
+        if (["fn"].includes(instruction.notification.type) && inNeutralizationZone) {
+          inNeutralizationZone = false;
         }
       }
       // Checkpoint numbering

@@ -222,6 +222,26 @@ svg text {
   /* Right */
 }
 
+.tulip-DN-DT {
+  box-shadow: inset 0 5px 0 0 #fffb00,  
+    inset 5px 0 0 0 #fffb00,  
+    inset -5px 0 0 0 #fffb00;
+  /* Right */
+}
+
+.tulip-FN-FT {
+  box-shadow: inset 0 -7px 0 0 #fffb00,  
+    inset 5px 0 0 0 #fffb00,  
+    inset -5px 0 0 0 #fffb00;
+  /* Right */
+}
+
+.tulip-neutralization-transfer {
+  box-shadow: inset 5px 0 0 0 #fffb00,  
+    inset -5px 0 0 0 #fffb00;
+  /* Right */
+}
+
 .instruction-danger-3 {
   box-shadow: inset 0 0 0 5px red;
 }
