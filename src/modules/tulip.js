@@ -157,53 +157,7 @@ class Tulip extends InstructionCanvas {
         })
         _this.addKmMarker(_this.markerAngle);
       }, function (o, object) {
-        object.selectable = false;
-        if (!object.id)
-          object.id = globalNode.randomUUID();
-        // Handle CAP objects TODO: Duplicate, abstract in instruction canvas
-        if (object.subType && object.subType == 'CAP') {
-            var capText = object.getObjects().find(obj => obj.id === 'CAP');
-            if (capText) {
-                const instructions = app.roadbook.instructions();
-                const lastInstruction = instructions[instructions.length - 1];
-                lastInstruction.heading.subscribe(function (newValue) {
-                    capText.setText(String(newValue));
-                    _this.canvas.renderAll();
-                });
-            }
-        }
-        if (object.subType && (object.subType == 'CAP-A' || object.subType == 'CAP-C')) {
-            var capText = object.getObjects().find(obj => obj.id === 'CAP-A' || obj.id === 'CAP-C');
-            if (capText) {
-                const instructions = app.roadbook.instructions();
-                const lastInstruction = instructions[instructions.length - 1];
-                lastInstruction.capAvg.subscribe(function (newValue) {
-                    capText.setText(String(newValue));
-                    _this.canvas.renderAll();
-                });
-            }
-        }
-        if (object.type == "image") {
-          //if the object is an image add it to the glyphs array
-          _this.glyphs.push(object);
-
-          fabric.util.loadImage(object.src, function (img, isError) {
-            if (isError || !img) {
-              console.warn(`Failed to load image: ${object.src}`);
-              // Fallback: Set a default image source
-              remappedSrc = _this.remapOldGlyphs(object.src);
-              if (remappedSrc === false) {
-                remappedSrc = './assets/svg/glyphs/missing-glyph.svg';
-              }
-              object.setSrc(remappedSrc, function () {
-                _this.canvas.renderAll();
-              }, { crossOrigin: 'anonymous' });
-            }
-          }, null, 'anonymous');
-        } else {
-          _this.glyphs.push(object);
-        }
-        _this.canvas.renderAll();
+            _this.loadGlyphFromJson(object);
       });
     }
   }
