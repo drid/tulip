@@ -62,6 +62,12 @@ class PrintApp {
     this.rerenderForPageSize()
     var size = this.pageSize();
     const dpi = 150;
+    var margins = {
+          'top': 10 / 25.4,
+          'bottom': 10 / 25.4,
+          'left': 10 / 25.4,
+          'right': 10 / 25.4
+        }
     if (size == "Roll") {
       const roadBookWidthMm = 150;
       const pageWidth = roadBookWidthMm / 25.4;
@@ -71,8 +77,21 @@ class PrintApp {
         width: pageWidth,
         height: pageWidth * docAspect
       }
+      margins = {
+          'top': 10 / 25.4,
+          'bottom': 10 / 25.4,
+          'left': 4.5 / 25.4,
+          'right': 4.5 / 25.4
+        }
     }
-    var data = { 'filepath': this.filePath, 'opts': { 'pageSize': size, 'marginsType': '1', 'dpi': dpi } };
+    var data = {
+      'filepath': this.filePath,
+      'opts': {
+        'pageSize': size,
+        'margins': margins,
+        'dpi': dpi
+      }
+    };
 
     globalNode.printToPdf(data);
   }
