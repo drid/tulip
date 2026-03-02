@@ -120,6 +120,15 @@ class App {
     //TODO this needs to be passed to create when choice is added
     //we need to figure out how to watch a file while it's being edited so if it's moved it gets saved to the right place ***fs.watch***
     _this.fs.readFile(fileName, 'utf-8', function (err, data) {
+      if (err) {
+        _this.stopLoading();
+        globalNode.dialog().showMessageBoxSync({
+          message: err.message,
+          type: 'error',
+          buttons: ['OK']
+        });
+        return;
+      }
       try {
         var json = JSON.parse(data.replaceAll("{user_glyphs_path}", _this.settings.user_glyph_path ?? ""));
         if (!_this.checkRoadbookVersion(json))
