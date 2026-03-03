@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.0] - 2026-03-03
+
+### 🚀 Features
+
+- Add recent file menu
+- Add DN/DT tulip coloring
+- Adjust page margins for Roll and A5
+- Add dynamic CAP glyphs
+- Focus streetview via markers
+
+### 🐛 Bug Fixes
+
+- Preserve AddedTrack id
+- Remove file path from roadbook file
+- Garbled code
+- UX for marker delete
+- Glyphs selectable after autofill
+- Test for images should look in src folder
+- Handling of loading non existent recent file
+
+### 💼 Other
+
+- Resolve "TypeError: Cannot read properties of null (reading 'webContents')"
+
+### 🚜 Refactor
+
+- Fix spelling on comments and var
+- Deduplicate note and tulip code
+- Track type options
+- Glyph load from JSON
+
+### 📚 Documentation
+
+- Update docs for UI and new features
+- Add waypoint delete
+
+### ⚙️ Miscellaneous Tasks
+
+- Improve version bump workflow
+
 ## [1.10.5] - 2025-12-20
 
 ### 🚀 Features
