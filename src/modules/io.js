@@ -420,6 +420,7 @@ var Io = Class({
       app.roadbook.instructions()[instructionIdx].showCoordinates(waypoint.showCoordinates);
       app.roadbook.instructions()[instructionIdx].tulip.clear();
       // Import Tulip elements
+      console.log('Processing tulip elements');
       waypoint.tulip.elements.forEach(tulipElement => {
         switch (tulipElement.type) {
           case "Track":
@@ -481,9 +482,26 @@ var Io = Class({
             app.roadbook.instructions()[instructionIdx].tulip.canvas.add(this._rn_createFabricPath(tulipElement));
             break;
           case "Icon":
+            console.log('Adding glyph', tulipElement)
             const glyph = this.findByRnid(app.glyphStructure, tulipElement.id);
             if (glyph)  // Add glyph. Left is scaled down to match width
               app.roadbook.instructions()[instructionIdx].tulip.addGlyph({ left: tulipElement.x * 180 / 200, top: tulipElement.y }, glyph.src, tulipElement.w);
+            break;
+          default:
+            break;
+        }
+      });
+      console.log('Processing note elements');
+      waypoint.notes.elements.forEach(tulipElement => {
+        switch (tulipElement.type) {
+          case "Line":
+            app.roadbook.instructions()[instructionIdx].note.canvas.add(this._rn_createFabricPath(tulipElement));
+            break;
+          case "Icon":
+            console.log('Adding glyph', tulipElement.name)
+            const glyph = this.findByRnid(app.glyphStructure, tulipElement.id);
+            if (glyph)  // Add glyph. Left is scaled down to match width
+              app.roadbook.instructions()[instructionIdx].note.addGlyph({ left: tulipElement.x * 180 / 200, top: tulipElement.y }, glyph.src, tulipElement.w);
             break;
           default:
             break;

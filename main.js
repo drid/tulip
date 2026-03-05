@@ -91,7 +91,12 @@ function buildMenu() {
         { label: 'Open Recent', submenu: recentSubmenu },
         { label: "Save", accelerator: "CmdOrCtrl+S", click: () => sendToWindow('save-roadbook') },
         { label: "Save As", accelerator: "CmdOrCtrl+Shift+S", click: () => sendToWindow('save-roadbook-as') },
-        { label: "Import GPX", accelerator: "CmdOrCtrl+I", click: () => sendToWindow('import-gpx') },
+        { label: "Import",
+          submenu: [
+            { label: "GPX", accelerator: "CmdOrCtrl+I", click: function () { sendToWindow('import-gpx'); } },
+            { label: "Rally Navigator (Experimental)", accelerator: "CmdOrCtrl+G", click: function () { sendToWindow('import-rn'); } },
+          ]
+        },
         {
           label: "Export",
           submenu: [
