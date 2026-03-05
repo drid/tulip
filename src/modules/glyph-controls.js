@@ -193,7 +193,7 @@ addGlyphToInstruction(element) {
   }
   if (this.addToNote) {
     // NOTE this module should only know about the roadbook
-    app.roadbook.currentlyEditingInstruction.note.addGlyph({ top: 30, left: 30 }, src);
+    app.roadbook.currentlyEditingInstruction.note.appendGlyph(src);
   } else {
     // NOTE this module should only know about the roadbook
     // Force red color for Qt, -V, E3

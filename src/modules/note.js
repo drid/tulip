@@ -93,4 +93,59 @@ class Note extends InstructionCanvas {
     }
     return result;
   }
+
+  appendGlyph(uri, vsize = 50, selectable = true) {
+    const position = this.getNextEmptyPosition(this.canvas, vsize) || {left: 60, top: 60};
+    this.addGlyph(position, uri, vsize, selectable);
+  }
+
+  getNextEmptyPosition(canvas, imageSize = 50) {
+    const canvasWidth = 180;
+    const canvasHeight = 180;
+    const cols = Math.floor(canvasWidth / imageSize);
+    const rows = Math.floor(canvasHeight / imageSize);
+    // Calculate spacing
+    const totalImageWidth = cols * imageSize;   // 150
+    const totalImageHeight = rows * imageSize;  // 150
+    const spacingX = (canvasWidth - totalImageWidth) / (cols + 1);   // 30/4 = 7.5
+    const spacingY = (canvasHeight - totalImageHeight) / (rows + 1); // 30/4 = 7.5
+
+    // Cell size including spacing
+    const cellWidth = imageSize + spacingX;
+    const cellHeight = imageSize + spacingY;
+
+    // Create grid to track occupied spaces
+    const grid = Array(rows).fill(null).map(() => Array(cols).fill(false));
+
+    // Mark occupied positions
+    canvas.getObjects('image').forEach(img => {
+      // Find which cell this image belongs to
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const cellCenterX = spacingX + col * cellWidth + imageSize / 2;
+          const cellCenterY = spacingY + row * cellHeight + imageSize / 2;
+
+          // Check if image is close to this cell center (within imageSize/2)
+          if (Math.abs(img.left - cellCenterX) < imageSize / 2 &&
+            Math.abs(img.top - cellCenterY) < imageSize / 2) {
+            grid[row][col] = true;
+          }
+        }
+      }
+    });
+
+    // Find first empty position and return CENTER coordinates
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        if (!grid[row][col]) {
+          return {
+            left: spacingX + col * cellWidth + imageSize / 2,
+            top: spacingY + row * cellHeight + imageSize / 2
+          };
+        }
+      }
+    }
+
+    return null; // No empty space
+  }
 }
