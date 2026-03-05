@@ -19,6 +19,7 @@ Tulip is designed to empower rally teams with the tools needed to create accurat
 You may download Tulip from the available [releases on GitLAB](https://gitlab.com/drid/tulip/-/releases)
 
 There are binaries in the form of:
+
 * RPM
 * DEB
 * AppImage
