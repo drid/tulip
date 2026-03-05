@@ -95,11 +95,11 @@ class Note extends InstructionCanvas {
   }
 
   appendGlyph(uri, vsize = 50, selectable = true) {
-    const position = this.getNextEmptyPosition(this.canvas, vsize) || {left: 60, top: 60};
+    const position = this.getNextEmptyPosition(vsize) || {left: 60, top: 60};
     this.addGlyph(position, uri, vsize, selectable);
   }
 
-  getNextEmptyPosition(canvas, imageSize = 50) {
+  getNextEmptyPosition(imageSize = 50) {
     const canvasWidth = 180;
     const canvasHeight = 180;
     const cols = Math.floor(canvasWidth / imageSize);
@@ -118,7 +118,7 @@ class Note extends InstructionCanvas {
     const grid = Array(rows).fill(null).map(() => Array(cols).fill(false));
 
     // Mark occupied positions
-    canvas.getObjects('image').forEach(img => {
+    this.canvas.getObjects('image').forEach(img => {
       // Find which cell this image belongs to
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
@@ -148,4 +148,18 @@ class Note extends InstructionCanvas {
 
     return null; // No empty space
   }
+
+  removeSpeedGlyph(end = false) {
+    const pattern = end ? /\/assets\/svg\/glyphs\/speed-\d+-end\.svg/ : /\/assets\/svg\/glyphs\/speed-\d+\.svg/
+    const objectsToRemove = this.canvas.getObjects().filter(obj => {
+        const src = obj.getSrc ? obj.getSrc() : 
+                    (obj._originalElement && obj._originalElement.src) || '';
+        
+        return pattern.test(src);
+    });
+    
+    objectsToRemove.forEach(obj => this.canvas.remove(obj));
+    
+    this.canvas.renderAll();
+    }
 }

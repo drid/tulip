@@ -545,10 +545,12 @@ class RoadbookModel {
         instruction = this.instructions()[idx];
         while (instruction.inSpeedZone()) {
           if (!instruction.speedLimit() && !['fsz', 'fn', 'ft'].includes(instruction.notification.type)) {
-            const src = './assets/svg/glyphs/speed-' + speedLimit + '.svg'
+            const src = './assets/svg/glyphs/speed-' + speedLimit + '.svg';
+            instruction.note.removeSpeedGlyph();
             instruction.note.appendGlyph(src, undefined, false);
           } else {
-            const src = './assets/svg/glyphs/speed-' + speedLimit + '-end.svg'
+            const src = './assets/svg/glyphs/speed-' + speedLimit + '-end.svg';
+            instruction.note.removeSpeedGlyph(true);
             instruction.note.appendGlyph(src, undefined, false);
             speedLimit = instruction.speedLimit();
           }
