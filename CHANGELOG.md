@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.1] - 2026-03-05
+
+### 🐛 Bug Fixes
+
+- Missing glyph changes glyph size
+- Note glyph overlap when adding
+- Fill Speed Zone adds mutliple glyphs on 2nd run
+- Instruction bottom border cosmetics
+- Add missing L and R abbreviations
+
 ## [1.11.0] - 2026-03-03
 
 ### 🚀 Features
