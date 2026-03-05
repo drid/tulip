@@ -89,13 +89,21 @@ class InstructionCanvas {
             _this.glyphs.push(object);
             fabric.util.loadImage(object.src, function (img, isError) {
                 if (isError || !img) {
-                    console.error(`Failed to load image: ${object.src}`);
+                    console.warn(`Failed to load image: ${object.src}`);
                     // Fallback: Set a default image source
-                    remmapedSrc = _this.remapOldGlyphs(object.src);
+                    var remmapedSrc = _this.remapOldGlyphs(object.src);
                     if (remmapedSrc === false) {
                         remmapedSrc = './assets/svg/glyphs/missing-glyph.svg';
                     }
+                    object.set({
+                        originalWidth: object.width,
+                        originalHeight: object.height,
+                        originalScaleX: object.scaleX,
+                        originalScaley: object.scaleY
+                    });
                     object.setSrc(remmapedSrc, function () {
+                        object.scaleToWidth(object.originalWidth * object.scaleX);
+                        object.scaleToHeight(object.originalHeight * object.scaleY);
                         _this.canvas.renderAll();
                     }, { crossOrigin: 'anonymous' });
                 }
@@ -168,7 +176,7 @@ class InstructionCanvas {
 
     remapOldGlyphs(oldPath) {
         // This function remaps old glyph paths to new ones in the roadbook instructions
-        glyphMappings = {
+        const glyphMappings = {
             "./assets/svg/glyphs/bridge.svg": "./assets/svg/glyphs/under-bridge.svg",
             "./assets/svg/glyphs/bad.svg": "./assets/svg/glyphs/abbr-MVS.svg",
             "./assets/svg/glyphs/finish-of-selective-section.svg": "./assets/svg/glyphs/abbr-ASS.svg",
@@ -273,8 +281,13 @@ class InstructionCanvas {
             var json = glyph.toJSON()
             if (glyph.type == 'image') {
                 // Do not store missing glyph image
-                if (json.src.includes("missing-glyph"))
+                if (json.src.includes("missing-glyph")) {
                     json.src = glyph.src;
+                    json.width = glyph.originalWidth;
+                    json.height = glyph.originalHeight;
+                    json.scaleX = glyph.originalScaleX;
+                    json.scaleY = glyph.originalScaley;
+                }
                 json.src = this.truncateGlyphSource(json.src);
             }
             json.id = glyph.id;
