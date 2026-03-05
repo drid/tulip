@@ -15,7 +15,7 @@ do
 done
 
 echo "Generating abbreviations"
-for abbr in "P" "PP" "RO" "P\/\/" "HP" "FPP" "FRO" "SA" "GV" "DN" "DNX" "DNT" "L1" "L2" "L3" "DSS" "ASS" "VG" "A" "ALT" "BTW" "DNX" "IN" "kpL" "kpR" "kpS" "L\/R" "onL" "onR" "R\/L" "RP" "CX" "TJS" "NBX" "IMP" "EFF" "ORN" "BAD" "RP"
+for abbr in "L" "R" "P" "PP" "RO" "P\/\/" "HP" "FPP" "FRO" "SA" "GV" "DN" "DNX" "DNT" "L1" "L2" "L3" "DSS" "ASS" "VG" "A" "ALT" "BTW" "DNX" "IN" "kpL" "kpR" "kpS" "L\/R" "onL" "onR" "R\/L" "RP" "CX" "TJS" "NBX" "IMP" "EFF" "ORN" "BAD" "RP"
 do 
     fname="src/svg/glyphs/abbr-"$(echo $abbr | tr '/' '-' | tr -d '\\')".svg"
     echo "Abbreviation $abbr -> $fname"
