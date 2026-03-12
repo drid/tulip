@@ -1,6 +1,8 @@
 ---
 title: Tulip Downloads
 description: Download Tulip software for Linux, macOS and Windows.
+extra_javascript:
+  - js/update-downloads.js
 ---
 # Downloads
 
