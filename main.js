@@ -21,6 +21,7 @@ const { saveRecent, getRecents, clearRecents } = require('./src/recentFiles');
 require('@electron/remote/main').initialize();
 const { createChangelogWindow } = require('./src/changelog');
 const { createStreetviewWindow } = require('./src/streetview');
+const updateManager = require('./src/electron-updater');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -36,6 +37,7 @@ app.on('ready', function () {
     printPdf(event, args);
   });
   createWindow();
+  updateManager.initialize();
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url); // Open URL in user's browser.
     return { action: "deny" }; // Prevent the app from opening the URL.
@@ -182,6 +184,12 @@ function buildMenu() {
             console.error('Failed to open URL:', err);
           }
         }  },
+        {
+          label: 'Check for Updates',
+          click: () => {
+            updateManager.checkNow();
+          }
+        },
         { label: "About", click: () => sendToWindow('show-about-info') },
       ]
     }

@@ -8,7 +8,7 @@
   "scripts": {
     "start": "electron .",
     "build-linux": "electron-builder --linux --publish never",
-    "build-win": "electron-builder --windows --publish never",
+    "build-win": "electron-builder --windows",
     "build-mac": "electron-builder --mac --publish never",
     "test": "tape test/unit/*-tests.js",
     "convert-svg": "node utils/convert_svgs.js",
@@ -50,7 +50,9 @@
     "@sentry/cli": "^2.42.2",
     "@sentry/electron": "^6.1.0",
     "electron-is-dev": "^1.2.0",
+    "electron-log": "^5.4.3",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-updater": "^6.8.3",
     "foundation-icons": "^2.0.0",
     "foundation-sites": "^5.5.3",
     "jquery": "^2.1.4",
@@ -69,16 +71,10 @@
     },
     "win": {
       "icon": "tulip-logo.ico",
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}",
       "target": [
         {
-          "target": "msi",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        },
-        {
-          "target": "portable",
+          "target": "nsis",
           "arch": [
             "x64",
             "ia32"
