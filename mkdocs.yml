@@ -4,15 +4,20 @@ site_url: https://drid.gitlab.io/tulip/
 nav:
   - Home: index.md
   - Downloads: downloads.md
-  - Setup: setup.md
-  - Usage: usage.md
-  - OpenRally: openrally.md
-  - Shortcuts: shortcuts.md
+  - User Guide:
+    - Install: install.md
+    - Setup: setup.md
+    - Usage: usage.md
+    - OpenRally: openrally.md
+    - Shortcuts: shortcuts.md
 theme:
   name: material
   custom_dir: docs/overrides
   palette:
     primary: amber
+  features:
+    - navigation.tabs
+    - navigation.expand
 
 extra:
   analytics:
