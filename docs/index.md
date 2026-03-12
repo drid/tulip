@@ -15,16 +15,8 @@ Tulip is a powerful and user-friendly editor designed specifically for creating 
 Tulip is designed to empower rally teams with the tools needed to create accurate and professional roadbooks efficiently, making it an essential companion for rally planning and execution.
 
 ## Install
-### Using Release artifacts
-You may download Tulip from the available [releases on GitLAB](https://gitlab.com/drid/tulip/-/releases)
-
-There are binaries in the form of:
-
-* RPM
-* DEB
-* AppImage
-* Snap
-* Windows executables
+### Download executable
+You may download Tulip from the [Downloads page](downloads.md)
 
 ### Using snap store
 
@@ -35,16 +27,37 @@ or from console:
 sudo snap install --edge tulip-roadbook
 ```
 
-### Build and install
+### Run from source
 You will need [inkscape](https://inkscape.org/) installed on your system
 
 Clone or download the repository and go to source code folder
 ```bash
+git clone https://gitlab.com/drid/tulip.git
+cd tulip
 # Install node modules
 npm install
 # Generate SVGs
 npm run convert-svg
 ```
+Start the application
+```bash
+npm run
+```
+
+
+### Build and install
+You will need [inkscape](https://inkscape.org/) installed on your system
+
+Clone or download the repository and go to source code folder
+```bash
+git clone https://gitlab.com/drid/tulip.git
+cd tulip
+# Install node modules
+npm install
+# Generate SVGs
+npm run convert-svg
+```
+
 Available build commands are:
 ```bash
 # All linux binaries
