@@ -1,5 +1,6 @@
 site_name: Tulip
 repo_url: https://gitlab.com/drid/tulip
+site_url: https://drid.gitlab.io/tulip/
 nav:
   - Home: index.md
   - Downloads: downloads.md
