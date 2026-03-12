@@ -18,10 +18,10 @@ Double click on roadbook instruction to begin editing.
 ### Action Icons
 
 - ![Toggle drawing mode](img/button-draw.png){width="20"} Toggle drawing freehand shapes on tulip or note
-- ![Rotate km marker](image.png){width="20"} Rotate km marker by 90°
-- ![Delete item](image-1.png){width="20"} Delete selected item from tulip or note
-- ![Orient map](image-2.png){width="20"} Orient map with track
-- ![Finish edit](image-3.png){width="20"} Confirm changes to instruction and exit edit mode.
+- ![Rotate km marker](img/rotate-marker-icon.png){width="20"} Rotate km marker by 90°
+- ![Delete item](img/delete-glyph-icon.png){width="20"} Delete selected item from tulip or note
+- ![Orient map](img/orient-map-icon.png){width="20"} Orient map with track
+- ![Finish edit](img/finish-edit-icon.png){width="20"} Confirm changes to instruction and exit edit mode.
 
 ## Tulip
 ### Insert Tulip items
@@ -126,6 +126,6 @@ Click on an instruction to get street-view of that point
 
 Under **User glyphs** the first icon rescans user glyphs folder.
 
-![alt text](image-4.png)
+![alt text](img/custom-glyphs.png)
 
 **Note:** User glyphs are not saved in the roadbook file.
