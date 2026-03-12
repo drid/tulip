@@ -16,6 +16,9 @@ extra:
     provider: google
     property: G-1VYMMX1XZ4
 
+extra_javascript:
+  - js/umami-tracker.js
+
 markdown_extensions:
   - attr_list
   - md_in_html
