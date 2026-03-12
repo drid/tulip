@@ -1,5 +1,5 @@
 {
-  "name": "Tulip",
+  "name": "tulip",
   "productName": "Tulip",
   "version": "1.11.1",
   "description": "Rally Roadbook Creator",
@@ -7,11 +7,10 @@
   "type": "commonjs",
   "scripts": {
     "start": "electron .",
-    "build-linux": "electron-builder --linux --publish never && npm run sentry:sourcemaps",
-    "build-win": "electron-builder --windows",
-    "build-mac": "electron-builder --mac",
+    "build-linux": "electron-builder --linux --publish never",
+    "build-win": "electron-builder --windows --publish never",
+    "build-mac": "electron-builder --mac --publish never",
     "test": "tape test/unit/*-tests.js",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org drid --project tulip ./dist && sentry-cli sourcemaps upload --org drid --project tulip ./dist",
     "convert-svg": "node utils/convert_svgs.js",
     "changelog": "git cliff --unreleased --tag \"v$npm_package_version\" --prepend CHANGELOG.md",
     "release": "scripts/version.sh"
@@ -39,7 +38,7 @@
   "homepage": "https://drid.gitlab.io/tulip",
   "devDependencies": {
     "electron": "^29.4.6",
-    "electron-builder": "^26.0.12",
+    "electron-builder": "^26.8.1",
     "jsdom": "^26.1.0",
     "source-map-support": "^0.5.21",
     "tape": "^4.17.0",
@@ -64,18 +63,23 @@
   },
   "build": {
     "appId": "tulip.app",
+    "publish": {
+      "provider": "gitlab",
+      "projectId": "62883636"
+    },
     "win": {
       "icon": "tulip-logo.ico",
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}",
       "target": [
         {
-          "target": "msi",
+          "target": "nsis",
           "arch": [
             "x64",
             "ia32"
           ]
         },
         {
-          "target": "portable",
+          "target": "msi",
           "arch": [
             "x64",
             "ia32"

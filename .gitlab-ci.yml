@@ -8,8 +8,6 @@ stages:
 variables:
   BUILDER_IMAGE: electronuserland/builder:latest
   BUILDER_IMAGE_WIN: electronuserland/builder:20-wine-mono-07.24
-  PKG_PATH: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/$APPNAME/$VERSION
-  SNAP_NAME: tulip-roadbook
 
 unit-testing:
   stage: test
@@ -18,6 +16,23 @@ unit-testing:
     - npm install electron-builder
   script:
     - npm test
+  rules:
+  - changes:
+      - "docs/**/*"
+    when: never
+
+  - changes:
+      - "**/*.js"
+      - "**/*.ts"
+      - "**/*.json"
+      - "**/*.html"
+    when: on_success
+
+  - changes:
+      - "src/**/*"
+    when: on_success
+
+  - when: never
 
 generate-glyphs:
   stage: build
@@ -51,10 +66,18 @@ build-win:
     - npm ci
   script:
     - npm run build-win
+    - |
+      for filepath in dist/*\ *; do
+        if [ -f "$filepath" ]; then
+          mv -v "$filepath" $(echo $filepath | sed 's/\ /-/g')
+        fi
+      done
   artifacts:
     name: $CI_COMMIT_REF_SLUG
     paths:
-      - $CI_PROJECT_DIR/dist/*.*
+      - dist/*.exe
+      - dist/*.msi
+      - dist/latest.yml
     when: on_success
 
 build-linux:
@@ -81,7 +104,11 @@ build-linux:
       dotenv: variables.env
     name: $CI_COMMIT_REF_SLUG
     paths:
-      - $CI_PROJECT_DIR/dist/*.*
+      - dist/*.AppImage
+      - dist/*.snap
+      - dist/*.deb
+      - dist/*.rpm
+      - dist/latest-linux*.yml
     when: on_success
 
 build-mac:
@@ -109,88 +136,78 @@ build-mac:
       dotenv: variables.env
     name: $CI_COMMIT_REF_SLUG
     paths:
-      # - dist/*.dmg
+      - dist/*.dmg
       - dist/*.zip
+      - dist/latest-mac.yml
     when: on_success
-
-upload_package:
-  stage: package
-  image: curlimages/curl:latest
-  rules:
-    - if: '$CI_COMMIT_TAG =~ /^v?[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$/ && $CI_COMMIT_TAG'
-  script:
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/$APPNAME $VERSION.exe" "$PKG_PATH/${APPNAME}_${VERSION}.exe"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/$APPNAME $VERSION.msi" "$PKG_PATH/${APPNAME}_${VERSION}.msi"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/$APPNAME $VERSION ia32.msi" "$PKG_PATH/${APPNAME}_${VERSION}_32bit.msi"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}_${VERSION}_amd64.snap" "$PKG_PATH/${APPNAME}_${VERSION}_amd64.snap"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.AppImage" "$PKG_PATH/${APPNAME}-${VERSION}.AppImage"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}-armv7l.AppImage" "$PKG_PATH/${APPNAME}-${VERSION}-armv7l.AppImage"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}-arm64.AppImage" "$PKG_PATH/${APPNAME}-${VERSION}-arm64.AppImage"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}_${VERSION}_amd64.deb" "$PKG_PATH/${APPNAME}_${VERSION}_amd64.deb"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}_${VERSION}_arm64.deb" "$PKG_PATH/${APPNAME}_${VERSION}_arm64.deb"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}_${VERSION}_armv7l.deb" "$PKG_PATH/${APPNAME}_${VERSION}_armv7l.deb"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.x86_64.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.x86_64.rpm"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.aarch64.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.aarch64.rpm"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.armv7l.rpm" "$PKG_PATH/${APPNAME}-${VERSION}.armv7l.rpm"'
-    # - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}.dmg" "$PKG_PATH/${APPNAME}-${VERSION}.dmg"'
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "dist/${APPNAME}-${VERSION}-mac.zip" "$PKG_PATH/${APPNAME}-${VERSION}-mac.zip"'
 
 release_job:
   stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  image: gitlab/glab:latest
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v?[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$/ && $CI_COMMIT_TAG'
-  script:
-    - echo "running release_job"
+  before_script:
     - apk add bash curl python3
-    - curl -sL https://sentry.io/get-cli/ | bash
     - export SENTRY_ORG=drid
     - export SENTRY_PROJECT=tulip
     - export SENTRY_AUTH_TOKEN
     - sentry-cli releases new "$VERSION"
     - sentry-cli releases set-commits "$VERSION" --auto --ignore-missing
     - sentry-cli releases finalize "$VERSION"
-  release:
-    name: "Release $TAG"
-    tag_name: "$CI_COMMIT_TAG"
-    description: "Created using the release-cli\n Go to $PKG_PATH for all packages"
-    ref: "$CI_COMMIT_SHA"
-    assets:
-      links:
-        - name: "Windows EXE"
-          url: "$PKG_PATH/${APPNAME}_${VERSION}.exe"
-          link_type: package
-        - name: "Windows MSI"
-          url: "$PKG_PATH/${APPNAME}_${VERSION}.msi"
-          link_type: package
-        - name: "Windows MSI 32bit"
-          url: "$PKG_PATH/${APPNAME}_${VERSION}_32bit.msi"
-          link_type: package
-        - name: "snap"
-          url: "$PKG_PATH/${APPNAME}_${VERSION}_amd64.snap"
-          link_type: package
-        - name: "AppImage"
-          url: "$PKG_PATH/${APPNAME}-${VERSION}.AppImage"
-          link_type: package
-        - name: "${APPNAME}_${VERSION}_amd64.deb"
-          url: "$PKG_PATH/${APPNAME}_${VERSION}_amd64.deb"
-          link_type: package
-        - name: "${APPNAME}_${VERSION}_x86_64.rpm"
-          url: "$PKG_PATH/${APPNAME}-${VERSION}.x86_64.rpm"
-          link_type: package
-        # - name: "${APPNAME}_${VERSION}.dmg"
-        #   url: "$PKG_PATH/${APPNAME}-${VERSION}.dmg"
-        #   link_type: package
-        - name: "${APPNAME}_${VERSION}-mac.zip"
-          url: "$PKG_PATH/${APPNAME}-${VERSION}-mac.zip"
-          link_type: package
+  script:
+    - glab auth login --job-token $CI_JOB_TOKEN
+    - glab release create "Tulip $CI_COMMIT_TAG"
+    - |
+      #!/bin/bash
+      #Function to get asset label
+      get_name() {
+        local filename="$1"
+        local arch=""
+        case "$filename" in
+          *arm64.*) arch="arm64" ;;
+          *amd64.*) arch="amd64" ;;
+          *aarch64.*) arch="aarch64" ;;
+          *armv7l.*) arch="armv7l" ;;
+          *ia32.*) arch="32bit" ;;
+          *) arch="" ;;
+        esac
+
+        case "$filename" in
+          *.AppImage) echo "AppImage $arch" ;;
+          *.snap) echo "Snap $arch" ;;
+          *.deb) echo "Linux DEB $arch" ;;
+          *.rpm) echo "Linux RPM $arch" ;;
+          *.exe) echo "Windows $arch" ;;
+          *.msi) echo "Windows MSI $arch" ;;
+          *mac.zip) echo "MacOS ZIP $arch" ;;
+          *) echo "$filename" ;;
+        esac
+      }
+      
+      # Function to get link type
+      get_link_type() {
+        local filename="$1"
+        case "$filename" in
+          *.yml) echo "other" ;;
+          *) echo "package" ;;
+        esac
+      }
+      for filepath in dist/*.{zip,deb,rpm,AppImage,snap,exe,msi} dist/latest*.yml; do
+        if [ -f "$filepath" ]; then
+          filename=$(basename "$filepath")
+          name=$(get_name "$filename")
+          type=$(get_link_type "$filename")
+          echo "$filename -> $name - $type"
+          glab release upload --use-package-registry --package-name "Tulip" $CI_COMMIT_TAG "$filepath#$name#$label"
+        fi
+      done
 
 
 pages:
   stage: deploy
   image: python:3.9
   script:
-    - pip install mkdocs-material
+    - pip install 'mkdocs<2.0' mkdocs-material
     - mkdocs build --site-dir public
   artifacts:
     paths:
