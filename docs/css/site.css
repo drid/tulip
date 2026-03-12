@@ -50,3 +50,21 @@
 .grid.cards .fa-microsoft {
     color: #0078d4;
 }
+
+/* Force Ko-fi widget to bottom-right, above other elements */
+.btn-container,
+.btn-container-mobi {
+  position: fixed !important;
+  bottom: 20px !important;   /* adjust vertical position */
+  right: 20px !important;    /* ensure right side */
+  left: auto !important;
+  z-index: 9999 !important;  /* high z-index to float above sidebar/topbar */
+}
+
+/* Mobile adjustments if needed */
+@media (max-width: 76.9375em) {
+  .btn-container-mobi {
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+}

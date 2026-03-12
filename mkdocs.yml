@@ -25,7 +25,8 @@ extra_css:
 
 extra_javascript:
   - js/umami-tracker.js
-
+  - https://storage.ko-fi.com/cdn/widget/Widget_2.js
+  - js/kofi.js
 
 markdown_extensions:
   - attr_list
