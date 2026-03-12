@@ -128,7 +128,7 @@ Click on an instruction to get street-view of that point
 
 ### Rescan custom glyphs folder
 
-Under **User glyphs** the first icon rescans user glyphs folder.
+Under **User glyphs**, clicking on the first icon triggers rescanning the user glyphs folder.
 
 ![alt text](img/custom-glyphs.png)
 
