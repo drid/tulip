@@ -9,6 +9,7 @@ nav:
   - Shortcuts: shortcuts.md
 theme:
   name: material
+  custom_dir: docs/overrides
   palette:
     primary: amber
 

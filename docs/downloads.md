@@ -1,3 +1,7 @@
+---
+title: Tulip Downloads
+description: Download Tulip software for Linux, macOS and Windows.
+---
 # Downloads
 
 **Latest release:** <span id="release-version">Loading...</span>  
