@@ -26,7 +26,7 @@ class RoadbookController {
     _this.descriptionTextEditor = new Quill('#description-editor', {
       modules: {
         toolbar: [
-          [{ 'size': ['small', false, 'large', 'huge'] },'bold', 'italic', 'underline','link',{ 'color': [] }, { 'background': [] },'clean'],
+          [{ 'size': ['small', false, 'large', 'huge'] }, 'bold', 'italic', 'underline', 'link', { 'color': [] }, { 'background': [] }, 'clean'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }],
           [{ 'indent': '-1' }, { 'indent': '+1' }]
         ]
@@ -162,7 +162,6 @@ class RoadbookController {
     $('#note-editor-container').toggleClass('hideCap', !instruction.showHeading());
     $('#roadbook-waypoints').children().hide();
     $(instruction.element).show();
-    $('#roadbook').scrollTop(this.editingElement.position().top - 80)
     $('#waypoint-palette').slideDown('slow');
     $(instruction.element).find('.waypoint-note').find('p').after($('#note-editor-container'));
     // Manage wp delete
@@ -209,7 +208,10 @@ class RoadbookController {
     // $('#roadbook').css('padding-bottom', '150%');
     $('#roadbook').find('.roadbook-info').show();
     $('#notification-options').hide();
-    $('#roadbook').scrollTop(this.editingElement.position().top - 80);
+    $(this.editingElement)[0].scrollIntoView({
+      behavior: 'instant',
+      block: 'nearest'
+    });
     $('.waypoint.row').find('.waypoint-icon').off();
     $('.waypoint.row').find('.waypoint-icon').removeClass('delete-suggestion');
     // Clean Knockout bindings

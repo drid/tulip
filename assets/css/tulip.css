@@ -146,6 +146,8 @@ textarea.waypoint-palette {
   padding-top: 1.2rem;
   height: 92%;
   overflow: auto;
+  scroll-padding-top:    40%;
+  scroll-padding-bottom: 40%;
 }
 
 #roadbook-header {

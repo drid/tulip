@@ -256,7 +256,10 @@ class MapController {
       globalNode.setCoords({ "lat": marker.position.lat(), "lng": marker.position.lng(), "heading": heading });
       if (this.instruction && !this.markerDeleteMode) {
         // TODO make into instruction controller function and abstract it from here
-        $('#roadbook').scrollTop(($(this.instruction.element).offset().top - 100));
+        $(this.instruction.element)[0].scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest'
+        });
         $("div.waypoint").removeClass("waypoint-selected")
         this.instruction.element.addClass("waypoint-selected")
       }
@@ -280,8 +283,6 @@ class MapController {
           _this.model.revertInstructionToRoutePoint(this);
         } else {
           _this.model.addInstruction(this);
-          // $('#roadbook').scrollTop(0);
-          $('#roadbook').scrollTop(($(this.instruction.element).offset().top - 100));
         }
       }
     });
