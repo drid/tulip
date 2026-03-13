@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let listHtml = '';
         if (listItems.length > 0) {
           let items = listItems.map(item =>
-            `<li><a href="${item.url}" target="_blank" rel="noopener">${item.name}</a></li>`
+            `<li><a href="${item.url}" target="_blank" rel="noopener"  data-umami-event="download-${item.name.split('/').pop()}">${item.name}</a></li>`
           ).join('');
           listHtml = `<p>Also:</p><ul>${items}</ul>`;
         } else {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
           <div class="card">
             <i class="${icon}"></i>
-            <a href="${mainUrl}" class="md-button md-button--primary">
+            <a href="${mainUrl}" class="md-button md-button--primary" data-umami-event="download-${mainItem.name.split('/').pop()}">
             <i class="fas fa-download"></i> Download for ${title}
             </a>
             ${listHtml}
