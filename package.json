@@ -1,7 +1,7 @@
 {
   "name": "tulip",
   "productName": "Tulip",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "description": "Rally Roadbook Creator",
   "main": "main.js",
   "type": "commonjs",

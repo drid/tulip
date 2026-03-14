@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.2] - 2026-03-14
+
+### 🐛 Bug Fixes
+
+- Instruction scrolling, closes #110
+
+### 📚 Documentation
+
+- Add downloads tracking for umami
+
+### ⚙️ Miscellaneous Tasks
+
+- Optimze CI to autodetect artifacts
+- Add snap publish job
+
 ## [1.11.1] - 2026-03-05
 
 ### 🐛 Bug Fixes
