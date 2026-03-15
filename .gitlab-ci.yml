@@ -167,7 +167,8 @@ release_job:
           *amd64.*) arch="amd64" ;;
           *aarch64.*) arch="aarch64" ;;
           *armv7l.*) arch="armv7l" ;;
-          *ia32.*) arch="32bit" ;;
+          *ia32.*) arch="32 bit" ;;
+          *x64.*) arch="64 bit" ;;
           *) arch="" ;;
         esac
 

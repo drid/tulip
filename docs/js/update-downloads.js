@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const nameLower = link.name.toLowerCase();
         let os = 'other';
 
-        if (nameLower.includes('linux') || nameLower.includes('appimage') ||
+        if (nameLower.includes('appimage') ||
           nameLower.includes('deb') || nameLower.includes('rpm') || nameLower.includes('snap')) {
           os = 'linux';
-        } else if (nameLower.includes('mac') || nameLower.includes('dmg') || nameLower.includes('zip') && nameLower.includes('mac')) {
+        } else if ((nameLower.includes('mac') && nameLower.includes('dmg')) || (nameLower.includes('zip') && nameLower.includes('mac'))) {
           os = 'macos';
         } else if (nameLower.includes('windows') || nameLower.includes('exe') || nameLower.includes('msi')) {
           os = 'windows';
@@ -54,11 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Choose preferred main download per OS
         if (os === 'linux') {
-          mainItem = items.find(i => i.name.toLowerCase().includes('appimage')) ||
+          mainItem = items.find(i => (i.name.toLowerCase().includes('appimage') && !i.name.toLowerCase().includes('arm'))) ||
             items.find(i => i.name.toLowerCase().includes('snap')) ||
             items[0];  // fallback to first
         } else if (os === 'windows') {
-          mainItem = items.find(i => i.name.toLowerCase().includes('exe')) ||
+          mainItem = items.find(i => (i.name.toLowerCase().includes('windows') && !i.name.toLowerCase().includes('bit'))) ||
             items.find(i => i.name.toLowerCase().includes('msi') && !i.name.toLowerCase().includes('32')) ||
             items[0];
         } else if (os === 'macos') {
